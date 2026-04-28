@@ -1,4 +1,4 @@
-# Hướng dẫn triển khai dự án: MyDeusTools
+# Hướng dẫn triển khai dự án: MyDeusTools (Full Mentor Edition)
 
 Chào mừng bạn đến với lộ trình xây dựng siêu ứng dụng MyDeusTools. Tài liệu này đóng vai trò là "kim chỉ nam" giúp bạn đi từ khâu khởi tạo đến khi ra mắt sản phẩm hoàn chỉnh.
 
@@ -35,10 +35,10 @@ Chào mừng bạn đến với lộ trình xây dựng siêu ứng dụng MyDeu
 ---
 
 ## Bước 3: Cài đặt các thư viện quan trọng (NuGet)
-Mở Package Manager Console và chạy các lệnh sau:
+Mở Package Manager Console và chạy các lệnh sau (Đã tối ưu cho .NET 8):
 ```powershell
-# UI Hiện đại (Fluent Design)
-dotnet add package Wpf.Ui
+# UI Hiện đại (Sử dụng ID chính chủ)
+dotnet add package WPF-UI --version 2.1.0
 
 # MVVM Toolkit (Source Generators)
 dotnet add package CommunityToolkit.Mvvm
@@ -53,76 +53,86 @@ dotnet add package NHotkey.Wpf
 ---
 
 ## Bước 4: Triển khai kiến trúc Dependency Injection (DI)
-Đây là bước quan trọng nhất để app chạy chuyên nghiệp. Chỉnh sửa file `App.xaml.cs`:
+Đây là "xương sống" của ứng dụng. Chúng ta cấu hình trong `App.xaml.cs`:
 
-1.  Khởi tạo `IHost` để quản lý các Service và ViewModel.
-2.  Đăng ký các Service (Singleton) và ViewModels (Transient).
+1.  Loại bỏ `StartupUri` trong `App.xaml`.
+2.  Đăng ký các Service và ViewModel trong `ConfigureServices()`:
+
+```csharp
+private static IServiceProvider ConfigureServices()
+{
+    var services = new ServiceCollection();
+
+    // Dịch vụ UI & Navigation
+    services.AddSingleton<IPageService, PageService>();
+    services.AddSingleton<INavigationService, NavigationService>();
+
+    // ViewModels
+    services.AddTransient<MainWindowViewModel>();
+
+    // Views (Windows/Pages)
+    services.AddTransient<MainWindow>();
+
+    return services.BuildServiceProvider();
+}
+```
 
 ---
 
-## Bước 5: Kỹ thuật thiết kế Giao diện (Designer & Toolbox)
-Trong WPF, giao diện được viết bằng **XAML**. Bạn có hai cách để làm việc:
+## Bước 5: Thiết lập Điều hướng (Navigation)
+Sử dụng `IPageService` (trong `Wpf.Ui.Mvvm.Contracts`) để quản lý chuyển trang.
 
-1.  **Sử dụng Toolbox (Cửa sổ công cụ):**
-    *   Mở file `.xaml`, nhấn `Ctrl + Alt + X` để mở Toolbox.
-    *   Bạn có thể kéo các control cơ bản như `Button`, `TextBox`, `Grid` vào màn hình Design.
-    *   **Lưu ý:** Khi dùng thư viện như `Wpf.Ui`, bạn nên ưu tiên viết XAML trực tiếp vì Toolbox đôi khi không hiển thị hết các thuộc tính tùy chỉnh của thư viện bên thứ ba.
-2.  **Sử dụng XAML Designer (Giao diện trực quan):**
-    *   Sử dụng cửa sổ **Properties** (nhấn `F4`) để chỉnh màu sắc, lề (Margin), và font chữ mà không cần nhớ tên thuộc tính.
-    *   **Mẹo:** Hãy chia màn hình theo chiều dọc (Split view) để vừa nhìn thấy code XAML vừa nhìn thấy kết quả hiển thị ngay lập tức.
-3.  **Tư duy Layout:**
-    *   Đừng dùng tọa độ tuyệt đối. Hãy dùng `Grid` (chia hàng/cột) và `StackPanel` (xếp chồng) để giao diện tự co giãn theo cửa sổ.
+### PageService.cs chuẩn:
+```csharp
+public class PageService : IPageService
+{
+    private readonly IServiceProvider _serviceProvider;
+    public PageService(IServiceProvider serviceProvider) => _serviceProvider = serviceProvider;
+
+    public T? GetPage<T>() where T : class => _serviceProvider.GetService<T>();
+    public FrameworkElement? GetPage(Type pageType) => _serviceProvider.GetService(pageType) as FrameworkElement;
+}
+```
 
 ---
 
-## Bước 6: Quy trình viết code chuẩn (The MVVM Workflow)
-Để app không bị rối, hãy tuân thủ quy trình 3 bước sau khi tạo một tính năng mới:
+## Bước 6: Kỹ thuật thiết kế Giao diện (Designer & Toolbox)
+Trong WPF, giao diện được viết bằng **XAML**.
 
-1.  **Bước 1: Viết Logic (Service)**
-    *   Tạo file trong thư mục `Services/`. Ví dụ: `AutoClickService.cs`.
-    *   Đây là nơi chứa code "thuần kỹ thuật" (ví dụ: gọi Windows API để click chuột).
-2.  **Bước 2: Viết "Bộ não" giao diện (ViewModel)**
-    *   Tạo file trong `ViewModels/`. Ví dụ: `AutoClickViewModel.cs`.
-    *   Khai báo các biến mà giao diện sẽ hiển thị (dùng `[ObservableProperty]`).
-    *   Viết các hàm xử lý khi nhấn nút (dùng `[RelayCommand]`).
-3.  **Bước 3: Viết Giao diện (View)**
-    *   Tạo file `AutoClickPage.xaml`.
-    *   Dùng `{Binding NameInViewModel}` để kết nối các thành phần giao diện với dữ liệu trong ViewModel.
-    *   **Quan trọng:** Hạn chế tối đa việc viết code vào file `.xaml.cs` (Code-behind). Mọi thứ nên nằm ở ViewModel.
-
-3.  Ghi đè phương thức `OnStartup` để khởi chạy `MainWindow` thông qua DI.
+1.  **Sử dụng XAML Designer:** Dùng `F4` để chỉnh thuộc tính nhanh chóng.
+2.  **Tư duy Layout:** Ưu tiên `Grid` và `StackPanel` để giao diện tự co giãn (Responsive). Hạn chế dùng tọa độ tuyệt đối.
+3.  **Wpf.Ui Styles:** Nhớ tích hợp các Resources của Wpf.Ui vào `App.xaml` để các nút bấm, ô nhập liệu có giao diện Fluent Design đẹp mắt.
 
 ---
 
 ## Bước 7: Xây dựng Giao diện chính (The Shell)
-Đừng bắt đầu bằng code tính năng ngay, hãy xây dựng "Cái khung" trước:
-*   **MainWindow.xaml:** Sử dụng `ui:NavigationView` từ thư viện Wpf.Ui.
-*   **ContentFrame:** Nơi hiển thị các công cụ khi người dùng nhấn vào Menu.
-*   **NavigationService:** Viết một class đơn giản để điều hướng giữa các Page bên trong Frame.
+Thiết lập "Cái khung" trong `MainWindow.xaml`:
+*   Sử dụng `ui:NavigationView` để tạo thanh Menu bên trái.
+*   Sử dụng `ui:NavigationControl` (hoặc Frame) để hiển thị nội dung các Module.
+*   Kết nối `INavigationService` vào cửa sổ chính để điều khiển việc chuyển trang.
 
 ---
 
-## Bước 8: Code tính năng đầu tiên (Module hóa)
-Hãy bắt đầu với **Schedule Shutdown** vì nó ít rủi ro nhất:
-1.  **Service:** Viết class `SystemService` có phương thức `Shutdown(int minutes)`.
-2.  **ViewModel:** Tạo `ShutdownViewModel` chứa biến `TimerValue` và lệnh `StartCommand`.
-3.  **View:** Tạo `ShutdownPage.xaml` với giao diện nhập số phút và nút Start.
+## Bước 8: Quy trình thêm tính năng mới (The MVVM Workflow)
+Mỗi khi thêm một công cụ mới (Ví dụ: AutoClick):
+1.  **Service:** Viết logic xử lý (Click chuột) trong `Services/`.
+2.  **ViewModel:** Tạo lớp kế thừa `ObservableObject` trong `ViewModels/`.
+3.  **View:** Tạo `Page` XAML trong `Views/Pages/`.
+4.  **Đăng ký:** Thêm View và ViewModel vào DI Container trong `App.xaml.cs`.
 
 ---
 
 ## Bước 9: Tối ưu & Đóng gói
-Khi app đã chạy ổn định:
-1.  **Single File Publish:** Cấu hình trong file `.csproj` để khi Build chỉ ra một file `.exe` duy nhất cho người dùng dễ sử dụng.
-    ```xml
-    <PublishSingleFile>true</PublishSingleFile>
-    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
-    <PublishReadyToRun>true</PublishReadyToRun>
-    ```
-2.  **Icon & Branding:** Thiết kế một icon "Deus" thật ngầu để khẳng định thương hiệu cá nhân.
+Cấu hình trong file `.csproj` để xuất bản ra một file duy nhất:
+```xml
+<PublishSingleFile>true</PublishSingleFile>
+<RuntimeIdentifier>win-x64</RuntimeIdentifier>
+<PublishReadyToRun>true</PublishReadyToRun>
+```
 
 ---
 
 ### Lời khuyên từ cố vấn:
-> "Đừng cố làm tất cả các công cụ cùng một lúc. Hãy hoàn thiện **Bộ khung (Core)** và **Một công cụ (Module)** thật chỉn chu, sau đó các công cụ tiếp theo sẽ chỉ là việc copy-paste cấu trúc."
+> "Đừng cố làm tất cả các công cụ cùng một lúc. Hãy hoàn thiện **Bộ khung (Core)** thật chỉn chu, sau đó việc thêm các module mới sẽ cực kỳ nhanh chóng và không gây lỗi hệ thống."
 
 **Chúc bạn thành công với dự án MyDeusTools!**
