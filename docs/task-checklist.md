@@ -6,18 +6,18 @@ Dưới đây là danh sách các bước triển khai dự án theo `guide.md`.
 - [x] Bước 1: Khởi tạo Solution và Project WPF (.NET 8/9)
 - [x] Bước 2: Thiết lập cấu trúc thư mục (`Models/`, `ViewModels/`, `Views/`, `Services/`, `Resources/`)
 - [x] Bước 3: Cài đặt các thư viện NuGet quan trọng:
-    - [x] `Wpf.Ui` (Giao diện hiện đại)
+    - [x] `Wpf.Ui` (v3.0.5 - Giao diện hiện đại)
     - [x] `CommunityToolkit.Mvvm` (MVVM Toolkit)
     - [x] `Microsoft.Extensions.DependencyInjection` (DI Container)
     - [x] `NHotkey.Wpf` (Quản lý phím tắt)
 
 ## 2. Thiết lập kiến trúc nền tảng (Core Architecture)
-- [ ] Bước 4: Triển khai Dependency Injection (DI) trong `App.xaml.cs`
-- [ ] Bước 5: Thiết lập Navigation Service (Điều hướng trang)
+- [x] Bước 4: Triển khai Dependency Injection (DI) trong `App.xaml.cs`
+- [x] Bước 5: Thiết lập Navigation Service (Điều hướng trang)
 
 ## 3. Xây dựng Giao diện (UI/UX)
-- [ ] Bước 6: Xây dựng Shell Window (MainWindow) với `NavigationView`
-- [ ] Bước 7: Thiết kế Theme (Light/Dark Mode) và Resources
+- [x] Bước 6: Xây dựng Shell Window (MainWindow) với `NavigationView`
+- [x] Bước 7: Thiết kế Theme (Light/Dark Mode) và Resources
 
 ## 4. Phát triển các Module (Features)
 - [ ] Bước 8: Module **Schedule Shutdown**

@@ -38,7 +38,7 @@ Chào mừng bạn đến với lộ trình xây dựng siêu ứng dụng MyDeu
 Mở Package Manager Console và chạy các lệnh sau (Đã tối ưu cho .NET 8):
 ```powershell
 # UI Hiện đại (Sử dụng ID chính chủ)
-dotnet add package WPF-UI --version 2.1.0
+dotnet add package WPF-UI --version 3.0.5
 
 # MVVM Toolkit (Source Generators)
 dotnet add package CommunityToolkit.Mvvm
@@ -53,63 +53,152 @@ dotnet add package NHotkey.Wpf
 ---
 
 ## Bước 4: Triển khai kiến trúc Dependency Injection (DI)
-Đây là "xương sống" của ứng dụng. Chúng ta cấu hình trong `App.xaml.cs`:
+Kiến trúc DI giúp ứng dụng của bạn "lỏng lẻo" (loosely coupled), dễ dàng thay thế các thành phần và cực kỳ thuận tiện cho việc viết Unit Test sau này.
 
-1.  Loại bỏ `StartupUri` trong `App.xaml`.
-2.  Đăng ký các Service và ViewModel trong `ConfigureServices()`:
+1.  **Loại bỏ `StartupUri`:** Mở file `App.xaml` và xóa thuộc tính `StartupUri="MainWindow.xaml"`. Chúng ta sẽ tự tay khởi tạo cửa sổ chính thông qua DI.
+2.  **Cấu hình trong `App.xaml.cs`:**
+    *   Tạo một thuộc tính `IServiceProvider` để lưu trữ "thùng chứa" các dịch vụ.
+    *   Sử dụng `ServiceCollection` để đăng ký:
+        *   **Singleton:** Các dịch vụ dùng chung xuyên suốt app (Navigation, PageService).
+        *   **Transient:** Các ViewModel và View (mỗi lần gọi sẽ tạo mới một instance để đảm bảo dữ liệu sạch).
 
 ```csharp
-private static IServiceProvider ConfigureServices()
+public partial class App : Application
 {
-    var services = new ServiceCollection();
+    // Thùng chứa dịch vụ (Container)
+    public static IServiceProvider? Services { get; private set; }
 
-    // Dịch vụ UI & Navigation
-    services.AddSingleton<IPageService, PageService>();
-    services.AddSingleton<INavigationService, NavigationService>();
+    public App()
+    {
+        Services = ConfigureServices();
+    }
 
-    // ViewModels
-    services.AddTransient<MainWindowViewModel>();
+    protected override void OnStartup(StartupEventArgs e)
+    {
+        base.OnStartup(e);
 
-    // Views (Windows/Pages)
-    services.AddTransient<MainWindow>();
+        // Lấy MainWindow từ DI Container thay vì tạo bằng từ khóa 'new'
+        var mainWindow = Services?.GetRequiredService<MainWindow>();
+        mainWindow?.Show();
+    }
 
-    return services.BuildServiceProvider();
+    private static IServiceProvider ConfigureServices()
+    {
+        var services = new ServiceCollection();
+
+        // 1. Dịch vụ hệ thống & Điều hướng của Wpf.Ui
+        services.AddSingleton<IPageService, PageService>();
+        services.AddSingleton<INavigationService, NavigationService>();
+
+        // 2. Register ViewModels
+        services.AddTransient<MainWindowViewModel>();
+        // Ví dụ: services.AddTransient<DashboardViewModel>();
+
+        // 3. Register Views (Windows/Pages)
+        services.AddTransient<MainWindow>();
+        // Ví dụ: services.AddTransient<DashboardPage>();
+
+        return services.BuildServiceProvider();
+    }
 }
 ```
+> [!TIP]
+> Luôn đăng ký ViewModel trước khi đăng ký View tương ứng để DI có thể tự động "tiêm" (inject) ViewModel vào constructor của View.
 
 ---
 
-## Bước 5: Thiết lập Điều hướng (Navigation)
-Sử dụng `IPageService` (trong `Wpf.Ui.Mvvm.Contracts`) để quản lý chuyển trang.
+## Bước 5: Thiết lập Điều hướng (Navigation Service)
+Trong một ứng dụng đa năng (Super-App), việc chuyển đổi giữa các module (như từ AutoClicker sang Sticky Note) cần được quản lý tập trung.
 
-### PageService.cs chuẩn:
+1.  **IPageService:** Đây là "bản đồ" giúp `Wpf.Ui` biết tìm thấy View của một ViewModel ở đâu.
+2.  **PageService.cs:** Lớp này thực hiện việc lấy Page từ DI Container.
+
 ```csharp
+// Services/PageService.cs
 public class PageService : IPageService
 {
     private readonly IServiceProvider _serviceProvider;
     public PageService(IServiceProvider serviceProvider) => _serviceProvider = serviceProvider;
 
+    // Trả về Page tương ứng với kiểu T
     public T? GetPage<T>() where T : class => _serviceProvider.GetService<T>();
+
+    // Trả về Page dựa trên Type (Dùng cho NavigationControl của Wpf.Ui)
     public FrameworkElement? GetPage(Type pageType) => _serviceProvider.GetService(pageType) as FrameworkElement;
+}
+```
+
+3.  **MainWindowViewModel:** Phải nhận `INavigationService` vào constructor để có thể điều khiển chuyển trang từ logic (Code-behind hoặc Command).
+
+```csharp
+public partial class MainWindowViewModel : ObservableObject
+{
+    private readonly INavigationService _navigationService;
+
+    public MainWindowViewModel(INavigationService navigationService)
+    {
+        _navigationService = navigationService;
+    }
 }
 ```
 
 ---
 
-## Bước 6: Kỹ thuật thiết kế Giao diện (Designer & Toolbox)
-Trong WPF, giao diện được viết bằng **XAML**.
+## Bước 6: Xây dựng Giao diện chính (The Shell)
+Đây là nơi chúng ta tạo ra "bộ mặt" của ứng dụng. Cửa sổ chính sẽ chứa thanh menu điều hướng và vùng hiển thị nội dung các công cụ.
 
-1.  **Sử dụng XAML Designer:** Dùng `F4` để chỉnh thuộc tính nhanh chóng.
-2.  **Tư duy Layout:** Ưu tiên `Grid` và `StackPanel` để giao diện tự co giãn (Responsive). Hạn chế dùng tọa độ tuyệt đối.
-3.  **Wpf.Ui Styles:** Nhớ tích hợp các Resources của Wpf.Ui vào `App.xaml` để các nút bấm, ô nhập liệu có giao diện Fluent Design đẹp mắt.
+### 1. Tích hợp Styles vào `App.xaml`
+Để các control của `Wpf.Ui` hiển thị đúng giao diện Fluent Design, bạn **BẮT BUỘC** phải thêm các Resource sau vào `App.xaml`:
+
+```xml
+<Application.Resources>
+    <ResourceDictionary>
+        <ResourceDictionary.MergedDictionaries>
+            <ui:ThemesDictionary Theme="Light" />
+            <ui:ControlsDictionary />
+        </ResourceDictionary.MergedDictionaries>
+    </ResourceDictionary>
+</Application.Resources>
+```
+
+### 2. Thiết lập `MainWindow.xaml`
+Thay đổi `Window` thành `ui:FluentWindow` và sử dụng `ui:NavigationView` để tạo thanh menu bên trái.
+
+```xml
+<ui:FluentWindow ...
+    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml">
+    
+    <Grid>
+        <ui:NavigationView x:Name="RootNavigation"
+                           PaneDisplayMode="Left"
+                           IsBackButtonVisible="Collapsed">
+            <!-- Vùng hiển thị nội dung các Page -->
+            <ui:NavigationControl x:Name="RootFrame" />
+        </ui:NavigationView>
+    </Grid>
+</ui:FluentWindow>
+```
+
+### 3. Kết nối NavigationService trong `MainWindow.xaml.cs`
+Bạn cần kết nối `NavigationView` với `INavigationService` để việc chuyển trang hoạt động.
+
+```csharp
+public MainWindow(MainWindowViewModel viewModel, INavigationService navigationService)
+{
+    ViewModel = viewModel;
+    DataContext = this;
+
+    InitializeComponent();
+
+    // Thiết lập dịch vụ điều hướng cho NavigationView
+    navigationService.SetNavigationControl(RootFrame);
+}
+```
 
 ---
 
-## Bước 7: Xây dựng Giao diện chính (The Shell)
-Thiết lập "Cái khung" trong `MainWindow.xaml`:
-*   Sử dụng `ui:NavigationView` để tạo thanh Menu bên trái.
-*   Sử dụng `ui:NavigationControl` (hoặc Frame) để hiển thị nội dung các Module.
-*   Kết nối `INavigationService` vào cửa sổ chính để điều khiển việc chuyển trang.
+## Bước 7: Thiết kế Theme và Resources
+Tùy chỉnh màu sắc chủ đạo và hỗ trợ Light/Dark mode đồng bộ với hệ thống.
 
 ---
 
