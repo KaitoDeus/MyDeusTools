@@ -53,7 +53,8 @@
                     </ui:NavigationViewItem.Icon>
                 </ui:NavigationViewItem>
                 
-                <ui:NavigationViewItem Content="Schedule Shutdown" TargetPageTag="shutdown">
+                <ui:NavigationViewItem Content="Schedule Shutdown" 
+                                       TargetPageType="{x:Type pages:ShutdownPage}">
                     <ui:NavigationViewItem.Icon>
                         <ui:SymbolIcon Symbol="Timer24" />
                     </ui:NavigationViewItem.Icon>

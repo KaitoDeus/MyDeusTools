@@ -36,14 +36,17 @@ public partial class App : Application
         services.AddSingleton<IPageService, PageService>();
         services.AddSingleton<INavigationService, NavigationService>();
         services.AddSingleton<IAutoClickService, AutoClickService>();
+        services.AddSingleton<ISystemService, SystemService>();
 
         // 2. Register ViewModels
         services.AddTransient<MainWindowViewModel>();
         services.AddTransient<AutoClickViewModel>();
+        services.AddTransient<ShutdownViewModel>();
 
         // 3. Register Views (Windows/Pages)
         services.AddTransient<MainWindow>();
         services.AddTransient<AutoClickPage>();
+        services.AddTransient<ShutdownPage>();
 
         return services.BuildServiceProvider();
     }
