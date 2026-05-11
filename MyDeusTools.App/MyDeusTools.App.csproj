@@ -12,7 +12,11 @@
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.7" />
     <PackageReference Include="NHotkey.Wpf" Version="4.0.0" />
-    <PackageReference Include="WPF-UI" Version="2.1.0" />
+    <PackageReference Include="WPF-UI" Version="3.0.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\avatar.ico" />
   </ItemGroup>
 
 </Project>

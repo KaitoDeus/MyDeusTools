@@ -1,12 +1,76 @@
-<Window x:Class="MyDeusTools.App.MainWindow"
+<ui:FluentWindow x:Class="MyDeusTools.App.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
         xmlns:local="clr-namespace:MyDeusTools.App"
         mc:Ignorable="d"
-        Title="{Binding Title}" Height="450" Width="800">
-    <Grid>
+        Title="MyDeusTools" Width="1280" Height="720" 
+        Icon="/Resources/avatar.ico"
+        ExtendsContentIntoTitleBar="True"
+        WindowCornerPreference="Round"
+        WindowBackdropType="Mica"
+        WindowStartupLocation="CenterScreen">
 
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!-- Thanh tiêu đề -->
+        <ui:TitleBar Grid.Row="0"
+                     Title="MyDeusTools"
+                     Icon="/Resources/avatar.ico">
+        </ui:TitleBar>
+
+        <Grid Grid.Row="1">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <!-- Thanh menu điều hướng -->
+        <ui:NavigationView x:Name="RootNavigation"
+                           Grid.Column="0" Grid.ColumnSpan="2"
+                           PaneDisplayMode="Left"
+                           Background="Transparent"
+                           OpenPaneLength="240"
+                           IsBackButtonVisible="Collapsed">
+            <ui:NavigationView.MenuItems>
+                <ui:NavigationViewItem Content="Sticky Note" TargetPageTag="stickynote">
+                    <ui:NavigationViewItem.Icon>
+                        <ui:SymbolIcon Symbol="Note24" />
+                    </ui:NavigationViewItem.Icon>
+                </ui:NavigationViewItem>
+                
+                <ui:NavigationViewItem Content="Auto Clicker" TargetPageTag="autoclick">
+                    <ui:NavigationViewItem.Icon>
+                        <ui:SymbolIcon Symbol="CursorClick24" />
+                    </ui:NavigationViewItem.Icon>
+                </ui:NavigationViewItem>
+                
+                <ui:NavigationViewItem Content="Schedule Shutdown" TargetPageTag="shutdown">
+                    <ui:NavigationViewItem.Icon>
+                        <ui:SymbolIcon Symbol="Timer24" />
+                    </ui:NavigationViewItem.Icon>
+                </ui:NavigationViewItem>
+            </ui:NavigationView.MenuItems>
+
+            <ui:NavigationView.FooterMenuItems>
+                <ui:NavigationViewItem x:Name="ThemeToggleButton"
+                                       Content="Dark Mode" 
+                                       Tag="theme_toggle"
+                                       Click="OnThemeToggleClick">
+                    <ui:NavigationViewItem.Icon>
+                        <ui:SymbolIcon x:Name="ThemeToggleIcon" Symbol="WeatherMoon24" />
+                    </ui:NavigationViewItem.Icon>
+                </ui:NavigationViewItem>
+            </ui:NavigationView.FooterMenuItems>
+
+            <!-- Trong 3.x, NavigationView sẽ hiển thị Page tại đây -->
+        </ui:NavigationView>
+        </Grid>
     </Grid>
-</Window>
+</ui:FluentWindow>

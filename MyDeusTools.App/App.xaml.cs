@@ -3,13 +3,12 @@ using Microsoft.Extensions.DependencyInjection;
 using MyDeusTools.App.ViewModels;
 using MyDeusTools.App.Services;
 using Wpf.Ui;
-using Wpf.Ui.Mvvm.Contracts;
-using Wpf.Ui.Mvvm.Services;
 
 namespace MyDeusTools.App;
 
 public partial class App : Application
 {
+    // Thùng chứa dịch vụ (Container)
     public static IServiceProvider? Services { get; private set; }
 
     public App()
@@ -21,6 +20,7 @@ public partial class App : Application
     {
         base.OnStartup(e);
 
+        // Lấy MainWindow từ DI Container thay vì tạo bằng từ khóa 'new'
         var mainWindow = Services?.GetRequiredService<MainWindow>();
         mainWindow?.Show();
     }
@@ -29,12 +29,17 @@ public partial class App : Application
     {
         var services = new ServiceCollection();
 
-        // Dịch vụ điều hướng của Wpf.Ui (v2.1.0)
+        // 1. Dịch vụ hệ thống & Điều hướng của Wpf.Ui
         services.AddSingleton<IPageService, PageService>();
         services.AddSingleton<INavigationService, NavigationService>();
 
+        // 2. Register ViewModels
         services.AddTransient<MainWindowViewModel>();
+        // Ví dụ: services.AddTransient<DashboardViewModel>();
+
+        // 3. Register Views (Windows/Pages)
         services.AddTransient<MainWindow>();
+        // Ví dụ: services.AddTransient<DashboardPage>();
 
         return services.BuildServiceProvider();
     }
