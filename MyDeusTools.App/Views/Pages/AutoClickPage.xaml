@@ -1,0 +1,62 @@
+<Page x:Class="MyDeusTools.App.Views.Pages.AutoClickPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+      xmlns:local="clr-namespace:MyDeusTools.App.Views.Pages"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="AutoClicker Pro"
+      Foreground="{DynamicResource TextFillColorPrimaryBrush}">
+
+    <Grid Margin="40">
+        <StackPanel MaxWidth="400" HorizontalAlignment="Left">
+            <TextBlock Text="AutoClicker Pro" 
+                       FontSize="28" 
+                       FontWeight="Bold" 
+                       Margin="0,0,0,20"/>
+
+            <ui:Card Margin="0,0,0,20">
+                <StackPanel Margin="10">
+                    <TextBlock Text="Khoảng cách giữa các lần click (ms):" 
+                               Margin="0,0,0,8"
+                               VerticalAlignment="Center"/>
+                    <ui:NumberBox Value="{Binding Interval, Mode=TwoWay}"
+                                  Minimum="10"
+                                  Maximum="10000"
+                                  PlaceholderText="Ví dụ: 100" />
+                </StackPanel>
+            </ui:Card>
+
+            <ui:Card Margin="0,0,0,20">
+                <Grid Margin="10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="Trạng thái hiện tại:" 
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                        <TextBlock Text="{Binding StatusText}" 
+                                   FontSize="18" 
+                                   FontWeight="SemiBold"
+                                   Margin="0,4,0,0"/>
+                    </StackPanel>
+                    
+                    <ui:Button Grid.Column="1" 
+                               Content="{Binding ButtonText}"
+                               Command="{Binding ToggleClickCommand}"
+                               Appearance="Primary"
+                               Padding="20,10"
+                               FontSize="14"/>
+                </Grid>
+            </ui:Card>
+
+            <TextBlock Text="Mẹo: Bạn có thể nhấn phím F6 bất cứ lúc nào để Bật/Tắt clicker nhanh chóng." 
+                       FontStyle="Italic"
+                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                       TextWrapping="Wrap"/>
+        </StackPanel>
+    </Grid>
+</Page>

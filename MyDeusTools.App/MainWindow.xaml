@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
         xmlns:local="clr-namespace:MyDeusTools.App"
+        xmlns:pages="clr-namespace:MyDeusTools.App.Views.Pages"
         mc:Ignorable="d"
         Title="MyDeusTools" Width="1280" Height="720" 
         Icon="/Resources/avatar.ico"
@@ -45,7 +46,8 @@
                     </ui:NavigationViewItem.Icon>
                 </ui:NavigationViewItem>
                 
-                <ui:NavigationViewItem Content="Auto Clicker" TargetPageTag="autoclick">
+                <ui:NavigationViewItem Content="Auto Clicker" 
+                                       TargetPageType="{x:Type pages:AutoClickPage}">
                     <ui:NavigationViewItem.Icon>
                         <ui:SymbolIcon Symbol="CursorClick24" />
                     </ui:NavigationViewItem.Icon>

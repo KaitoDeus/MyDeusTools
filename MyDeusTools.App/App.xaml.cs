@@ -1,8 +1,11 @@
-using System.Windows;
+using System;
 using Microsoft.Extensions.DependencyInjection;
 using MyDeusTools.App.ViewModels;
 using MyDeusTools.App.Services;
+using MyDeusTools.App.Services.Impl;
+using MyDeusTools.App.Views.Pages;
 using Wpf.Ui;
+using System.Windows;
 
 namespace MyDeusTools.App;
 
@@ -32,14 +35,15 @@ public partial class App : Application
         // 1. Dịch vụ hệ thống & Điều hướng của Wpf.Ui
         services.AddSingleton<IPageService, PageService>();
         services.AddSingleton<INavigationService, NavigationService>();
+        services.AddSingleton<IAutoClickService, AutoClickService>();
 
         // 2. Register ViewModels
         services.AddTransient<MainWindowViewModel>();
-        // Ví dụ: services.AddTransient<DashboardViewModel>();
+        services.AddTransient<AutoClickViewModel>();
 
         // 3. Register Views (Windows/Pages)
         services.AddTransient<MainWindow>();
-        // Ví dụ: services.AddTransient<DashboardPage>();
+        services.AddTransient<AutoClickPage>();
 
         return services.BuildServiceProvider();
     }
