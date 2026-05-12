@@ -13,7 +13,7 @@ namespace MyDeusTools.Tests
             int testInterval = 500;
 
             // Act
-            service.Start(testInterval);
+            service.Start(testInterval, MouseButton.Left, ClickType.Single, 0);
 
             // Assert
             Assert.True(service.IsRunning);
@@ -28,7 +28,7 @@ namespace MyDeusTools.Tests
             int lowInterval = 5;
 
             // Act
-            service.Start(lowInterval);
+            service.Start(lowInterval, MouseButton.Left, ClickType.Single, 0);
 
             // Assert
             Assert.Equal(10, service.Interval);
@@ -39,7 +39,7 @@ namespace MyDeusTools.Tests
         {
             // Arrange
             var service = new AutoClickService();
-            service.Start(100);
+            service.Start(100, MouseButton.Left, ClickType.Single, 0);
 
             // Act
             service.Stop();
