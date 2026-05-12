@@ -6,57 +6,140 @@
       xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
       xmlns:local="clr-namespace:MyDeusTools.App.Views.Pages"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
+      d:DesignHeight="600" d:DesignWidth="800"
       Title="AutoClicker Pro"
       Foreground="{DynamicResource TextFillColorPrimaryBrush}">
 
-    <Grid Margin="40">
-        <StackPanel MaxWidth="400" HorizontalAlignment="Left">
+    <ScrollViewer VerticalScrollBarVisibility="Auto" VerticalAlignment="Stretch" Background="Transparent">
+        <StackPanel Margin="30,20,30,40" Background="Transparent">
             <TextBlock Text="AutoClicker Pro" 
                        FontSize="28" 
-                       FontWeight="Bold" 
+                       FontWeight="Bold"
                        Margin="0,0,0,20"/>
 
+            <!-- Section 1: Click Options -->
+            <TextBlock Text="Cấu hình Click" FontWeight="SemiBold" FontSize="16" Margin="0,10,0,10"/>
+            <Grid Margin="0,0,0,20">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <ui:Card Grid.Column="0" Margin="0,0,10,0">
+                    <StackPanel>
+                        <TextBlock Text="Phím chuột" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,0,8"/>
+                        <ComboBox ItemsSource="{Binding MouseButtons}" 
+                                  SelectedItem="{Binding SelectedMouseButton}" 
+                                  HorizontalAlignment="Stretch"/>
+                    </StackPanel>
+                </ui:Card>
+                <ui:Card Grid.Column="1" Margin="10,0,10,0">
+                    <StackPanel>
+                        <TextBlock Text="Kiểu click" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,0,8"/>
+                        <ComboBox ItemsSource="{Binding ClickTypes}" 
+                                  SelectedItem="{Binding SelectedClickType}" 
+                                  HorizontalAlignment="Stretch"/>
+                    </StackPanel>
+                </ui:Card>
+                <ui:Card Grid.Column="2" Margin="10,0,0,0">
+                    <StackPanel>
+                        <TextBlock Text="Phím tắt" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,0,8"/>
+                        <ComboBox ItemsSource="{Binding AvailableKeys}" 
+                                  SelectedItem="{Binding SelectedKey}" 
+                                  HorizontalAlignment="Stretch"/>
+                    </StackPanel>
+                </ui:Card>
+            </Grid>
+
+            <!-- Section 2: Click Interval -->
+            <TextBlock Text="Khoảng cách Click" FontWeight="SemiBold" FontSize="16" Margin="0,10,0,10"/>
             <ui:Card Margin="0,0,0,20">
-                <StackPanel Margin="10">
-                    <TextBlock Text="Khoảng cách giữa các lần click (ms):" 
-                               Margin="0,0,0,8"
-                               VerticalAlignment="Center"/>
-                    <ui:NumberBox Value="{Binding Interval, Mode=TwoWay}"
-                                  Minimum="10"
-                                  Maximum="10000"
-                                  PlaceholderText="Ví dụ: 100" />
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0" Margin="5">
+                        <TextBlock Text="Giờ" HorizontalAlignment="Center" FontSize="12" Margin="0,0,0,5"/>
+                        <ui:NumberBox Value="{Binding Hours}" Minimum="0" Maximum="23"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="1" Margin="5">
+                        <TextBlock Text="Phút" HorizontalAlignment="Center" FontSize="12" Margin="0,0,0,5"/>
+                        <ui:NumberBox Value="{Binding Minutes}" Minimum="0" Maximum="59"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="2" Margin="5">
+                        <TextBlock Text="Giây" HorizontalAlignment="Center" FontSize="12" Margin="0,0,0,5"/>
+                        <ui:NumberBox Value="{Binding Seconds}" Minimum="0" Maximum="59"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="3" Margin="5">
+                        <TextBlock Text="Ms" HorizontalAlignment="Center" FontSize="12" Margin="0,0,0,5"/>
+                        <ui:NumberBox Value="{Binding Milliseconds}" Minimum="10" Maximum="999"/>
+                    </StackPanel>
+                </Grid>
+            </ui:Card>
+
+            <!-- Section 3: Repeat Settings -->
+            <TextBlock Text="Số lần lặp lại" FontWeight="SemiBold" FontSize="16" Margin="0,10,0,10"/>
+            <ui:Card Margin="0,0,0,20">
+                <StackPanel>
+                    <TextBlock Text="Nhập 0 để lặp lại vô hạn" Foreground="{DynamicResource TextFillColorSecondaryBrush}" FontSize="12" Margin="0,0,0,8"/>
+                    <ui:NumberBox Value="{Binding RepeatCount}" Minimum="0" PlaceholderText="Ví dụ: 100"/>
                 </StackPanel>
             </ui:Card>
 
+            <!-- Section 4: Recording Engine -->
+            <TextBlock Text="Ghi tọa độ (Recording Engine)" FontWeight="SemiBold" FontSize="16" Margin="0,10,0,10"/>
             <ui:Card Margin="0,0,0,20">
-                <Grid Margin="10">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="Số điểm đã ghi" FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                        <TextBlock Text="{Binding RecordedPointsCount}" FontSize="18" FontWeight="SemiBold"/>
+                    </StackPanel>
+                    <ui:Button Grid.Column="1" 
+                               Content="{Binding RecordButtonText}" 
+                               Command="{Binding ToggleRecordCommand}"
+                               Icon="{ui:SymbolIcon Record24}"
+                               Margin="0,0,10,0"/>
+                    <ui:Button Grid.Column="2" 
+                               Content="Xóa" 
+                               Command="{Binding ClearRecordingCommand}"
+                               Appearance="Secondary"
+                               Icon="{ui:SymbolIcon Delete24}"/>
+                </Grid>
+            </ui:Card>
+
+            <!-- Footer: Control & Hotkey -->
+            <ui:Card Background="{DynamicResource ControlFillColorDefaultBrush}" Margin="0,0,0,20">
+                <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
                     <StackPanel VerticalAlignment="Center">
-                        <TextBlock Text="Trạng thái hiện tại:" 
-                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
-                        <TextBlock Text="{Binding StatusText}" 
-                                   FontSize="18" 
-                                   FontWeight="SemiBold"
-                                   Margin="0,4,0,0"/>
+                        <TextBlock Text="Trạng thái" FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                        <TextBlock Text="{Binding StatusText}" FontSize="18" FontWeight="SemiBold"/>
                     </StackPanel>
-                    
                     <ui:Button Grid.Column="1" 
-                               Content="{Binding ButtonText}"
+                               Content="{Binding ButtonText}" 
                                Command="{Binding ToggleClickCommand}"
                                Appearance="Primary"
-                               Padding="20,10"
-                               FontSize="14"/>
+                               FontSize="16"
+                               Padding="30,10"/>
                 </Grid>
             </ui:Card>
 
-            <TextBlock Text="Mẹo: Bạn có thể nhấn phím F6 bất cứ lúc nào để Bật/Tắt clicker nhanh chóng." 
-                       FontStyle="Italic"
-                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                       TextWrapping="Wrap"/>
+            <ui:InfoBar Title="Mẹo" 
+                        Message="Bạn có thể nhấn phím F6 bất cứ lúc nào để Bật/Tắt clicker." 
+                        Severity="Informational" 
+                        IsOpen="True" 
+                        IsClosable="False"/>
         </StackPanel>
-    </Grid>
+    </ScrollViewer>
 </Page>

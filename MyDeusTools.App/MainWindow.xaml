@@ -23,58 +23,48 @@
         <!-- Thanh tiêu đề -->
         <ui:TitleBar Grid.Row="0"
                      Title="MyDeusTools"
-                     Icon="/Resources/avatar.ico">
-        </ui:TitleBar>
+                     Icon="/Resources/avatar.ico"/>
 
         <Grid Grid.Row="1">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
+            <ui:NavigationView x:Name="RootNavigation"
+                               PaneDisplayMode="Left"
+                               Background="Transparent"
+                               OpenPaneLength="240"
+                               IsBackButtonVisible="Collapsed">
+                <ui:NavigationView.MenuItems>
+                    <ui:NavigationViewItem Content="Sticky Note" 
+                                           TargetPageType="{x:Type pages:StickyNotePage}">
+                        <ui:NavigationViewItem.Icon>
+                            <ui:SymbolIcon Symbol="Note24" />
+                        </ui:NavigationViewItem.Icon>
+                    </ui:NavigationViewItem>
 
-        <!-- Thanh menu điều hướng -->
-        <ui:NavigationView x:Name="RootNavigation"
-                           Grid.Column="0" Grid.ColumnSpan="2"
-                           PaneDisplayMode="Left"
-                           Background="Transparent"
-                           OpenPaneLength="240"
-                           IsBackButtonVisible="Collapsed">
-            <ui:NavigationView.MenuItems>
-                <ui:NavigationViewItem Content="Sticky Note" 
-                                       TargetPageType="{x:Type pages:StickyNotePage}">
-                    <ui:NavigationViewItem.Icon>
-                        <ui:SymbolIcon Symbol="Note24" />
-                    </ui:NavigationViewItem.Icon>
-                </ui:NavigationViewItem>
-                
-                <ui:NavigationViewItem Content="Auto Clicker" 
-                                       TargetPageType="{x:Type pages:AutoClickPage}">
-                    <ui:NavigationViewItem.Icon>
-                        <ui:SymbolIcon Symbol="CursorClick24" />
-                    </ui:NavigationViewItem.Icon>
-                </ui:NavigationViewItem>
-                
-                <ui:NavigationViewItem Content="Schedule Shutdown" 
-                                       TargetPageType="{x:Type pages:ShutdownPage}">
-                    <ui:NavigationViewItem.Icon>
-                        <ui:SymbolIcon Symbol="Timer24" />
-                    </ui:NavigationViewItem.Icon>
-                </ui:NavigationViewItem>
-            </ui:NavigationView.MenuItems>
+                    <ui:NavigationViewItem Content="Auto Clicker" 
+                                           TargetPageType="{x:Type pages:AutoClickPage}">
+                        <ui:NavigationViewItem.Icon>
+                            <ui:SymbolIcon Symbol="CursorClick24" />
+                        </ui:NavigationViewItem.Icon>
+                    </ui:NavigationViewItem>
 
-            <ui:NavigationView.FooterMenuItems>
-                <ui:NavigationViewItem x:Name="ThemeToggleButton"
-                                       Content="Dark Mode" 
-                                       Tag="theme_toggle"
-                                       Click="OnThemeToggleClick">
-                    <ui:NavigationViewItem.Icon>
-                        <ui:SymbolIcon x:Name="ThemeToggleIcon" Symbol="WeatherMoon24" />
-                    </ui:NavigationViewItem.Icon>
-                </ui:NavigationViewItem>
-            </ui:NavigationView.FooterMenuItems>
+                    <ui:NavigationViewItem Content="Schedule Shutdown" 
+                                           TargetPageType="{x:Type pages:ShutdownPage}">
+                        <ui:NavigationViewItem.Icon>
+                            <ui:SymbolIcon Symbol="Timer24" />
+                        </ui:NavigationViewItem.Icon>
+                    </ui:NavigationViewItem>
+                </ui:NavigationView.MenuItems>
 
-            <!-- Trong 3.x, NavigationView sẽ hiển thị Page tại đây -->
-        </ui:NavigationView>
+                <ui:NavigationView.FooterMenuItems>
+                    <ui:NavigationViewItem x:Name="ThemeToggleButton"
+                                           Content="Dark Mode" 
+                                           Tag="theme_toggle"
+                                           Click="OnThemeToggleClick">
+                        <ui:NavigationViewItem.Icon>
+                            <ui:SymbolIcon x:Name="ThemeToggleIcon" Symbol="WeatherMoon24" />
+                        </ui:NavigationViewItem.Icon>
+                    </ui:NavigationViewItem>
+                </ui:NavigationView.FooterMenuItems>
+            </ui:NavigationView>
         </Grid>
     </Grid>
 </ui:FluentWindow>
