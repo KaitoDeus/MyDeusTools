@@ -28,7 +28,7 @@ public partial class App : Application
         mainWindow?.Show();
     }
 
-    private static IServiceProvider ConfigureServices()
+    public static IServiceProvider ConfigureServices()
     {
         var services = new ServiceCollection();
 

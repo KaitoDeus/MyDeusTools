@@ -39,11 +39,12 @@ namespace MyDeusTools.App.Services.Impl
 
         public StickyNoteService()
         {
-            string appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-            string folder = Path.Combine(appData, "MyDeusTools");
+            // string appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            // string folder = Path.Combine(appData, "MyDeusTools");
+            string folder = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data");
             if (!Directory.Exists(folder)) Directory.CreateDirectory(folder);
             _filePath = Path.Combine(folder, "notes.json");
-            
+
             LoadNotes();
         }
 

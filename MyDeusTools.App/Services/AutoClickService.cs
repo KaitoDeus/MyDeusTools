@@ -14,6 +14,7 @@ namespace MyDeusTools.App.Services.Impl
 
         private readonly DispatcherTimer _timer;
         public bool IsRunning { get; private set; }
+        public int Interval { get; private set; }
 
         public AutoClickService()
         {
@@ -24,7 +25,8 @@ namespace MyDeusTools.App.Services.Impl
         public void Start(int intervalMs)
         {
             if (IsRunning) return;
-            _timer.Interval = TimeSpan.FromMilliseconds(Math.Max(10, intervalMs));
+            Interval = Math.Max(10, intervalMs); // Đảm bảo tối thiểu 10ms
+            _timer.Interval = TimeSpan.FromMilliseconds(Interval);
             _timer.Start();
             IsRunning = true;
         }
