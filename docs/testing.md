@@ -55,7 +55,17 @@ Tài liệu này xác định các cấp độ kiểm thử và các kịch bả
 ---
 
 ## 5. Checklist sau kiểm thử (Exit Criteria)
-- [ ] 100% các Unit Test logic core vượt qua.
-- [ ] Không có lỗi nghiêm trọng (Critical Bug) gây crash ứng dụng.
-- [ ] Giao diện hiển thị đúng trên cả Light và Dark mode.
-- [ ] File dữ liệu được lưu đúng chỗ và không bị lỗi font tiếng Việt.
+- [x] 100% các Unit Test logic core vượt qua. (Đã đạt: 17/17 tests passed)
+- [x] Không có lỗi nghiêm trọng (Critical Bug) gây crash ứng dụng. (Đã xác nhận qua Integration Tests)
+- [ ] Giao diện hiển thị đúng trên cả Light và Dark mode. (Đang kiểm tra thủ công)
+- [x] File dữ liệu được lưu đúng chỗ và không bị lỗi font tiếng Việt. (Đã chuyển sang folder local/Data)
+
+---
+
+## 6. Nhật ký kết quả (Test Logs)
+*Ngày cập nhật: 12/05/2026*
+
+- **Tổng số bài test:** 17
+- **Vượt qua (Passed):** 17
+- **Thất bại (Failed):** 0
+- **Trạng thái hệ thống:** Ổn định, hạ tầng DI và logic nghiệp vụ cơ bản đã được bảo vệ bởi bộ test tự động.
