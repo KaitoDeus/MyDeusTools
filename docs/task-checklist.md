@@ -24,18 +24,20 @@ Dưới đây là danh sách các bước triển khai dự án theo `guide.md`.
 
 ## 4. Phát triển các Module (Features)
 
-- [ ] Bước 8: Module **Schedule Shutdown**
-  - [ ] `SystemService.cs`
-  - [ ] `ShutdownViewModel.cs`
-  - [ ] `ShutdownPage.xaml`
-- [x] Bước 9: Module **AutoClicker Pro**
-  - [x] `AutoClickService.cs`
-  - [x] `AutoClickViewModel.cs`
-  - [x] `AutoClickPage.xaml`
-- [ ] Bước 10: Module **Sticky Note**
-  - [ ] `StickyNoteService.cs`
-  - [ ] `StickyNoteViewModel.cs`
-  - [ ] `StickyNotePage.xaml`
+- [x] Bước 8: Module **Schedule Shutdown**
+    - [x] `SystemService.cs`
+    - [x] `ShutdownViewModel.cs`
+    - [x] `ShutdownPage.xaml`
+- [x] Bước 9: Module **AutoClicker Pro** (Cơ bản)
+- [ ] Bước 9.1: Nâng cấp **AutoClicker Pro** (Nâng cao)
+  - [ ] Nâng cấp `IAutoClickService` (Hỗ trợ Left/Right, Single/Double)
+  - [ ] Triển khai `RecordingEngine` (Ghi và phát lại tọa độ)
+  - [ ] Thiết lập Hotkey tùy chỉnh (Custom Hotkeys)
+  - [ ] Re-design `AutoClickPage.xaml` (Giao diện chuyên nghiệp hơn)
+- [x] Bước 10: Module **Sticky Note**
+  - [x] `StickyNoteService.cs`
+  - [x] `StickyNoteViewModel.cs`
+  - [x] `StickyNotePage.xaml`
 
 ## 5. Hoàn thiện & Đóng gói
 
