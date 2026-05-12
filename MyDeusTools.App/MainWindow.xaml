@@ -40,7 +40,8 @@
                            OpenPaneLength="240"
                            IsBackButtonVisible="Collapsed">
             <ui:NavigationView.MenuItems>
-                <ui:NavigationViewItem Content="Sticky Note" TargetPageTag="stickynote">
+                <ui:NavigationViewItem Content="Sticky Note" 
+                                       TargetPageType="{x:Type pages:StickyNotePage}">
                     <ui:NavigationViewItem.Icon>
                         <ui:SymbolIcon Symbol="Note24" />
                     </ui:NavigationViewItem.Icon>
