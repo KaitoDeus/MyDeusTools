@@ -30,25 +30,25 @@
 
 1.  **AutoClicker Pro (Advanced Mouse Automation):**
     *   **Click Configuration:**
-        - **Button Type:** Hỗ trợ Chuột Trái (Left), Phải (Right), và Giữa (Middle).
-        - **Click Mode:** Tùy chọn Click đơn (Single) hoặc Click đúp (Double).
+        - **Button Type:** Hỗ trợ Chuột Trái (Left), Phải (Right), và Giữa (Middle). [Hoàn thành]
+        - **Click Mode:** Tùy chọn Click đơn (Single) hoặc Click đúp (Double). [Hoàn thành]
     *   **Sequence & Multiple Click:**
-        - **Interval Management:** Thiết lập khoảng trễ linh hoạt (Giờ, Phút, Giây, Mili giây).
-        - **Recording Engine:** Khả năng ghi lại (Record) một chuỗi các tọa độ chuột và phát lại (Replay) theo trình tự.
+        - **Interval Management:** Thiết lập khoảng trễ linh hoạt (Giờ, Phút, Giây, Mili giây). [Hoàn thành]
+        - **Recording Engine:** Khả năng ghi lại (Record) một chuỗi các tọa độ chuột thông qua Click trực tiếp và phát lại (Replay) theo trình tự. [Hoàn thành]
     *   **Repeat & Termination Settings:**
         - **Loop Mode:** Chạy vô hạn hoặc lặp lại theo số lần chỉ định.
         - **Schedule Execution:** Tự động dừng sau một khoảng thời gian nhất định.
     *   **Control & UX:**
-        - **Global Hotkeys:** Người dùng tự định nghĩa phím tắt để Bật/Tắt (mặc định F6).
-        - **Visual Feedback:** Hiển thị tọa độ đang ghi và số lần đã click thực tế.
+        - **Global Hotkeys:** Người dùng tự định nghĩa phím tắt để Bật/Tắt (Hỗ trợ phím tổ hợp). [Hoàn thành]
+        - **Visual Feedback:** Hiển thị tọa độ trực tiếp qua Overlay khi đang ghi và số lần đã click thực tế. [Hoàn thành]
 
 2.  **Schedule Shutdown (Hẹn giờ hệ thống):**
     - Hỗ trợ: Tắt máy (Shutdown), Khởi động lại (Restart), Ngủ đông (Hibernate).
     - Hẹn giờ theo: Đếm ngược (Countdown) hoặc Thời điểm cụ thể trong ngày (Specific time).
 3.  **Sticky Note (Ghi chú nhanh):**
-    - Hỗ trợ định dạng văn bản cơ bản.
-    - Tính năng "Always on top" để ghim ghi chú lên màn hình.
-    - Tự động lưu (Auto-save) dữ liệu ngay khi nhập.
+    - Hỗ trợ định dạng văn bản cơ bản. [Hoàn thành]
+    - Tính năng "Always on top" để ghim ghi chú lên màn hình. [Hoàn thành]
+    - Tự động lưu (Auto-save) dữ liệu ngay khi nhập. [Hoàn thành]
 
 ### 3.3. Tính năng hệ thống (System Features)
 

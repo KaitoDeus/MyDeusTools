@@ -31,9 +31,10 @@ Dưới đây là danh sách các bước triển khai dự án theo `guide.md`.
 - [x] Bước 9: Module **AutoClicker Pro** (Cơ bản)
 - [x] Bước 9.1: Nâng cấp **AutoClicker Pro** (Nâng cao)
   - [x] Nâng cấp `IAutoClickService` (Hỗ trợ Left/Right, Single/Double)
-  - [x] Triển khai `RecordingEngine` (Ghi và phát lại tọa độ)
-  - [x] Thiết lập Hotkey tùy chỉnh (Custom Hotkeys)
-  - [x] Re-design `AutoClickPage.xaml` (Giao diện chuyên nghiệp hơn)
+  - [x] Triển khai `Recording Engine` thế hệ mới (Interactive Overlay click)
+  - [x] Hệ thống gán phím tắt động (Dynamic Key Capturing & Modifiers)
+  - [x] Khắc phục lỗi Layout & Hit-testing (Scrolling fix cho toàn bộ App)
+  - [x] Tối ưu Sidebar width và giao diện Fluent chuyên nghiệp
 - [x] Bước 10: Module **Sticky Note**
   - [x] `StickyNoteService.cs`
   - [x] `StickyNoteViewModel.cs`
