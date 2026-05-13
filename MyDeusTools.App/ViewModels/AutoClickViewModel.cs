@@ -49,25 +49,18 @@ namespace MyDeusTools.App.ViewModels
         private string _recordButtonText = "Ghi tọa độ";
         public string RecordButtonText { get => _recordButtonText; set => SetProperty(ref _recordButtonText, value); }
 
-        public ObservableCollection<Key> AvailableKeys { get; } = new() 
-        { 
-            Key.F1, Key.F2, Key.F3, Key.F4, Key.F5, Key.F6, 
-            Key.F7, Key.F8, Key.F9, Key.F10, Key.F11, Key.F12 
-        };
+        // Hotkey settings
+        private ModifierKeys _selectedModifiers = ModifierKeys.None;
+        public ModifierKeys SelectedModifiers { get => _selectedModifiers; set => SetProperty(ref _selectedModifiers, value); }
 
         private Key _selectedKey = Key.F6;
-        public Key SelectedKey 
-        { 
-            get => _selectedKey; 
-            set 
-            {
-                if (SetProperty(ref _selectedKey, value))
-                {
-                    UpdateHotkey();
-                    ButtonText = $"Bắt đầu ({_selectedKey})";
-                }
-            }
-        }
+        public Key SelectedKey { get => _selectedKey; set => SetProperty(ref _selectedKey, value); }
+
+        private string _hotkeyDisplayText = "F6";
+        public string HotkeyDisplayText { get => _hotkeyDisplayText; set => SetProperty(ref _hotkeyDisplayText, value); }
+
+        private bool _isListeningForHotkey = false;
+        public bool IsListeningForHotkey { get => _isListeningForHotkey; set => SetProperty(ref _isListeningForHotkey, value); }
 
         public AutoClickViewModel(IAutoClickService autoClickService)
         {
@@ -79,9 +72,55 @@ namespace MyDeusTools.App.ViewModels
         {
             try 
             {
-                HotkeyManager.Current.AddOrReplace("ToggleAutoClick", SelectedKey, ModifierKeys.None, OnHotkeyPressed);
+                // Xóa hotkey cũ nếu có
+                HotkeyManager.Current.Remove("ToggleAutoClick");
+                
+                // Đăng ký hotkey mới với cả Modifier và Key
+                HotkeyManager.Current.AddOrReplace("ToggleAutoClick", SelectedKey, SelectedModifiers, OnHotkeyPressed);
+                
+                // Cập nhật text hiển thị
+                string modifiers = SelectedModifiers == ModifierKeys.None ? "" : SelectedModifiers.ToString().Replace(",", " +") + " + ";
+                HotkeyDisplayText = $"{modifiers}{SelectedKey}";
+                ButtonText = _autoClickService.IsRunning ? $"Dừng lại ({HotkeyDisplayText})" : $"Bắt đầu ({HotkeyDisplayText})";
             }
             catch { }
+        }
+
+        [RelayCommand]
+        public void StartListening()
+        {
+            if (_autoClickService.IsRunning) return;
+            IsListeningForHotkey = true;
+            StatusText = "Nhấn tổ hợp phím bất kỳ để gán (Trừ ESC)...";
+        }
+
+        public void ProcessCapturedKey(Key key, ModifierKeys modifiers)
+        {
+            if (!IsListeningForHotkey) return;
+
+            // Không cho phép phím ESC
+            if (key == Key.Escape)
+            {
+                IsListeningForHotkey = false;
+                StatusText = "Đã hủy đổi phím tắt.";
+                return;
+            }
+
+            // Bỏ qua nếu chỉ nhấn các phím bổ trợ đơn thuần (Ctrl, Alt, Shift, Win)
+            if (key == Key.LeftCtrl || key == Key.RightCtrl || 
+                key == Key.LeftAlt || key == Key.RightAlt || 
+                key == Key.LeftShift || key == Key.RightShift || 
+                key == Key.LWin || key == Key.RWin)
+            {
+                return;
+            }
+
+            SelectedKey = key;
+            SelectedModifiers = modifiers;
+            IsListeningForHotkey = false;
+            
+            UpdateHotkey();
+            StatusText = $"Đã đổi phím tắt thành: {HotkeyDisplayText}";
         }
 
         [RelayCommand]
@@ -91,7 +130,7 @@ namespace MyDeusTools.App.ViewModels
             {
                 _autoClickService.Stop();
                 StatusText = "Đã dừng";
-                ButtonText = $"Bắt đầu ({SelectedKey})";
+                ButtonText = $"Bắt đầu ({HotkeyDisplayText})";
             }
             else
             {
@@ -100,7 +139,7 @@ namespace MyDeusTools.App.ViewModels
                 int totalInterval = (Hours * 3600000) + (Minutes * 60000) + (Seconds * 1000) + Milliseconds;
                 _autoClickService.Start(totalInterval, SelectedMouseButton, SelectedClickType, RepeatCount);
                 StatusText = _autoClickService.RecordedPoints.Count > 0 ? "Đang chạy (Replay)..." : "Đang chạy...";
-                ButtonText = $"Dừng lại ({SelectedKey})";
+                ButtonText = $"Dừng lại ({HotkeyDisplayText})";
             }
         }
 

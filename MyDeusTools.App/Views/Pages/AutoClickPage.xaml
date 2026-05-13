@@ -44,9 +44,21 @@
                 <ui:Card Grid.Column="2" Margin="10,0,0,0">
                     <StackPanel>
                         <TextBlock Text="Phím tắt" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,0,8"/>
-                        <ComboBox ItemsSource="{Binding AvailableKeys}" 
-                                  SelectedItem="{Binding SelectedKey}" 
-                                  HorizontalAlignment="Stretch"/>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="{Binding HotkeyDisplayText}" 
+                                       VerticalAlignment="Center" 
+                                       FontWeight="SemiBold" 
+                                       FontSize="14"/>
+                            <ui:Button Grid.Column="1" 
+                                       Content="Đổi" 
+                                       Command="{Binding StartListeningCommand}"
+                                       Appearance="Secondary"
+                                       Padding="8,4"/>
+                        </Grid>
                     </StackPanel>
                 </ui:Card>
             </Grid>
