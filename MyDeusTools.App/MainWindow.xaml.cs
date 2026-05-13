@@ -15,7 +15,7 @@ public partial class MainWindow : FluentWindow
 
         InitializeComponent();
 
-        // Để hệ thống của Wpf.Ui tự động làm việc
+        // Cấu hình điều hướng: Gán NavigationView cho Service
         navigationService.SetNavigationControl(RootNavigation);
     }
 
@@ -23,9 +23,9 @@ public partial class MainWindow : FluentWindow
     {
         var currentTheme = Wpf.Ui.Appearance.ApplicationThemeManager.GetAppTheme();
         var isDark = currentTheme == Wpf.Ui.Appearance.ApplicationTheme.Dark;
-        
-        var newTheme = isDark 
-            ? Wpf.Ui.Appearance.ApplicationTheme.Light 
+
+        var newTheme = isDark
+            ? Wpf.Ui.Appearance.ApplicationTheme.Light
             : Wpf.Ui.Appearance.ApplicationTheme.Dark;
 
         Wpf.Ui.Appearance.ApplicationThemeManager.Apply(newTheme);

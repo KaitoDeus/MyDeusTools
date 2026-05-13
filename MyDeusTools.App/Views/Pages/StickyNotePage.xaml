@@ -4,9 +4,10 @@
       xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
       xmlns:models="clr-namespace:MyDeusTools.App.Services.Impl"
       Title="Sticky Note"
-      Foreground="{DynamicResource TextFillColorPrimaryBrush}">
+      Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+      Background="Transparent">
 
-    <Grid Margin="40">
+    <Grid Margin="40" Background="Transparent">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
@@ -26,7 +27,7 @@
                        Padding="15,8"/>
         </StackPanel>
 
-        <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+        <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" Background="Transparent">
             <ItemsControl ItemsSource="{Binding Notes}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>

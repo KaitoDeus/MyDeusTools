@@ -22,14 +22,11 @@ using System;
     public interface IAutoClickService
     {
         bool IsRunning { get; }
-        bool IsRecording { get; }
         int Interval { get; }
         List<MousePoint> RecordedPoints { get; }
         
         void Start(int intervalMs, MouseButton button = MouseButton.Left, ClickType clickType = ClickType.Single, int repeatCount = 0);
         void Stop();
         
-        void StartRecording();
-        void StopRecording();
         void ClearRecordedPoints();
     }

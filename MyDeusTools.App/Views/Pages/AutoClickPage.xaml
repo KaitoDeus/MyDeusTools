@@ -8,10 +8,12 @@
       mc:Ignorable="d" 
       d:DesignHeight="600" d:DesignWidth="800"
       Title="AutoClicker Pro"
-      Foreground="{DynamicResource TextFillColorPrimaryBrush}">
+      Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+      Background="Transparent">
 
-    <ScrollViewer VerticalScrollBarVisibility="Auto" VerticalAlignment="Stretch" Background="Transparent">
-        <StackPanel Margin="30,20,30,40" Background="Transparent">
+    <Grid Background="Transparent">
+        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Background="Transparent">
+            <StackPanel Margin="30,20,30,40" Background="Transparent">
             <TextBlock Text="AutoClicker Pro" 
                        FontSize="28" 
                        FontWeight="Bold"
@@ -153,5 +155,6 @@
                         IsOpen="True" 
                         IsClosable="False"/>
         </StackPanel>
-    </ScrollViewer>
+        </ScrollViewer>
+    </Grid>
 </Page>

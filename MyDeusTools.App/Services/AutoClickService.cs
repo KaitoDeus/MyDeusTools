@@ -30,7 +30,6 @@ namespace MyDeusTools.App.Services.Impl
         private const uint MOUSEEVENTF_MIDDLEUP = 0x40;
 
         private readonly DispatcherTimer _timer;
-        private readonly DispatcherTimer _recordTimer;
         private int _clickCount;
         private int _maxRepeat;
         private int _currentPointIndex = 0;
@@ -38,7 +37,6 @@ namespace MyDeusTools.App.Services.Impl
         private ClickType _type;
 
         public bool IsRunning { get; private set; }
-        public bool IsRecording { get; private set; }
         public int Interval { get; private set; }
         public List<MousePoint> RecordedPoints { get; } = new();
 
@@ -46,10 +44,6 @@ namespace MyDeusTools.App.Services.Impl
         {
             _timer = new DispatcherTimer();
             _timer.Tick += Timer_Tick;
-
-            _recordTimer = new DispatcherTimer();
-            _recordTimer.Interval = TimeSpan.FromMilliseconds(200); // Ghi tọa độ mỗi 200ms
-            _recordTimer.Tick += RecordTimer_Tick;
         }
 
         public void Start(int intervalMs, MouseButton button = MouseButton.Left, ClickType clickType = ClickType.Single, int repeatCount = 0)
@@ -74,36 +68,9 @@ namespace MyDeusTools.App.Services.Impl
             IsRunning = false;
         }
 
-        public void StartRecording()
-        {
-            if (IsRunning) return;
-            IsRecording = true;
-            _recordTimer.Start();
-        }
-
-        public void StopRecording()
-        {
-            IsRecording = false;
-            _recordTimer.Stop();
-        }
-
         public void ClearRecordedPoints()
         {
             RecordedPoints.Clear();
-        }
-
-        private void RecordTimer_Tick(object? sender, EventArgs e)
-        {
-            if (GetCursorPos(out POINT lpPoint))
-            {
-                // Chỉ thêm nếu tọa độ khác điểm cuối cùng để tránh trùng lặp
-                if (RecordedPoints.Count == 0 || 
-                    RecordedPoints[^1].X != lpPoint.X || 
-                    RecordedPoints[^1].Y != lpPoint.Y)
-                {
-                    RecordedPoints.Add(new MousePoint { X = lpPoint.X, Y = lpPoint.Y });
-                }
-            }
         }
 
         private void Timer_Tick(object? sender, EventArgs e)

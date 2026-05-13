@@ -29,7 +29,7 @@
             <ui:NavigationView x:Name="RootNavigation"
                                PaneDisplayMode="Left"
                                Background="Transparent"
-                               OpenPaneLength="240"
+                               OpenPaneLength="216"
                                IsBackButtonVisible="Collapsed">
                 <ui:NavigationView.MenuItems>
                     <ui:NavigationViewItem Content="Sticky Note" 

@@ -134,8 +134,6 @@ namespace MyDeusTools.App.ViewModels
             }
             else
             {
-                if (_autoClickService.IsRecording) return;
-
                 int totalInterval = (Hours * 3600000) + (Minutes * 60000) + (Seconds * 1000) + Milliseconds;
                 _autoClickService.Start(totalInterval, SelectedMouseButton, SelectedClickType, RepeatCount);
                 StatusText = _autoClickService.RecordedPoints.Count > 0 ? "Đang chạy (Replay)..." : "Đang chạy...";
@@ -148,19 +146,20 @@ namespace MyDeusTools.App.ViewModels
         {
             if (_autoClickService.IsRunning) return;
 
-            if (_autoClickService.IsRecording)
+            var overlay = new Views.Windows.RecordingOverlayWindow();
+            overlay.PointRecorded += (x, y) =>
             {
-                _autoClickService.StopRecording();
-                RecordButtonText = "Ghi tọa độ";
-                StatusText = "Đã ghi " + _autoClickService.RecordedPoints.Count + " điểm";
+                _autoClickService.RecordedPoints.Add(new MousePoint { X = x, Y = y });
                 RecordedPointsCount = _autoClickService.RecordedPoints.Count;
-            }
-            else
+                StatusText = $"Đã ghi điểm thứ {RecordedPointsCount} tại: {x}, {y}";
+            };
+            overlay.RecordingCanceled += () =>
             {
-                _autoClickService.StartRecording();
-                RecordButtonText = "Dừng ghi";
-                StatusText = "Đang ghi tọa độ chuột...";
-            }
+                StatusText = "Đã thoát chế độ ghi tọa độ.";
+            };
+
+            StatusText = "Đang chờ click để ghi tọa độ...";
+            overlay.ShowDialog(); // Hiển thị overlay ghi tọa độ
         }
 
         [RelayCommand]
