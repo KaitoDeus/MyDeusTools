@@ -29,18 +29,18 @@
 ### 3.2. Nhóm công cụ giai đoạn 1 (MVP Tools)
 
 1.  **AutoClicker Pro (Advanced Mouse Automation):**
-    *   **Click Configuration:**
-        - **Button Type:** Hỗ trợ Chuột Trái (Left), Phải (Right), và Giữa (Middle). [Hoàn thành]
-        - **Click Mode:** Tùy chọn Click đơn (Single) hoặc Click đúp (Double). [Hoàn thành]
-    *   **Sequence & Multiple Click:**
-        - **Interval Management:** Thiết lập khoảng trễ linh hoạt (Giờ, Phút, Giây, Mili giây). [Hoàn thành]
-        - **Recording Engine:** Khả năng ghi lại (Record) một chuỗi các tọa độ chuột thông qua Click trực tiếp và phát lại (Replay) theo trình tự. [Hoàn thành]
-    *   **Repeat & Termination Settings:**
-        - **Loop Mode:** Chạy vô hạn hoặc lặp lại theo số lần chỉ định.
-        - **Schedule Execution:** Tự động dừng sau một khoảng thời gian nhất định.
-    *   **Control & UX:**
-        - **Global Hotkeys:** Người dùng tự định nghĩa phím tắt để Bật/Tắt (Hỗ trợ phím tổ hợp). [Hoàn thành]
-        - **Visual Feedback:** Hiển thị tọa độ trực tiếp qua Overlay khi đang ghi và số lần đã click thực tế. [Hoàn thành]
+    - **Click Configuration:**
+      - **Button Type:** Hỗ trợ Chuột Trái (Left), Phải (Right), và Giữa (Middle). [Hoàn thành]
+      - **Click Mode:** Tùy chọn Click đơn (Single) hoặc Click đúp (Double). [Hoàn thành]
+    - **Sequence & Multiple Click:**
+      - **Interval Management:** Thiết lập khoảng trễ linh hoạt (Giờ, Phút, Giây, Mili giây). [Hoàn thành]
+      - **Recording Engine:** Khả năng ghi lại (Record) một chuỗi các tọa độ chuột thông qua Click trực tiếp và phát lại (Replay) theo trình tự. [Hoàn thành]
+    - **Repeat & Termination Settings:**
+      - **Loop Mode:** Chạy vô hạn hoặc lặp lại theo số lần chỉ định.
+      - **Schedule Execution:** Tự động dừng sau một khoảng thời gian nhất định.
+    - **Control & UX:**
+      - **Global Hotkeys:** Người dùng tự định nghĩa phím tắt để Bật/Tắt (Hỗ trợ phím tổ hợp). [Hoàn thành]
+      - **Visual Feedback:** Hiển thị tọa độ trực tiếp qua Overlay khi đang ghi và số lần đã click thực tế. [Hoàn thành]
 
 2.  **Schedule Shutdown (Hẹn giờ hệ thống):**
     - Hỗ trợ: Tắt máy (Shutdown), Khởi động lại (Restart), Ngủ đông (Hibernate).
@@ -49,6 +49,20 @@
     - Hỗ trợ định dạng văn bản cơ bản. [Hoàn thành]
     - Tính năng "Always on top" để ghim ghi chú lên màn hình. [Hoàn thành]
     - Tự động lưu (Auto-save) dữ liệu ngay khi nhập. [Hoàn thành]
+
+4. **Alarm Clock (Đồng hồ báo thức):**
+    - **Alarms:** Thiết lập và quản lý nhiều mốc báo thức với âm báo tùy chỉnh.
+    - **Timer:** Đồng hồ đếm ngược linh hoạt (Bắt đầu, Tạm dừng, Reset).
+    - **Stopwatch:** Bấm giờ chính xác, hỗ trợ ghi lại số vòng (Lap recording).
+    - **World Clock:** Hiển thị giờ hiện tại tại các múi giờ khác nhau trên thế giới.
+
+5. **Screen Recorder (Quay màn hình):**
+    - **Capture Options:** Quay toàn màn hình, cửa sổ ứng dụng hoặc khu vực chỉ định.
+    - **Audio Sources:** Thu âm từ hệ thống (System Sound), Micro hoặc cả hai.
+    - **Overlay & Effects:** Chèn Webcam overlay, hiển thị con trỏ chuột và hiệu ứng click.
+    - **Drawing Tools:** Công cụ vẽ và chú thích trực tiếp lên màn hình trong khi quay.
+    - **Quality Settings:** Tùy chỉnh độ phân giải, khung hình (FPS) và định dạng đầu ra.
+
 
 ### 3.3. Tính năng hệ thống (System Features)
 
