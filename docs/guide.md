@@ -142,9 +142,62 @@ Thiết kế các điều khiển nhập liệu và hiển thị trạng thái m
 
 ---
 
-## Bước 9: Tối ưu & Đóng gói
+## Bước 9: Tích hợp System Tray (Khay hệ thống)
 
-Cấu hình dự án để khi xuất bản, người dùng chỉ nhận được một file duy nhất (.exe), giúp việc cài đặt và sử dụng trở nên cực kỳ đơn giản.
+Tính năng này giúp ứng dụng chạy ngầm và người dùng có thể truy cập nhanh từ góc phải màn hình.
+
+1. **Cài đặt thư viện:**
+   Mở terminal và chạy lệnh:
+   `dotnet add package Hardcodet.NotifyIcon.Wpf`
+
+2. **Khởi tạo TaskbarIcon trong C#:**
+   Viết code khởi tạo trong `MainWindow.xaml.cs`:
+   ```csharp
+   using Hardcodet.Wpf.TaskbarNotification;
+   
+   private TaskbarIcon? _notifyIcon;
+
+   private void InitializeTray()
+   {
+       _notifyIcon = new TaskbarIcon
+       {
+           ToolTipText = "MyDeusTools is running",
+           IconSource = new BitmapImage(new Uri("pack://application:,,,/Resources/avatar.ico")),
+           ContextMenu = new ContextMenu()
+       };
+
+       var openItem = new MenuItem { Header = "Mở ứng dụng" };
+       openItem.Click += OnShowMainWindow;
+       var exitItem = new MenuItem { Header = "Thoát" };
+       exitItem.Click += OnExitApp;
+
+       _notifyIcon.ContextMenu.Items.Add(openItem);
+       _notifyIcon.ContextMenu.Items.Add(new Separator());
+       _notifyIcon.ContextMenu.Items.Add(exitItem);
+
+       _notifyIcon.TrayLeftMouseUp += (s, e) => ShowWindow();
+   }
+   ```
+
+3. **Xử lý sự kiện Close:**
+   Ghi đè sự kiện `Closing` để ẩn cửa sổ thay vì tắt ứng dụng hoàn toàn. Sử dụng một biến cờ `_isExitAllowed` để thực sự thoát khi chọn từ menu Tray.
+
+---
+
+## Bước 10: Tối ưu & Đóng gói (Single File Publish)
+
+Để người dùng chỉ cần nhận một file `.exe` duy nhất mà không cần cài đặt rườm rà:
+
+1. **Cấu hình .csproj:**
+   Thêm các thuộc tính sau vào `PropertyGroup`:
+   - `<PublishSingleFile>true</PublishSingleFile>`: Gộp toàn bộ DLL vào một file EXE.
+   - `<SelfContained>true</SelfContained>`: Đóng gói kèm theo .NET Runtime (không cần cài .NET máy khách).
+   - `<RuntimeIdentifier>win-x64</RuntimeIdentifier>`: Chỉ định kiến trúc hệ điều hành.
+   - `<PublishReadyToRun>true</PublishReadyToRun>`: Tối ưu thời gian khởi động.
+
+2. **Lệnh xuất bản:**
+   Sử dụng lệnh sau trong terminal:
+   `dotnet publish -c Release`
 
 ---
 

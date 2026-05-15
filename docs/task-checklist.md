@@ -41,8 +41,22 @@ Dưới đây là danh sách các bước triển khai dự án theo `guide.md`.
   - [x] `StickyNoteService.cs`
   - [x] `StickyNoteViewModel.cs`
   - [x] `StickyNotePage.xaml`
+- [ ] Bước 13: Hoàn thiện **AutoClicker Pro**
+  - [ ] Repeat Settings: Loop Mode (Chạy vô hạn hoặc lặp lại theo số lần)
+  - [ ] Schedule Execution (Tự động dừng sau một khoảng thời gian)
+- [ ] Bước 14: Module **Alarm Clock** (Đồng hồ báo thức)
+  - [ ] Alarms: Quản lý nhiều mốc báo thức & âm báo
+  - [ ] Timer: Đồng hồ đếm ngược
+  - [ ] Stopwatch: Bấm giờ và ghi nhận Lap (Lap recording)
+  - [ ] World Clock: Giờ thế giới
+- [ ] Bước 15: Module **Screen Recorder** (Quay màn hình)
+  - [ ] Capture Engine: Quay toàn màn hình, cửa sổ, khu vực
+  - [ ] Audio Engine: Thu âm hệ thống & Micro
+  - [ ] Overlay & Drawing: Tích hợp hiệu ứng chuột, vẽ trực tiếp
+  - [ ] Quality Settings: Tùy chỉnh FPS, độ phân giải, định dạng
 
 ## 5. Hoàn thiện & Đóng gói
 
-- [ ] Bước 11: Tích hợp System Tray (Khay hệ thống)
-- [ ] Bước 12: Đóng gói ứng dụng (Single File Publish)
+- [x] Bước 11: Tích hợp System Tray (Khay hệ thống)
+- [x] Bước 12: Đóng gói ứng dụng (Single File Publish)
+- [ ] Bước 16: Tích hợp hệ thống: Khởi động cùng Windows (Auto-start)
