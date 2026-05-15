@@ -129,8 +129,10 @@ private void OnHotkeyPressed(object sender, HotkeyEventArgs e)
 
 #### D. Giao diện (User Interface)
 Thiết kế các điều khiển nhập liệu và hiển thị trạng thái một cách trực quan.
-- Sử dụng `ui:NumberBox` cho Interval.
+- Sử dụng `ui:NumberBox` cho Interval, dàn hàng ngang (Horizontal Layout) bằng Grid để tối ưu không gian.
+- Thay thế `TabControl` bằng `RadioButton` được styled thành `ToggleButton` để chuyển đổi giữa các Form, giúp khắc phục lỗi Resource resolution của Designer.
 - Sử dụng `ui:Button` với màu sắc thay đổi theo trạng thái `IsRunning`.
+- Cấu hình Window với `ResizeMode="NoResize"` và `ShowMaximize="False"` để khóa cứng trải nghiệm người dùng.
 
 ### 3. Module: Sticky Note (Ghi chú nhanh)
 Đây là module giúp bạn luyện tập về quản lý dữ liệu và cửa sổ.

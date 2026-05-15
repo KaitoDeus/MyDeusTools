@@ -35,6 +35,8 @@ Dưới đây là danh sách các bước triển khai dự án theo `guide.md`.
   - [x] Hệ thống gán phím tắt động (Dynamic Key Capturing & Modifiers)
   - [x] Khắc phục lỗi Layout & Hit-testing (Scrolling fix cho toàn bộ App)
   - [x] Tối ưu Sidebar width và giao diện Fluent chuyên nghiệp
+  - [x] Redesign AutoClicker: Button-based navigation, horizontal interval layout
+  - [x] Window Security: Hard-locked resolution (1280x720) and disabled resizing/maximization
 - [x] Bước 10: Module **Sticky Note**
   - [x] `StickyNoteService.cs`
   - [x] `StickyNoteViewModel.cs`

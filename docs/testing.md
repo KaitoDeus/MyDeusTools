@@ -52,6 +52,11 @@ Tài liệu này xác định các cấp độ kiểm thử và các kịch bả
 - **TC-03.1:** Hẹn giờ tắt máy sau 1 phút. Kiểm tra xem Windows có hiện thông báo "You are about to be signed out" không.
 - **TC-03.2:** Nhấn nút "Hủy lệnh", thông báo của Windows phải biến mất.
 
+### Nhóm TC 04: UI & Window Management
+- **TC-04.1:** Kiểm tra chuyển Form bằng Button: Click "Khoảng cách & Lặp lại", giao diện phải đổi sang form cấu hình thời gian nghỉ ngay lập tức.
+- **TC-04.2:** Kiểm tra khóa độ phân giải: Thử kéo mép cửa sổ hoặc double-click thanh tiêu đề, cửa sổ không được phép thay đổi kích thước.
+- **TC-04.3:** Kiểm tra ẩn nút Maximize: Thanh tiêu đề chỉ được hiển thị nút Minimize và Close.
+
 ---
 
 ## 5. Checklist sau kiểm thử (Exit Criteria)
@@ -63,9 +68,9 @@ Tài liệu này xác định các cấp độ kiểm thử và các kịch bả
 ---
 
 ## 6. Nhật ký kết quả (Test Logs)
-*Ngày cập nhật: 12/05/2026*
+*Ngày cập nhật: 15/05/2026*
 
-- **Tổng số bài test:** 17
-- **Vượt qua (Passed):** 17
+- **Tổng số bài test:** 20 (Thêm 3 test UI & Window)
+- **Vượt qua (Passed):** 20
 - **Thất bại (Failed):** 0
-- **Trạng thái hệ thống:** Ổn định, hạ tầng DI và logic nghiệp vụ cơ bản đã được bảo vệ bởi bộ test tự động.
+- **Trạng thái hệ thống:** Ổn định. Giao diện AutoClicker đã được đại tu, cửa sổ được bảo mật kích thước, các chức năng core vẫn hoạt động chính xác.

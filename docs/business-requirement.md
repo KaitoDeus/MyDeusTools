@@ -41,6 +41,10 @@
     - **Control & UX:**
       - **Global Hotkeys:** Người dùng tự định nghĩa phím tắt để Bật/Tắt (Hỗ trợ phím tổ hợp). [Hoàn thành]
       - **Visual Feedback:** Hiển thị tọa độ trực tiếp qua Overlay khi đang ghi và số lần đã click thực tế. [Hoàn thành]
+      - **Modernized UI:** Giao diện dạng form chuyển đổi bằng nút bấm (Button-based navigation), bố cục tối giản, dàn hàng ngang cho các thiết lập thời gian để tối ưu không gian. [Hoàn thành]
+    - **Window Management:**
+      - **Fixed Resolution:** Cửa sổ ứng dụng được khóa ở độ phân giải 1280x720. [Hoàn thành]
+      - **Lock Resize:** Vô hiệu hóa tính năng thay đổi kích thước và phóng to (Maximize) để đảm bảo tính ổn định của layout. [Hoàn thành]
 
 2.  **Schedule Shutdown (Hẹn giờ hệ thống):**
     - Hỗ trợ: Tắt máy (Shutdown), Khởi động lại (Restart), Ngủ đông (Hibernate).
