@@ -11,101 +11,139 @@
       Foreground="{DynamicResource TextFillColorPrimaryBrush}"
       Background="Transparent">
 
-    <Grid Background="Transparent">
-        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Background="Transparent">
-            <StackPanel Margin="30,20,30,40" Background="Transparent">
-            <TextBlock Text="AutoClicker Pro" 
-                       FontSize="28" 
-                       FontWeight="Bold"
-                       Margin="0,0,0,20"/>
+    <Grid Margin="30,20,30,20" Background="Transparent">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
-            <!-- Section 1: Click Options -->
-            <TextBlock Text="Cấu hình Click" FontWeight="SemiBold" FontSize="16" Margin="0,10,0,10"/>
-            <Grid Margin="0,0,0,20">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                <ui:Card Grid.Column="0" Margin="0,0,10,0">
-                    <StackPanel>
-                        <TextBlock Text="Phím chuột" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,0,8"/>
-                        <ComboBox ItemsSource="{Binding MouseButtons}" 
-                                  SelectedItem="{Binding SelectedMouseButton}" 
-                                  HorizontalAlignment="Stretch"/>
-                    </StackPanel>
-                </ui:Card>
-                <ui:Card Grid.Column="1" Margin="10,0,10,0">
-                    <StackPanel>
-                        <TextBlock Text="Kiểu click" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,0,8"/>
-                        <ComboBox ItemsSource="{Binding ClickTypes}" 
-                                  SelectedItem="{Binding SelectedClickType}" 
-                                  HorizontalAlignment="Stretch"/>
-                    </StackPanel>
-                </ui:Card>
-                <ui:Card Grid.Column="2" Margin="10,0,0,0">
-                    <StackPanel>
-                        <TextBlock Text="Phím tắt" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,0,8"/>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Text="{Binding HotkeyDisplayText}" 
-                                       VerticalAlignment="Center" 
-                                       FontWeight="SemiBold" 
-                                       FontSize="14"/>
-                            <ui:Button Grid.Column="1" 
-                                       Content="Đổi" 
-                                       Command="{Binding StartListeningCommand}"
-                                       Appearance="Secondary"
-                                       Padding="8,4"/>
-                        </Grid>
-                    </StackPanel>
-                </ui:Card>
-            </Grid>
+        <TextBlock Grid.Row="0" Text="AutoClicker Pro" FontSize="28" FontWeight="Bold" Margin="0,0,0,20"/>
 
-            <!-- Section 2: Click Interval -->
-            <TextBlock Text="Khoảng cách Click" FontWeight="SemiBold" FontSize="16" Margin="0,10,0,10"/>
-            <ui:Card Margin="0,0,0,20">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    <StackPanel Grid.Column="0" Margin="5">
-                        <TextBlock Text="Giờ" HorizontalAlignment="Center" FontSize="12" Margin="0,0,0,5"/>
-                        <ui:NumberBox Value="{Binding Hours}" Minimum="0" Maximum="23"/>
-                    </StackPanel>
-                    <StackPanel Grid.Column="1" Margin="5">
-                        <TextBlock Text="Phút" HorizontalAlignment="Center" FontSize="12" Margin="0,0,0,5"/>
-                        <ui:NumberBox Value="{Binding Minutes}" Minimum="0" Maximum="59"/>
-                    </StackPanel>
-                    <StackPanel Grid.Column="2" Margin="5">
-                        <TextBlock Text="Giây" HorizontalAlignment="Center" FontSize="12" Margin="0,0,0,5"/>
-                        <ui:NumberBox Value="{Binding Seconds}" Minimum="0" Maximum="59"/>
-                    </StackPanel>
-                    <StackPanel Grid.Column="3" Margin="5">
-                        <TextBlock Text="Ms" HorizontalAlignment="Center" FontSize="12" Margin="0,0,0,5"/>
-                        <ui:NumberBox Value="{Binding Milliseconds}" Minimum="10" Maximum="999"/>
-                    </StackPanel>
-                </Grid>
+        <!-- Navigation Buttons -->
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,20">
+            <RadioButton x:Name="BtnForm1" Content="Cấu hình cơ bản" Style="{StaticResource {x:Type ToggleButton}}" IsChecked="True" Margin="0,0,10,0" Padding="20,8"/>
+            <RadioButton x:Name="BtnForm2" Content="Khoảng cách &amp; Lặp lại" Style="{StaticResource {x:Type ToggleButton}}" Margin="0,0,10,0" Padding="20,8"/>
+            <RadioButton x:Name="BtnForm3" Content="Ghi tọa độ" Style="{StaticResource {x:Type ToggleButton}}" Padding="20,8"/>
+        </StackPanel>
+
+        <!-- Form 1: Cấu hình cơ bản -->
+        <StackPanel Grid.Row="2">
+            <StackPanel.Style>
+                <Style TargetType="StackPanel">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsChecked, ElementName=BtnForm1}" Value="True">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </StackPanel.Style>
+            <ui:Card Margin="0,0,0,10">
+                <StackPanel>
+                    <TextBlock Text="Phím chuột" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,0,8"/>
+                    <ComboBox ItemsSource="{Binding MouseButtons}" 
+                              SelectedItem="{Binding SelectedMouseButton}" 
+                              HorizontalAlignment="Stretch"/>
+                </StackPanel>
+            </ui:Card>
+            <ui:Card Margin="0,0,0,10">
+                <StackPanel>
+                    <TextBlock Text="Kiểu click" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,0,8"/>
+                    <ComboBox ItemsSource="{Binding ClickTypes}" 
+                              SelectedItem="{Binding SelectedClickType}" 
+                              HorizontalAlignment="Stretch"/>
+                </StackPanel>
+            </ui:Card>
+            <ui:Card Margin="0,0,0,10">
+                <StackPanel>
+                    <TextBlock Text="Phím tắt" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,0,8"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="{Binding HotkeyDisplayText}" 
+                                   VerticalAlignment="Center" 
+                                   FontWeight="SemiBold" 
+                                   FontSize="14"/>
+                        <ui:Button Grid.Column="1" 
+                                   Content="Đổi phím tắt" 
+                                   Command="{Binding StartListeningCommand}"
+                                   Appearance="Secondary"
+                                   Padding="16,4"/>
+                    </Grid>
+                </StackPanel>
+            </ui:Card>
+        </StackPanel>
+
+        <!-- Form 2: Thời gian & Lặp lại -->
+        <StackPanel Grid.Row="2">
+            <StackPanel.Style>
+                <Style TargetType="StackPanel">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsChecked, ElementName=BtnForm2}" Value="True">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </StackPanel.Style>
+            <ui:Card Margin="0,0,0,10">
+                <StackPanel>
+                    <TextBlock Text="Thời gian nghỉ giữa các lần Click" FontWeight="SemiBold" Margin="0,0,0,15"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        
+                        <TextBlock Grid.Column="0" Text="Giờ" Foreground="{DynamicResource TextFillColorSecondaryBrush}" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                        <ui:NumberBox Grid.Column="1" Value="{Binding Hours}" Minimum="0" Maximum="23" Margin="0,0,20,0"/>
+                        
+                        <TextBlock Grid.Column="2" Text="Phút" Foreground="{DynamicResource TextFillColorSecondaryBrush}" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                        <ui:NumberBox Grid.Column="3" Value="{Binding Minutes}" Minimum="0" Maximum="59" Margin="0,0,20,0"/>
+                        
+                        <TextBlock Grid.Column="4" Text="Giây" Foreground="{DynamicResource TextFillColorSecondaryBrush}" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                        <ui:NumberBox Grid.Column="5" Value="{Binding Seconds}" Minimum="0" Maximum="59" Margin="0,0,20,0"/>
+                        
+                        <TextBlock Grid.Column="6" Text="Ms" Foreground="{DynamicResource TextFillColorSecondaryBrush}" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                        <ui:NumberBox Grid.Column="7" Value="{Binding Milliseconds}" Minimum="10" Maximum="999"/>
+                    </Grid>
+                </StackPanel>
             </ui:Card>
 
-            <!-- Section 3: Repeat Settings -->
-            <TextBlock Text="Số lần lặp lại" FontWeight="SemiBold" FontSize="16" Margin="0,10,0,10"/>
-            <ui:Card Margin="0,0,0,20">
+            <ui:Card Margin="0,0,0,10">
                 <StackPanel>
+                    <TextBlock Text="Số lần lặp lại" FontWeight="SemiBold" Margin="0,0,0,10"/>
                     <TextBlock Text="Nhập 0 để lặp lại vô hạn" Foreground="{DynamicResource TextFillColorSecondaryBrush}" FontSize="12" Margin="0,0,0,8"/>
                     <ui:NumberBox Value="{Binding RepeatCount}" Minimum="0" PlaceholderText="Ví dụ: 100"/>
                 </StackPanel>
             </ui:Card>
+        </StackPanel>
 
-            <!-- Section 4: Recording Engine -->
-            <TextBlock Text="Ghi tọa độ (Recording Engine)" FontWeight="SemiBold" FontSize="16" Margin="0,10,0,10"/>
-            <ui:Card Margin="0,0,0,20">
+        <!-- Form 3: Ghi tọa độ -->
+        <StackPanel Grid.Row="2">
+            <StackPanel.Style>
+                <Style TargetType="StackPanel">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsChecked, ElementName=BtnForm3}" Value="True">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </StackPanel.Style>
+            <ui:Card Margin="0,0,0,10">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
@@ -128,33 +166,32 @@
                                Icon="{ui:SymbolIcon Delete24}"/>
                 </Grid>
             </ui:Card>
-
-            <!-- Footer: Control & Hotkey -->
-            <ui:Card Background="{DynamicResource ControlFillColorDefaultBrush}" Margin="0,0,0,20">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
-                    <StackPanel VerticalAlignment="Center">
-                        <TextBlock Text="Trạng thái" FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
-                        <TextBlock Text="{Binding StatusText}" FontSize="18" FontWeight="SemiBold"/>
-                    </StackPanel>
-                    <ui:Button Grid.Column="1" 
-                               Content="{Binding ButtonText}" 
-                               Command="{Binding ToggleClickCommand}"
-                               Appearance="Primary"
-                               FontSize="16"
-                               Padding="30,10"/>
-                </Grid>
-            </ui:Card>
-
-            <ui:InfoBar Title="Mẹo" 
-                        Message="Bạn có thể nhấn phím F6 bất cứ lúc nào để Bật/Tắt clicker." 
-                        Severity="Informational" 
-                        IsOpen="True" 
-                        IsClosable="False"/>
         </StackPanel>
-        </ScrollViewer>
+
+        <!-- Footer: Control -->
+        <ui:Card Grid.Row="3" Background="{DynamicResource ControlFillColorDefaultBrush}" Margin="0,20,0,20">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <StackPanel VerticalAlignment="Center">
+                    <TextBlock Text="Trạng thái" FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                    <TextBlock Text="{Binding StatusText}" FontSize="18" FontWeight="SemiBold"/>
+                </StackPanel>
+                <ui:Button Grid.Column="1" 
+                           Content="{Binding ButtonText}" 
+                           Command="{Binding ToggleClickCommand}"
+                           Appearance="Primary"
+                           FontSize="16"
+                           Padding="30,10"/>
+            </Grid>
+        </ui:Card>
+
+        <ui:InfoBar Grid.Row="4" Title="Mẹo" 
+                    Message="Bạn có thể nhấn phím tắt bất cứ lúc nào để Bật/Tắt clicker." 
+                    Severity="Informational" 
+                    IsOpen="True" 
+                    IsClosable="False"/>
     </Grid>
 </Page>

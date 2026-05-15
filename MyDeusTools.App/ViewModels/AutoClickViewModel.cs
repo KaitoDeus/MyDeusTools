@@ -70,14 +70,14 @@ namespace MyDeusTools.App.ViewModels
 
         private void UpdateHotkey()
         {
-            try 
+            try
             {
                 // Xóa hotkey cũ nếu có
                 HotkeyManager.Current.Remove("ToggleAutoClick");
-                
+
                 // Đăng ký hotkey mới với cả Modifier và Key
                 HotkeyManager.Current.AddOrReplace("ToggleAutoClick", SelectedKey, SelectedModifiers, OnHotkeyPressed);
-                
+
                 // Cập nhật text hiển thị
                 string modifiers = SelectedModifiers == ModifierKeys.None ? "" : SelectedModifiers.ToString().Replace(",", " +") + " + ";
                 HotkeyDisplayText = $"{modifiers}{SelectedKey}";
@@ -107,9 +107,9 @@ namespace MyDeusTools.App.ViewModels
             }
 
             // Bỏ qua nếu chỉ nhấn các phím bổ trợ đơn thuần (Ctrl, Alt, Shift, Win)
-            if (key == Key.LeftCtrl || key == Key.RightCtrl || 
-                key == Key.LeftAlt || key == Key.RightAlt || 
-                key == Key.LeftShift || key == Key.RightShift || 
+            if (key == Key.LeftCtrl || key == Key.RightCtrl ||
+                key == Key.LeftAlt || key == Key.RightAlt ||
+                key == Key.LeftShift || key == Key.RightShift ||
                 key == Key.LWin || key == Key.RWin)
             {
                 return;
@@ -118,7 +118,7 @@ namespace MyDeusTools.App.ViewModels
             SelectedKey = key;
             SelectedModifiers = modifiers;
             IsListeningForHotkey = false;
-            
+
             UpdateHotkey();
             StatusText = $"Đã đổi phím tắt thành: {HotkeyDisplayText}";
         }

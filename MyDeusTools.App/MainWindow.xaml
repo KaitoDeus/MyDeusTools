@@ -8,6 +8,9 @@
         xmlns:pages="clr-namespace:MyDeusTools.App.Views.Pages"
         mc:Ignorable="d"
         Title="MyDeusTools" Width="1280" Height="720" 
+        MinWidth="1280" MaxWidth="1280"
+        MinHeight="720" MaxHeight="720"
+        ResizeMode="NoResize"
         Icon="/Resources/avatar.ico"
         ExtendsContentIntoTitleBar="True"
         WindowCornerPreference="Round"
@@ -23,6 +26,7 @@
         <!-- Thanh tiêu đề -->
         <ui:TitleBar Grid.Row="0"
                      Title="MyDeusTools"
+                     ShowMaximize="False"
                      Icon="/Resources/avatar.ico"/>
 
         <Grid Grid.Row="1">

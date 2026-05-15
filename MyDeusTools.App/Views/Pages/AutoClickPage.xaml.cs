@@ -15,16 +15,16 @@ namespace MyDeusTools.App.Views.Pages
             InitializeComponent();
 
             // Thêm sự kiện bắt phím khi Page được focus
-            this.PreviewKeyDown += (s, e) => 
+            this.PreviewKeyDown += (s, e) =>
             {
                 if (ViewModel.IsListeningForHotkey)
                 {
                     // Chặn phím không cho truyền tiếp (ví dụ chặn Alt mở menu)
                     e.Handled = true;
-                    
+
                     // Lấy các phím chức năng đang nhấn
                     var modifiers = System.Windows.Input.Keyboard.Modifiers;
-                    
+
                     // Gọi ViewModel xử lý
                     ViewModel.ProcessCapturedKey(e.Key == System.Windows.Input.Key.System ? e.SystemKey : e.Key, modifiers);
                 }
