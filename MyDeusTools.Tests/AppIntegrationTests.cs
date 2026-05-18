@@ -17,6 +17,7 @@ namespace MyDeusTools.Tests
         [InlineData(typeof(IAutoClickService))]
         [InlineData(typeof(ISystemService))]
         [InlineData(typeof(IStickyNoteService))]
+        [InlineData(typeof(IAutoStartService))]
         [InlineData(typeof(MainWindowViewModel))]
         [InlineData(typeof(AutoClickViewModel))]
         [InlineData(typeof(ShutdownViewModel))]
