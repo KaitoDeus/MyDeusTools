@@ -201,6 +201,120 @@ Tính năng này giúp ứng dụng chạy ngầm và người dùng có thể t
 
 ---
 
+## Bước 11: Tích hợp hệ thống: Khởi động cùng Windows (Auto-start)
+
+Tính năng này giúp ứng dụng tự động chạy cùng hệ thống Windows khi người dùng đăng nhập, nâng cao trải nghiệm "tiện ích luôn sẵn sàng".
+
+1. **Tư duy kỹ thuật (Windows Registry):**
+   Chúng ta sử dụng Windows Registry ở đường dẫn `HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run` để lưu đường dẫn thực thi của ứng dụng. Khi khởi động, Windows sẽ tự quét qua các giá trị trong khóa này và khởi chạy ứng dụng tương ứng.
+
+2. **Xây dựng AutoStart Service:**
+   Định nghĩa Interface và Class thực thi để tương tác an toàn với Windows Registry (sử dụng thư viện `Microsoft.Win32` có sẵn):
+   ```csharp
+   using Microsoft.Win32;
+
+   public interface IAutoStartService
+   {
+       bool IsEnabled();
+       void SetEnabled(bool enable);
+   }
+
+   public class AutoStartService : IAutoStartService
+   {
+       private const string RegistryKeyName = "MyDeusTools";
+
+       public bool IsEnabled()
+       {
+           try
+           {
+               using var key = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Run", false);
+               if (key != null)
+               {
+                   object? value = key.GetValue(RegistryKeyName);
+                   if (value != null)
+                   {
+                       string path = value.ToString() ?? "";
+                       string currentPath = Environment.ProcessPath ?? "";
+                       return string.Equals(path.Trim('"'), currentPath.Trim('"'), StringComparison.OrdinalIgnoreCase);
+                   }
+               }
+           }
+           catch { }
+           return false;
+       }
+
+       public void SetEnabled(bool enable)
+       {
+           try
+           {
+               using var key = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Run", true);
+               if (key != null)
+               {
+                   if (enable)
+                   {
+                       string currentPath = Environment.ProcessPath ?? "";
+                       if (!string.IsNullOrEmpty(currentPath))
+                       {
+                           key.SetValue(RegistryKeyName, $"\"{currentPath}\"");
+                       }
+                   }
+                   else
+                   {
+                       key.DeleteValue(RegistryKeyName, false);
+                   }
+               }
+           }
+           catch { }
+       }
+   }
+   ```
+
+3. **Đăng ký Dependency Injection:**
+   Thêm dòng đăng ký vào `ConfigureServices()` trong `App.xaml.cs`:
+   ```csharp
+   services.AddSingleton<IAutoStartService, AutoStartService>();
+   ```
+
+4. **Tích hợp vào Giao diện (MainWindow):**
+   * Trong `MainWindow.xaml`, thêm một `NavigationViewItem` vào thẻ `<ui:NavigationView.FooterMenuItems>`:
+     ```xml
+     <ui:NavigationViewItem x:Name="AutoStartMenuItem"
+                            Content="Khởi động cùng Win: OFF" 
+                            Click="OnAutoStartClick">
+         <ui:NavigationViewItem.Icon>
+             <ui:SymbolIcon x:Name="AutoStartIcon" Symbol="CheckboxUnchecked24" />
+         </ui:NavigationViewItem.Icon>
+     </ui:NavigationViewItem>
+     ```
+   * Trong `MainWindow.xaml.cs`, inject service, thực hiện cập nhật giao diện khi khởi chạy và xử lý sự kiện click:
+     ```csharp
+     private readonly IAutoStartService _autoStartService;
+
+     // Constructor
+     public MainWindow(..., IAutoStartService autoStartService)
+     {
+         _autoStartService = autoStartService;
+         ...
+         UpdateAutoStartUI();
+     }
+
+     private void OnAutoStartClick(object sender, RoutedEventArgs e)
+     {
+         bool currentStatus = _autoStartService.IsEnabled();
+         _autoStartService.SetEnabled(!currentStatus);
+         UpdateAutoStartUI();
+     }
+
+     private void UpdateAutoStartUI()
+     {
+         bool isEnabled = _autoStartService.IsEnabled();
+         AutoStartMenuItem.Content = isEnabled ? "Khởi động cùng Win: ON" : "Khởi động cùng Win: OFF";
+         AutoStartIcon.Symbol = isEnabled ? SymbolRegular.CheckboxChecked24 : SymbolRegular.CheckboxUnchecked24;
+     }
+     ```
+
+---
+
 ### Lời khuyên từ cố vấn:
 
 > "Đừng cố làm tất cả các công cụ cùng một lúc. Hãy hoàn thiện bộ khung thật chỉn chu, sau đó việc thêm các module mới sẽ cực kỳ nhanh chóng và an toàn."

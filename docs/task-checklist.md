@@ -59,4 +59,4 @@ Dưới đây là danh sách các bước triển khai dự án theo `guide.md`.
 
 - [x] Bước 11: Tích hợp System Tray (Khay hệ thống)
 - [x] Bước 12: Đóng gói ứng dụng (Single File Publish)
-- [ ] Bước 16: Tích hợp hệ thống: Khởi động cùng Windows (Auto-start)
+- [x] Bước 16: Tích hợp hệ thống: Khởi động cùng Windows (Auto-start)
