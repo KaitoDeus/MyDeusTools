@@ -2,18 +2,21 @@ using System;
 using System.Windows;
 using Wpf.Ui.Controls;
 using Hardcodet.Wpf.TaskbarNotification;
+using MyDeusTools.App.Services.Impl;
 
 namespace MyDeusTools.App;
 
 public partial class MainWindow : FluentWindow
 {
     public ViewModels.MainWindowViewModel ViewModel { get; }
+    private readonly IAutoStartService _autoStartService;
     private TaskbarIcon? _notifyIcon;
     private bool _isExitAllowed = false;
 
-    public MainWindow(ViewModels.MainWindowViewModel viewModel, Wpf.Ui.INavigationService navigationService)
+    public MainWindow(ViewModels.MainWindowViewModel viewModel, Wpf.Ui.INavigationService navigationService, IAutoStartService autoStartService)
     {
         ViewModel = viewModel;
+        _autoStartService = autoStartService;
         DataContext = this;
 
         InitializeComponent();
@@ -24,6 +27,9 @@ public partial class MainWindow : FluentWindow
         // Cấu hình Tray
         InitializeTray();
         Closing += MainWindow_Closing;
+
+        // Khởi tạo trạng thái khởi động cùng Windows
+        UpdateAutoStartUI();
     }
 
     private void InitializeTray()
@@ -82,5 +88,19 @@ public partial class MainWindow : FluentWindow
             : Wpf.Ui.Appearance.ApplicationTheme.Dark;
 
         Wpf.Ui.Appearance.ApplicationThemeManager.Apply(newTheme);
+    }
+
+    private void OnAutoStartClick(object sender, RoutedEventArgs e)
+    {
+        bool currentStatus = _autoStartService.IsEnabled();
+        _autoStartService.SetEnabled(!currentStatus);
+        UpdateAutoStartUI();
+    }
+
+    private void UpdateAutoStartUI()
+    {
+        bool isEnabled = _autoStartService.IsEnabled();
+        AutoStartMenuItem.Content = isEnabled ? "Khởi động cùng Win: ON" : "Khởi động cùng Win: OFF";
+        AutoStartIcon.Symbol = isEnabled ? SymbolRegular.CheckboxChecked24 : SymbolRegular.CheckboxUnchecked24;
     }
 }

@@ -38,6 +38,7 @@ public partial class App : Application
         services.AddSingleton<IAutoClickService, AutoClickService>();
         services.AddSingleton<ISystemService, SystemService>();
         services.AddSingleton<IStickyNoteService, StickyNoteService>();
+        services.AddSingleton<IAutoStartService, AutoStartService>();
 
         // 2. Register ViewModels
         services.AddTransient<MainWindowViewModel>();

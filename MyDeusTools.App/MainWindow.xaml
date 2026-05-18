@@ -60,6 +60,14 @@
                 </ui:NavigationView.MenuItems>
 
                 <ui:NavigationView.FooterMenuItems>
+                    <ui:NavigationViewItem x:Name="AutoStartMenuItem"
+                                           Content="Khởi động cùng Win: OFF" 
+                                           Click="OnAutoStartClick">
+                        <ui:NavigationViewItem.Icon>
+                            <ui:SymbolIcon x:Name="AutoStartIcon" Symbol="CheckboxUnchecked24" />
+                        </ui:NavigationViewItem.Icon>
+                    </ui:NavigationViewItem>
+                    
                     <ui:NavigationViewItem x:Name="ThemeToggleButton"
                                            Content="Dark Mode" 
                                            Tag="theme_toggle"
