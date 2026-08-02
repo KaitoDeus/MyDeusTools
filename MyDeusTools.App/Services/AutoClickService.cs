@@ -30,12 +30,14 @@ namespace MyDeusTools.App.Services.Impl
         private const uint MOUSEEVENTF_MIDDLEUP = 0x40;
 
         private readonly DispatcherTimer _timer;
+        private readonly object _lock = new();
         private int _clickCount;
         private int _maxRepeat;
         private int _currentPointIndex = 0;
         private MouseButton _button;
         private ClickType _type;
 
+        public event Action? Stopped;
         public bool IsRunning { get; private set; }
         public int Interval { get; private set; }
         public List<MousePoint> RecordedPoints { get; } = new();
@@ -64,33 +66,45 @@ namespace MyDeusTools.App.Services.Impl
 
         public void Stop()
         {
+            if (!IsRunning) return;
             _timer.Stop();
             IsRunning = false;
+            Stopped?.Invoke();
         }
 
         public void ClearRecordedPoints()
         {
-            RecordedPoints.Clear();
+            lock (_lock)
+            {
+                RecordedPoints.Clear();
+                _currentPointIndex = 0;
+            }
         }
 
         private void Timer_Tick(object? sender, EventArgs e)
         {
-            // Nếu có điểm đã ghi, di chuyển chuột tới đó trước khi click
-            if (RecordedPoints.Count > 0)
+            lock (_lock)
             {
-                var point = RecordedPoints[_currentPointIndex];
-                SetCursorPos(point.X, point.Y);
-                
-                _currentPointIndex++;
-                if (_currentPointIndex >= RecordedPoints.Count)
-                    _currentPointIndex = 0;
+                if (RecordedPoints.Count > 0)
+                {
+                    if (_currentPointIndex >= RecordedPoints.Count)
+                        _currentPointIndex = 0;
+
+                    var point = RecordedPoints[_currentPointIndex];
+                    SetCursorPos(point.X, point.Y);
+                    
+                    _currentPointIndex = (_currentPointIndex + 1) % RecordedPoints.Count;
+                }
             }
 
             PerformClick();
 
             if (_type == ClickType.Double)
             {
-                Task.Delay(10).ContinueWith(_ => PerformClick());
+                Task.Delay(10).ContinueWith(_ =>
+                {
+                    if (IsRunning) PerformClick();
+                });
             }
 
             _clickCount++;

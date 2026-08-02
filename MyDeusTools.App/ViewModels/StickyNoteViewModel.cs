@@ -44,7 +44,19 @@ namespace MyDeusTools.App.ViewModels
         }
 
         [RelayCommand]
-        private async void AutoSave()
+        private void PinNote(StickyNoteModel note)
+        {
+            if (note != null)
+            {
+                note.IsPinned = true;
+                _ = _noteService.SaveNotesAsync();
+                var window = new Views.Windows.StickyNoteWindow(note, _noteService);
+                window.Show();
+            }
+        }
+
+        [RelayCommand]
+        private async Task AutoSave()
         {
             await _noteService.SaveNotesAsync();
         }

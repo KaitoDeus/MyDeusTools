@@ -65,7 +65,17 @@ namespace MyDeusTools.App.ViewModels
         public AutoClickViewModel(IAutoClickService autoClickService)
         {
             _autoClickService = autoClickService;
+            _autoClickService.Stopped += OnAutoClickServiceStopped;
             UpdateHotkey();
+        }
+
+        private void OnAutoClickServiceStopped()
+        {
+            System.Windows.Application.Current?.Dispatcher?.Invoke(() =>
+            {
+                StatusText = "Đã dừng";
+                ButtonText = $"Bắt đầu ({HotkeyDisplayText})";
+            });
         }
 
         private void UpdateHotkey()

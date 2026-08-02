@@ -11,7 +11,7 @@
         MouseMove="Window_MouseMove"
         MouseDown="Window_MouseDown"
         KeyDown="Window_KeyDown">
-    <Canvas>
+    <Canvas x:Name="MainCanvas">
         <Border x:Name="TooltipBorder" 
                 Background="#CC000000" 
                 CornerRadius="4" 
@@ -23,15 +23,17 @@
                        FontSize="14"/>
         </Border>
         
-        <TextBlock x:Name="InstructionText" 
-                   Text="Click để ghi tọa độ. Nhấn ESC để thoát." 
-                   Foreground="White" 
-                   Background="#AA000000" 
-                   Padding="10" 
-                   FontSize="16" 
-                   FontWeight="Bold" 
-                   Canvas.Top="20" 
-                   Canvas.Left="20" 
-                   IsHitTestVisible="False"/>
+        <Border Background="#CC000000" 
+                CornerRadius="8" 
+                Padding="16,10" 
+                Canvas.Top="20" 
+                Canvas.Left="20" 
+                IsHitTestVisible="False">
+            <TextBlock x:Name="InstructionText" 
+                       Text="Click chuột để ghi điểm. Nhấn ENTER/ESC để hoàn tất." 
+                       Foreground="White" 
+                       FontSize="16" 
+                       FontWeight="Bold"/>
+        </Border>
     </Canvas>
 </Window>

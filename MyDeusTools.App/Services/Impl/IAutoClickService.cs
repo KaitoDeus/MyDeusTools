@@ -21,6 +21,7 @@ using System;
 
     public interface IAutoClickService
     {
+        event Action? Stopped;
         bool IsRunning { get; }
         int Interval { get; }
         List<MousePoint> RecordedPoints { get; }

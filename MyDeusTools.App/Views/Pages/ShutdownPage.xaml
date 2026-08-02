@@ -7,10 +7,19 @@
 
     <Grid Margin="40">
         <StackPanel MaxWidth="500" HorizontalAlignment="Left">
-            <TextBlock Text="Hẹn giờ tắt máy" 
+            <TextBlock Text="Hẹn giờ hệ thống" 
                        FontSize="28" 
                        FontWeight="Bold" 
                        Margin="0,0,0,20"/>
+
+            <ui:Card Margin="0,0,0,15">
+                <StackPanel Margin="10">
+                    <TextBlock Text="Hành động:" Margin="0,0,0,8" FontWeight="SemiBold"/>
+                    <ComboBox ItemsSource="{Binding ShutdownModes}" 
+                              SelectedItem="{Binding SelectedMode, Mode=TwoWay}"
+                              HorizontalAlignment="Stretch"/>
+                </StackPanel>
+            </ui:Card>
 
             <ui:Card Margin="0,0,0,20">
                 <StackPanel Margin="10">
@@ -42,35 +51,44 @@
             </ui:Card>
 
             <ui:Card Margin="0,0,0,20">
-                <Grid Margin="10">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
-                    
-                    <StackPanel VerticalAlignment="Center">
-                        <TextBlock Text="Trạng thái:" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
-                        <TextBlock Text="{Binding StatusMessage}" FontWeight="SemiBold" Margin="0,4,0,0"/>
-                    </StackPanel>
+                <StackPanel Margin="10">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Text="Trạng thái:" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                            <TextBlock Text="{Binding StatusMessage}" FontWeight="SemiBold" Margin="0,4,0,0"/>
+                        </StackPanel>
 
-                    <ui:Button Grid.Column="1" 
-                               Content="Hủy lệnh" 
-                               Command="{Binding CancelCommand}"
-                               Appearance="Secondary"
-                               Margin="0,0,10,0"
-                               Padding="15,8"/>
+                        <ui:Button Grid.Column="1" 
+                                   Content="Hủy lệnh" 
+                                   Command="{Binding CancelCommand}"
+                                   Appearance="Secondary"
+                                   Margin="0,0,10,0"
+                                   Padding="15,8"/>
 
-                    <ui:Button Grid.Column="2" 
-                               Content="Bắt đầu" 
-                               Command="{Binding ScheduleCommand}"
-                               Appearance="Primary"
-                               Padding="20,8"/>
-                </Grid>
+                        <ui:Button Grid.Column="2" 
+                                   Content="Bắt đầu" 
+                                   Command="{Binding ScheduleCommand}"
+                                   Appearance="Primary"
+                                   Padding="20,8"/>
+                    </Grid>
+
+                    <TextBlock Text="{Binding CountdownText}"
+                               FontSize="36"
+                               FontWeight="Bold"
+                               HorizontalAlignment="Center"
+                               Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
+                               Margin="0,15,0,5"/>
+                </StackPanel>
             </ui:Card>
 
             <ui:InfoBar Title="Lưu ý" 
-                        Message="Lệnh này sẽ gọi shutdown.exe của hệ thống. Hãy đảm bảo bạn đã lưu lại các công việc đang làm."
+                        Message="Hành động hẹn giờ sử dụng tiến trình hệ thống Windows. Hãy đảm bảo bạn đã lưu lại các công việc đang làm."
                         Severity="Informational"
                         IsOpen="True" />
         </StackPanel>

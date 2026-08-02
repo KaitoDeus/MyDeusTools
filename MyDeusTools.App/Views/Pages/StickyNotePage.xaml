@@ -64,13 +64,23 @@
                                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                                    VerticalAlignment="Center"/>
                                         
-                                        <ui:Button HorizontalAlignment="Right"
-                                                   Padding="4"
-                                                   Appearance="Transparent"
-                                                   Command="{Binding DataContext.DeleteNoteCommand, RelativeSource={RelativeSource AncestorType=Page}}"
-                                                   CommandParameter="{Binding}">
-                                            <ui:SymbolIcon Symbol="Delete24" FontSize="16" Foreground="{DynamicResource SystemFillColorCriticalBrush}"/>
-                                        </ui:Button>
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                            <ui:Button Padding="4"
+                                                       Margin="0,0,4,0"
+                                                       Appearance="Transparent"
+                                                       ToolTip="Ghim lên màn hình"
+                                                       Command="{Binding DataContext.PinNoteCommand, RelativeSource={RelativeSource AncestorType=Page}}"
+                                                       CommandParameter="{Binding}">
+                                                <ui:SymbolIcon Symbol="Pin24" FontSize="16"/>
+                                            </ui:Button>
+
+                                            <ui:Button Padding="4"
+                                                       Appearance="Transparent"
+                                                       Command="{Binding DataContext.DeleteNoteCommand, RelativeSource={RelativeSource AncestorType=Page}}"
+                                                       CommandParameter="{Binding}">
+                                                <ui:SymbolIcon Symbol="Delete24" FontSize="16" Foreground="{DynamicResource SystemFillColorCriticalBrush}"/>
+                                            </ui:Button>
+                                        </StackPanel>
                                     </Grid>
                                 </Border>
                             </Grid>

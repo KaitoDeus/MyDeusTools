@@ -93,3 +93,7 @@ Thumbs.db
 *.db-journal
 *.db-shm
 *.db-wal
+
+# Ignore docs and publish folders
+docs/
+publish/
