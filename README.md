@@ -12,7 +12,7 @@
   <img src="https://img.shields.io/badge/.NET-8.0--windows-512BD4?logo=dotnet" alt=".NET 8" />
   <img src="https://img.shields.io/badge/UI-WPF--UI%203.0-0078D4?logo=windows" alt="WPF-UI" />
   <img src="https://img.shields.io/badge/Architecture-MVVM%20Toolkit-blue" alt="MVVM" />
-  <img src="https://img.shields.io/badge/Tests-43%20Passed%20(100%25)-brightgreen" alt="Tests" />
+  <img src="https://img.shields.io/badge/Tests-53%20Passed%20(100%25)-brightgreen" alt="Tests" />
   <img src="https://img.shields.io/badge/Platform-Windows%20x64-00A4EF" alt="Platform" />
   <img src="https://img.shields.io/badge/License-MIT-green" alt="License" />
 </p>
@@ -34,6 +34,7 @@ MyDeusTools is a lightweight, modern, and versatile Windows desktop utility suit
 | **Sticky Notes** | Card-based desktop note manager with automatic JSON persistence (Data/notes.json), and pop-out borderless floating desktop windows (StickyNoteWindow - Topmost, draggable, non-intrusive). |
 | **Clipboard Manager** | Real-time clipboard listener utilizing native Win32 APIs (AddClipboardFormatListener), instant search filtering, pin-to-top support, and one-click copy back to clipboard. |
 | **QR Code Studio** | High-definition QR code generation (QRCoder) with PNG export and clipboard copy; multi-source QR decoding (ZXing.Net) supporting screen region snipping (QrSnippingOverlayWindow), image file decoding, and clipboard image reading with automatic web URL detection. |
+| **Color Picker & Eyedropper** | Fullscreen precision screen eyedropper with floating 11x11 pixel magnifier HUD, one-click HEX/RGB/HSL/HSV format copying, pin-to-palette management, and persistent color history (Data/colors.json). |
 | **System Tray & Windows Startup** | Minimize-to-tray lifecycle management (Hardcodet.NotifyIcon), instant Dark/Light theme switching, and Windows startup toggle via CurrentUser Registry. |
 
 ---
@@ -49,7 +50,7 @@ MyDeusTools is a lightweight, modern, and versatile Windows desktop utility suit
   - NHotkey.Wpf for global system-wide hotkeys
   - Hardcodet.NotifyIcon.Wpf for taskbar notification tray
   - QRCoder & ZXing.Net for QR code generation and decoding
-- **Testing**: xUnit 2.9, Moq 4.20, Xunit.StaFact (43/43 tests passing, 100% success rate)
+- **Testing**: xUnit 2.9, Moq 4.20, Xunit.StaFact (53/53 tests passing, 100% success rate)
 
 ---
 

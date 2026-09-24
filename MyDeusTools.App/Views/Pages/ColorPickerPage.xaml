@@ -1,0 +1,281 @@
+<Page x:Class="MyDeusTools.App.Views.Pages.ColorPickerPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+      xmlns:models="clr-namespace:MyDeusTools.App.Services.Impl"
+      Title="Color Picker"
+      Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+      Background="Transparent">
+
+    <Grid Margin="40,25,40,25" Background="Transparent">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Grid Grid.Row="0" Margin="0,0,0,20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Orientation="Vertical">
+                <TextBlock Text="Color Picker &amp; Eyedropper" 
+                           FontSize="28" 
+                           FontWeight="Bold"/>
+                <TextBlock Text="{Binding StatusMessage}" 
+                           FontSize="13" 
+                           Foreground="{DynamicResource TextFillColorSecondaryBrush}" 
+                           Margin="0,4,0,0"/>
+            </StackPanel>
+
+            <ui:Button Grid.Column="1" 
+                       Content="Bắt màu màn hình" 
+                       Icon="{ui:SymbolIcon Symbol=Color24}"
+                       Command="{Binding PickColorCommand}"
+                       Appearance="Primary"
+                       FontSize="15"
+                       Padding="24,10"/>
+        </Grid>
+
+        <!-- Main Body -->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="380"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Left: Color Inspector Card -->
+            <ui:Card Grid.Column="0" Margin="0,0,20,0" Padding="20">
+                <StackPanel>
+                    <TextBlock Text="Chi tiết màu đang chọn" 
+                               FontWeight="SemiBold" 
+                               FontSize="16" 
+                               Margin="0,0,0,14"/>
+
+                    <!-- Big Color Preview Box -->
+                    <Border Height="120" 
+                            CornerRadius="8" 
+                            Background="{Binding SelectedColor.PreviewBrush}" 
+                            BorderBrush="#33FFFFFF" 
+                            BorderThickness="1" 
+                            Margin="0,0,0,20">
+                        <Grid HorizontalAlignment="Right" VerticalAlignment="Top" Margin="8">
+                            <!-- Pinned Indicator -->
+                            <Border Background="#CC000000" CornerRadius="4" Padding="6,2">
+                                <Border.Style>
+                                    <Style TargetType="Border">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding SelectedColor.IsPinned}" Value="True">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Border.Style>
+                                <TextBlock Text="ĐÃ GHIM" Foreground="White" FontSize="10" FontWeight="Bold"/>
+                            </Border>
+                        </Grid>
+                    </Border>
+
+                    <!-- Formats list -->
+                    <!-- HEX -->
+                    <Border Background="{DynamicResource CardBackgroundFillColorSecondaryBrush}" CornerRadius="6" Padding="12,8" Margin="0,0,0,8">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="45"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="HEX" FontWeight="Bold" VerticalAlignment="Center" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                            <TextBlock Grid.Column="1" Text="{Binding SelectedColor.Hex}" FontFamily="Consolas" FontSize="14" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                            <ui:Button Grid.Column="2" Content="Copy" Appearance="Secondary" Padding="12,4" Command="{Binding CopyFormatCommand}" CommandParameter="{Binding SelectedColor.Hex}"/>
+                        </Grid>
+                    </Border>
+
+                    <!-- RGB -->
+                    <Border Background="{DynamicResource CardBackgroundFillColorSecondaryBrush}" CornerRadius="6" Padding="12,8" Margin="0,0,0,8">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="45"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="RGB" FontWeight="Bold" VerticalAlignment="Center" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                            <TextBlock Grid.Column="1" Text="{Binding SelectedColor.Rgb}" FontFamily="Consolas" FontSize="13" VerticalAlignment="Center"/>
+                            <ui:Button Grid.Column="2" Content="Copy" Appearance="Secondary" Padding="12,4" Command="{Binding CopyFormatCommand}" CommandParameter="{Binding SelectedColor.Rgb}"/>
+                        </Grid>
+                    </Border>
+
+                    <!-- HSL -->
+                    <Border Background="{DynamicResource CardBackgroundFillColorSecondaryBrush}" CornerRadius="6" Padding="12,8" Margin="0,0,0,8">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="45"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="HSL" FontWeight="Bold" VerticalAlignment="Center" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                            <TextBlock Grid.Column="1" Text="{Binding SelectedColor.Hsl}" FontFamily="Consolas" FontSize="13" VerticalAlignment="Center"/>
+                            <ui:Button Grid.Column="2" Content="Copy" Appearance="Secondary" Padding="12,4" Command="{Binding CopyFormatCommand}" CommandParameter="{Binding SelectedColor.Hsl}"/>
+                        </Grid>
+                    </Border>
+
+                    <!-- HSV -->
+                    <Border Background="{DynamicResource CardBackgroundFillColorSecondaryBrush}" CornerRadius="6" Padding="12,8">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="45"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="HSV" FontWeight="Bold" VerticalAlignment="Center" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                            <TextBlock Grid.Column="1" Text="{Binding SelectedColor.Hsv}" FontFamily="Consolas" FontSize="13" VerticalAlignment="Center"/>
+                            <ui:Button Grid.Column="2" Content="Copy" Appearance="Secondary" Padding="12,4" Command="{Binding CopyFormatCommand}" CommandParameter="{Binding SelectedColor.Hsv}"/>
+                        </Grid>
+                    </Border>
+                </StackPanel>
+            </ui:Card>
+
+            <!-- Right: Color History Palette -->
+            <ui:Card Grid.Column="1" Padding="20">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid Grid.Row="0" Margin="0,0,0,15">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBlock Text="Lịch sử bảng màu" FontWeight="SemiBold" FontSize="16" Margin="0,0,12,0"/>
+                            <Border Background="{DynamicResource CardBackgroundFillColorSecondaryBrush}" CornerRadius="4" Padding="8,2">
+                                <TextBlock FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}">
+                                    <Run Text="{Binding History.Count, Mode=OneWay}"/>
+                                    <Run Text="màu"/>
+                                </TextBlock>
+                            </Border>
+                        </StackPanel>
+
+                        <ui:Button Grid.Column="1" 
+                                   Content="Xóa lịch sử" 
+                                   Icon="{ui:SymbolIcon Symbol=Delete24}"
+                                   Command="{Binding ClearHistoryCommand}"
+                                   Appearance="Secondary"
+                                   Padding="14,6"/>
+                    </Grid>
+
+                    <!-- Empty state -->
+                    <Grid Grid.Row="1">
+                        <ui:Card HorizontalAlignment="Center" VerticalAlignment="Center" Padding="35,25" MaxWidth="440">
+                            <ui:Card.Style>
+                                <Style TargetType="ui:Card">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding HasHistory}" Value="False">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ui:Card.Style>
+                            <StackPanel HorizontalAlignment="Center">
+                                <ui:SymbolIcon Symbol="Color24" FontSize="44" HorizontalAlignment="Center" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,0,0,12"/>
+                                <TextBlock Text="Chưa có mã màu nào" FontSize="16" FontWeight="SemiBold" HorizontalAlignment="Center" Margin="0,0,0,6"/>
+                                <TextBlock Text="Nhấn nút 'Bắt màu màn hình' để chọn bất kỳ màu sắc nào đang hiển thị trên máy tính của bạn." TextWrapping="Wrap" TextAlignment="Center" Foreground="{DynamicResource TextFillColorSecondaryBrush}" FontSize="12"/>
+                            </StackPanel>
+                        </ui:Card>
+
+                        <!-- Color Items List -->
+                        <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                            <ScrollViewer.Style>
+                                <Style TargetType="ScrollViewer">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding HasHistory}" Value="False">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ScrollViewer.Style>
+
+                            <ItemsControl ItemsSource="{Binding History}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <WrapPanel/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate DataType="{x:Type models:ColorItemModel}">
+                                        <ui:Card Margin="0,0,12,12" Padding="8" Width="140">
+                                            <StackPanel>
+                                                <!-- Clickable Swatch to Select -->
+                                                <Button Background="Transparent" 
+                                                        BorderThickness="0" 
+                                                        Padding="0" 
+                                                        Cursor="Hand"
+                                                        Command="{Binding DataContext.SelectColorCommand, RelativeSource={RelativeSource AncestorType=Page}}"
+                                                        CommandParameter="{Binding}">
+                                                    <Border Height="60" CornerRadius="6" Background="{Binding PreviewBrush}" BorderBrush="#33FFFFFF" BorderThickness="1"/>
+                                                </Button>
+
+                                                <TextBlock Text="{Binding Hex}" 
+                                                           FontFamily="Consolas" 
+                                                           FontWeight="SemiBold" 
+                                                           FontSize="12" 
+                                                           HorizontalAlignment="Center" 
+                                                           Margin="0,8,0,6"/>
+
+                                                <!-- Mini Action Row -->
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                    </Grid.ColumnDefinitions>
+
+                                                    <ui:Button Grid.Column="0" 
+                                                               Content="Copy" 
+                                                               Appearance="Transparent" 
+                                                               Padding="4,2" 
+                                                               FontSize="11"
+                                                               HorizontalAlignment="Left"
+                                                               Command="{Binding DataContext.CopyFormatCommand, RelativeSource={RelativeSource AncestorType=Page}}"
+                                                               CommandParameter="{Binding Hex}"/>
+
+                                                    <ui:Button Grid.Column="1" 
+                                                               Padding="4" 
+                                                               Margin="0,0,2,0"
+                                                               Appearance="Transparent" 
+                                                               ToolTip="Ghim màu này"
+                                                               Command="{Binding DataContext.TogglePinCommand, RelativeSource={RelativeSource AncestorType=Page}}"
+                                                               CommandParameter="{Binding}">
+                                                        <ui:SymbolIcon Symbol="Pin24" FontSize="12"/>
+                                                    </ui:Button>
+
+                                                    <ui:Button Grid.Column="2" 
+                                                               Padding="4" 
+                                                               Appearance="Transparent" 
+                                                               ToolTip="Xóa màu này"
+                                                               Command="{Binding DataContext.DeleteColorCommand, RelativeSource={RelativeSource AncestorType=Page}}"
+                                                               CommandParameter="{Binding}">
+                                                        <ui:SymbolIcon Symbol="Delete24" FontSize="12" Foreground="{DynamicResource SystemFillColorCriticalBrush}"/>
+                                                    </ui:Button>
+                                                </Grid>
+                                            </StackPanel>
+                                        </ui:Card>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </ScrollViewer>
+                    </Grid>
+                </Grid>
+            </ui:Card>
+        </Grid>
+    </Grid>
+</Page>

@@ -21,7 +21,11 @@
 5. **QR Code Studio (Tạo & Quét mã QR)**:
    - High-definition QR generation (QRCoder), export PNG or copy image to clipboard.
    - Screen Snipping QR Scanner (`QrSnippingOverlayWindow`), file image scanner, and clipboard image scanner via `ZXing.Net`.
-6. **System Tray & Lifecycle**:
+6. **Color Picker & Eyedropper (Chấm & lấy màu màn hình)**:
+   - Fullscreen crosshair eyedropper with floating 11x11 pixel Magnifier HUD (`ColorPickerOverlayWindow`).
+   - Instant format copying (HEX, RGB, HSL, HSV) and auto-copy to clipboard on pick.
+   - Persistent color palette history with pin-to-top support (`Data/colors.json`).
+7. **System Tray & Lifecycle**:
    - Minimize-to-tray on close (`Hardcodet.NotifyIcon.Wpf`).
    - Dark / Light mode switching dynamically via `Wpf.Ui.Appearance.ApplicationThemeManager`.
    - Windows Startup toggle via CurrentUser Registry (`Software\Microsoft\Windows\CurrentVersion\Run`).
@@ -67,17 +71,19 @@ d:\.MyDeusTools\MyDeusTools\
 │   │   ├── AutoStartService.cs  # Windows Registry Run Key manager
 │   │   ├── ClipboardService.cs  # Windows Clipboard listener & JSON storage
 │   │   ├── QrCodeService.cs     # QR Code generation (QRCoder) & decoding (ZXing)
-│   │   └── Impl/                # Service Interfaces (IAutoClickService, IQrCodeService, etc.)
+│   │   ├── ColorPickerService.cs# Screen color sampling, pixel magnifier & history
+│   │   └── Impl/                # Service Interfaces (IAutoClickService, IColorPickerService, etc.)
 │   ├── ViewModels/              # MVVM ViewModels (CommunityToolkit.Mvvm)
 │   │   ├── MainWindowViewModel.cs
 │   │   ├── AutoClickViewModel.cs
 │   │   ├── ShutdownViewModel.cs
 │   │   ├── StickyNoteViewModel.cs
 │   │   ├── ClipboardViewModel.cs
-│   │   └── QrCodeViewModel.cs
+│   │   ├── QrCodeViewModel.cs
+│   │   └── ColorPickerViewModel.cs
 │   ├── Views/                   # UI Pages & Sub-Windows
-│   │   ├── Pages/               # AutoClickPage, ShutdownPage, StickyNotePage, ClipboardPage, QrCodePage
-│   │   └── Windows/             # RecordingOverlayWindow, StickyNoteWindow, QrSnippingOverlayWindow
+│   │   ├── Pages/               # AutoClickPage, ShutdownPage, StickyNotePage, ClipboardPage, QrCodePage, ColorPickerPage
+│   │   └── Windows/             # RecordingOverlayWindow, StickyNoteWindow, QrSnippingOverlayWindow, ColorPickerOverlayWindow
 │   └── Resources/               # Icons & static assets (avatar.ico)
 └── MyDeusTools.Tests/           # Unit & Integration Tests (xUnit, StaFact)
     ├── AppIntegrationTests.cs   # DI Resolution verification
@@ -85,7 +91,8 @@ d:\.MyDeusTools\MyDeusTools\
     ├── AutoStartServiceTests.cs # Registry toggle safety tests
     ├── StickyNoteServiceTests.cs# Sticky note persistence tests
     ├── ClipboardServiceTests.cs # Clipboard history, pin, search & deduplication tests
-    └── QrCodeServiceTests.cs    # QR code generation, roundtrip decode, and URL detection tests
+    ├── QrCodeServiceTests.cs    # QR code generation, roundtrip decode, and URL detection tests
+    └── ColorPickerServiceTests.cs # Screen sampling, format conversions, and JSON persistence tests
 ```
 
 ---

@@ -24,6 +24,7 @@ public static IServiceProvider ConfigureServices()
     services.AddSingleton<IAutoStartService, AutoStartService>();
     services.AddSingleton<IClipboardService, ClipboardService>();
     services.AddSingleton<IQrCodeService, QrCodeService>();
+    services.AddSingleton<IColorPickerService, ColorPickerService>();
 
     // 2. ViewModels (Transient)
     services.AddTransient<MainWindowViewModel>();
@@ -32,6 +33,7 @@ public static IServiceProvider ConfigureServices()
     services.AddTransient<StickyNoteViewModel>();
     services.AddTransient<ClipboardViewModel>();
     services.AddTransient<QrCodeViewModel>();
+    services.AddTransient<ColorPickerViewModel>();
 
     // 3. Views / Pages (Transient)
     services.AddTransient<MainWindow>();
@@ -40,6 +42,7 @@ public static IServiceProvider ConfigureServices()
     services.AddTransient<StickyNotePage>();
     services.AddTransient<ClipboardPage>();
     services.AddTransient<QrCodePage>();
+    services.AddTransient<ColorPickerPage>();
 
     return services.BuildServiceProvider();
 }
@@ -56,9 +59,11 @@ public static IServiceProvider ConfigureServices()
 - `Views/Pages/StickyNotePage.xaml`: Note cards gallery (`WrapPanel`), note editor with Enter/LostFocus triggers, and delete/pin buttons.
 - `Views/Pages/ClipboardPage.xaml`: Clipboard manager gallery with search bar, text preview, pin indicators, character count, and copy/delete actions.
 - `Views/Pages/QrCodePage.xaml`: QR Code Studio with tabs for generator and multi-source scanner (screen snipping, file picker, clipboard paste).
+- `Views/Pages/ColorPickerPage.xaml`: Color Picker & Eyedropper inspector hero card, quick format copy chips, and palette history wrap grid.
 - `Views/Windows/RecordingOverlayWindow.xaml / .cs`: Fullscreen borderless transparent overlay spanning virtual desktop (`VirtualScreenWidth` / `VirtualScreenHeight`) for mouse coordinate selection and visual point marker rendering.
 - `Views/Windows/StickyNoteWindow.xaml / .cs`: Frameless draggable desktop widget for individual sticky notes with `Topmost="True"`.
 - `Views/Windows/QrSnippingOverlayWindow.xaml / .cs`: Fullscreen crosshair snipping overlay with rubber-band rectangle selection for scanning screen QR codes.
+- `Views/Windows/ColorPickerOverlayWindow.xaml / .cs`: Fullscreen crosshair canvas with real-time floating 11x11 pixel Magnifier HUD, center reticle marker, and live swatch.
 
 ### 3.2. ViewModels Layer (`MyDeusTools.App/ViewModels/`)
 - `AutoClickViewModel`: Bridges UI and `IAutoClickService`. Manages keybind capture listening mode, interval calculations, and waypoint counter state.
@@ -66,9 +71,13 @@ public static IServiceProvider ConfigureServices()
 - `StickyNoteViewModel`: Exposes `ObservableCollection<StickyNoteModel>` from `IStickyNoteService`, provides commands for adding, deleting, pinning, and auto-saving notes.
 - `ClipboardViewModel`: Bridges UI and `IClipboardService`. Provides real-time text search filtering, pin management, copy-back commands, and history clearance.
 - `QrCodeViewModel`: Bridges UI and `IQrCodeService`. Manages QR generation, image export, and multi-source scanning.
+- `ColorPickerViewModel`: Bridges UI and `IColorPickerService`. Launches eyedropper overlay, auto-copies to clipboard, copies formats, and handles pin/delete palette actions.
 - `MainWindowViewModel`: Manages navigation commands.
 
 ### 3.3. Services & Interop Layer (`MyDeusTools.App/Services/`)
+- `ColorPickerService` (`IColorPickerService`):
+  - Screen pixel sampling via Win32 `GetDC` / `GetPixel` / `ReleaseDC` and GDI `CopyFromScreen`.
+  - Format conversions (HEX, RGB, HSL, HSV), color history deduplication, and JSON persistence (`Data/colors.json`).
 - `QrCodeService` (`IQrCodeService`):
   - QR Encoding using `QRCoder` (zero external native dependencies).
   - QR Decoding using `ZXing.Net` across raw RGBLuminanceSource, BitmapSource, and GDI screen regions.

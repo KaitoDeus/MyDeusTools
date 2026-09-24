@@ -20,17 +20,20 @@ namespace MyDeusTools.Tests
         [InlineData(typeof(IAutoStartService))]
         [InlineData(typeof(IClipboardService))]
         [InlineData(typeof(IQrCodeService))]
+        [InlineData(typeof(IColorPickerService))]
         [InlineData(typeof(MainWindowViewModel))]
         [InlineData(typeof(AutoClickViewModel))]
         [InlineData(typeof(ShutdownViewModel))]
         [InlineData(typeof(StickyNoteViewModel))]
         [InlineData(typeof(ClipboardViewModel))]
         [InlineData(typeof(QrCodeViewModel))]
+        [InlineData(typeof(ColorPickerViewModel))]
         [InlineData(typeof(AutoClickPage))]
         [InlineData(typeof(ShutdownPage))]
         [InlineData(typeof(StickyNotePage))]
         [InlineData(typeof(ClipboardPage))]
         [InlineData(typeof(QrCodePage))]
+        [InlineData(typeof(ColorPickerPage))]
         public void ServiceProvider_ShouldResolveDependencies(Type serviceType)
         {
             // Arrange

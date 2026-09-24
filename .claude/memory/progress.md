@@ -14,29 +14,31 @@
 | **Sticky Notes** | ✅ Complete | ✅ 100% | Dynamic note cards, floating borderless pinned desktop window, JSON persistence |
 | **Clipboard Manager** | ✅ Complete | ✅ 100% | Win32 clipboard format listener, instant search, pin/unpin, clear unpinned, JSON persistence |
 | **QR Code Studio** | ✅ Complete | ✅ 100% | QRCoder image generation, PNG file save/copy, screen snipping overlay scanner, file/clipboard decoding |
+| **Color Picker & Eyedropper** | ✅ Complete | ✅ 100% | Fullscreen pixel magnifier HUD, HEX/RGB/HSL/HSV formats, pin-to-top palette, JSON persistence |
 | **Single-File Publishing** | ✅ Configured | ✅ Verified | Configured in `MyDeusTools.App.csproj` |
 
 ---
 
 ## 2. Test Execution Summary
 
-- **Total Test Count**: 43 tests
-- **Passed**: 43 (100%)
+- **Total Test Count**: 53 tests
+- **Passed**: 53 (100%)
 - **Failed**: 0
 - **Skipped**: 0
 - **Test Suites**:
-  - `AppIntegrationTests`: 19 Theory cases testing DI resolution for services, viewmodels, and pages.
+  - `AppIntegrationTests`: 22 Theory cases testing DI resolution for services, viewmodels, and pages.
   - `AutoClickServiceTests`: 3 Fact cases testing interval clamping, state tracking, and stop logic.
   - `AutoStartServiceTests`: 2 Fact cases verifying safe registry querying and writing.
   - `StickyNoteServiceTests`: 2 Fact/Task cases testing note addition, file handling, and serialization.
   - `ClipboardServiceTests`: 9 Fact/Task cases testing deduplication, pin preservation, max limit clamping, search filtering, and JSON persistence.
   - `QrCodeServiceTests`: 8 Fact/WpfFact cases testing PNG byte generation, roundtrip encode/decode, file decoding, URL recognition, and ViewModel state.
+  - `ColorPickerServiceTests`: 7 Fact/Task cases testing screen sampling, format conversions, palette capacity, and JSON persistence.
 
 ---
 
 ## 3. Future Roadmap & Enhancement Ideas
 - [ ] **Quick Popup Hotkey for Clipboard**: Global hotkey (e.g. `Win+Shift+V`) to show a floating mini clipboard history popup.
-- [ ] **Color Picker Utility**: Screen Eyedropper with live zoom preview, copying HEX, RGB, HSL.
+- [x] **Color Picker Utility**: Screen Eyedropper with live zoom preview, copying HEX, RGB, HSL.
 - [ ] **Sticky Note Rich Text & Colors**: Palette selector to customize background colors (Pink, Blue, Green, Orange) per note.
 - [ ] **AutoClicker Random Delay**: Add jitter/randomized delay interval (e.g. ±10%) for anti-detection in specific gaming/testing scenarios.
 - [ ] **Hotkey Conflict Notification**: Show user-friendly toast/infobar notification if a hotkey fails to register due to an OS conflict.

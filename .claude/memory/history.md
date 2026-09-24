@@ -56,3 +56,21 @@ This log records major architecture changes, development operations, refactoring
   - Added new `NavigationViewItem` to `MainWindow.xaml` (`SymbolRegular.QrCode24`).
   - Extended `AppIntegrationTests.cs` to verify DI resolution.
 - **Verification**: Executed `dotnet test`. All 43/43 tests passed (100%).
+
+---
+
+### [2026-09-24] Feature Implementation: Color Picker & Screen Eyedropper
+- **Action**: Designed and developed Color Picker & Screen Eyedropper with floating pixel magnifier HUD.
+- **Components Created**:
+  - `MyDeusTools.App/Services/Impl/IColorPickerService.cs`: Interface and `ColorItemModel` supporting HEX, RGB, HSL, HSV representations and JSON serialization exclusions (`[JsonIgnore]`).
+  - `MyDeusTools.App/Services/ColorPickerService.cs`: Win32 `GetDC` / `GetPixel` / GDI `CopyFromScreen` screen sampling, deduplication, capacity management, and async JSON persistence (`Data/colors.json`).
+  - `MyDeusTools.App/Views/Windows/ColorPickerOverlayWindow.xaml` & `.xaml.cs`: Fullscreen crosshair canvas with real-time floating 11x11 pixel Magnifier HUD, center reticle marker, live swatch, and HEX/RGB labels.
+  - `MyDeusTools.App/ViewModels/ColorPickerViewModel.cs`: State management, overlay launcher, auto-copy to clipboard on pick, format copier, and pin/delete handlers.
+  - `MyDeusTools.App/Views/Pages/ColorPickerPage.xaml` & `.xaml.cs`: Hero color inspector card, quick copy chips, and color history wrap grid.
+  - `MyDeusTools.Tests/ColorPickerServiceTests.cs`: 7 unit tests covering screen sampling, format conversions, max capacity clamping, and JSON persistence.
+- **Integration**:
+  - Registered `IColorPickerService`, `ColorPickerViewModel`, and `ColorPickerPage` in `App.xaml.cs`.
+  - Added new `NavigationViewItem` to `MainWindow.xaml` (`SymbolRegular.Color24`).
+  - Extended `AppIntegrationTests.cs` to verify DI resolution (total 22 test cases).
+- **Verification**: Executed `dotnet test`. All 53/53 tests passed (100%).
+
