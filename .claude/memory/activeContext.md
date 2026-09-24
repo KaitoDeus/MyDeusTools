@@ -1,16 +1,20 @@
 # Active Context - MyDeusTools
 
 ## Current Focus & Status
-- **Current State**: Project is fully initialized, builds cleanly with 0 warnings/errors, and passes 100% of unit & integration tests (20/20 passed).
-- **Recent Milestone**: Full codebase audit, architectural review, creation of the Claude AI configuration system, and establishment of persistent project memory.
+- **Current State**: Project builds cleanly with 0 warnings/errors, and passes 100% of unit & integration tests (43/43 passed).
+- **Recent Milestone**: Successfully implemented **QR Code Studio** (QRCoder generation, PNG export, interactive screen snipping scanner with `QrSnippingOverlayWindow`, file/clipboard image decoding via ZXing.Net, and comprehensive test suite).
 
 ## Active Session Goals
-1. Establish standard Claude AI instructions (`CLAUDE.md`) and Memory Bank (`.claude/`).
-2. Document all features, architecture, Win32 P/Invoke APIs, WPF-UI bindings, and test suites.
-3. Track all ongoing and future tasks in `progress.md` and historical operations in `history.md`.
+1. Maintain and extend Super-App features according to user priorities.
+2. Ensure 100% test coverage for newly introduced business services.
+3. Keep Memory Bank synchronized.
 
 ## Active Considerations & Technical Notes
+- **QR Code Studio**: Generation is powered by `QRCoder` (zero external native dependencies); decoding is powered by `ZXing.Net`.
+- **Screen Snipping Scanner**: Uses `QrSnippingOverlayWindow` with crosshair cursor, drag selection rectangle, and virtual screen multi-monitor coordinates. Screen pixels are captured via GDI `CopyFromScreen` after hiding the overlay to prevent capturing the overlay itself.
+- **Clipboard Monitoring**: Uses Win32 `AddClipboardFormatListener` / `RemoveClipboardFormatListener` via `HwndSource` on `MainWindow`.
+- **Clipboard Concurrency & Re-entrancy**: Copying from inside the app flags `_isInternalCopy = true` to avoid redundant loops. Clipboard read operations dispatch to STA thread with try-catch.
 - **WPF Single File Publishing**: Configured in `MyDeusTools.App.csproj` (`PublishSingleFile=true`, `SelfContained=true`, `RuntimeIdentifier=win-x64`).
 - **Resource Bundling**: `avatar.ico` is compiled as `<Resource Include="Resources\avatar.ico" />` and loaded with `pack://application:,,,/Resources/avatar.ico`.
-- **Note Persistence**: Files are currently saved in `AppDomain.CurrentDomain.BaseDirectory\Data\notes.json`. Consider roaming AppData if user migration across updates is required in the future.
+- **Note & Clipboard Persistence**: Files are saved in `AppDomain.CurrentDomain.BaseDirectory\Data\` (`notes.json`, `clipboard.json`).
 - **Recording Overlay**: Supports multi-monitor configurations using `SystemParameters.VirtualScreen*`.

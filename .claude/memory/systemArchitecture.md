@@ -22,18 +22,24 @@ public static IServiceProvider ConfigureServices()
     services.AddSingleton<ISystemService, SystemService>();
     services.AddSingleton<IStickyNoteService, StickyNoteService>();
     services.AddSingleton<IAutoStartService, AutoStartService>();
+    services.AddSingleton<IClipboardService, ClipboardService>();
+    services.AddSingleton<IQrCodeService, QrCodeService>();
 
     // 2. ViewModels (Transient)
     services.AddTransient<MainWindowViewModel>();
     services.AddTransient<AutoClickViewModel>();
     services.AddTransient<ShutdownViewModel>();
     services.AddTransient<StickyNoteViewModel>();
+    services.AddTransient<ClipboardViewModel>();
+    services.AddTransient<QrCodeViewModel>();
 
     // 3. Views / Pages (Transient)
     services.AddTransient<MainWindow>();
     services.AddTransient<AutoClickPage>();
     services.AddTransient<ShutdownPage>();
     services.AddTransient<StickyNotePage>();
+    services.AddTransient<ClipboardPage>();
+    services.AddTransient<QrCodePage>();
 
     return services.BuildServiceProvider();
 }
@@ -44,20 +50,32 @@ public static IServiceProvider ConfigureServices()
 ## 3. Layer Breakdown & Component Responsibilities
 
 ### 3.1. Views & UI Layer (`MyDeusTools.App/Views/`)
-- `MainWindow.xaml / .cs`: Main container with `NavigationView`, title bar, Mica backdrop, and System Tray (`TaskbarIcon`). Manages minimize-to-tray intercept (`Closing` event handler).
+- `MainWindow.xaml / .cs`: Main container with `NavigationView`, title bar, Mica backdrop, and System Tray (`TaskbarIcon`). Manages minimize-to-tray intercept and Windows message hook (`WM_CLIPBOARDUPDATE`).
 - `Views/Pages/AutoClickPage.xaml`: AutoClicker UI with tab toggle buttons for Basic Config, Interval/Repeat, and Coordinate Recording.
 - `Views/Pages/ShutdownPage.xaml`: System power schedule control, dynamic countdown timer rendering, and action selection.
 - `Views/Pages/StickyNotePage.xaml`: Note cards gallery (`WrapPanel`), note editor with Enter/LostFocus triggers, and delete/pin buttons.
+- `Views/Pages/ClipboardPage.xaml`: Clipboard manager gallery with search bar, text preview, pin indicators, character count, and copy/delete actions.
+- `Views/Pages/QrCodePage.xaml`: QR Code Studio with tabs for generator and multi-source scanner (screen snipping, file picker, clipboard paste).
 - `Views/Windows/RecordingOverlayWindow.xaml / .cs`: Fullscreen borderless transparent overlay spanning virtual desktop (`VirtualScreenWidth` / `VirtualScreenHeight`) for mouse coordinate selection and visual point marker rendering.
 - `Views/Windows/StickyNoteWindow.xaml / .cs`: Frameless draggable desktop widget for individual sticky notes with `Topmost="True"`.
+- `Views/Windows/QrSnippingOverlayWindow.xaml / .cs`: Fullscreen crosshair snipping overlay with rubber-band rectangle selection for scanning screen QR codes.
 
 ### 3.2. ViewModels Layer (`MyDeusTools.App/ViewModels/`)
 - `AutoClickViewModel`: Bridges UI and `IAutoClickService`. Manages keybind capture listening mode, interval calculations, and waypoint counter state.
 - `ShutdownViewModel`: Bridges UI and `ISystemService`. Contains a 1-second `DispatcherTimer` for ticking UI countdown text (`hh:mm:ss`).
 - `StickyNoteViewModel`: Exposes `ObservableCollection<StickyNoteModel>` from `IStickyNoteService`, provides commands for adding, deleting, pinning, and auto-saving notes.
+- `ClipboardViewModel`: Bridges UI and `IClipboardService`. Provides real-time text search filtering, pin management, copy-back commands, and history clearance.
+- `QrCodeViewModel`: Bridges UI and `IQrCodeService`. Manages QR generation, image export, and multi-source scanning.
 - `MainWindowViewModel`: Manages navigation commands.
 
 ### 3.3. Services & Interop Layer (`MyDeusTools.App/Services/`)
+- `QrCodeService` (`IQrCodeService`):
+  - QR Encoding using `QRCoder` (zero external native dependencies).
+  - QR Decoding using `ZXing.Net` across raw RGBLuminanceSource, BitmapSource, and GDI screen regions.
+- `ClipboardService` (`IClipboardService`):
+  - Win32 API bindings: `AddClipboardFormatListener(hwnd)` and `RemoveClipboardFormatListener(hwnd)`.
+  - STA thread-safe reading of clipboard data via `Dispatcher.InvokeAsync`.
+  - Intelligent deduplication, pin preservation, maximum capacity limits, and JSON persistence (`Data/clipboard.json`).
 - `AutoClickService` (`IAutoClickService`):
   - Win32 API bindings:
     - `mouse_event(uint dwFlags, uint dx, uint dy, uint cButtons, uint dwExtraInfo)`

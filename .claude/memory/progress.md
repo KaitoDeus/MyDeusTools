@@ -12,26 +12,31 @@
 | **Coordinate Replay / Overlay** | ✅ Complete | ✅ 100% | Multi-monitor virtual overlay, visual numbered badges, sequential replay |
 | **Schedule Shutdown** | ✅ Complete | ✅ 100% | Shutdown, Restart, Hibernate with live countdown timer and cancel |
 | **Sticky Notes** | ✅ Complete | ✅ 100% | Dynamic note cards, floating borderless pinned desktop window, JSON persistence |
+| **Clipboard Manager** | ✅ Complete | ✅ 100% | Win32 clipboard format listener, instant search, pin/unpin, clear unpinned, JSON persistence |
+| **QR Code Studio** | ✅ Complete | ✅ 100% | QRCoder image generation, PNG file save/copy, screen snipping overlay scanner, file/clipboard decoding |
 | **Single-File Publishing** | ✅ Configured | ✅ Verified | Configured in `MyDeusTools.App.csproj` |
 
 ---
 
 ## 2. Test Execution Summary
 
-- **Total Test Count**: 20 tests
-- **Passed**: 20 (100%)
+- **Total Test Count**: 43 tests
+- **Passed**: 43 (100%)
 - **Failed**: 0
 - **Skipped**: 0
 - **Test Suites**:
-  - `AppIntegrationTests`: 13 Theory cases testing DI resolution for services, viewmodels, and pages.
+  - `AppIntegrationTests`: 19 Theory cases testing DI resolution for services, viewmodels, and pages.
   - `AutoClickServiceTests`: 3 Fact cases testing interval clamping, state tracking, and stop logic.
   - `AutoStartServiceTests`: 2 Fact cases verifying safe registry querying and writing.
   - `StickyNoteServiceTests`: 2 Fact/Task cases testing note addition, file handling, and serialization.
+  - `ClipboardServiceTests`: 9 Fact/Task cases testing deduplication, pin preservation, max limit clamping, search filtering, and JSON persistence.
+  - `QrCodeServiceTests`: 8 Fact/WpfFact cases testing PNG byte generation, roundtrip encode/decode, file decoding, URL recognition, and ViewModel state.
 
 ---
 
 ## 3. Future Roadmap & Enhancement Ideas
-- [ ] **Configurable Storage Location**: Option in UI settings to toggle between portable local `./Data/notes.json` and `%APPDATA%/MyDeusTools/`.
+- [ ] **Quick Popup Hotkey for Clipboard**: Global hotkey (e.g. `Win+Shift+V`) to show a floating mini clipboard history popup.
+- [ ] **Color Picker Utility**: Screen Eyedropper with live zoom preview, copying HEX, RGB, HSL.
 - [ ] **Sticky Note Rich Text & Colors**: Palette selector to customize background colors (Pink, Blue, Green, Orange) per note.
 - [ ] **AutoClicker Random Delay**: Add jitter/randomized delay interval (e.g. ±10%) for anti-detection in specific gaming/testing scenarios.
 - [ ] **Hotkey Conflict Notification**: Show user-friendly toast/infobar notification if a hotkey fails to register due to an OS conflict.

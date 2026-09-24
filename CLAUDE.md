@@ -15,7 +15,13 @@
 3. **Sticky Notes (Ghi chú nổi)**:
    - Create, edit, auto-save, delete notes with JSON persistence (`Data/notes.json`).
    - Pop-out sticky note window (`StickyNoteWindow`) with borderless draggable interface.
-4. **System Tray & Lifecycle**:
+4. **Clipboard Manager (Lịch sử khay nhớ tạm)**:
+   - Real-time Windows clipboard listener via Win32 `AddClipboardFormatListener` / `WM_CLIPBOARDUPDATE`.
+   - Search filter, pin items to top, delete individual items, clear unpinned items, auto-save JSON (`Data/clipboard.json`).
+5. **QR Code Studio (Tạo & Quét mã QR)**:
+   - High-definition QR generation (QRCoder), export PNG or copy image to clipboard.
+   - Screen Snipping QR Scanner (`QrSnippingOverlayWindow`), file image scanner, and clipboard image scanner via `ZXing.Net`.
+6. **System Tray & Lifecycle**:
    - Minimize-to-tray on close (`Hardcodet.NotifyIcon.Wpf`).
    - Dark / Light mode switching dynamically via `Wpf.Ui.Appearance.ApplicationThemeManager`.
    - Windows Startup toggle via CurrentUser Registry (`Software\Microsoft\Windows\CurrentVersion\Run`).
@@ -29,6 +35,7 @@
 - **DI Container**: `Microsoft.Extensions.DependencyInjection` (v10.0.7)
 - **Global Hotkeys**: `NHotkey.Wpf` (v4.0.0)
 - **Tray Icon**: `Hardcodet.NotifyIcon.Wpf` (v2.0.1)
+- **QR Generation & Decoding**: `QRCoder` (v1.8.0), `ZXing.Net` (v0.16.11)
 - **Testing**: `xunit` (v2.9.2), `Moq` (v4.20.72), `Xunit.StaFact` (v0.3.18), `coverlet.collector` (v6.0.2)
 
 ---
@@ -58,21 +65,27 @@ d:\.MyDeusTools\MyDeusTools\
 │   │   ├── StickyNoteService.cs # Sticky notes JSON repository
 │   │   ├── AutoClickService.cs  # Mouse simulation (Win32 mouse_event, SetCursorPos)
 │   │   ├── AutoStartService.cs  # Windows Registry Run Key manager
-│   │   └── Impl/                # Service Interfaces (IAutoClickService, ISystemService, etc.)
+│   │   ├── ClipboardService.cs  # Windows Clipboard listener & JSON storage
+│   │   ├── QrCodeService.cs     # QR Code generation (QRCoder) & decoding (ZXing)
+│   │   └── Impl/                # Service Interfaces (IAutoClickService, IQrCodeService, etc.)
 │   ├── ViewModels/              # MVVM ViewModels (CommunityToolkit.Mvvm)
 │   │   ├── MainWindowViewModel.cs
 │   │   ├── AutoClickViewModel.cs
 │   │   ├── ShutdownViewModel.cs
-│   │   └── StickyNoteViewModel.cs
+│   │   ├── StickyNoteViewModel.cs
+│   │   ├── ClipboardViewModel.cs
+│   │   └── QrCodeViewModel.cs
 │   ├── Views/                   # UI Pages & Sub-Windows
-│   │   ├── Pages/               # AutoClickPage, ShutdownPage, StickyNotePage
-│   │   └── Windows/             # RecordingOverlayWindow, StickyNoteWindow
+│   │   ├── Pages/               # AutoClickPage, ShutdownPage, StickyNotePage, ClipboardPage, QrCodePage
+│   │   └── Windows/             # RecordingOverlayWindow, StickyNoteWindow, QrSnippingOverlayWindow
 │   └── Resources/               # Icons & static assets (avatar.ico)
 └── MyDeusTools.Tests/           # Unit & Integration Tests (xUnit, StaFact)
     ├── AppIntegrationTests.cs   # DI Resolution verification
     ├── AutoClickServiceTests.cs # AutoClicker business logic & clamp tests
     ├── AutoStartServiceTests.cs # Registry toggle safety tests
-    └── StickyNoteServiceTests.cs# Sticky note persistence tests
+    ├── StickyNoteServiceTests.cs# Sticky note persistence tests
+    ├── ClipboardServiceTests.cs # Clipboard history, pin, search & deduplication tests
+    └── QrCodeServiceTests.cs    # QR code generation, roundtrip decode, and URL detection tests
 ```
 
 ---

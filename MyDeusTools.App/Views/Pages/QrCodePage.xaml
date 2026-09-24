@@ -1,0 +1,304 @@
+<Page x:Class="MyDeusTools.App.Views.Pages.QrCodePage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+      Title="QR Code Studio"
+      Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+      Background="Transparent">
+
+    <Grid Margin="40,25,40,25" Background="Transparent">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Grid Grid.Row="0" Margin="0,0,0,15">
+            <StackPanel Orientation="Vertical">
+                <TextBlock Text="QR Code Studio" 
+                           FontSize="28" 
+                           FontWeight="Bold"/>
+                <TextBlock Text="{Binding StatusMessage}" 
+                           FontSize="13" 
+                           Foreground="{DynamicResource TextFillColorSecondaryBrush}" 
+                           Margin="0,4,0,0"/>
+            </StackPanel>
+        </Grid>
+
+        <!-- Navigation Tabs -->
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,20">
+            <RadioButton x:Name="BtnTabGenerate" 
+                         Content="Tạo mã QR" 
+                         Style="{StaticResource {x:Type ToggleButton}}" 
+                         IsChecked="True" 
+                         Margin="0,0,10,0" 
+                         Padding="24,8"/>
+
+            <RadioButton x:Name="BtnTabScan" 
+                         Content="Quét mã QR" 
+                         Style="{StaticResource {x:Type ToggleButton}}" 
+                         Padding="24,8"/>
+        </StackPanel>
+
+        <!-- Main Content Area -->
+        <Grid Grid.Row="2">
+
+            <!-- TAB 1: GENERATOR -->
+            <Grid>
+                <Grid.Style>
+                    <Style TargetType="Grid">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsChecked, ElementName=BtnTabGenerate}" Value="True">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Grid.Style>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="340" />
+                </Grid.ColumnDefinitions>
+
+                <!-- Left Column: Input text & options -->
+                <StackPanel Grid.Column="0" Margin="0,0,20,0">
+                    <ui:Card Margin="0,0,0,15" Padding="16">
+                        <StackPanel>
+                            <TextBlock Text="Nội dung mã QR (Văn bản / Đường dẫn URL)" 
+                                       FontWeight="SemiBold" 
+                                       Margin="0,0,0,10"/>
+
+                            <TextBox Text="{Binding InputText, UpdateSourceTrigger=PropertyChanged}"
+                                     AcceptsReturn="True"
+                                     TextWrapping="Wrap"
+                                     MinHeight="140"
+                                     MaxHeight="220"
+                                     VerticalScrollBarVisibility="Auto"
+                                     FontSize="14"
+                                     Padding="10"
+                                     Margin="0,0,0,10"/>
+
+                            <TextBlock Text="Gõ nội dung hoặc dán liên kết vào ô trên để tạo mã QR tự động tức thì." 
+                                       FontSize="12" 
+                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                        </StackPanel>
+                    </ui:Card>
+
+                    <ui:Card Padding="16">
+                        <StackPanel>
+                            <TextBlock Text="Hành động xuất mã QR" 
+                                       FontWeight="SemiBold" 
+                                       Margin="0,0,0,12"/>
+
+                            <StackPanel Orientation="Horizontal">
+                                <ui:Button Content="Lưu ảnh PNG" 
+                                           Icon="{ui:SymbolIcon Symbol=Save24}"
+                                           Command="{Binding SaveImageCommand}"
+                                           Appearance="Primary"
+                                           Padding="18,8"
+                                           Margin="0,0,12,0"/>
+
+                                <ui:Button Content="Sao chép ảnh" 
+                                           Icon="{ui:SymbolIcon Symbol=Copy24}"
+                                           Command="{Binding CopyImageCommand}"
+                                           Appearance="Secondary"
+                                           Padding="18,8"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </ui:Card>
+                </StackPanel>
+
+                <!-- Right Column: QR Image Preview -->
+                <ui:Card Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Padding="20">
+                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <!-- White background wrapper for QR readability in dark mode -->
+                        <Border Background="White" 
+                                CornerRadius="8" 
+                                Padding="15" 
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Width="250" 
+                                Height="250">
+                            <Image Source="{Binding GeneratedImage}" 
+                                   RenderOptions.BitmapScalingMode="NearestNeighbor"
+                                   Stretch="Uniform"/>
+                        </Border>
+
+                        <TextBlock Text="Xem trước mã QR" 
+                                   FontWeight="SemiBold" 
+                                   HorizontalAlignment="Center" 
+                                   Margin="0,15,0,4"/>
+
+                        <TextBlock Text="Độ nét cao • Sẵn sàng quét" 
+                                   FontSize="12" 
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" 
+                                   HorizontalAlignment="Center"/>
+                    </StackPanel>
+                </ui:Card>
+            </Grid>
+
+            <!-- TAB 2: SCANNER -->
+            <Grid>
+                <Grid.Style>
+                    <Style TargetType="Grid">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsChecked, ElementName=BtnTabScan}" Value="True">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Grid.Style>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <!-- Action Triggers -->
+                <ui:Card Grid.Row="0" Margin="0,0,0,20" Padding="16">
+                    <StackPanel>
+                        <TextBlock Text="Chọn phương thức quét mã QR" 
+                                   FontWeight="SemiBold" 
+                                   Margin="0,0,0,12"/>
+
+                        <StackPanel Orientation="Horizontal">
+                            <ui:Button Content="Quét từ màn hình" 
+                                       Icon="{ui:SymbolIcon Symbol=Crop24}"
+                                       Command="{Binding ScanScreenCommand}"
+                                       Appearance="Primary"
+                                       Padding="20,10"
+                                       Margin="0,0,12,0"/>
+
+                            <ui:Button Content="Chọn tệp hình ảnh..." 
+                                       Icon="{ui:SymbolIcon Symbol=FolderOpen24}"
+                                       Command="{Binding ScanFileCommand}"
+                                       Appearance="Secondary"
+                                       Padding="18,10"
+                                       Margin="0,0,12,0"/>
+
+                            <ui:Button Content="Dán ảnh từ Clipboard" 
+                                       Icon="{ui:SymbolIcon Symbol=ClipboardPaste24}"
+                                       Command="{Binding ScanClipboardCommand}"
+                                       Appearance="Secondary"
+                                       Padding="18,10"/>
+                        </StackPanel>
+                    </StackPanel>
+                </ui:Card>
+
+                <!-- Result Area -->
+                <Grid Grid.Row="1">
+                    <!-- When result is empty -->
+                    <ui:Card HorizontalAlignment="Center" 
+                             VerticalAlignment="Center" 
+                             Padding="40,30" 
+                             MaxWidth="480">
+                        <ui:Card.Style>
+                            <Style TargetType="ui:Card">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding HasScannedResult}" Value="False">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ui:Card.Style>
+                        <StackPanel HorizontalAlignment="Center">
+                            <ui:SymbolIcon Symbol="QrCode24" 
+                                           FontSize="48" 
+                                           HorizontalAlignment="Center" 
+                                           Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                           Margin="0,0,0,15"/>
+                            <TextBlock Text="Chưa có kết quả quét" 
+                                       FontSize="18" 
+                                       FontWeight="SemiBold" 
+                                       HorizontalAlignment="Center"
+                                       Margin="0,0,0,6"/>
+                            <TextBlock Text="Nhấn 'Quét từ màn hình' để chọn vùng bất kỳ có mã QR, hoặc mở ảnh mã QR có sẵn trên máy để giải mã." 
+                                       TextWrapping="Wrap" 
+                                       TextAlignment="Center"
+                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                       FontSize="13"/>
+                        </StackPanel>
+                    </ui:Card>
+
+                    <!-- When result exists -->
+                    <ui:Card VerticalAlignment="Top" Padding="20">
+                        <ui:Card.Style>
+                            <Style TargetType="ui:Card">
+                                <Setter Property="Visibility" Value="Visible"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding HasScannedResult}" Value="False">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ui:Card.Style>
+                        <StackPanel>
+                            <Grid Margin="0,0,0,12">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock Text="Nội dung mã QR đã giải mã:" 
+                                           FontWeight="SemiBold" 
+                                           FontSize="15" 
+                                           VerticalAlignment="Center"/>
+
+                                <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                    <ui:Button Content="Sao chép" 
+                                               Icon="{ui:SymbolIcon Symbol=Copy24}"
+                                               Command="{Binding CopyResultCommand}"
+                                               Appearance="Primary"
+                                               Padding="16,6"
+                                               Margin="0,0,8,0"/>
+
+                                    <ui:Button Content="Mở liên kết" 
+                                               Icon="{ui:SymbolIcon Symbol=Globe24}"
+                                               Command="{Binding OpenUrlCommand}"
+                                               Appearance="Secondary"
+                                               Padding="16,6"
+                                               Margin="0,0,8,0">
+                                        <ui:Button.Style>
+                                            <Style TargetType="ui:Button">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsUrl}" Value="True">
+                                                        <Setter Property="Visibility" Value="Visible"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </ui:Button.Style>
+                                    </ui:Button>
+
+                                    <ui:Button Content="Xóa" 
+                                               Icon="{ui:SymbolIcon Symbol=Delete24}"
+                                               Command="{Binding ClearScanCommand}"
+                                               Appearance="Transparent"
+                                               Padding="14,6"/>
+                                </StackPanel>
+                            </Grid>
+
+                            <Border Background="{DynamicResource CardBackgroundFillColorSecondaryBrush}" 
+                                    CornerRadius="6" 
+                                    Padding="15">
+                                <TextBox Text="{Binding ScannedResult, Mode=OneWay}"
+                                         IsReadOnly="True"
+                                         Background="Transparent"
+                                         BorderThickness="0"
+                                         TextWrapping="Wrap"
+                                         MaxHeight="260"
+                                         VerticalScrollBarVisibility="Auto"
+                                         FontSize="14"
+                                         FontFamily="Consolas, Segoe UI, sans-serif"/>
+                            </Border>
+                        </StackPanel>
+                    </ui:Card>
+                </Grid>
+            </Grid>
+        </Grid>
+    </Grid>
+</Page>

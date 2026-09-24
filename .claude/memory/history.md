@@ -19,3 +19,40 @@ This log records major architecture changes, development operations, refactoring
   - `.claude/rules/wpf-standards.md`: Specific coding guidelines for WPF and XAML.
   - `.claude/rules/windows-api.md`: Specific rules for Win32 interop and registry management.
 - **Result**: Complete AI memory configuration established.
+
+---
+
+### [2026-09-24] Feature Implementation: Clipboard Manager
+- **Action**: Designed and developed native Windows Clipboard Manager feature.
+- **Components Created**:
+  - `MyDeusTools.App/Services/Impl/IClipboardService.cs`: Service interface and `ClipboardItemModel` with preview, timestamp, character count, and pin state.
+  - `MyDeusTools.App/Services/ClipboardService.cs`: Win32 `AddClipboardFormatListener` / `RemoveClipboardFormatListener` integration, STA thread-safe reading, deduplication, item capacity enforcement, and JSON persistence (`Data/clipboard.json`).
+  - `MyDeusTools.App/ViewModels/ClipboardViewModel.cs`: Real-time search filtering, pin management, copy-back command, and clear actions.
+  - `MyDeusTools.App/Views/Pages/ClipboardPage.xaml` & `.xaml.cs`: Fluent UI page with search bar, card-based history entries, pin badges, empty state illustration, and copy/delete actions.
+  - `MyDeusTools.Tests/ClipboardServiceTests.cs`: 9 unit tests covering deduplication, pin preservation, max item limits, search filtering, and serialization.
+- **Integration**:
+  - Connected `MainWindow.xaml.cs` to message pump hook (`WM_CLIPBOARDUPDATE = 0x031D`).
+  - Registered `IClipboardService`, `ClipboardViewModel`, and `ClipboardPage` in `App.xaml.cs`.
+  - Added new `NavigationViewItem` to `MainWindow.xaml`.
+  - Extended `AppIntegrationTests.cs` to verify DI resolution.
+- **Verification**: Executed `dotnet test`. All 32/32 tests passed (100%).
+
+---
+
+### [2026-09-24] Feature Implementation: QR Code Studio
+- **Action**: Designed and developed QR Code Studio (Generator & Multi-Source Scanner).
+- **Packages Integrated**:
+  - `QRCoder` (v1.8.0): Pure managed C# QR encoder.
+  - `ZXing.Net` (v0.16.11): Barcode/QR code reader and decoder.
+- **Components Created**:
+  - `MyDeusTools.App/Services/Impl/IQrCodeService.cs`: Interface for generating and decoding QR codes.
+  - `MyDeusTools.App/Services/QrCodeService.cs`: PNG byte generation, WPF BitmapSource conversion, RGBLuminanceSource hybrid binarizer decoding, file decoding, and GDI screen region capture decoding.
+  - `MyDeusTools.App/Views/Windows/QrSnippingOverlayWindow.xaml` & `.xaml.cs`: Fullscreen crosshair snipping overlay with rubber-band rectangle selection across multi-monitors.
+  - `MyDeusTools.App/ViewModels/QrCodeViewModel.cs`: Two-tab state (Generator / Scanner), image preview, PNG file export, clipboard copy, screen snipping trigger, and browser URL opener.
+  - `MyDeusTools.App/Views/Pages/QrCodePage.xaml` & `.xaml.cs`: Modern Fluent interface with dark-mode friendly white QR card, multi-source scanner buttons, and formatted result viewer.
+  - `MyDeusTools.Tests/QrCodeServiceTests.cs`: 8 unit and integration tests covering generation bytes, roundtrip encode/decode, file decoding, and URL recognition.
+- **Integration**:
+  - Registered `IQrCodeService`, `QrCodeViewModel`, and `QrCodePage` in `App.xaml.cs`.
+  - Added new `NavigationViewItem` to `MainWindow.xaml` (`SymbolRegular.QrCode24`).
+  - Extended `AppIntegrationTests.cs` to verify DI resolution.
+- **Verification**: Executed `dotnet test`. All 43/43 tests passed (100%).
