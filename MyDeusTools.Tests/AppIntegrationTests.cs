@@ -18,13 +18,16 @@ namespace MyDeusTools.Tests
         [InlineData(typeof(ISystemService))]
         [InlineData(typeof(IStickyNoteService))]
         [InlineData(typeof(IAutoStartService))]
+        [InlineData(typeof(IClipboardService))]
         [InlineData(typeof(MainWindowViewModel))]
         [InlineData(typeof(AutoClickViewModel))]
         [InlineData(typeof(ShutdownViewModel))]
         [InlineData(typeof(StickyNoteViewModel))]
+        [InlineData(typeof(ClipboardViewModel))]
         [InlineData(typeof(AutoClickPage))]
         [InlineData(typeof(ShutdownPage))]
         [InlineData(typeof(StickyNotePage))]
+        [InlineData(typeof(ClipboardPage))]
         public void ServiceProvider_ShouldResolveDependencies(Type serviceType)
         {
             // Arrange

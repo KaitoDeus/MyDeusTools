@@ -39,18 +39,21 @@ public partial class App : Application
         services.AddSingleton<ISystemService, SystemService>();
         services.AddSingleton<IStickyNoteService, StickyNoteService>();
         services.AddSingleton<IAutoStartService, AutoStartService>();
+        services.AddSingleton<IClipboardService, ClipboardService>();
 
         // 2. Register ViewModels
         services.AddTransient<MainWindowViewModel>();
         services.AddTransient<AutoClickViewModel>();
         services.AddTransient<ShutdownViewModel>();
         services.AddTransient<StickyNoteViewModel>();
+        services.AddTransient<ClipboardViewModel>();
 
         // 3. Register Views (Windows/Pages)
         services.AddTransient<MainWindow>();
         services.AddTransient<AutoClickPage>();
         services.AddTransient<ShutdownPage>();
         services.AddTransient<StickyNotePage>();
+        services.AddTransient<ClipboardPage>();
 
         return services.BuildServiceProvider();
     }

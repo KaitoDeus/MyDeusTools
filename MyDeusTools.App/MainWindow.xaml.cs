@@ -10,13 +10,17 @@ public partial class MainWindow : FluentWindow
 {
     public ViewModels.MainWindowViewModel ViewModel { get; }
     private readonly IAutoStartService _autoStartService;
+    private readonly IClipboardService _clipboardService;
     private TaskbarIcon? _notifyIcon;
     private bool _isExitAllowed = false;
+    private const int WM_CLIPBOARDUPDATE = 0x031D;
+    private System.Windows.Interop.HwndSource? _hwndSource;
 
-    public MainWindow(ViewModels.MainWindowViewModel viewModel, Wpf.Ui.INavigationService navigationService, IAutoStartService autoStartService)
+    public MainWindow(ViewModels.MainWindowViewModel viewModel, Wpf.Ui.INavigationService navigationService, IAutoStartService autoStartService, IClipboardService clipboardService)
     {
         ViewModel = viewModel;
         _autoStartService = autoStartService;
+        _clipboardService = clipboardService;
         DataContext = this;
 
         InitializeComponent();
@@ -30,6 +34,34 @@ public partial class MainWindow : FluentWindow
 
         // Khởi tạo trạng thái khởi động cùng Windows
         UpdateAutoStartUI();
+
+        // Lắng nghe sự kiện Clipboard hệ thống
+        SourceInitialized += MainWindow_SourceInitialized;
+        Closed += MainWindow_Closed;
+    }
+
+    private void MainWindow_SourceInitialized(object? sender, EventArgs e)
+    {
+        var handle = new System.Windows.Interop.WindowInteropHelper(this).Handle;
+        _hwndSource = System.Windows.Interop.HwndSource.FromHwnd(handle);
+        _hwndSource?.AddHook(HwndHook);
+        _clipboardService.StartMonitoring(handle);
+    }
+
+    private void MainWindow_Closed(object? sender, EventArgs e)
+    {
+        var handle = new System.Windows.Interop.WindowInteropHelper(this).Handle;
+        _clipboardService.StopMonitoring(handle);
+        _hwndSource?.RemoveHook(HwndHook);
+    }
+
+    private IntPtr HwndHook(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
+    {
+        if (msg == WM_CLIPBOARDUPDATE)
+        {
+            _clipboardService.ProcessClipboardUpdate();
+        }
+        return IntPtr.Zero;
     }
 
     private void InitializeTray()
