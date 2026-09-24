@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-  <strong>Bộ tiện ích máy tính tất cả trong một dành cho Windows 10 và 11</strong>
+  <strong>Modern All-in-One Desktop Utility Suite for Windows 10 & 11</strong>
 </p>
 
 <p align="center">
@@ -19,79 +19,79 @@
 
 ---
 
-## Giới thiệu
+## Overview
 
-MyDeusTools là ứng dụng tiện ích máy tính hiện đại, gọn nhẹ và đa năng, được thiết kế theo ngôn ngữ giao diện Fluent Design (Mica Backdrop) của Windows 11. Thay vì phải cài đặt nhiều phần mềm riêng lẻ, MyDeusTools tích hợp các công cụ thiết yếu hàng ngày vào một ứng dụng duy nhất, có thể đóng gói thành một file thực thi độc lập (.exe) chạy ngay mà không cần cài đặt.
+MyDeusTools is a lightweight, modern, and versatile Windows desktop utility suite built with WPF and WPF-UI 3.0 (Windows 11 Fluent Design & Mica Backdrop). Instead of installing multiple standalone applications, MyDeusTools consolidates essential daily productivity tools into a single, cohesive application that packages into a zero-dependency, self-contained single-file executable.
 
 ---
 
-## Tính năng chính
+## Key Features
 
-| Tính năng | Mô tả chi tiết |
+| Feature | Description |
 |---|---|
-| **Auto Clicker Pro** | Click chuột tự động tùy chỉnh (Trái, Phải, Giữa, Đơn, Đúp), điều chỉnh khoảng thời gian (Ms/Giây/Phút/Giờ, tối thiểu 10ms), gán phím tắt toàn cục tùy ý (NHotkey), chế độ ghi và phát lại chuỗi tọa độ đa màn hình (RecordingOverlayWindow). |
-| **Schedule Shutdown** | Lên lịch hẹn giờ Tắt máy (Shutdown), Khởi động lại (Restart), Ngủ đông (Hibernate) với đồng hồ đếm ngược thời gian thực định dạng hh:mm:ss và hỗ trợ hủy lệnh bất kỳ lúc nào. |
-| **Sticky Notes** | Ghi chú nổi trên màn hình dạng thẻ, tự động lưu trữ (Data/notes.json), hỗ trợ ghim từng ghi chú ra cửa sổ riêng biệt trên Desktop (StickyNoteWindow - Topmost, không viền, kéo thả tự do). |
-| **Clipboard Manager** | Tự động theo dõi khay nhớ tạm thời gian thực thông qua Win32 API (AddClipboardFormatListener), tìm kiếm nhanh nội dung đã sao chép, ghim các đoạn text quan trọng, copy lại với một thao tác. |
-| **QR Code Studio** | Tạo mã QR độ nét cao tức thì (QRCoder), xuất file PNG hoặc sao chép ảnh vào clipboard; Quét mã QR đa nguồn (ZXing.Net): chụp cắt vùng màn hình trực tiếp (QrSnippingOverlayWindow), quét từ tệp ảnh hoặc từ khay nhớ tạm, tự nhận diện liên kết web. |
-| **System Tray & Khởi động cùng Windows** | Thu nhỏ ứng dụng vào khay hệ thống (Taskbar Tray Icon) khi đóng cửa sổ, chuyển đổi giao diện Sáng / Tối (Dark/Light mode) linh hoạt, tùy chọn khởi động cùng Windows qua Registry. |
+| **Auto Clicker Pro** | Highly configurable automated mouse clicking (Left, Right, Middle buttons; Single or Double click), high-precision interval control (Hours, Minutes, Seconds, Milliseconds with 10ms safety clamp), global hotkey assignment (NHotkey), and full-screen coordinate recording/playback across multi-monitor setups (RecordingOverlayWindow). |
+| **Schedule Shutdown** | Timed system power management supporting Shutdown, Restart, and Hibernate actions, featuring a real-time visual countdown timer (hh:mm:ss) and instantaneous cancellation support. |
+| **Sticky Notes** | Card-based desktop note manager with automatic JSON persistence (Data/notes.json), and pop-out borderless floating desktop windows (StickyNoteWindow - Topmost, draggable, non-intrusive). |
+| **Clipboard Manager** | Real-time clipboard listener utilizing native Win32 APIs (AddClipboardFormatListener), instant search filtering, pin-to-top support, and one-click copy back to clipboard. |
+| **QR Code Studio** | High-definition QR code generation (QRCoder) with PNG export and clipboard copy; multi-source QR decoding (ZXing.Net) supporting screen region snipping (QrSnippingOverlayWindow), image file decoding, and clipboard image reading with automatic web URL detection. |
+| **System Tray & Windows Startup** | Minimize-to-tray lifecycle management (Hardcodet.NotifyIcon), instant Dark/Light theme switching, and Windows startup toggle via CurrentUser Registry. |
 
 ---
 
-## Công nghệ sử dụng
+## Technology Stack
 
-- **Ngôn ngữ và Nền tảng**: C# 12, .NET 8.0 Windows Desktop (net8.0-windows, win-x64)
-- **Giao diện**: WPF kết hợp thư viện giao diện hiện đại [WPF-UI 3.0.5](https://wpfui.lepo.co/) (Mica Effect, FluentWindow, NavigationControl)
-- **Kiến trúc**: Model-View-ViewModel (MVVM) với [CommunityToolkit.Mvvm](https://learn.microsoft.com/en-us/dotnet/communitytoolkit/mvvm/)
+- **Framework & Runtime**: C# 12, .NET 8.0 Windows Desktop (net8.0-windows, win-x64)
+- **UI Framework**: WPF with [WPF-UI 3.0.5](https://wpfui.lepo.co/) (Fluent Design, Mica Backdrop, NavigationControl)
+- **Architecture**: Model-View-ViewModel (MVVM) powered by [CommunityToolkit.Mvvm](https://learn.microsoft.com/en-us/dotnet/communitytoolkit/mvvm/)
 - **Dependency Injection**: Microsoft.Extensions.DependencyInjection
-- **Tương tác phần cứng và Hệ điều hành**:
-  - Win32 P/Invoke (user32.dll cho mô phỏng chuột, lắng nghe Clipboard)
-  - NHotkey.Wpf cho phím tắt toàn cục
-  - Hardcodet.NotifyIcon.Wpf cho Taskbar Notification Tray
-  - QRCoder và ZXing.Net cho xử lý mã QR
-- **Kiểm thử tự động**: xUnit 2.9, Moq 4.20, Xunit.StaFact (43/43 tests passed)
+- **OS & Native Interop**:
+  - Win32 P/Invoke (user32.dll for mouse synthesization and clipboard format listener)
+  - NHotkey.Wpf for global system-wide hotkeys
+  - Hardcodet.NotifyIcon.Wpf for taskbar notification tray
+  - QRCoder & ZXing.Net for QR code generation and decoding
+- **Testing**: xUnit 2.9, Moq 4.20, Xunit.StaFact (43/43 tests passing, 100% success rate)
 
 ---
 
-## Cài đặt và Khởi chạy
+## Getting Started
 
-### Yêu cầu hệ thống
-- Hệ điều hành: Windows 10 hoặc Windows 11 (x64)
-- .NET 8.0 SDK (nếu muốn tự biên dịch từ mã nguồn)
+### Prerequisites
+- Operating System: Windows 10 or Windows 11 (x64)
+- .NET 8.0 SDK (required for building from source)
 
-### 1. Khởi chạy trong môi trường phát triển
+### 1. Run in Development Mode
 ```bash
 # Clone repository
 git clone https://github.com/KaitoDeus/MyDeusTools.git
 cd MyDeusTools
 
-# Chạy ứng dụng
+# Run application
 dotnet run --project MyDeusTools.App/MyDeusTools.App.csproj
 ```
 
-### 2. Chạy kiểm thử tự động
+### 2. Run Automated Test Suite
 ```bash
 dotnet test
 ```
 
-### 3. Đóng gói file thực thi độc lập (Single-File Executable)
+### 3. Build Single-File Self-Contained Executable
 ```bash
 dotnet publish MyDeusTools.App/MyDeusTools.App.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:PublishReadyToRun=true -p:IncludeNativeLibrariesForSelfExtract=true -p:EnableCompressionInSingleFile=true
 ```
-File thực thi nằm tại:
+The standalone executable will be located at:
 `MyDeusTools.App/bin/Release/net8.0-windows/win-x64/publish/MyDeusTools.App.exe`
 
 ---
 
-## Đóng góp và Phát triển
+## Contributors
 
-Dự án được xây dựng và phát triển thông qua mô hình Human-AI Pair Programming:
+This project is developed and maintained through Human-AI Pair Programming:
 
-- **[KaitoDeus](https://github.com/KaitoDeus)** — Tác giả, Kiến trúc sư và Nhà phát triển chính
-- **[Claude](https://anthropic.com)** (Anthropic) — Trợ lý phát triển AI (Cộng sự kiến trúc, tối ưu mã nguồn và lập trình module)
+- **[KaitoDeus](https://github.com/KaitoDeus)** — Project Creator, Lead Software Architect & Developer
+- **[Claude](https://github.com/claude)** — AI Pair Programmer & Code Contributor
 
 ---
 
-## Bản quyền
+## License
 
-Dự án được phân phối dưới giấy phép [MIT License](LICENSE).
+This project is licensed under the [MIT License](LICENSE).

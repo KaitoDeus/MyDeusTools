@@ -7,7 +7,7 @@ We acknowledge and celebrate all contributions to the MyDeusTools project.
 | Contributor | Role | Profile / Organization |
 |---|---|---|
 | **KaitoDeus** | Project Creator, Lead Software Architect & Core Developer | [@KaitoDeus](https://github.com/KaitoDeus) |
-| **Claude** | AI Pair Programmer, Architecture Collaborator & Feature Implementation | [Anthropic](https://anthropic.com) |
+| **Claude** | AI Pair Programmer, Architecture Collaborator & Feature Implementation | [@claude](https://github.com/claude) |
 
 ---
 
