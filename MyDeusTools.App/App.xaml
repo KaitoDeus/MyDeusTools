@@ -5,10 +5,11 @@
              xmlns:local="clr-namespace:MyDeusTools.App">
     <Application.Resources>
     <ResourceDictionary>
-        <ResourceDictionary.MergedDictionaries>
-            <ui:ThemesDictionary Theme="Light" />
-            <ui:ControlsDictionary />
-        </ResourceDictionary.MergedDictionaries>
+            <ResourceDictionary.MergedDictionaries>
+                <ui:ThemesDictionary Theme="Light" />
+                <ui:ControlsDictionary />
+                <ResourceDictionary Source="Resources/Languages/Strings.vi-VN.xaml" />
+            </ResourceDictionary.MergedDictionaries>
     </ResourceDictionary>
 </Application.Resources>
 </Application>

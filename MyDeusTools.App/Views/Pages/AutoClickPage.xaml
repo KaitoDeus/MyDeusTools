@@ -21,7 +21,7 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Row="0" Text="AutoClicker Pro" FontSize="28" FontWeight="Bold" Margin="0,0,0,20"/>
+        <TextBlock Grid.Row="0" Text="{DynamicResource AutoClick_Title}" FontSize="28" FontWeight="Bold" Margin="0,0,0,20"/>
 
         <!-- Navigation Buttons -->
         <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,20">

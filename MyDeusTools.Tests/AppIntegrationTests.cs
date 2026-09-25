@@ -22,6 +22,7 @@ namespace MyDeusTools.Tests
         [InlineData(typeof(IQrCodeService))]
         [InlineData(typeof(IColorPickerService))]
         [InlineData(typeof(ITextUtilityService))]
+        [InlineData(typeof(ILanguageService))]
         [InlineData(typeof(MainWindowViewModel))]
         [InlineData(typeof(AutoClickViewModel))]
         [InlineData(typeof(ShutdownViewModel))]

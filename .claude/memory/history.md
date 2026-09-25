@@ -91,4 +91,20 @@ This log records major architecture changes, development operations, refactoring
   - Fixed `ColorPickerService.cs` asynchronous file saving by introducing `SemaphoreSlim` to eliminate file write collisions during rapid state mutations.
 - **Verification**: Executed `dotnet test`. All 70/70 tests passed (100%).
 
+---
+
+### [2026-09-25] Feature Implementation: Bilingual Localization (EN & VIE)
+- **Action**: Implemented dynamic runtime language switching between Vietnamese (`vi-VN`) and English (`en-US`).
+- **Components Created**:
+  - `MyDeusTools.App/Resources/Languages/Strings.vi-VN.xaml` & `Strings.en-US.xaml`: Comprehensive localization string dictionaries covering shell, navigation, buttons, and page titles.
+  - `MyDeusTools.App/Services/Impl/ILanguageService.cs`: Interface defining `CurrentLanguage`, `CurrentLanguageCode`, `LanguageChanged`, `SetLanguage`, `ToggleLanguage`, and `GetString`.
+  - `MyDeusTools.App/Services/LanguageService.cs`: Manages dynamic replacement of language ResourceDictionary in `Application.Current.Resources.MergedDictionaries` and auto-saves preference to `Data/settings.json`.
+  - `MyDeusTools.Tests/LanguageServiceTests.cs`: 6 unit tests verifying default language, switching, toggling, event notification, settings persistence, and fallback lookup.
+- **UI Integration**:
+  - Added `LanguageMenuItem` to `MainWindow.xaml` in `FooterMenuItems` with globe icon (`SymbolRegular.Globe24`) and dynamic binding `{DynamicResource App_Language_Display}`.
+  - Bound navigation menu items and page headers across all pages to `{DynamicResource ...}` to enable zero-restart live translation.
+  - Registered `ILanguageService` in `App.xaml.cs` and verified via `AppIntegrationTests.cs` (total 26 test cases).
+- **Verification**: Executed `dotnet test`. All 77/77 tests passed (100%).
+
+
 

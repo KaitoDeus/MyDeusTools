@@ -1,0 +1,96 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:system="clr-namespace:System;assembly=mscorlib">
+
+    <!-- Shell / App Information -->
+    <system:String x:Key="App_Title">MyDeusTools</system:String>
+    <system:String x:Key="App_Language">Ngôn ngữ</system:String>
+    <system:String x:Key="App_Language_Code">vi-VN</system:String>
+    <system:String x:Key="App_Language_Display">Ngôn ngữ: Tiếng Việt (VIE)</system:String>
+    <system:String x:Key="App_AutoStart_On">Khởi động cùng Win: BẬT</system:String>
+    <system:String x:Key="App_AutoStart_Off">Khởi động cùng Win: TẮT</system:String>
+    <system:String x:Key="App_Theme_Dark">Giao diện: Tối</system:String>
+    <system:String x:Key="App_Theme_Light">Giao diện: Sáng</system:String>
+    <system:String x:Key="App_Tray_Tooltip">MyDeusTools - Bộ công cụ tiện ích đa năng</system:String>
+
+    <!-- Navigation Menu Items -->
+    <system:String x:Key="Nav_StickyNote">Ghi chú nổi</system:String>
+    <system:String x:Key="Nav_AutoClicker">Tự động click chuột</system:String>
+    <system:String x:Key="Nav_ScheduleShutdown">Hẹn giờ hệ thống</system:String>
+    <system:String x:Key="Nav_ClipboardManager">Lịch sử khay nhớ tạm</system:String>
+    <system:String x:Key="Nav_QrCodeStudio">QR Code Studio</system:String>
+    <system:String x:Key="Nav_ColorPicker">Lấy mã màu (Color Picker)</system:String>
+    <system:String x:Key="Nav_TextDevTools">Text &amp; Dev Tools</system:String>
+
+    <!-- Sticky Notes Page -->
+    <system:String x:Key="Sticky_Title">Ghi chú nổi</system:String>
+    <system:String x:Key="Sticky_Subtitle">Ghi chú nhanh trên màn hình, lưu tự động và ghim nổi</system:String>
+    <system:String x:Key="Sticky_Add">Thêm ghi chú</system:String>
+    <system:String x:Key="Sticky_Empty">Chưa có ghi chú nào. Nhấn 'Thêm ghi chú' để bắt đầu.</system:String>
+    <system:String x:Key="Sticky_Pin">Ghim lên desktop</system:String>
+    <system:String x:Key="Sticky_Delete">Xóa</system:String>
+
+    <!-- Auto Clicker Page -->
+    <system:String x:Key="AutoClick_Title">Tự động click chuột (Auto Clicker Pro)</system:String>
+    <system:String x:Key="AutoClick_Subtitle">Tự động nhấn chuột theo chu kỳ hoặc phát lại tọa độ ghi trước</system:String>
+    <system:String x:Key="AutoClick_Start">Bắt đầu (F6)</system:String>
+    <system:String x:Key="AutoClick_Stop">Dừng lại (F6)</system:String>
+    <system:String x:Key="AutoClick_Record">Ghi tọa độ</system:String>
+    <system:String x:Key="AutoClick_ClearPoints">Xóa điểm</system:String>
+
+    <!-- Schedule Shutdown Page -->
+    <system:String x:Key="Shutdown_Title">Hẹn giờ hệ thống</system:String>
+    <system:String x:Key="Shutdown_Subtitle">Tự động Tắt máy, Khởi động lại hoặc Ngủ đông theo thời gian cài đặt</system:String>
+    <system:String x:Key="Shutdown_Action">Hành động hệ thống</system:String>
+    <system:String x:Key="Shutdown_Action_Shutdown">Tắt máy (Shutdown)</system:String>
+    <system:String x:Key="Shutdown_Action_Restart">Khởi động lại (Restart)</system:String>
+    <system:String x:Key="Shutdown_Action_Hibernate">Ngủ đông (Hibernate)</system:String>
+    <system:String x:Key="Shutdown_Start">Bắt đầu đếm ngược</system:String>
+    <system:String x:Key="Shutdown_Cancel">Hủy hẹn giờ</system:String>
+
+    <!-- Clipboard Manager Page -->
+    <system:String x:Key="Clipboard_Title">Lịch sử khay nhớ tạm</system:String>
+    <system:String x:Key="Clipboard_Subtitle">Tự động lưu lịch sử copy, tìm kiếm nhanh và ghim mục quan trọng</system:String>
+    <system:String x:Key="Clipboard_Search">Tìm kiếm nội dung đã sao chép...</system:String>
+    <system:String x:Key="Clipboard_Clear">Xóa chưa ghim</system:String>
+    <system:String x:Key="Clipboard_Empty">Chưa có lịch sử sao chép</system:String>
+    <system:String x:Key="Clipboard_Copy">Sao chép</system:String>
+
+    <!-- QR Code Studio Page -->
+    <system:String x:Key="Qr_Title">QR Code Studio</system:String>
+    <system:String x:Key="Qr_Subtitle">Tạo mã QR sắc nét và quét mã từ màn hình, ảnh, khay nhớ tạm</system:String>
+    <system:String x:Key="Qr_Tab_Generate">Tạo mã QR</system:String>
+    <system:String x:Key="Qr_Tab_Scan">Quét mã QR</system:String>
+    <system:String x:Key="Qr_SavePng">Lưu PNG</system:String>
+    <system:String x:Key="Qr_CopyImage">Sao chép ảnh</system:String>
+    <system:String x:Key="Qr_SnipScreen">Cắt vùng quét màn hình</system:String>
+    <system:String x:Key="Qr_ScanFile">Chọn ảnh...</system:String>
+    <system:String x:Key="Qr_ScanClipboard">Đọc từ Clipboard</system:String>
+
+    <!-- Color Picker Page -->
+    <system:String x:Key="Color_Title">Lấy mã màu (Color Picker)</system:String>
+    <system:String x:Key="Color_Subtitle">Kính lúp phóng to từng pixel, chép nhanh HEX, RGB, HSL, HSV</system:String>
+    <system:String x:Key="Color_PickButton">Chấm màu màn hình</system:String>
+    <system:String x:Key="Color_RecentColors">Bảng màu đã lấy</system:String>
+    <system:String x:Key="Color_ClearAll">Xóa tất cả</system:String>
+
+    <!-- Text & Dev Tools Page -->
+    <system:String x:Key="TextDev_Title">Text &amp; Dev Tools</system:String>
+    <system:String x:Key="TextDev_Subtitle">Bộ công cụ xử lý văn bản, JSON, Base64, mã băm (Hash) và đổi định dạng chữ</system:String>
+    <system:String x:Key="TextDev_Tab_Json">JSON Studio</system:String>
+    <system:String x:Key="TextDev_Tab_Base64">Base64</system:String>
+    <system:String x:Key="TextDev_Tab_Url">URL &amp; HTML</system:String>
+    <system:String x:Key="TextDev_Tab_Hash">Hash Generator</system:String>
+    <system:String x:Key="TextDev_Tab_Inspector">Case &amp; Thống kê</system:String>
+    <system:String x:Key="TextDev_Format">Định dạng (Format)</system:String>
+    <system:String x:Key="TextDev_Minify">Nén gọn (Minify)</system:String>
+    <system:String x:Key="TextDev_Validate">Kiểm tra</system:String>
+    <system:String x:Key="TextDev_Copy">Sao chép</system:String>
+    <system:String x:Key="TextDev_Paste">Dán từ Clipboard</system:String>
+    <system:String x:Key="TextDev_Clear">Xóa tất cả</system:String>
+    <system:String x:Key="TextDev_Encode">Mã hóa (Encode)</system:String>
+    <system:String x:Key="TextDev_Decode">Giải mã (Decode)</system:String>
+    <system:String x:Key="TextDev_EncodeFile">Mã hóa File...</system:String>
+    <system:String x:Key="TextDev_SaveToFile">Lưu ra File...</system:String>
+
+</ResourceDictionary>

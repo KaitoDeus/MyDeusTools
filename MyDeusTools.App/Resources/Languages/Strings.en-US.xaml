@@ -1,0 +1,96 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:system="clr-namespace:System;assembly=mscorlib">
+
+    <!-- Shell / App Information -->
+    <system:String x:Key="App_Title">MyDeusTools</system:String>
+    <system:String x:Key="App_Language">Language</system:String>
+    <system:String x:Key="App_Language_Code">en-US</system:String>
+    <system:String x:Key="App_Language_Display">Language: English (EN)</system:String>
+    <system:String x:Key="App_AutoStart_On">Start with Windows: ON</system:String>
+    <system:String x:Key="App_AutoStart_Off">Start with Windows: OFF</system:String>
+    <system:String x:Key="App_Theme_Dark">Theme: Dark</system:String>
+    <system:String x:Key="App_Theme_Light">Theme: Light</system:String>
+    <system:String x:Key="App_Tray_Tooltip">MyDeusTools - All-in-One Utility Suite</system:String>
+
+    <!-- Navigation Menu Items -->
+    <system:String x:Key="Nav_StickyNote">Sticky Notes</system:String>
+    <system:String x:Key="Nav_AutoClicker">Auto Clicker</system:String>
+    <system:String x:Key="Nav_ScheduleShutdown">Schedule Shutdown</system:String>
+    <system:String x:Key="Nav_ClipboardManager">Clipboard Manager</system:String>
+    <system:String x:Key="Nav_QrCodeStudio">QR Code Studio</system:String>
+    <system:String x:Key="Nav_ColorPicker">Color Picker</system:String>
+    <system:String x:Key="Nav_TextDevTools">Text &amp; Dev Tools</system:String>
+
+    <!-- Sticky Notes Page -->
+    <system:String x:Key="Sticky_Title">Sticky Notes</system:String>
+    <system:String x:Key="Sticky_Subtitle">Quick desktop notes with auto-save and floating pins</system:String>
+    <system:String x:Key="Sticky_Add">Add Note</system:String>
+    <system:String x:Key="Sticky_Empty">No notes yet. Click 'Add Note' to start.</system:String>
+    <system:String x:Key="Sticky_Pin">Pin to Desktop</system:String>
+    <system:String x:Key="Sticky_Delete">Delete</system:String>
+
+    <!-- Auto Clicker Page -->
+    <system:String x:Key="AutoClick_Title">Auto Clicker Pro</system:String>
+    <system:String x:Key="AutoClick_Subtitle">Automate mouse clicks with intervals or waypoint playback</system:String>
+    <system:String x:Key="AutoClick_Start">Start (F6)</system:String>
+    <system:String x:Key="AutoClick_Stop">Stop (F6)</system:String>
+    <system:String x:Key="AutoClick_Record">Record Waypoints</system:String>
+    <system:String x:Key="AutoClick_ClearPoints">Clear Points</system:String>
+
+    <!-- Schedule Shutdown Page -->
+    <system:String x:Key="Shutdown_Title">Schedule Shutdown</system:String>
+    <system:String x:Key="Shutdown_Subtitle">Automate Shutdown, Restart, or Hibernate on a scheduled timer</system:String>
+    <system:String x:Key="Shutdown_Action">System Action</system:String>
+    <system:String x:Key="Shutdown_Action_Shutdown">Shutdown</system:String>
+    <system:String x:Key="Shutdown_Action_Restart">Restart</system:String>
+    <system:String x:Key="Shutdown_Action_Hibernate">Hibernate</system:String>
+    <system:String x:Key="Shutdown_Start">Start Countdown</system:String>
+    <system:String x:Key="Shutdown_Cancel">Cancel Schedule</system:String>
+
+    <!-- Clipboard Manager Page -->
+    <system:String x:Key="Clipboard_Title">Clipboard Manager</system:String>
+    <system:String x:Key="Clipboard_Subtitle">Real-time clipboard history, instant search, and pinning</system:String>
+    <system:String x:Key="Clipboard_Search">Search copied items...</system:String>
+    <system:String x:Key="Clipboard_Clear">Clear Unpinned</system:String>
+    <system:String x:Key="Clipboard_Empty">No clipboard history yet</system:String>
+    <system:String x:Key="Clipboard_Copy">Copy</system:String>
+
+    <!-- QR Code Studio Page -->
+    <system:String x:Key="Qr_Title">QR Code Studio</system:String>
+    <system:String x:Key="Qr_Subtitle">Generate HD QR codes and scan from screen, file, or clipboard</system:String>
+    <system:String x:Key="Qr_Tab_Generate">Generate QR</system:String>
+    <system:String x:Key="Qr_Tab_Scan">Scan QR</system:String>
+    <system:String x:Key="Qr_SavePng">Save PNG</system:String>
+    <system:String x:Key="Qr_CopyImage">Copy Image</system:String>
+    <system:String x:Key="Qr_SnipScreen">Snip Screen Area</system:String>
+    <system:String x:Key="Qr_ScanFile">Choose Image...</system:String>
+    <system:String x:Key="Qr_ScanClipboard">Read from Clipboard</system:String>
+
+    <!-- Color Picker Page -->
+    <system:String x:Key="Color_Title">Color Picker &amp; Eyedropper</system:String>
+    <system:String x:Key="Color_Subtitle">Pixel magnifier eyedropper, instant HEX, RGB, HSL, HSV copy</system:String>
+    <system:String x:Key="Color_PickButton">Pick Color from Screen</system:String>
+    <system:String x:Key="Color_RecentColors">Color Palette History</system:String>
+    <system:String x:Key="Color_ClearAll">Clear All</system:String>
+
+    <!-- Text & Dev Tools Page -->
+    <system:String x:Key="TextDev_Title">Text &amp; Dev Tools</system:String>
+    <system:String x:Key="TextDev_Subtitle">Swiss Army knife for text, JSON, Base64, Hashes, and Case converters</system:String>
+    <system:String x:Key="TextDev_Tab_Json">JSON Studio</system:String>
+    <system:String x:Key="TextDev_Tab_Base64">Base64</system:String>
+    <system:String x:Key="TextDev_Tab_Url">URL &amp; HTML</system:String>
+    <system:String x:Key="TextDev_Tab_Hash">Hash Generator</system:String>
+    <system:String x:Key="TextDev_Tab_Inspector">Case &amp; Statistics</system:String>
+    <system:String x:Key="TextDev_Format">Format</system:String>
+    <system:String x:Key="TextDev_Minify">Minify</system:String>
+    <system:String x:Key="TextDev_Validate">Validate</system:String>
+    <system:String x:Key="TextDev_Copy">Copy</system:String>
+    <system:String x:Key="TextDev_Paste">Paste from Clipboard</system:String>
+    <system:String x:Key="TextDev_Clear">Clear All</system:String>
+    <system:String x:Key="TextDev_Encode">Encode</system:String>
+    <system:String x:Key="TextDev_Decode">Decode</system:String>
+    <system:String x:Key="TextDev_EncodeFile">Encode File...</system:String>
+    <system:String x:Key="TextDev_SaveToFile">Save to File...</system:String>
+
+</ResourceDictionary>

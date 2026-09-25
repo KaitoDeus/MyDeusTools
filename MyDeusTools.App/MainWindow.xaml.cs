@@ -11,19 +11,23 @@ public partial class MainWindow : FluentWindow
     public ViewModels.MainWindowViewModel ViewModel { get; }
     private readonly IAutoStartService _autoStartService;
     private readonly IClipboardService _clipboardService;
+    private readonly ILanguageService _languageService;
     private TaskbarIcon? _notifyIcon;
     private bool _isExitAllowed = false;
     private const int WM_CLIPBOARDUPDATE = 0x031D;
     private System.Windows.Interop.HwndSource? _hwndSource;
 
-    public MainWindow(ViewModels.MainWindowViewModel viewModel, Wpf.Ui.INavigationService navigationService, IAutoStartService autoStartService, IClipboardService clipboardService)
+    public MainWindow(ViewModels.MainWindowViewModel viewModel, Wpf.Ui.INavigationService navigationService, IAutoStartService autoStartService, IClipboardService clipboardService, ILanguageService languageService)
     {
         ViewModel = viewModel;
         _autoStartService = autoStartService;
         _clipboardService = clipboardService;
+        _languageService = languageService;
         DataContext = this;
 
         InitializeComponent();
+
+        _languageService.LanguageChanged += OnLanguageChanged;
 
         // Cấu hình điều hướng: Gán NavigationView cho Service
         navigationService.SetNavigationControl(RootNavigation);
@@ -122,6 +126,20 @@ public partial class MainWindow : FluentWindow
         Wpf.Ui.Appearance.ApplicationThemeManager.Apply(newTheme);
     }
 
+    private void OnLanguageClick(object sender, RoutedEventArgs e)
+    {
+        _languageService.ToggleLanguage();
+    }
+
+    private void OnLanguageChanged(AppLanguage lang)
+    {
+        UpdateAutoStartUI();
+        if (_notifyIcon != null)
+        {
+            _notifyIcon.ToolTipText = _languageService.GetString("App_Tray_Tooltip", "MyDeusTools");
+        }
+    }
+
     private void OnAutoStartClick(object sender, RoutedEventArgs e)
     {
         bool currentStatus = _autoStartService.IsEnabled();
@@ -132,7 +150,9 @@ public partial class MainWindow : FluentWindow
     private void UpdateAutoStartUI()
     {
         bool isEnabled = _autoStartService.IsEnabled();
-        AutoStartMenuItem.Content = isEnabled ? "Khởi động cùng Win: ON" : "Khởi động cùng Win: OFF";
+        string key = isEnabled ? "App_AutoStart_On" : "App_AutoStart_Off";
+        string fallback = isEnabled ? "Khởi động cùng Win: BẬT" : "Khởi động cùng Win: TẮT";
+        AutoStartMenuItem.Content = _languageService.GetString(key, fallback);
         AutoStartIcon.Symbol = isEnabled ? SymbolRegular.CheckboxChecked24 : SymbolRegular.CheckboxUnchecked24;
     }
 }

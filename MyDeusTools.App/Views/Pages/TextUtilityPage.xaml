@@ -16,10 +16,10 @@
         <!-- Header -->
         <Grid Grid.Row="0" Margin="0,0,0,12">
             <StackPanel Orientation="Vertical">
-                <TextBlock Text="Text &amp; Dev Tools" 
+                <TextBlock Text="{DynamicResource TextDev_Title}" 
                            FontSize="26" 
                            FontWeight="Bold"/>
-                <TextBlock Text="Bộ công cụ xử lý văn bản, JSON, Base64, mã băm (Hash) và đổi định dạng chữ" 
+                <TextBlock Text="{DynamicResource TextDev_Subtitle}" 
                            FontSize="13" 
                            Foreground="{DynamicResource TextFillColorSecondaryBrush}" 
                            Margin="0,4,0,0"/>
@@ -30,7 +30,7 @@
         <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,16">
             <RadioButton x:Name="BtnTabJson" 
                          GroupName="TextUtilTabs"
-                         Content="JSON Studio" 
+                         Content="{DynamicResource TextDev_Tab_Json}" 
                          Style="{StaticResource {x:Type ToggleButton}}" 
                          IsChecked="True" 
                          Margin="0,0,8,0" 
@@ -38,28 +38,28 @@
 
             <RadioButton x:Name="BtnTabBase64" 
                          GroupName="TextUtilTabs"
-                         Content="Base64" 
+                         Content="{DynamicResource TextDev_Tab_Base64}" 
                          Style="{StaticResource {x:Type ToggleButton}}" 
                          Margin="0,0,8,0" 
                          Padding="16,7"/>
 
             <RadioButton x:Name="BtnTabUrl" 
                          GroupName="TextUtilTabs"
-                         Content="URL &amp; HTML" 
+                         Content="{DynamicResource TextDev_Tab_Url}" 
                          Style="{StaticResource {x:Type ToggleButton}}" 
                          Margin="0,0,8,0" 
                          Padding="16,7"/>
 
             <RadioButton x:Name="BtnTabHash" 
                          GroupName="TextUtilTabs"
-                         Content="Hash Generator" 
+                         Content="{DynamicResource TextDev_Tab_Hash}" 
                          Style="{StaticResource {x:Type ToggleButton}}" 
                          Margin="0,0,8,0" 
                          Padding="16,7"/>
 
             <RadioButton x:Name="BtnTabInspector" 
                          GroupName="TextUtilTabs"
-                         Content="Case &amp; Thống kê" 
+                         Content="{DynamicResource TextDev_Tab_Inspector}" 
                          Style="{StaticResource {x:Type ToggleButton}}" 
                          Padding="16,7"/>
         </StackPanel>

@@ -43,6 +43,7 @@ public partial class App : Application
         services.AddSingleton<IQrCodeService, QrCodeService>();
         services.AddSingleton<IColorPickerService, ColorPickerService>();
         services.AddSingleton<ITextUtilityService, TextUtilityService>();
+        services.AddSingleton<ILanguageService, LanguageService>();
 
         // 2. Register ViewModels
         services.AddTransient<MainWindowViewModel>();

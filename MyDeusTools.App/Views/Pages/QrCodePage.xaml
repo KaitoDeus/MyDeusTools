@@ -16,7 +16,7 @@
         <!-- Header -->
         <Grid Grid.Row="0" Margin="0,0,0,15">
             <StackPanel Orientation="Vertical">
-                <TextBlock Text="QR Code Studio" 
+                <TextBlock Text="{DynamicResource Qr_Title}" 
                            FontSize="28" 
                            FontWeight="Bold"/>
                 <TextBlock Text="{Binding StatusMessage}" 
@@ -29,14 +29,14 @@
         <!-- Navigation Tabs -->
         <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,20">
             <RadioButton x:Name="BtnTabGenerate" 
-                         Content="Tạo mã QR" 
+                         Content="{DynamicResource Qr_Tab_Generate}" 
                          Style="{StaticResource {x:Type ToggleButton}}" 
                          IsChecked="True" 
                          Margin="0,0,10,0" 
                          Padding="24,8"/>
 
             <RadioButton x:Name="BtnTabScan" 
-                         Content="Quét mã QR" 
+                         Content="{DynamicResource Qr_Tab_Scan}" 
                          Style="{StaticResource {x:Type ToggleButton}}" 
                          Padding="24,8"/>
         </StackPanel>

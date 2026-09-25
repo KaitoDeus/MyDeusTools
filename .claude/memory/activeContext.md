@@ -1,8 +1,8 @@
 # Active Context - MyDeusTools
 
 ## Current Focus & Status
-- **Current State**: Project builds cleanly with 0 warnings/errors, and passes 100% of unit & integration tests (70/70 passed).
-- **Recent Milestone**: Successfully implemented **Text & Dev Tools** (Swiss Army knife for text & dev: JSON Studio format/minify/validate, Base64 text & file encoding, URL/HTML entity escaping, concurrent multi-hash generator for MD5/SHA1/SHA256/SHA512, case converter and text statistics analyzer).
+- **Current State**: Project builds cleanly with 0 warnings/errors, and passes 100% of unit & integration tests (77/77 passed).
+- **Recent Milestone**: Successfully implemented **Bilingual Localization (EN & VIE)** (Dynamic runtime language switching via WPF ResourceDictionaries `Strings.vi-VN.xaml` and `Strings.en-US.xaml`, `{DynamicResource}` bindings across menus and pages, and persistent settings in `Data/settings.json`).
 
 ## Active Session Goals
 1. Maintain and extend Super-App features according to user priorities.
@@ -10,6 +10,7 @@
 3. Keep Memory Bank synchronized.
 
 ## Active Considerations & Technical Notes
+- **Bilingual Localization**: Uses `LanguageService` to dynamically replace the language `ResourceDictionary` in `Application.Current.Resources.MergedDictionaries`. All bound `{DynamicResource}` UI elements update immediately with zero app restarts.
 - **Text & Dev Tools**: Pure managed .NET 8 implementation utilizing `System.Text.Json`, `System.Security.Cryptography`, and `System.Text.RegularExpressions` with zero external dependencies and instant responsiveness.
 - **Color Picker & Eyedropper**: Uses Win32 GDI `GetDC`, `GetPixel`, `ReleaseDC` and `CopyFromScreen` for real-time 11x11 pixel grid sampling. SemaphoreSlim protects asynchronous file persistence from write collisions.
 - **Serialization Safety**: Computed model properties (`PreviewBrush`, `Rgb`, `Hsl`, `Hsv`) are annotated with `[JsonIgnore]` to prevent `JsonException` during `SolidColorBrush` serialization.

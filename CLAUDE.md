@@ -31,7 +31,10 @@
    - URL & HTML: Mã hóa và giải mã URL (Escape/Unescape) và thực thể HTML (Entities).
    - Hash Generator: Tính tức thời các mã băm MD5, SHA-1, SHA-256, SHA-512 cho văn bản và tập tin.
    - Case & Inspector: Đếm ký tự, từ, dòng, byte UTF-8 và chuyển đổi kiểu chữ (camel, Pascal, snake, kebab, UPPER, lower, Title).
-8. **System Tray & Lifecycle**:
+8. **Bilingual Localization (Đa ngôn ngữ Tiếng Việt & Tiếng Anh)**:
+   - Chuyển đổi ngôn ngữ thời gian thực giữa Tiếng Việt (`vi-VN`) và Tiếng Anh (`en-US`) không cần khởi động lại ứng dụng qua `{DynamicResource}`.
+   - Tự động ghi nhớ cấu hình ngôn ngữ người dùng vào `Data/settings.json`.
+9. **System Tray & Lifecycle**:
    - Minimize-to-tray on close (`Hardcodet.NotifyIcon.Wpf`).
    - Dark / Light mode switching dynamically via `Wpf.Ui.Appearance.ApplicationThemeManager`.
    - Windows Startup toggle via CurrentUser Registry (`Software\Microsoft\Windows\CurrentVersion\Run`).
@@ -79,7 +82,8 @@ d:\.MyDeusTools\MyDeusTools\
 │   │   ├── QrCodeService.cs     # QR Code generation (QRCoder) & decoding (ZXing)
 │   │   ├── ColorPickerService.cs# Screen color sampling, pixel magnifier & history
 │   │   ├── TextUtilityService.cs# JSON format/minify, Base64, URL/HTML, Hashes, Case conversions
-│   │   └── Impl/                # Service Interfaces (IAutoClickService, ITextUtilityService, etc.)
+│   │   ├── LanguageService.cs   # Dynamic runtime language switcher (vi-VN / en-US)
+│   │   └── Impl/                # Service Interfaces (IAutoClickService, ILanguageService, etc.)
 │   ├── ViewModels/              # MVVM ViewModels (CommunityToolkit.Mvvm)
 │   │   ├── MainWindowViewModel.cs
 │   │   ├── AutoClickViewModel.cs
@@ -92,7 +96,7 @@ d:\.MyDeusTools\MyDeusTools\
 │   ├── Views/                   # UI Pages & Sub-Windows
 │   │   ├── Pages/               # AutoClickPage, ShutdownPage, StickyNotePage, ClipboardPage, QrCodePage, ColorPickerPage, TextUtilityPage
 │   │   └── Windows/             # RecordingOverlayWindow, StickyNoteWindow, QrSnippingOverlayWindow, ColorPickerOverlayWindow
-│   └── Resources/               # Icons & static assets (avatar.ico)
+│   └── Resources/               # Icons & static assets (avatar.ico, Resources/Languages/Strings.*.xaml)
 └── MyDeusTools.Tests/           # Unit & Integration Tests (xUnit, StaFact)
     ├── AppIntegrationTests.cs   # DI Resolution verification
     ├── AutoClickServiceTests.cs # AutoClicker business logic & clamp tests
@@ -101,7 +105,8 @@ d:\.MyDeusTools\MyDeusTools\
     ├── ClipboardServiceTests.cs # Clipboard history, pin, search & deduplication tests
     ├── QrCodeServiceTests.cs    # QR code generation, roundtrip decode, and URL detection tests
     ├── ColorPickerServiceTests.cs # Screen sampling, format conversions, and JSON persistence tests
-    └── TextUtilityServiceTests.cs # JSON validation, Base64 roundtrip, file hashing, case converters
+    ├── TextUtilityServiceTests.cs # JSON validation, Base64 roundtrip, file hashing, case converters
+    └── LanguageServiceTests.cs  # Language switching, setting persistence, and fallback tests
 ```
 
 ---

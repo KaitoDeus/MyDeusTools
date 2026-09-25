@@ -22,7 +22,7 @@
             </Grid.ColumnDefinitions>
 
             <StackPanel Orientation="Vertical">
-                <TextBlock Text="Clipboard Manager" 
+                <TextBlock Text="{DynamicResource Clipboard_Title}" 
                            FontSize="28" 
                            FontWeight="Bold" />
                 <TextBlock Text="{Binding StatusMessage}" 

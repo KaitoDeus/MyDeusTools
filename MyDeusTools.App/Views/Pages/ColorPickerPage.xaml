@@ -21,7 +21,7 @@
             </Grid.ColumnDefinitions>
 
             <StackPanel Orientation="Vertical">
-                <TextBlock Text="Color Picker &amp; Eyedropper" 
+                <TextBlock Text="{DynamicResource Color_Title}" 
                            FontSize="28" 
                            FontWeight="Bold"/>
                 <TextBlock Text="{Binding StatusMessage}" 
@@ -31,7 +31,7 @@
             </StackPanel>
 
             <ui:Button Grid.Column="1" 
-                       Content="Bắt màu màn hình" 
+                       Content="{DynamicResource Color_PickButton}" 
                        Icon="{ui:SymbolIcon Symbol=Color24}"
                        Command="{Binding PickColorCommand}"
                        Appearance="Primary"

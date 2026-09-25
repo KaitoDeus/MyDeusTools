@@ -26,6 +26,7 @@ public static IServiceProvider ConfigureServices()
     services.AddSingleton<IQrCodeService, QrCodeService>();
     services.AddSingleton<IColorPickerService, ColorPickerService>();
     services.AddSingleton<ITextUtilityService, TextUtilityService>();
+    services.AddSingleton<ILanguageService, LanguageService>();
 
     // 2. ViewModels (Transient)
     services.AddTransient<MainWindowViewModel>();
@@ -80,6 +81,10 @@ public static IServiceProvider ConfigureServices()
 - `MainWindowViewModel`: Manages navigation commands.
 
 ### 3.3. Services & Interop Layer (`MyDeusTools.App/Services/`)
+- `LanguageService` (`ILanguageService`):
+  - Manages dynamic runtime language switching between Vietnamese (`vi-VN`) and English (`en-US`).
+  - Swaps language ResourceDictionaries (`Strings.vi-VN.xaml`, `Strings.en-US.xaml`) in `Application.Current.Resources.MergedDictionaries` to refresh `{DynamicResource}` bindings without restarts.
+  - Persists language choice to `Data/settings.json`.
 - `TextUtilityService` (`ITextUtilityService`):
   - Pure .NET 8 high-performance text utilities: JSON formatting & validation (`System.Text.Json`), Base64 text/file encoding, URL & HTML entities escaping, cryptographic hashes (`System.Security.Cryptography`), case transformers, and text statistics.
 - `ColorPickerService` (`IColorPickerService`):

@@ -14,12 +14,12 @@
         </Grid.RowDefinitions>
 
         <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Stretch" Margin="0,0,0,20">
-            <TextBlock Text="Sticky Notes" 
+            <TextBlock Text="{DynamicResource Sticky_Title}" 
                        FontSize="28" 
                        FontWeight="Bold" 
                        VerticalAlignment="Center"/>
             
-            <ui:Button Content="Thêm ghi chú" 
+            <ui:Button Content="{DynamicResource Sticky_Add}" 
                        Icon="{ui:SymbolIcon Symbol=Add24}"
                        Command="{Binding AddNoteCommand}"
                        Appearance="Primary"

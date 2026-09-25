@@ -37,49 +37,49 @@
                                OpenPaneLength="216"
                                IsBackButtonVisible="Collapsed">
                 <ui:NavigationView.MenuItems>
-                    <ui:NavigationViewItem Content="Sticky Note" 
+                    <ui:NavigationViewItem Content="{DynamicResource Nav_StickyNote}" 
                                            TargetPageType="{x:Type pages:StickyNotePage}">
                         <ui:NavigationViewItem.Icon>
                             <ui:SymbolIcon Symbol="Note24" />
                         </ui:NavigationViewItem.Icon>
                     </ui:NavigationViewItem>
 
-                    <ui:NavigationViewItem Content="Auto Clicker" 
+                    <ui:NavigationViewItem Content="{DynamicResource Nav_AutoClicker}" 
                                            TargetPageType="{x:Type pages:AutoClickPage}">
                         <ui:NavigationViewItem.Icon>
                             <ui:SymbolIcon Symbol="CursorClick24" />
                         </ui:NavigationViewItem.Icon>
                     </ui:NavigationViewItem>
 
-                    <ui:NavigationViewItem Content="Schedule Shutdown" 
+                    <ui:NavigationViewItem Content="{DynamicResource Nav_ScheduleShutdown}" 
                                            TargetPageType="{x:Type pages:ShutdownPage}">
                         <ui:NavigationViewItem.Icon>
                             <ui:SymbolIcon Symbol="Timer24" />
                         </ui:NavigationViewItem.Icon>
                     </ui:NavigationViewItem>
 
-                    <ui:NavigationViewItem Content="Clipboard Manager" 
+                    <ui:NavigationViewItem Content="{DynamicResource Nav_ClipboardManager}" 
                                            TargetPageType="{x:Type pages:ClipboardPage}">
                         <ui:NavigationViewItem.Icon>
                             <ui:SymbolIcon Symbol="ClipboardPaste24" />
                         </ui:NavigationViewItem.Icon>
                     </ui:NavigationViewItem>
 
-                    <ui:NavigationViewItem Content="QR Code Studio" 
+                    <ui:NavigationViewItem Content="{DynamicResource Nav_QrCodeStudio}" 
                                            TargetPageType="{x:Type pages:QrCodePage}">
                         <ui:NavigationViewItem.Icon>
                             <ui:SymbolIcon Symbol="QrCode24" />
                         </ui:NavigationViewItem.Icon>
                     </ui:NavigationViewItem>
 
-                    <ui:NavigationViewItem Content="Color Picker" 
+                    <ui:NavigationViewItem Content="{DynamicResource Nav_ColorPicker}" 
                                            TargetPageType="{x:Type pages:ColorPickerPage}">
                         <ui:NavigationViewItem.Icon>
                             <ui:SymbolIcon Symbol="Color24" />
                         </ui:NavigationViewItem.Icon>
                     </ui:NavigationViewItem>
 
-                    <ui:NavigationViewItem Content="Text &amp; Dev Tools" 
+                    <ui:NavigationViewItem Content="{DynamicResource Nav_TextDevTools}" 
                                            TargetPageType="{x:Type pages:TextUtilityPage}">
                         <ui:NavigationViewItem.Icon>
                             <ui:SymbolIcon Symbol="Code24" />
@@ -88,6 +88,15 @@
                 </ui:NavigationView.MenuItems>
 
                 <ui:NavigationView.FooterMenuItems>
+                    <ui:NavigationViewItem x:Name="LanguageMenuItem"
+                                           Content="{DynamicResource App_Language_Display}" 
+                                           ToolTip="Chuyển đổi ngôn ngữ / Switch Language"
+                                           Click="OnLanguageClick">
+                        <ui:NavigationViewItem.Icon>
+                            <ui:SymbolIcon Symbol="Globe24" />
+                        </ui:NavigationViewItem.Icon>
+                    </ui:NavigationViewItem>
+
                     <ui:NavigationViewItem x:Name="AutoStartMenuItem"
                                            Content="Khởi động cùng Win: OFF" 
                                            Click="OnAutoStartClick">
