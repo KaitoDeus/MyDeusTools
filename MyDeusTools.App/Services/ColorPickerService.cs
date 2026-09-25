@@ -29,6 +29,7 @@ namespace MyDeusTools.App.Services
         private readonly string _filePath;
         private readonly int _maxItems;
         private readonly object _lock = new();
+        private readonly System.Threading.SemaphoreSlim _saveSemaphore = new(1, 1);
 
         public ObservableCollection<ColorItemModel> History { get; } = new();
         public event Action? HistoryChanged;
@@ -228,6 +229,7 @@ namespace MyDeusTools.App.Services
 
         public async Task SaveHistoryAsync()
         {
+            await _saveSemaphore.WaitAsync();
             try
             {
                 List<ColorItemModel> itemsToSave;
@@ -250,6 +252,10 @@ namespace MyDeusTools.App.Services
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine($"Lỗi khi lưu lịch sử màu: {ex.Message}");
+            }
+            finally
+            {
+                _saveSemaphore.Release();
             }
         }
 

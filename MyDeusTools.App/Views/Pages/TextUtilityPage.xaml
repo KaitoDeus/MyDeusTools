@@ -1,0 +1,831 @@
+<Page x:Class="MyDeusTools.App.Views.Pages.TextUtilityPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+      Title="Text &amp; Dev Tools"
+      Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+      Background="Transparent">
+
+    <Grid Margin="30,20,30,20" Background="Transparent">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Grid Grid.Row="0" Margin="0,0,0,12">
+            <StackPanel Orientation="Vertical">
+                <TextBlock Text="Text &amp; Dev Tools" 
+                           FontSize="26" 
+                           FontWeight="Bold"/>
+                <TextBlock Text="Bộ công cụ xử lý văn bản, JSON, Base64, mã băm (Hash) và đổi định dạng chữ" 
+                           FontSize="13" 
+                           Foreground="{DynamicResource TextFillColorSecondaryBrush}" 
+                           Margin="0,4,0,0"/>
+            </StackPanel>
+        </Grid>
+
+        <!-- Navigation Tabs -->
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,16">
+            <RadioButton x:Name="BtnTabJson" 
+                         GroupName="TextUtilTabs"
+                         Content="JSON Studio" 
+                         Style="{StaticResource {x:Type ToggleButton}}" 
+                         IsChecked="True" 
+                         Margin="0,0,8,0" 
+                         Padding="16,7"/>
+
+            <RadioButton x:Name="BtnTabBase64" 
+                         GroupName="TextUtilTabs"
+                         Content="Base64" 
+                         Style="{StaticResource {x:Type ToggleButton}}" 
+                         Margin="0,0,8,0" 
+                         Padding="16,7"/>
+
+            <RadioButton x:Name="BtnTabUrl" 
+                         GroupName="TextUtilTabs"
+                         Content="URL &amp; HTML" 
+                         Style="{StaticResource {x:Type ToggleButton}}" 
+                         Margin="0,0,8,0" 
+                         Padding="16,7"/>
+
+            <RadioButton x:Name="BtnTabHash" 
+                         GroupName="TextUtilTabs"
+                         Content="Hash Generator" 
+                         Style="{StaticResource {x:Type ToggleButton}}" 
+                         Margin="0,0,8,0" 
+                         Padding="16,7"/>
+
+            <RadioButton x:Name="BtnTabInspector" 
+                         GroupName="TextUtilTabs"
+                         Content="Case &amp; Thống kê" 
+                         Style="{StaticResource {x:Type ToggleButton}}" 
+                         Padding="16,7"/>
+        </StackPanel>
+
+        <!-- Main Content Area -->
+        <Grid Grid.Row="2">
+
+            <!-- ==================== TAB 1: JSON STUDIO ==================== -->
+            <Grid>
+                <Grid.Style>
+                    <Style TargetType="Grid">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsChecked, ElementName=BtnTabJson}" Value="True">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Grid.Style>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <!-- Action Bar & Status -->
+                <ui:Card Grid.Row="0" Margin="0,0,0,12" Padding="12,10">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                            <ui:Button Command="{Binding FormatJsonCommand}" 
+                                       Appearance="Primary" 
+                                       Margin="0,0,8,0" 
+                                       Padding="14,6">
+                                <StackPanel Orientation="Horizontal">
+                                    <ui:SymbolIcon Symbol="Code24" Margin="0,0,6,0"/>
+                                    <TextBlock Text="Định dạng (Format)" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </ui:Button>
+
+                            <ui:Button Command="{Binding MinifyJsonCommand}" 
+                                       Margin="0,0,8,0" 
+                                       Padding="14,6">
+                                <StackPanel Orientation="Horizontal">
+                                    <ui:SymbolIcon Symbol="ArrowMinimize24" Margin="0,0,6,0"/>
+                                    <TextBlock Text="Nén gọn (Minify)" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </ui:Button>
+
+                            <ui:Button Command="{Binding ValidateJsonCommand}" 
+                                       Margin="0,0,8,0" 
+                                       Padding="14,6">
+                                <StackPanel Orientation="Horizontal">
+                                    <ui:SymbolIcon Symbol="Checkmark24" Margin="0,0,6,0"/>
+                                    <TextBlock Text="Kiểm tra" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </ui:Button>
+
+                            <ui:Button Command="{Binding SwapJsonCommand}" 
+                                       Margin="0,0,8,0" 
+                                       Padding="12,6" 
+                                       ToolTip="Đổi chỗ Input và Output">
+                                <ui:SymbolIcon Symbol="ArrowSwap24"/>
+                            </ui:Button>
+
+                            <ui:Button Command="{Binding ClearJsonCommand}" 
+                                       Padding="12,6" 
+                                       ToolTip="Xóa tất cả">
+                                <ui:SymbolIcon Symbol="Delete24"/>
+                            </ui:Button>
+                        </StackPanel>
+
+                        <!-- Status text -->
+                        <TextBlock Grid.Column="1" 
+                                   Text="{Binding JsonStatus}" 
+                                   VerticalAlignment="Center" 
+                                   FontSize="12" 
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                    </Grid>
+                </ui:Card>
+
+                <!-- Dual Editor Columns -->
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="12"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Left: Input -->
+                    <ui:Card Grid.Column="0" Padding="14">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+
+                            <Grid Grid.Row="0" Margin="0,0,0,8">
+                                <TextBlock Text="Đầu vào (JSON Input)" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                    <ui:Button Command="{Binding PasteJsonInputCommand}" 
+                                               Padding="8,4" 
+                                               FontSize="11" 
+                                               Content="Dán từ Clipboard"/>
+                                </StackPanel>
+                            </Grid>
+
+                            <TextBox Grid.Row="1"
+                                     Text="{Binding JsonInput, UpdateSourceTrigger=PropertyChanged}"
+                                     AcceptsReturn="True"
+                                     AcceptsTab="True"
+                                     FontFamily="Consolas, Cascadia Code, Courier New"
+                                     FontSize="13"
+                                     VerticalScrollBarVisibility="Auto"
+                                     HorizontalScrollBarVisibility="Auto"
+                                     TextWrapping="NoWrap"
+                                     Padding="8"/>
+                        </Grid>
+                    </ui:Card>
+
+                    <!-- Right: Output -->
+                    <ui:Card Grid.Column="2" Padding="14">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+
+                            <Grid Grid.Row="0" Margin="0,0,0,8">
+                                <TextBlock Text="Kết quả (JSON Output)" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                    <ui:Button Command="{Binding CopyJsonOutputCommand}" 
+                                               Padding="8,4" 
+                                               FontSize="11" 
+                                               Appearance="Primary"
+                                               Content="Sao chép"/>
+                                </StackPanel>
+                            </Grid>
+
+                            <TextBox Grid.Row="1"
+                                     Text="{Binding JsonOutput, Mode=OneWay}"
+                                     IsReadOnly="True"
+                                     FontFamily="Consolas, Cascadia Code, Courier New"
+                                     FontSize="13"
+                                     VerticalScrollBarVisibility="Auto"
+                                     HorizontalScrollBarVisibility="Auto"
+                                     TextWrapping="NoWrap"
+                                     Padding="8"/>
+                        </Grid>
+                    </ui:Card>
+                </Grid>
+            </Grid>
+
+            <!-- ==================== TAB 2: BASE64 ==================== -->
+            <Grid>
+                <Grid.Style>
+                    <Style TargetType="Grid">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsChecked, ElementName=BtnTabBase64}" Value="True">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Grid.Style>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <!-- Actions -->
+                <ui:Card Grid.Row="0" Margin="0,0,0,12" Padding="12,10">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                            <ui:Button Command="{Binding EncodeBase64Command}" 
+                                       Appearance="Primary" 
+                                       Margin="0,0,8,0" 
+                                       Padding="14,6">
+                                <StackPanel Orientation="Horizontal">
+                                    <ui:SymbolIcon Symbol="LockClosed24" Margin="0,0,6,0"/>
+                                    <TextBlock Text="Mã hóa (Encode)" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </ui:Button>
+
+                            <ui:Button Command="{Binding DecodeBase64Command}" 
+                                       Margin="0,0,8,0" 
+                                       Padding="14,6">
+                                <StackPanel Orientation="Horizontal">
+                                    <ui:SymbolIcon Symbol="LockOpen24" Margin="0,0,6,0"/>
+                                    <TextBlock Text="Giải mã (Decode)" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </ui:Button>
+
+                            <ui:Button Command="{Binding EncodeFileBase64Command}" 
+                                       Margin="0,0,8,0" 
+                                       Padding="12,6" 
+                                       ToolTip="Mã hóa tập tin bất kỳ sang Base64">
+                                <StackPanel Orientation="Horizontal">
+                                    <ui:SymbolIcon Symbol="Document24" Margin="0,0,6,0"/>
+                                    <TextBlock Text="Mã hóa File..." VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </ui:Button>
+
+                            <ui:Button Command="{Binding SaveBase64ToFileCommand}" 
+                                       Margin="0,0,8,0" 
+                                       Padding="12,6" 
+                                       ToolTip="Lưu chuỗi Base64 thành tập tin">
+                                <StackPanel Orientation="Horizontal">
+                                    <ui:SymbolIcon Symbol="Save24" Margin="0,0,6,0"/>
+                                    <TextBlock Text="Lưu ra File..." VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </ui:Button>
+
+                            <ui:Button Command="{Binding SwapBase64Command}" 
+                                       Margin="0,0,8,0" 
+                                       Padding="10,6" 
+                                       ToolTip="Đổi chỗ Input và Output">
+                                <ui:SymbolIcon Symbol="ArrowSwap24"/>
+                            </ui:Button>
+
+                            <ui:Button Command="{Binding ClearBase64Command}" 
+                                       Padding="10,6" 
+                                       ToolTip="Xóa tất cả">
+                                <ui:SymbolIcon Symbol="Delete24"/>
+                            </ui:Button>
+                        </StackPanel>
+
+                        <TextBlock Grid.Column="1" 
+                                   Text="{Binding Base64Status}" 
+                                   VerticalAlignment="Center" 
+                                   FontSize="12" 
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                    </Grid>
+                </ui:Card>
+
+                <!-- Dual Editor Columns -->
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="12"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <ui:Card Grid.Column="0" Padding="14">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+
+                            <Grid Grid.Row="0" Margin="0,0,0,8">
+                                <TextBlock Text="Đầu vào (Text hoặc Base64)" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                <ui:Button Command="{Binding PasteBase64InputCommand}" 
+                                           HorizontalAlignment="Right" 
+                                           Padding="8,4" 
+                                           FontSize="11" 
+                                           Content="Dán"/>
+                            </Grid>
+
+                            <TextBox Grid.Row="1"
+                                     Text="{Binding Base64Input, UpdateSourceTrigger=PropertyChanged}"
+                                     AcceptsReturn="True"
+                                     FontFamily="Consolas, Cascadia Code, Courier New"
+                                     FontSize="13"
+                                     VerticalScrollBarVisibility="Auto"
+                                     TextWrapping="Wrap"
+                                     Padding="8"/>
+                        </Grid>
+                    </ui:Card>
+
+                    <ui:Card Grid.Column="2" Padding="14">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+
+                            <Grid Grid.Row="0" Margin="0,0,0,8">
+                                <TextBlock Text="Kết quả (Base64 Output)" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                <ui:Button Command="{Binding CopyBase64OutputCommand}" 
+                                           HorizontalAlignment="Right" 
+                                           Padding="8,4" 
+                                           FontSize="11" 
+                                           Appearance="Primary" 
+                                           Content="Sao chép"/>
+                            </Grid>
+
+                            <TextBox Grid.Row="1"
+                                     Text="{Binding Base64Output, Mode=OneWay}"
+                                     IsReadOnly="True"
+                                     FontFamily="Consolas, Cascadia Code, Courier New"
+                                     FontSize="13"
+                                     VerticalScrollBarVisibility="Auto"
+                                     TextWrapping="Wrap"
+                                     Padding="8"/>
+                        </Grid>
+                    </ui:Card>
+                </Grid>
+            </Grid>
+
+            <!-- ==================== TAB 3: URL & HTML ==================== -->
+            <Grid>
+                <Grid.Style>
+                    <Style TargetType="Grid">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsChecked, ElementName=BtnTabUrl}" Value="True">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Grid.Style>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <ui:Card Grid.Row="0" Margin="0,0,0,12" Padding="12,10">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                            <ui:Button Command="{Binding UrlEncodeCommand}" 
+                                       Appearance="Primary" 
+                                       Margin="0,0,8,0" 
+                                       Padding="12,6" 
+                                       Content="URL Encode"/>
+
+                            <ui:Button Command="{Binding UrlDecodeCommand}" 
+                                       Margin="0,0,8,0" 
+                                       Padding="12,6" 
+                                       Content="URL Decode"/>
+
+                            <ui:Button Command="{Binding HtmlEncodeCommand}" 
+                                       Margin="0,0,8,0" 
+                                       Padding="12,6" 
+                                       Content="HTML Encode"/>
+
+                            <ui:Button Command="{Binding HtmlDecodeCommand}" 
+                                       Margin="0,0,8,0" 
+                                       Padding="12,6" 
+                                       Content="HTML Decode"/>
+
+                            <ui:Button Command="{Binding SwapUrlHtmlCommand}" 
+                                       Margin="0,0,8,0" 
+                                       Padding="10,6" 
+                                       ToolTip="Đổi Input / Output">
+                                <ui:SymbolIcon Symbol="ArrowSwap24"/>
+                            </ui:Button>
+
+                            <ui:Button Command="{Binding ClearUrlHtmlCommand}" 
+                                       Padding="10,6" 
+                                       ToolTip="Xóa">
+                                <ui:SymbolIcon Symbol="Delete24"/>
+                            </ui:Button>
+                        </StackPanel>
+
+                        <TextBlock Grid.Column="1" 
+                                   Text="{Binding UrlHtmlStatus}" 
+                                   VerticalAlignment="Center" 
+                                   FontSize="12" 
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                    </Grid>
+                </ui:Card>
+
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="12"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <ui:Card Grid.Column="0" Padding="14">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+
+                            <Grid Grid.Row="0" Margin="0,0,0,8">
+                                <TextBlock Text="Văn bản gốc / Chuỗi đầu vào" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                <ui:Button Command="{Binding PasteUrlHtmlInputCommand}" 
+                                           HorizontalAlignment="Right" 
+                                           Padding="8,4" 
+                                           FontSize="11" 
+                                           Content="Dán"/>
+                            </Grid>
+
+                            <TextBox Grid.Row="1"
+                                     Text="{Binding UrlHtmlInput, UpdateSourceTrigger=PropertyChanged}"
+                                     AcceptsReturn="True"
+                                     FontFamily="Consolas, Cascadia Code, Courier New"
+                                     FontSize="13"
+                                     VerticalScrollBarVisibility="Auto"
+                                     TextWrapping="Wrap"
+                                     Padding="8"/>
+                        </Grid>
+                    </ui:Card>
+
+                    <ui:Card Grid.Column="2" Padding="14">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+
+                            <Grid Grid.Row="0" Margin="0,0,0,8">
+                                <TextBlock Text="Kết quả mã hóa / giải mã" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                <ui:Button Command="{Binding CopyUrlHtmlOutputCommand}" 
+                                           HorizontalAlignment="Right" 
+                                           Padding="8,4" 
+                                           FontSize="11" 
+                                           Appearance="Primary" 
+                                           Content="Sao chép"/>
+                            </Grid>
+
+                            <TextBox Grid.Row="1"
+                                     Text="{Binding UrlHtmlOutput, Mode=OneWay}"
+                                     IsReadOnly="True"
+                                     FontFamily="Consolas, Cascadia Code, Courier New"
+                                     FontSize="13"
+                                     VerticalScrollBarVisibility="Auto"
+                                     TextWrapping="Wrap"
+                                     Padding="8"/>
+                        </Grid>
+                    </ui:Card>
+                </Grid>
+            </Grid>
+
+            <!-- ==================== TAB 4: HASH GENERATOR ==================== -->
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <ScrollViewer.Style>
+                    <Style TargetType="ScrollViewer">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsChecked, ElementName=BtnTabHash}" Value="True">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ScrollViewer.Style>
+
+                <StackPanel Orientation="Vertical">
+
+                    <!-- Text Input Card -->
+                    <ui:Card Margin="0,0,0,12" Padding="14">
+                        <StackPanel>
+                            <Grid Margin="0,0,0,8">
+                                <TextBlock Text="Chuỗi văn bản (Tự động tính mã băm khi gõ)" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                <ui:Button Command="{Binding ClearHashCommand}" 
+                                           HorizontalAlignment="Right" 
+                                           Padding="8,4" 
+                                           FontSize="11" 
+                                           Content="Xóa"/>
+                            </Grid>
+
+                            <TextBox Text="{Binding HashInput, UpdateSourceTrigger=PropertyChanged}"
+                                     MinHeight="70"
+                                     AcceptsReturn="True"
+                                     FontFamily="Consolas, Cascadia Code, Courier New"
+                                     FontSize="13"
+                                     VerticalScrollBarVisibility="Auto"
+                                     TextWrapping="Wrap"
+                                     Padding="8"/>
+                        </StackPanel>
+                    </ui:Card>
+
+                    <!-- Text Hashes Grid -->
+                    <ui:Card Margin="0,0,0,12" Padding="16">
+                        <StackPanel>
+                            <TextBlock Text="Mã băm văn bản (Hashes)" FontWeight="Bold" FontSize="14" Margin="0,0,0,12"/>
+
+                            <!-- MD5 -->
+                            <Grid Margin="0,0,0,10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="90"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="MD5" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                <TextBox Grid.Column="1" Text="{Binding Md5Hash, Mode=OneWay}" IsReadOnly="True" FontFamily="Consolas" Margin="0,0,8,0" Padding="6,4"/>
+                                <ui:Button Grid.Column="2" Command="{Binding CopyHashCommand}" CommandParameter="{Binding Md5Hash}" Padding="10,5" Content="Chép"/>
+                            </Grid>
+
+                            <!-- SHA-1 -->
+                            <Grid Margin="0,0,0,10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="90"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="SHA-1" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                <TextBox Grid.Column="1" Text="{Binding Sha1Hash, Mode=OneWay}" IsReadOnly="True" FontFamily="Consolas" Margin="0,0,8,0" Padding="6,4"/>
+                                <ui:Button Grid.Column="2" Command="{Binding CopyHashCommand}" CommandParameter="{Binding Sha1Hash}" Padding="10,5" Content="Chép"/>
+                            </Grid>
+
+                            <!-- SHA-256 -->
+                            <Grid Margin="0,0,0,10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="90"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="SHA-256" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                <TextBox Grid.Column="1" Text="{Binding Sha256Hash, Mode=OneWay}" IsReadOnly="True" FontFamily="Consolas" Margin="0,0,8,0" Padding="6,4"/>
+                                <ui:Button Grid.Column="2" Command="{Binding CopyHashCommand}" CommandParameter="{Binding Sha256Hash}" Padding="10,5" Content="Chép"/>
+                            </Grid>
+
+                            <!-- SHA-512 -->
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="90"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="SHA-512" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                <TextBox Grid.Column="1" Text="{Binding Sha512Hash, Mode=OneWay}" IsReadOnly="True" FontFamily="Consolas" Margin="0,0,8,0" Padding="6,4"/>
+                                <ui:Button Grid.Column="2" Command="{Binding CopyHashCommand}" CommandParameter="{Binding Sha512Hash}" Padding="10,5" Content="Chép"/>
+                            </Grid>
+                        </StackPanel>
+                    </ui:Card>
+
+                    <!-- File Hash Section -->
+                    <ui:Card Padding="16">
+                        <StackPanel>
+                            <Grid Margin="0,0,0,10">
+                                <TextBlock Text="Tính mã băm tập tin (File Hash)" FontWeight="Bold" FontSize="14" VerticalAlignment="Center"/>
+                                <ui:Button Command="{Binding SelectFileForHashCommand}" 
+                                           HorizontalAlignment="Right" 
+                                           Appearance="Primary" 
+                                           Padding="12,5">
+                                    <StackPanel Orientation="Horizontal">
+                                        <ui:SymbolIcon Symbol="FolderOpen24" Margin="0,0,6,0"/>
+                                        <TextBlock Text="Chọn tập tin..." VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </ui:Button>
+                            </Grid>
+
+                            <TextBlock Text="{Binding SelectedHashFile}" 
+                                       FontStyle="Italic" 
+                                       FontSize="12" 
+                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}" 
+                                       Margin="0,0,0,10"/>
+
+                            <!-- File MD5 -->
+                            <Grid Margin="0,0,0,10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="File MD5" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                <TextBox Grid.Column="1" Text="{Binding FileMd5Hash, Mode=OneWay}" IsReadOnly="True" FontFamily="Consolas" Margin="0,0,8,0" Padding="6,4"/>
+                                <ui:Button Grid.Column="2" Command="{Binding CopyHashCommand}" CommandParameter="{Binding FileMd5Hash}" Padding="10,5" Content="Chép"/>
+                            </Grid>
+
+                            <!-- File SHA-256 -->
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="File SHA-256" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                <TextBox Grid.Column="1" Text="{Binding FileSha256Hash, Mode=OneWay}" IsReadOnly="True" FontFamily="Consolas" Margin="0,0,8,0" Padding="6,4"/>
+                                <ui:Button Grid.Column="2" Command="{Binding CopyHashCommand}" CommandParameter="{Binding FileSha256Hash}" Padding="10,5" Content="Chép"/>
+                            </Grid>
+                        </StackPanel>
+                    </ui:Card>
+                </StackPanel>
+            </ScrollViewer>
+
+            <!-- ==================== TAB 5: CASE & INSPECTOR ==================== -->
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <ScrollViewer.Style>
+                    <Style TargetType="ScrollViewer">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsChecked, ElementName=BtnTabInspector}" Value="True">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ScrollViewer.Style>
+
+                <StackPanel Orientation="Vertical">
+
+                    <!-- Text Input Card -->
+                    <ui:Card Margin="0,0,0,12" Padding="14">
+                        <StackPanel>
+                            <Grid Margin="0,0,0,8">
+                                <TextBlock Text="Nhập đoạn văn bản để thống kê và chuyển đổi kiểu chữ" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                <ui:Button Command="{Binding ClearInspectorCommand}" 
+                                           HorizontalAlignment="Right" 
+                                           Padding="8,4" 
+                                           FontSize="11" 
+                                           Content="Xóa"/>
+                            </Grid>
+
+                            <TextBox Text="{Binding InspectorInput, UpdateSourceTrigger=PropertyChanged}"
+                                     MinHeight="70"
+                                     AcceptsReturn="True"
+                                     FontSize="13"
+                                     VerticalScrollBarVisibility="Auto"
+                                     TextWrapping="Wrap"
+                                     Padding="8"/>
+                        </StackPanel>
+                    </ui:Card>
+
+                    <!-- Statistics Cards -->
+                    <Grid Margin="0,0,0,12">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="8"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="8"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="8"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="8"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <ui:Card Grid.Column="0" Padding="12,10">
+                            <StackPanel HorizontalAlignment="Center">
+                                <TextBlock Text="Ký tự" FontSize="11" Foreground="{DynamicResource TextFillColorSecondaryBrush}" HorizontalAlignment="Center"/>
+                                <TextBlock Text="{Binding CharacterCount}" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,2,0,0"/>
+                            </StackPanel>
+                        </ui:Card>
+
+                        <ui:Card Grid.Column="2" Padding="12,10">
+                            <StackPanel HorizontalAlignment="Center">
+                                <TextBlock Text="Không khoảng trắng" FontSize="11" Foreground="{DynamicResource TextFillColorSecondaryBrush}" HorizontalAlignment="Center"/>
+                                <TextBlock Text="{Binding CharactersNoSpacesCount}" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,2,0,0"/>
+                            </StackPanel>
+                        </ui:Card>
+
+                        <ui:Card Grid.Column="4" Padding="12,10">
+                            <StackPanel HorizontalAlignment="Center">
+                                <TextBlock Text="Từ" FontSize="11" Foreground="{DynamicResource TextFillColorSecondaryBrush}" HorizontalAlignment="Center"/>
+                                <TextBlock Text="{Binding WordCount}" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,2,0,0"/>
+                            </StackPanel>
+                        </ui:Card>
+
+                        <ui:Card Grid.Column="6" Padding="12,10">
+                            <StackPanel HorizontalAlignment="Center">
+                                <TextBlock Text="Dòng" FontSize="11" Foreground="{DynamicResource TextFillColorSecondaryBrush}" HorizontalAlignment="Center"/>
+                                <TextBlock Text="{Binding LineCount}" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,2,0,0"/>
+                            </StackPanel>
+                        </ui:Card>
+
+                        <ui:Card Grid.Column="8" Padding="12,10">
+                            <StackPanel HorizontalAlignment="Center">
+                                <TextBlock Text="Bytes (UTF-8)" FontSize="11" Foreground="{DynamicResource TextFillColorSecondaryBrush}" HorizontalAlignment="Center"/>
+                                <TextBlock Text="{Binding ByteCount}" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,2,0,0"/>
+                            </StackPanel>
+                        </ui:Card>
+                    </Grid>
+
+                    <!-- Case Transformations Card -->
+                    <ui:Card Padding="16">
+                        <StackPanel>
+                            <TextBlock Text="Định dạng kiểu chữ (Case Transformations)" FontWeight="Bold" FontSize="14" Margin="0,0,0,12"/>
+
+                            <!-- camelCase -->
+                            <Grid Margin="0,0,0,10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="camelCase" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                <TextBox Grid.Column="1" Text="{Binding CamelCase, Mode=OneWay}" IsReadOnly="True" FontFamily="Consolas" Margin="0,0,8,0" Padding="6,4"/>
+                                <ui:Button Grid.Column="2" Command="{Binding CopyCaseCommand}" CommandParameter="{Binding CamelCase}" Padding="10,5" Content="Chép"/>
+                            </Grid>
+
+                            <!-- PascalCase -->
+                            <Grid Margin="0,0,0,10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="PascalCase" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                <TextBox Grid.Column="1" Text="{Binding PascalCase, Mode=OneWay}" IsReadOnly="True" FontFamily="Consolas" Margin="0,0,8,0" Padding="6,4"/>
+                                <ui:Button Grid.Column="2" Command="{Binding CopyCaseCommand}" CommandParameter="{Binding PascalCase}" Padding="10,5" Content="Chép"/>
+                            </Grid>
+
+                            <!-- snake_case -->
+                            <Grid Margin="0,0,0,10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="snake_case" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                <TextBox Grid.Column="1" Text="{Binding SnakeCase, Mode=OneWay}" IsReadOnly="True" FontFamily="Consolas" Margin="0,0,8,0" Padding="6,4"/>
+                                <ui:Button Grid.Column="2" Command="{Binding CopyCaseCommand}" CommandParameter="{Binding SnakeCase}" Padding="10,5" Content="Chép"/>
+                            </Grid>
+
+                            <!-- kebab-case -->
+                            <Grid Margin="0,0,0,10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="kebab-case" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                <TextBox Grid.Column="1" Text="{Binding KebabCase, Mode=OneWay}" IsReadOnly="True" FontFamily="Consolas" Margin="0,0,8,0" Padding="6,4"/>
+                                <ui:Button Grid.Column="2" Command="{Binding CopyCaseCommand}" CommandParameter="{Binding KebabCase}" Padding="10,5" Content="Chép"/>
+                            </Grid>
+
+                            <!-- UPPERCASE -->
+                            <Grid Margin="0,0,0,10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="UPPERCASE" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                <TextBox Grid.Column="1" Text="{Binding UpperCase, Mode=OneWay}" IsReadOnly="True" FontFamily="Consolas" Margin="0,0,8,0" Padding="6,4"/>
+                                <ui:Button Grid.Column="2" Command="{Binding CopyCaseCommand}" CommandParameter="{Binding UpperCase}" Padding="10,5" Content="Chép"/>
+                            </Grid>
+
+                            <!-- lowercase -->
+                            <Grid Margin="0,0,0,10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="lowercase" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                <TextBox Grid.Column="1" Text="{Binding LowerCase, Mode=OneWay}" IsReadOnly="True" FontFamily="Consolas" Margin="0,0,8,0" Padding="6,4"/>
+                                <ui:Button Grid.Column="2" Command="{Binding CopyCaseCommand}" CommandParameter="{Binding LowerCase}" Padding="10,5" Content="Chép"/>
+                            </Grid>
+
+                            <!-- Title Case -->
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="Title Case" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                <TextBox Grid.Column="1" Text="{Binding TitleCase, Mode=OneWay}" IsReadOnly="True" FontFamily="Consolas" Margin="0,0,8,0" Padding="6,4"/>
+                                <ui:Button Grid.Column="2" Command="{Binding CopyCaseCommand}" CommandParameter="{Binding TitleCase}" Padding="10,5" Content="Chép"/>
+                            </Grid>
+                        </StackPanel>
+                    </ui:Card>
+                </StackPanel>
+            </ScrollViewer>
+
+        </Grid>
+    </Grid>
+</Page>

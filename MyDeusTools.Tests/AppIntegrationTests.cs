@@ -21,6 +21,7 @@ namespace MyDeusTools.Tests
         [InlineData(typeof(IClipboardService))]
         [InlineData(typeof(IQrCodeService))]
         [InlineData(typeof(IColorPickerService))]
+        [InlineData(typeof(ITextUtilityService))]
         [InlineData(typeof(MainWindowViewModel))]
         [InlineData(typeof(AutoClickViewModel))]
         [InlineData(typeof(ShutdownViewModel))]
@@ -28,12 +29,14 @@ namespace MyDeusTools.Tests
         [InlineData(typeof(ClipboardViewModel))]
         [InlineData(typeof(QrCodeViewModel))]
         [InlineData(typeof(ColorPickerViewModel))]
+        [InlineData(typeof(TextUtilityViewModel))]
         [InlineData(typeof(AutoClickPage))]
         [InlineData(typeof(ShutdownPage))]
         [InlineData(typeof(StickyNotePage))]
         [InlineData(typeof(ClipboardPage))]
         [InlineData(typeof(QrCodePage))]
         [InlineData(typeof(ColorPickerPage))]
+        [InlineData(typeof(TextUtilityPage))]
         public void ServiceProvider_ShouldResolveDependencies(Type serviceType)
         {
             // Arrange

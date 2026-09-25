@@ -42,6 +42,7 @@ public partial class App : Application
         services.AddSingleton<IClipboardService, ClipboardService>();
         services.AddSingleton<IQrCodeService, QrCodeService>();
         services.AddSingleton<IColorPickerService, ColorPickerService>();
+        services.AddSingleton<ITextUtilityService, TextUtilityService>();
 
         // 2. Register ViewModels
         services.AddTransient<MainWindowViewModel>();
@@ -51,6 +52,7 @@ public partial class App : Application
         services.AddTransient<ClipboardViewModel>();
         services.AddTransient<QrCodeViewModel>();
         services.AddTransient<ColorPickerViewModel>();
+        services.AddTransient<TextUtilityViewModel>();
 
         // 3. Register Views (Windows/Pages)
         services.AddTransient<MainWindow>();
@@ -60,6 +62,7 @@ public partial class App : Application
         services.AddTransient<ClipboardPage>();
         services.AddTransient<QrCodePage>();
         services.AddTransient<ColorPickerPage>();
+        services.AddTransient<TextUtilityPage>();
 
         return services.BuildServiceProvider();
     }

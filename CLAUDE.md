@@ -25,7 +25,13 @@
    - Fullscreen crosshair eyedropper with floating 11x11 pixel Magnifier HUD (`ColorPickerOverlayWindow`).
    - Instant format copying (HEX, RGB, HSL, HSV) and auto-copy to clipboard on pick.
    - Persistent color palette history with pin-to-top support (`Data/colors.json`).
-7. **System Tray & Lifecycle**:
+7. **Text & Dev Tools (Xử lý chuỗi & Tiện ích lập trình)**:
+   - JSON Studio: Định dạng (Indented), nén gọn (Minified), kiểm tra cú pháp (Syntax Validation).
+   - Base64: Mã hóa/giải mã văn bản và tập tin bất kỳ, lưu Base64 ra file.
+   - URL & HTML: Mã hóa và giải mã URL (Escape/Unescape) và thực thể HTML (Entities).
+   - Hash Generator: Tính tức thời các mã băm MD5, SHA-1, SHA-256, SHA-512 cho văn bản và tập tin.
+   - Case & Inspector: Đếm ký tự, từ, dòng, byte UTF-8 và chuyển đổi kiểu chữ (camel, Pascal, snake, kebab, UPPER, lower, Title).
+8. **System Tray & Lifecycle**:
    - Minimize-to-tray on close (`Hardcodet.NotifyIcon.Wpf`).
    - Dark / Light mode switching dynamically via `Wpf.Ui.Appearance.ApplicationThemeManager`.
    - Windows Startup toggle via CurrentUser Registry (`Software\Microsoft\Windows\CurrentVersion\Run`).
@@ -72,7 +78,8 @@ d:\.MyDeusTools\MyDeusTools\
 │   │   ├── ClipboardService.cs  # Windows Clipboard listener & JSON storage
 │   │   ├── QrCodeService.cs     # QR Code generation (QRCoder) & decoding (ZXing)
 │   │   ├── ColorPickerService.cs# Screen color sampling, pixel magnifier & history
-│   │   └── Impl/                # Service Interfaces (IAutoClickService, IColorPickerService, etc.)
+│   │   ├── TextUtilityService.cs# JSON format/minify, Base64, URL/HTML, Hashes, Case conversions
+│   │   └── Impl/                # Service Interfaces (IAutoClickService, ITextUtilityService, etc.)
 │   ├── ViewModels/              # MVVM ViewModels (CommunityToolkit.Mvvm)
 │   │   ├── MainWindowViewModel.cs
 │   │   ├── AutoClickViewModel.cs
@@ -80,9 +87,10 @@ d:\.MyDeusTools\MyDeusTools\
 │   │   ├── StickyNoteViewModel.cs
 │   │   ├── ClipboardViewModel.cs
 │   │   ├── QrCodeViewModel.cs
-│   │   └── ColorPickerViewModel.cs
+│   │   ├── ColorPickerViewModel.cs
+│   │   └── TextUtilityViewModel.cs
 │   ├── Views/                   # UI Pages & Sub-Windows
-│   │   ├── Pages/               # AutoClickPage, ShutdownPage, StickyNotePage, ClipboardPage, QrCodePage, ColorPickerPage
+│   │   ├── Pages/               # AutoClickPage, ShutdownPage, StickyNotePage, ClipboardPage, QrCodePage, ColorPickerPage, TextUtilityPage
 │   │   └── Windows/             # RecordingOverlayWindow, StickyNoteWindow, QrSnippingOverlayWindow, ColorPickerOverlayWindow
 │   └── Resources/               # Icons & static assets (avatar.ico)
 └── MyDeusTools.Tests/           # Unit & Integration Tests (xUnit, StaFact)
@@ -92,7 +100,8 @@ d:\.MyDeusTools\MyDeusTools\
     ├── StickyNoteServiceTests.cs# Sticky note persistence tests
     ├── ClipboardServiceTests.cs # Clipboard history, pin, search & deduplication tests
     ├── QrCodeServiceTests.cs    # QR code generation, roundtrip decode, and URL detection tests
-    └── ColorPickerServiceTests.cs # Screen sampling, format conversions, and JSON persistence tests
+    ├── ColorPickerServiceTests.cs # Screen sampling, format conversions, and JSON persistence tests
+    └── TextUtilityServiceTests.cs # JSON validation, Base64 roundtrip, file hashing, case converters
 ```
 
 ---
