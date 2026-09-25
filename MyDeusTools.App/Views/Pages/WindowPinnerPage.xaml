@@ -220,14 +220,9 @@
                                         <!-- Actions -->
                                         <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
                                             <!-- Unpinned Button -->
-                                            <ui:Button Appearance="Primary"
-                                                       Padding="14,6"
-                                                       Margin="0,0,8,0"
-                                                       ToolTip="Ghim lên trên cùng (Always on Top)"
-                                                       Command="{Binding DataContext.TogglePinCommand, RelativeSource={RelativeSource AncestorType=Page}}"
-                                                       CommandParameter="{Binding}">
-                                                <ui:Button.Style>
-                                                    <Style TargetType="ui:Button" BasedOn="{StaticResource {x:Type ui:Button}}">
+                                            <Border Margin="0,0,8,0">
+                                                <Border.Style>
+                                                    <Style TargetType="Border">
                                                         <Setter Property="Visibility" Value="Visible"/>
                                                         <Style.Triggers>
                                                             <DataTrigger Binding="{Binding IsTopMost}" Value="True">
@@ -235,22 +230,23 @@
                                                             </DataTrigger>
                                                         </Style.Triggers>
                                                     </Style>
-                                                </ui:Button.Style>
-                                                <StackPanel Orientation="Horizontal">
-                                                    <ui:SymbolIcon Symbol="Pin24" Margin="0,0,6,0"/>
-                                                    <TextBlock Text="Ghim nổi"/>
-                                                </StackPanel>
-                                            </ui:Button>
+                                                </Border.Style>
+                                                <ui:Button Appearance="Primary"
+                                                           Padding="14,6"
+                                                           ToolTip="Ghim lên trên cùng (Always on Top)"
+                                                           Command="{Binding DataContext.TogglePinCommand, RelativeSource={RelativeSource AncestorType=Page}}"
+                                                           CommandParameter="{Binding}">
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <ui:SymbolIcon Symbol="Pin24" Margin="0,0,6,0"/>
+                                                        <TextBlock Text="Ghim nổi"/>
+                                                    </StackPanel>
+                                                </ui:Button>
+                                            </Border>
 
                                             <!-- Pinned Button -->
-                                            <ui:Button Appearance="Secondary"
-                                                       Padding="14,6"
-                                                       Margin="0,0,8,0"
-                                                       ToolTip="Bỏ ghim (Trở về bình thường)"
-                                                       Command="{Binding DataContext.TogglePinCommand, RelativeSource={RelativeSource AncestorType=Page}}"
-                                                       CommandParameter="{Binding}">
-                                                <ui:Button.Style>
-                                                    <Style TargetType="ui:Button" BasedOn="{StaticResource {x:Type ui:Button}}">
+                                            <Border Margin="0,0,8,0">
+                                                <Border.Style>
+                                                    <Style TargetType="Border">
                                                         <Setter Property="Visibility" Value="Collapsed"/>
                                                         <Style.Triggers>
                                                             <DataTrigger Binding="{Binding IsTopMost}" Value="True">
@@ -258,17 +254,23 @@
                                                             </DataTrigger>
                                                         </Style.Triggers>
                                                     </Style>
-                                                </ui:Button.Style>
-                                                <StackPanel Orientation="Horizontal">
-                                                    <ui:SymbolIcon Symbol="PinOff24" Margin="0,0,6,0" Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"/>
-                                                    <TextBlock Text="Bỏ ghim" FontWeight="SemiBold"/>
-                                                </StackPanel>
-                                            </ui:Button>
+                                                </Border.Style>
+                                                <ui:Button Appearance="Secondary"
+                                                           Padding="14,6"
+                                                           ToolTip="Bỏ ghim (Trở về bình thường)"
+                                                           Command="{Binding DataContext.TogglePinCommand, RelativeSource={RelativeSource AncestorType=Page}}"
+                                                           CommandParameter="{Binding}">
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <ui:SymbolIcon Symbol="PinOff24" Margin="0,0,6,0" Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"/>
+                                                        <TextBlock Text="Bỏ ghim" FontWeight="SemiBold"/>
+                                                    </StackPanel>
+                                                </ui:Button>
+                                            </Border>
 
                                             <!-- Bring to Front -->
                                             <ui:Button Content="{DynamicResource WindowPinner_BringToFront}"
                                                        Icon="{ui:SymbolIcon Symbol=ArrowUp24}"
-                                                       Appearance="Subtle"
+                                                       Appearance="Secondary"
                                                        Padding="12,6"
                                                        Command="{Binding DataContext.BringToFrontCommand, RelativeSource={RelativeSource AncestorType=Page}}"
                                                        CommandParameter="{Binding}"/>
@@ -330,7 +332,7 @@
                                                            FontSize="11"
                                                            Command="{Binding DataContext.SetOpacity40Command, RelativeSource={RelativeSource AncestorType=Page}}"
                                                            CommandParameter="{Binding}"/>
-                                                <ui:Button Appearance="Subtle" 
+                                                <ui:Button Appearance="Transparent" 
                                                            Padding="8,4" 
                                                            ToolTip="{DynamicResource WindowPinner_ResetOpacity}"
                                                            Command="{Binding DataContext.ResetOpacityCommand, RelativeSource={RelativeSource AncestorType=Page}}"

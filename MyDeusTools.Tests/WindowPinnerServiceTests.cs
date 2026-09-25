@@ -24,6 +24,20 @@ namespace MyDeusTools.Tests
             Assert.Equal(string.Empty, model.DisplayText);
         }
 
+        [WpfFact]
+        public void WindowPinnerPage_WithItems_RendersWithoutCrashing()
+        {
+            var mockService = new MockWindowPinnerService(new List<WindowInfoModel>
+            {
+                new WindowInfoModel { Handle = new IntPtr(100), Title = "Test Window", ProcessName = "test", IsTopMost = false }
+            });
+            var vm = new WindowPinnerViewModel(mockService);
+            var page = new MyDeusTools.App.Views.Pages.WindowPinnerPage(vm);
+            page.Measure(new System.Windows.Size(1280, 720));
+            page.Arrange(new System.Windows.Rect(0, 0, 1280, 720));
+            page.UpdateLayout();
+        }
+
         [Theory]
         [InlineData((byte)255, 100)]
         [InlineData((byte)204, 80)]
