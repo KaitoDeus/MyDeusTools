@@ -21,6 +21,7 @@
     <system:String x:Key="Nav_QrCodeStudio">QR Code Studio</system:String>
     <system:String x:Key="Nav_ColorPicker">Lấy mã màu (Color Picker)</system:String>
     <system:String x:Key="Nav_TextDevTools">Text &amp; Dev Tools</system:String>
+    <system:String x:Key="Nav_WindowPinner">Ghim cửa sổ (Always on Top)</system:String>
 
     <!-- Sticky Notes Page -->
     <system:String x:Key="Sticky_Title">Ghi chú nổi</system:String>
@@ -92,5 +93,20 @@
     <system:String x:Key="TextDev_Decode">Giải mã (Decode)</system:String>
     <system:String x:Key="TextDev_EncodeFile">Mã hóa File...</system:String>
     <system:String x:Key="TextDev_SaveToFile">Lưu ra File...</system:String>
+
+    <!-- Window Pinner & Opacity Page -->
+    <system:String x:Key="WindowPinner_Title">Ghim cửa sổ nổi (Window Pinner)</system:String>
+    <system:String x:Key="WindowPinner_Subtitle">Ghim cửa sổ ứng dụng luôn nổi trên cùng (Always-on-Top) và điều chỉnh độ trong suốt (Opacity)</system:String>
+    <system:String x:Key="WindowPinner_PinActive">Ghim cửa sổ đang mở</system:String>
+    <system:String x:Key="WindowPinner_Refresh">Làm mới danh sách</system:String>
+    <system:String x:Key="WindowPinner_Search">Tìm kiếm theo tên cửa sổ hoặc tiến trình...</system:String>
+    <system:String x:Key="WindowPinner_Pinned">Đã ghim nổi</system:String>
+    <system:String x:Key="WindowPinner_Unpinned">Bình thường</system:String>
+    <system:String x:Key="WindowPinner_Opacity">Độ mờ:</system:String>
+    <system:String x:Key="WindowPinner_ResetOpacity">Khôi phục độ mờ 100%</system:String>
+    <system:String x:Key="WindowPinner_BringToFront">Kích hoạt lên trước</system:String>
+    <system:String x:Key="WindowPinner_Empty">Không tìm thấy cửa sổ ứng dụng nào đang mở</system:String>
+    <system:String x:Key="WindowPinner_PinnedCount">Đang ghim: </system:String>
+    <system:String x:Key="WindowPinner_TotalCount">Tổng số cửa sổ: </system:String>
 
 </ResourceDictionary>

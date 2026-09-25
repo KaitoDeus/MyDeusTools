@@ -44,6 +44,7 @@ public partial class App : Application
         services.AddSingleton<IColorPickerService, ColorPickerService>();
         services.AddSingleton<ITextUtilityService, TextUtilityService>();
         services.AddSingleton<ILanguageService, LanguageService>();
+        services.AddSingleton<IWindowPinnerService, WindowPinnerService>();
 
         // 2. Register ViewModels
         services.AddTransient<MainWindowViewModel>();
@@ -54,6 +55,7 @@ public partial class App : Application
         services.AddTransient<QrCodeViewModel>();
         services.AddTransient<ColorPickerViewModel>();
         services.AddTransient<TextUtilityViewModel>();
+        services.AddTransient<WindowPinnerViewModel>();
 
         // 3. Register Views (Windows/Pages)
         services.AddTransient<MainWindow>();
@@ -64,6 +66,7 @@ public partial class App : Application
         services.AddTransient<QrCodePage>();
         services.AddTransient<ColorPickerPage>();
         services.AddTransient<TextUtilityPage>();
+        services.AddTransient<WindowPinnerPage>();
 
         return services.BuildServiceProvider();
     }

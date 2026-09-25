@@ -21,6 +21,7 @@
     <system:String x:Key="Nav_QrCodeStudio">QR Code Studio</system:String>
     <system:String x:Key="Nav_ColorPicker">Color Picker</system:String>
     <system:String x:Key="Nav_TextDevTools">Text &amp; Dev Tools</system:String>
+    <system:String x:Key="Nav_WindowPinner">Window Pinner (TopMost)</system:String>
 
     <!-- Sticky Notes Page -->
     <system:String x:Key="Sticky_Title">Sticky Notes</system:String>
@@ -92,5 +93,20 @@
     <system:String x:Key="TextDev_Decode">Decode</system:String>
     <system:String x:Key="TextDev_EncodeFile">Encode File...</system:String>
     <system:String x:Key="TextDev_SaveToFile">Save to File...</system:String>
+
+    <!-- Window Pinner & Opacity Page -->
+    <system:String x:Key="WindowPinner_Title">Window Pinner &amp; Transparency</system:String>
+    <system:String x:Key="WindowPinner_Subtitle">Pin any app window Always-on-Top and adjust transparency (Opacity)</system:String>
+    <system:String x:Key="WindowPinner_PinActive">Pin Foreground Window</system:String>
+    <system:String x:Key="WindowPinner_Refresh">Refresh Windows</system:String>
+    <system:String x:Key="WindowPinner_Search">Search by window title or process name...</system:String>
+    <system:String x:Key="WindowPinner_Pinned">Always on Top</system:String>
+    <system:String x:Key="WindowPinner_Unpinned">Normal</system:String>
+    <system:String x:Key="WindowPinner_Opacity">Opacity:</system:String>
+    <system:String x:Key="WindowPinner_ResetOpacity">Reset Opacity 100%</system:String>
+    <system:String x:Key="WindowPinner_BringToFront">Bring to Front</system:String>
+    <system:String x:Key="WindowPinner_Empty">No open application windows found</system:String>
+    <system:String x:Key="WindowPinner_PinnedCount">Pinned: </system:String>
+    <system:String x:Key="WindowPinner_TotalCount">Total Windows: </system:String>
 
 </ResourceDictionary>

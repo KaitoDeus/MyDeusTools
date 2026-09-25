@@ -85,6 +85,13 @@
                             <ui:SymbolIcon Symbol="Code24" />
                         </ui:NavigationViewItem.Icon>
                     </ui:NavigationViewItem>
+
+                    <ui:NavigationViewItem Content="{DynamicResource Nav_WindowPinner}" 
+                                           TargetPageType="{x:Type pages:WindowPinnerPage}">
+                        <ui:NavigationViewItem.Icon>
+                            <ui:SymbolIcon Symbol="Pin24" />
+                        </ui:NavigationViewItem.Icon>
+                    </ui:NavigationViewItem>
                 </ui:NavigationView.MenuItems>
 
                 <ui:NavigationView.FooterMenuItems>
