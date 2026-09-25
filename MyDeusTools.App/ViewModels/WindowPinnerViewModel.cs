@@ -11,6 +11,7 @@ namespace MyDeusTools.App.ViewModels
     public partial class WindowPinnerViewModel : ObservableObject
     {
         private readonly IWindowPinnerService _windowPinnerService;
+        private readonly ILanguageService? _languageService;
         private List<WindowInfoModel> _rawWindows = new();
 
         private string _searchText = string.Empty;
@@ -26,7 +27,7 @@ namespace MyDeusTools.App.ViewModels
             }
         }
 
-        private string _statusMessage = "Sẵn sàng quản lý ghim cửa sổ";
+        private string _statusMessage = string.Empty;
         public string StatusMessage
         {
             get => _statusMessage;
@@ -63,10 +64,27 @@ namespace MyDeusTools.App.ViewModels
 
         public ObservableCollection<WindowInfoModel> FilteredWindows { get; } = new();
 
-        public WindowPinnerViewModel(IWindowPinnerService windowPinnerService)
+        public WindowPinnerViewModel(IWindowPinnerService windowPinnerService, ILanguageService? languageService = null)
         {
             _windowPinnerService = windowPinnerService;
+            _languageService = languageService;
+
+            if (_languageService != null)
+            {
+                _languageService.LanguageChanged += _ => UpdateLoadedStatus();
+            }
+
+            _statusMessage = GetLoc("WindowPinner_StatusReady", "Ready to manage window pinning");
             Refresh();
+        }
+
+        private string GetLoc(string key, string fallback) =>
+            _languageService?.GetString(key, fallback) ?? fallback;
+
+        private void UpdateLoadedStatus()
+        {
+            string fmt = GetLoc("WindowPinner_StatusLoaded", "Loaded {0} windows ({1} pinned)");
+            StatusMessage = string.Format(fmt, TotalCount, PinnedCount);
         }
 
         [RelayCommand]
@@ -80,18 +98,19 @@ namespace MyDeusTools.App.ViewModels
                     win.OnOpacityChanged = w =>
                     {
                         _windowPinnerService.SetOpacity(w.Handle, w.Opacity);
-                        StatusMessage = $"Độ mờ {w.DisplayText}: {w.OpacityPercent}%";
+                        string fmt = GetLoc("WindowPinner_StatusOpacity", "Opacity of {0}: {1}%");
+                        StatusMessage = string.Format(fmt, w.DisplayText, w.OpacityPercent);
                     };
                 }
 
                 TotalCount = _rawWindows.Count;
                 PinnedCount = _rawWindows.Count(w => w.IsTopMost);
                 ApplyFilter();
-                StatusMessage = $"Đã tải {TotalCount} cửa sổ ({PinnedCount} đang ghim)";
+                UpdateLoadedStatus();
             }
             catch (Exception ex)
             {
-                StatusMessage = $"Lỗi khi tải danh sách cửa sổ: {ex.Message}";
+                StatusMessage = $"Error: {ex.Message}";
             }
         }
 
@@ -139,14 +158,15 @@ namespace MyDeusTools.App.ViewModels
             {
                 window.IsTopMost = _windowPinnerService.IsWindowTopMost(window.Handle);
                 PinnedCount = _rawWindows.Count(w => w.IsTopMost);
-                StatusMessage = window.IsTopMost
-                    ? $"Đã ghim nổi: {window.DisplayText}"
-                    : $"Đã bỏ ghim: {window.DisplayText}";
+                string fmt = window.IsTopMost
+                    ? GetLoc("WindowPinner_StatusPinned", "Pinned to top: {0}")
+                    : GetLoc("WindowPinner_StatusUnpinned", "Unpinned: {0}");
+                StatusMessage = string.Format(fmt, window.DisplayText);
                 ApplyFilter();
             }
             else
             {
-                StatusMessage = $"Không thể thay đổi trạng thái ghim: {window.DisplayText}";
+                StatusMessage = $"Cannot toggle pin: {window.DisplayText}";
             }
         }
 
@@ -157,7 +177,8 @@ namespace MyDeusTools.App.ViewModels
 
             window.Opacity = 255;
             _windowPinnerService.SetOpacity(window.Handle, 255);
-            StatusMessage = $"Đã khôi phục độ mờ 100%: {window.DisplayText}";
+            string fmt = GetLoc("WindowPinner_StatusResetOpacity", "Restored 100% opacity: {0}");
+            StatusMessage = string.Format(fmt, window.DisplayText);
         }
 
         [RelayCommand]
@@ -194,7 +215,8 @@ namespace MyDeusTools.App.ViewModels
             if (window == null) return;
 
             _windowPinnerService.BringToFront(window.Handle);
-            StatusMessage = $"Đã kích hoạt lên trước: {window.DisplayText}";
+            string fmt = GetLoc("WindowPinner_StatusBroughtToFront", "Brought to front: {0}");
+            StatusMessage = string.Format(fmt, window.DisplayText);
         }
 
         [RelayCommand]
@@ -203,7 +225,7 @@ namespace MyDeusTools.App.ViewModels
             IntPtr foreground = _windowPinnerService.GetForegroundWindowHandle();
             if (foreground == IntPtr.Zero)
             {
-                StatusMessage = "Không tìm thấy cửa sổ đang hoạt động";
+                StatusMessage = GetLoc("WindowPinner_StatusNoForeground", "No active window found");
                 return;
             }
 
@@ -215,7 +237,9 @@ namespace MyDeusTools.App.ViewModels
             else
             {
                 bool success = _windowPinnerService.ToggleTopMost(foreground);
-                StatusMessage = success ? "Đã đổi trạng thái ghim cửa sổ phía trước" : "Không thể ghim cửa sổ này";
+                StatusMessage = success
+                    ? GetLoc("WindowPinner_StatusPinned", "Changed pin state of active window")
+                    : "Cannot pin window";
                 Refresh();
             }
         }

@@ -21,11 +21,11 @@
                 Canvas.Left="30" 
                 IsHitTestVisible="False">
             <StackPanel Orientation="Vertical">
-                <TextBlock Text="Kéo chuột để chọn vùng chứa mã QR cần quét" 
+                <TextBlock Text="{DynamicResource Qr_OverlayHelp}" 
                            Foreground="White" 
                            FontSize="16" 
                            FontWeight="Bold"/>
-                <TextBlock Text="Thả chuột để giải mã • Nhấn ESC để hủy" 
+                <TextBlock Text="{DynamicResource Qr_OverlaySub}" 
                            Foreground="#AAAAAA" 
                            FontSize="12" 
                            Margin="0,4,0,0"/>

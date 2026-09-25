@@ -27,7 +27,7 @@ namespace MyDeusTools.App.ViewModels
             set => SetProperty(ref _jsonOutput, value);
         }
 
-        private string _jsonStatus = "Sẵn sàng định dạng hoặc kiểm tra JSON";
+        private string _jsonStatus = string.Empty;
         public string JsonStatus
         {
             get => _jsonStatus;
@@ -56,7 +56,7 @@ namespace MyDeusTools.App.ViewModels
             set => SetProperty(ref _base64Output, value);
         }
 
-        private string _base64Status = "Sẵn sàng mã hóa hoặc giải mã Base64";
+        private string _base64Status = string.Empty;
         public string Base64Status
         {
             get => _base64Status;
@@ -78,7 +78,7 @@ namespace MyDeusTools.App.ViewModels
             set => SetProperty(ref _urlHtmlOutput, value);
         }
 
-        private string _urlHtmlStatus = "Sẵn sàng xử lý URL / HTML";
+        private string _urlHtmlStatus = string.Empty;
         public string UrlHtmlStatus
         {
             get => _urlHtmlStatus;
@@ -246,13 +246,49 @@ namespace MyDeusTools.App.ViewModels
             set => SetProperty(ref _titleCase, value);
         }
 
+        private readonly ILanguageService? _languageService;
+
         // ==================== CONSTRUCTOR ====================
-        public TextUtilityViewModel(ITextUtilityService textService)
+        public TextUtilityViewModel(ITextUtilityService textService, ILanguageService? languageService = null)
         {
             _textService = textService;
+            _languageService = languageService;
+
+            JsonStatus = GetLoc("TextDev_JsonReady", "Ready to format or validate JSON");
+            Base64Status = GetLoc("TextDev_Base64Ready", "Ready to encode or decode Base64");
+            UrlHtmlStatus = GetLoc("TextDev_UrlHtmlReady", "Ready to process URL or HTML");
+
+            if (_languageService != null)
+            {
+                _languageService.LanguageChanged += _ =>
+                {
+                    if (IsJsonValid && !string.IsNullOrWhiteSpace(JsonOutput))
+                    {
+                        JsonStatus = GetLoc("TextDev_JsonValidFormatted", "Valid JSON (Formatted)");
+                    }
+                    else if (string.IsNullOrWhiteSpace(JsonOutput))
+                    {
+                        JsonStatus = GetLoc("TextDev_JsonReady", "Ready to format or validate JSON");
+                    }
+
+                    if (string.IsNullOrWhiteSpace(Base64Output))
+                    {
+                        Base64Status = GetLoc("TextDev_Base64Ready", "Ready to encode or decode Base64");
+                    }
+
+                    if (string.IsNullOrWhiteSpace(UrlHtmlOutput))
+                    {
+                        UrlHtmlStatus = GetLoc("TextDev_UrlHtmlReady", "Ready to process URL or HTML");
+                    }
+                };
+            }
+
             UpdateInspector(_inspectorInput);
             FormatJson();
         }
+
+        private string GetLoc(string key, string fallback) =>
+            _languageService?.GetString(key, fallback) ?? fallback;
 
         // ==================== JSON COMMANDS ====================
         [RelayCommand]
@@ -264,18 +300,18 @@ namespace MyDeusTools.App.ViewModels
                 if (isValid)
                 {
                     JsonOutput = _textService.FormatJson(JsonInput);
-                    JsonStatus = "JSON hợp lệ (Đã định dạng)";
+                    JsonStatus = GetLoc("TextDev_JsonValidFormatted", "Valid JSON (Formatted)");
                     IsJsonValid = true;
                 }
                 else
                 {
-                    JsonStatus = error ?? "Cú pháp JSON không hợp lệ";
+                    JsonStatus = error ?? GetLoc("TextDev_JsonInvalid", "Invalid JSON syntax");
                     IsJsonValid = false;
                 }
             }
             catch (Exception ex)
             {
-                JsonStatus = $"Lỗi: {ex.Message}";
+                JsonStatus = $"Error: {ex.Message}";
                 IsJsonValid = false;
             }
         }
@@ -289,18 +325,18 @@ namespace MyDeusTools.App.ViewModels
                 if (isValid)
                 {
                     JsonOutput = _textService.MinifyJson(JsonInput);
-                    JsonStatus = "JSON hợp lệ (Đã nén gọn)";
+                    JsonStatus = GetLoc("TextDev_JsonValidMinified", "Valid JSON (Minified)");
                     IsJsonValid = true;
                 }
                 else
                 {
-                    JsonStatus = error ?? "Cú pháp JSON không hợp lệ";
+                    JsonStatus = error ?? GetLoc("TextDev_JsonInvalid", "Invalid JSON syntax");
                     IsJsonValid = false;
                 }
             }
             catch (Exception ex)
             {
-                JsonStatus = $"Lỗi: {ex.Message}";
+                JsonStatus = $"Error: {ex.Message}";
                 IsJsonValid = false;
             }
         }
@@ -310,7 +346,9 @@ namespace MyDeusTools.App.ViewModels
         {
             var (isValid, error) = _textService.ValidateJson(JsonInput);
             IsJsonValid = isValid;
-            JsonStatus = isValid ? "Cú pháp JSON hoàn toàn hợp lệ!" : (error ?? "JSON không hợp lệ");
+            JsonStatus = isValid 
+                ? GetLoc("TextDev_JsonValid", "Valid JSON") 
+                : (error ?? GetLoc("TextDev_JsonInvalid", "Invalid JSON"));
         }
 
         [RelayCommand]
@@ -318,7 +356,7 @@ namespace MyDeusTools.App.ViewModels
         {
             JsonInput = string.Empty;
             JsonOutput = string.Empty;
-            JsonStatus = "Đã xóa nội dung JSON";
+            JsonStatus = GetLoc("TextDev_ClearShort", "Cleared");
             IsJsonValid = true;
         }
 
@@ -326,7 +364,7 @@ namespace MyDeusTools.App.ViewModels
         public void CopyJsonOutput()
         {
             SafeSetClipboard(JsonOutput);
-            JsonStatus = "Đã sao chép kết quả vào khay nhớ tạm";
+            JsonStatus = GetLoc("TextDev_Copy", "Copied to clipboard");
         }
 
         [RelayCommand]
@@ -356,11 +394,11 @@ namespace MyDeusTools.App.ViewModels
             try
             {
                 Base64Output = _textService.TextToBase64(Base64Input);
-                Base64Status = "Đã mã hóa sang Base64 thành công";
+                Base64Status = GetLoc("TextDev_Base64Encoded", "Encoded to Base64 successfully");
             }
             catch (Exception ex)
             {
-                Base64Status = $"Lỗi: {ex.Message}";
+                Base64Status = $"Error: {ex.Message}";
             }
         }
 
@@ -370,11 +408,11 @@ namespace MyDeusTools.App.ViewModels
             try
             {
                 Base64Output = _textService.Base64ToText(Base64Input);
-                Base64Status = "Đã giải mã Base64 thành công";
+                Base64Status = GetLoc("TextDev_Base64Decoded", "Decoded Base64 successfully");
             }
             catch (Exception ex)
             {
-                Base64Status = $"Lỗi giải mã: {ex.Message}";
+                Base64Status = $"Error: {ex.Message}";
             }
         }
 
@@ -383,14 +421,14 @@ namespace MyDeusTools.App.ViewModels
         {
             Base64Input = string.Empty;
             Base64Output = string.Empty;
-            Base64Status = "Đã xóa nội dung";
+            Base64Status = GetLoc("TextDev_Cleared", "Cleared content");
         }
 
         [RelayCommand]
         public void CopyBase64Output()
         {
             SafeSetClipboard(Base64Output);
-            Base64Status = "Đã sao chép kết quả Base64";
+            Base64Status = GetLoc("TextDev_Copied", "Copied to clipboard");
         }
 
         [RelayCommand]
@@ -417,8 +455,8 @@ namespace MyDeusTools.App.ViewModels
         {
             var dialog = new OpenFileDialog
             {
-                Title = "Chọn tập tin để chuyển sang Base64",
-                Filter = "Mọi tập tin (*.*)|*.*"
+                Title = GetLoc("TextDev_EncodeFile", "Encode File..."),
+                Filter = "All files (*.*)|*.*"
             };
 
             if (dialog.ShowDialog() == true)
@@ -426,11 +464,11 @@ namespace MyDeusTools.App.ViewModels
                 try
                 {
                     Base64Output = _textService.FileToBase64(dialog.FileName);
-                    Base64Status = $"Đã mã hóa tập tin '{Path.GetFileName(dialog.FileName)}' sang Base64";
+                    Base64Status = string.Format(GetLoc("TextDev_FileEncoded", "Encoded '{0}' to Base64"), Path.GetFileName(dialog.FileName));
                 }
                 catch (Exception ex)
                 {
-                    Base64Status = $"Lỗi đọc file: {ex.Message}";
+                    Base64Status = $"Error: {ex.Message}";
                 }
             }
         }
@@ -441,15 +479,15 @@ namespace MyDeusTools.App.ViewModels
             string content = !string.IsNullOrWhiteSpace(Base64Output) ? Base64Output : Base64Input;
             if (string.IsNullOrWhiteSpace(content))
             {
-                Base64Status = "Không có dữ liệu Base64 để lưu tập tin.";
+                Base64Status = GetLoc("TextDev_Base64Ready", "Ready to encode or decode Base64");
                 return;
             }
 
             var dialog = new SaveFileDialog
             {
-                Title = "Lưu dữ liệu Base64 thành tập tin",
+                Title = GetLoc("TextDev_SaveToFile", "Save to File..."),
                 FileName = "decoded_file.bin",
-                Filter = "Mọi tập tin (*.*)|*.*"
+                Filter = "All files (*.*)|*.*"
             };
 
             if (dialog.ShowDialog() == true)
@@ -457,11 +495,11 @@ namespace MyDeusTools.App.ViewModels
                 try
                 {
                     _textService.Base64ToFile(content, dialog.FileName);
-                    Base64Status = $"Đã lưu tập tin thành công: {Path.GetFileName(dialog.FileName)}";
+                    Base64Status = string.Format(GetLoc("TextDev_FileSaved", "Saved file: {0}"), Path.GetFileName(dialog.FileName));
                 }
                 catch (Exception ex)
                 {
-                    Base64Status = $"Lỗi lưu tập tin: {ex.Message}";
+                    Base64Status = $"Error: {ex.Message}";
                 }
             }
         }
@@ -471,28 +509,28 @@ namespace MyDeusTools.App.ViewModels
         public void UrlEncode()
         {
             UrlHtmlOutput = _textService.UrlEncode(UrlHtmlInput);
-            UrlHtmlStatus = "Đã mã hóa URL (Escape)";
+            UrlHtmlStatus = GetLoc("TextDev_UrlEncoded", "URL encoded successfully");
         }
 
         [RelayCommand]
         public void UrlDecode()
         {
             UrlHtmlOutput = _textService.UrlDecode(UrlHtmlInput);
-            UrlHtmlStatus = "Đã giải mã URL (Unescape)";
+            UrlHtmlStatus = GetLoc("TextDev_UrlDecoded", "URL decoded successfully");
         }
 
         [RelayCommand]
         public void HtmlEncode()
         {
             UrlHtmlOutput = _textService.HtmlEncode(UrlHtmlInput);
-            UrlHtmlStatus = "Đã mã hóa thực thể HTML";
+            UrlHtmlStatus = GetLoc("TextDev_HtmlEncoded", "HTML entities encoded");
         }
 
         [RelayCommand]
         public void HtmlDecode()
         {
             UrlHtmlOutput = _textService.HtmlDecode(UrlHtmlInput);
-            UrlHtmlStatus = "Đã giải mã thực thể HTML";
+            UrlHtmlStatus = GetLoc("TextDev_HtmlDecoded", "HTML entities decoded");
         }
 
         [RelayCommand]
@@ -500,14 +538,14 @@ namespace MyDeusTools.App.ViewModels
         {
             UrlHtmlInput = string.Empty;
             UrlHtmlOutput = string.Empty;
-            UrlHtmlStatus = "Đã xóa nội dung URL/HTML";
+            UrlHtmlStatus = GetLoc("TextDev_Cleared", "Cleared content");
         }
 
         [RelayCommand]
         public void CopyUrlHtmlOutput()
         {
             SafeSetClipboard(UrlHtmlOutput);
-            UrlHtmlStatus = "Đã sao chép kết quả";
+            UrlHtmlStatus = GetLoc("TextDev_Copied", "Copied to clipboard");
         }
 
         [RelayCommand]
@@ -570,8 +608,8 @@ namespace MyDeusTools.App.ViewModels
         {
             var dialog = new OpenFileDialog
             {
-                Title = "Chọn tập tin để tính mã băm (Hash)",
-                Filter = "Mọi tập tin (*.*)|*.*"
+                Title = GetLoc("TextDev_ChooseFile", "Choose file to hash..."),
+                Filter = "All files (*.*)|*.*"
             };
 
             if (dialog.ShowDialog() == true)
@@ -584,7 +622,7 @@ namespace MyDeusTools.App.ViewModels
                 }
                 catch (Exception ex)
                 {
-                    SelectedHashFile = $"Lỗi: {ex.Message}";
+                    SelectedHashFile = $"Error: {ex.Message}";
                     FileMd5Hash = string.Empty;
                     FileSha256Hash = string.Empty;
                 }

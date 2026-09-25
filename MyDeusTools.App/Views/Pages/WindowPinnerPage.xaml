@@ -23,7 +23,7 @@
 
             <StackPanel Orientation="Vertical">
                 <TextBlock Text="{DynamicResource WindowPinner_Title}" 
-                           FontSize="28" 
+                           FontSize="22" 
                            FontWeight="Bold" />
                 <TextBlock Text="{Binding StatusMessage}" 
                            FontSize="13" 
@@ -35,7 +35,7 @@
                 <!-- Badges -->
                 <Border Background="{DynamicResource CardBackgroundFillColorSecondaryBrush}" 
                         CornerRadius="4" 
-                        Padding="12,6" 
+                        Padding="10,5" 
                         Margin="0,0,8,0">
                     <TextBlock FontSize="13" Foreground="{DynamicResource TextFillColorSecondaryBrush}">
                         <Run Text="{DynamicResource WindowPinner_TotalCount}" />
@@ -45,8 +45,8 @@
 
                 <Border Background="{DynamicResource CardBackgroundFillColorSecondaryBrush}" 
                         CornerRadius="4" 
-                        Padding="12,6" 
-                        Margin="0,0,12,0">
+                        Padding="10,5" 
+                        Margin="0,0,10,0">
                     <TextBlock FontSize="13" Foreground="{DynamicResource TextFillColorSecondaryBrush}">
                         <Run Text="{DynamicResource WindowPinner_PinnedCount}" />
                         <Run Text="{Binding PinnedCount, Mode=OneWay}" FontWeight="SemiBold" Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}" />
@@ -58,14 +58,14 @@
                            Icon="{ui:SymbolIcon Symbol=Pin24}"
                            Command="{Binding PinForegroundWindowCommand}"
                            Appearance="Primary"
-                           Padding="16,8"
+                           Padding="12,6"
                            Margin="0,0,8,0"/>
 
                 <ui:Button Content="{DynamicResource WindowPinner_Refresh}" 
                            Icon="{ui:SymbolIcon Symbol=ArrowClockwise24}"
                            Command="{Binding RefreshCommand}"
                            Appearance="Secondary"
-                           Padding="14,8"/>
+                           Padding="12,6"/>
             </StackPanel>
         </Grid>
 
@@ -92,7 +92,7 @@
                          Padding="4,2"/>
 
                 <ui:Button Grid.Column="2" 
-                           Content="Xóa tìm" 
+                           Content="{DynamicResource WindowPinner_ClearSearch}" 
                            Command="{Binding ClearSearchCommand}"
                            Appearance="Transparent"
                            Padding="10,4"
@@ -235,12 +235,12 @@
                                                 </Border.Style>
                                                 <ui:Button Appearance="Primary"
                                                            Padding="14,6"
-                                                           ToolTip="Ghim lên trên cùng (Always on Top)"
+                                                           ToolTip="Always on Top"
                                                            Command="{Binding DataContext.TogglePinCommand, RelativeSource={RelativeSource AncestorType=Page}}"
                                                            CommandParameter="{Binding}">
                                                     <StackPanel Orientation="Horizontal">
                                                         <ui:SymbolIcon Symbol="Pin24" Margin="0,0,6,0"/>
-                                                        <TextBlock Text="Ghim nổi"/>
+                                                        <TextBlock Text="{DynamicResource WindowPinner_Pin}"/>
                                                     </StackPanel>
                                                 </ui:Button>
                                             </Border>
@@ -259,12 +259,12 @@
                                                 </Border.Style>
                                                 <ui:Button Appearance="Secondary"
                                                            Padding="14,6"
-                                                           ToolTip="Bỏ ghim (Trở về bình thường)"
+                                                           ToolTip="Normal window"
                                                            Command="{Binding DataContext.TogglePinCommand, RelativeSource={RelativeSource AncestorType=Page}}"
                                                            CommandParameter="{Binding}">
                                                     <StackPanel Orientation="Horizontal">
                                                         <ui:SymbolIcon Symbol="PinOff24" Margin="0,0,6,0" Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"/>
-                                                        <TextBlock Text="Bỏ ghim" FontWeight="SemiBold"/>
+                                                        <TextBlock Text="{DynamicResource WindowPinner_Unpin}" FontWeight="SemiBold"/>
                                                     </StackPanel>
                                                 </ui:Button>
                                             </Border>

@@ -30,7 +30,7 @@
                 Canvas.Left="20" 
                 IsHitTestVisible="False">
             <TextBlock x:Name="InstructionText" 
-                       Text="Click chuột để ghi điểm. Nhấn ENTER/ESC để hoàn tất." 
+                       Text="{DynamicResource AutoClick_OverlayHelp}" 
                        Foreground="White" 
                        FontSize="16" 
                        FontWeight="Bold"/>

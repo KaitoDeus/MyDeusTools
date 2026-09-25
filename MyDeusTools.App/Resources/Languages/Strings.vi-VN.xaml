@@ -87,26 +87,84 @@
     <system:String x:Key="TextDev_Minify">Nén gọn (Minify)</system:String>
     <system:String x:Key="TextDev_Validate">Kiểm tra</system:String>
     <system:String x:Key="TextDev_Copy">Sao chép</system:String>
-    <system:String x:Key="TextDev_Paste">Dán từ Clipboard</system:String>
+    <system:String x:Key="TextDev_Paste">Dán</system:String>
+    <system:String x:Key="TextDev_PasteClipboard">Dán từ Clipboard</system:String>
     <system:String x:Key="TextDev_Clear">Xóa tất cả</system:String>
+    <system:String x:Key="TextDev_ClearShort">Xóa</system:String>
+    <system:String x:Key="TextDev_Swap">Đổi chỗ Input và Output</system:String>
     <system:String x:Key="TextDev_Encode">Mã hóa (Encode)</system:String>
     <system:String x:Key="TextDev_Decode">Giải mã (Decode)</system:String>
     <system:String x:Key="TextDev_EncodeFile">Mã hóa File...</system:String>
     <system:String x:Key="TextDev_SaveToFile">Lưu ra File...</system:String>
+    <system:String x:Key="TextDev_JsonInput">Đầu vào (JSON Input)</system:String>
+    <system:String x:Key="TextDev_JsonOutput">Kết quả (JSON Output)</system:String>
+    <system:String x:Key="TextDev_Base64Input">Đầu vào (Text hoặc Base64)</system:String>
+    <system:String x:Key="TextDev_Base64Output">Kết quả (Base64 Output)</system:String>
+    <system:String x:Key="TextDev_UrlHtmlInput">Đầu vào (URL hoặc HTML)</system:String>
+    <system:String x:Key="TextDev_UrlHtmlOutput">Kết quả chuyển đổi</system:String>
+    <system:String x:Key="TextDev_HashStringHeader">Chuỗi văn bản (Tự động tính mã băm khi gõ)</system:String>
+    <system:String x:Key="TextDev_HashTextHeader">Mã băm văn bản (Hashes)</system:String>
+    <system:String x:Key="TextDev_HashFileHeader">Tính mã băm tập tin (File Hash)</system:String>
+    <system:String x:Key="TextDev_ChooseFile">Chọn tập tin để tính hash...</system:String>
+    <system:String x:Key="TextDev_InspectorPrompt">Nhập đoạn văn bản để thống kê và chuyển đổi kiểu chữ</system:String>
+    <system:String x:Key="TextDev_StatsChars">Ký tự</system:String>
+    <system:String x:Key="TextDev_StatsNoSpaces">Không khoảng trắng</system:String>
+    <system:String x:Key="TextDev_StatsWords">Từ</system:String>
+    <system:String x:Key="TextDev_StatsLines">Dòng</system:String>
+    <system:String x:Key="TextDev_CaseHeader">Định dạng kiểu chữ (Case Transformations)</system:String>
+    <system:String x:Key="TextDev_JsonValidFormatted">JSON hợp lệ (Đã định dạng)</system:String>
+    <system:String x:Key="TextDev_JsonValidMinified">JSON hợp lệ (Đã nén)</system:String>
+    <system:String x:Key="TextDev_JsonValid">JSON hợp lệ</system:String>
+    <system:String x:Key="TextDev_JsonInvalid">JSON không hợp lệ: {0}</system:String>
+    <system:String x:Key="TextDev_JsonReady">Sẵn sàng định dạng hoặc kiểm tra JSON</system:String>
+    <system:String x:Key="TextDev_Base64Ready">Sẵn sàng mã hóa hoặc giải mã Base64</system:String>
+    <system:String x:Key="TextDev_UrlHtmlReady">Sẵn sàng xử lý URL hoặc HTML</system:String>
+    <system:String x:Key="TextDev_Base64Encoded">Đã mã hóa sang Base64 thành công</system:String>
+    <system:String x:Key="TextDev_Base64Decoded">Đã giải mã Base64 thành công</system:String>
+    <system:String x:Key="TextDev_UrlEncoded">Đã mã hóa URL thành công</system:String>
+    <system:String x:Key="TextDev_UrlDecoded">Đã giải mã URL thành công</system:String>
+    <system:String x:Key="TextDev_HtmlEncoded">Đã mã hóa thực thể HTML</system:String>
+    <system:String x:Key="TextDev_HtmlDecoded">Đã giải mã thực thể HTML</system:String>
+    <system:String x:Key="TextDev_FileEncoded">Đã mã hóa '{0}' sang Base64</system:String>
+    <system:String x:Key="TextDev_FileSaved">Đã lưu tập tin thành công: {0}</system:String>
+    <system:String x:Key="TextDev_Copied">Đã sao chép vào bộ nhớ tạm</system:String>
+    <system:String x:Key="TextDev_Cleared">Đã xóa nội dung</system:String>
 
     <!-- Window Pinner & Opacity Page -->
     <system:String x:Key="WindowPinner_Title">Ghim cửa sổ nổi (Window Pinner)</system:String>
     <system:String x:Key="WindowPinner_Subtitle">Ghim cửa sổ ứng dụng luôn nổi trên cùng (Always-on-Top) và điều chỉnh độ trong suốt (Opacity)</system:String>
-    <system:String x:Key="WindowPinner_PinActive">Ghim cửa sổ đang mở</system:String>
-    <system:String x:Key="WindowPinner_Refresh">Làm mới danh sách</system:String>
+    <system:String x:Key="WindowPinner_PinActive">Ghim cửa sổ</system:String>
+    <system:String x:Key="WindowPinner_Refresh">Làm mới</system:String>
     <system:String x:Key="WindowPinner_Search">Tìm kiếm theo tên cửa sổ hoặc tiến trình...</system:String>
+    <system:String x:Key="WindowPinner_ClearSearch">Xóa tìm</system:String>
+    <system:String x:Key="WindowPinner_Pin">Ghim nổi</system:String>
+    <system:String x:Key="WindowPinner_Unpin">Bỏ ghim</system:String>
     <system:String x:Key="WindowPinner_Pinned">Đã ghim nổi</system:String>
     <system:String x:Key="WindowPinner_Unpinned">Bình thường</system:String>
     <system:String x:Key="WindowPinner_Opacity">Độ mờ:</system:String>
     <system:String x:Key="WindowPinner_ResetOpacity">Khôi phục độ mờ 100%</system:String>
-    <system:String x:Key="WindowPinner_BringToFront">Kích hoạt lên trước</system:String>
+    <system:String x:Key="WindowPinner_BringToFront">Kích hoạt</system:String>
     <system:String x:Key="WindowPinner_Empty">Không tìm thấy cửa sổ ứng dụng nào đang mở</system:String>
     <system:String x:Key="WindowPinner_PinnedCount">Đang ghim: </system:String>
     <system:String x:Key="WindowPinner_TotalCount">Tổng số cửa sổ: </system:String>
+    <system:String x:Key="WindowPinner_StatusReady">Sẵn sàng quản lý ghim cửa sổ</system:String>
+    <system:String x:Key="WindowPinner_StatusLoaded">Đã tải {0} cửa sổ ({1} đang ghim)</system:String>
+    <system:String x:Key="WindowPinner_StatusPinned">Đã ghim nổi: {0}</system:String>
+    <system:String x:Key="WindowPinner_StatusUnpinned">Đã bỏ ghim: {0}</system:String>
+    <system:String x:Key="WindowPinner_StatusOpacity">Độ mờ {0}: {1}%</system:String>
+    <system:String x:Key="WindowPinner_StatusResetOpacity">Đã khôi phục độ mờ 100%: {0}</system:String>
+    <system:String x:Key="WindowPinner_StatusBroughtToFront">Đã kích hoạt lên trước: {0}</system:String>
+    <system:String x:Key="WindowPinner_StatusNoForeground">Không tìm thấy cửa sổ đang hoạt động</system:String>
+
+    <!-- Color Picker Overlay -->
+    <system:String x:Key="Color_OverlayHelp">Click chuột để bắt màu • Nhấn ESC để hủy</system:String>
+    <system:String x:Key="Color_OverlaySub">Mã HEX sẽ tự động được sao chép vào Clipboard</system:String>
+
+    <!-- QR Snipping Overlay -->
+    <system:String x:Key="Qr_OverlayHelp">Kéo chuột để chọn vùng chứa mã QR cần quét</system:String>
+    <system:String x:Key="Qr_OverlaySub">Thả chuột để giải mã • Nhấn ESC để hủy</system:String>
+
+    <!-- Recording Overlay -->
+    <system:String x:Key="AutoClick_OverlayHelp">Click chuột để ghi điểm. Nhấn ENTER/ESC để hoàn tất.</system:String>
 
 </ResourceDictionary>

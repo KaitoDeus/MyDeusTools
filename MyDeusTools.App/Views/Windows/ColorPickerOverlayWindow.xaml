@@ -77,11 +77,11 @@
                 Canvas.Left="25" 
                 IsHitTestVisible="False">
             <StackPanel Orientation="Vertical">
-                <TextBlock Text="Click chuột để bắt màu • Nhấn ESC để hủy" 
+                <TextBlock Text="{DynamicResource Color_OverlayHelp}" 
                            Foreground="White" 
                            FontSize="14" 
                            FontWeight="Bold"/>
-                <TextBlock Text="Mã HEX sẽ tự động được sao chép vào Clipboard" 
+                <TextBlock Text="{DynamicResource Color_OverlaySub}" 
                            Foreground="#AAAAAA" 
                            FontSize="11" 
                            Margin="0,3,0,0"/>

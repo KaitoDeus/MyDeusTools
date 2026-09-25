@@ -1,5 +1,7 @@
 using System;
 using System.IO;
+using System.Linq;
+using System.Xml.Linq;
 using MyDeusTools.App.Services;
 using MyDeusTools.App.Services.Impl;
 using Xunit;
@@ -106,6 +108,96 @@ namespace MyDeusTools.Tests
 
             // Assert
             Assert.Equal("FallbackText", val);
+        }
+
+        [Fact]
+        public void ResourceDictionaries_ShouldContainIdenticalKeySets()
+        {
+            string dir = AppContext.BaseDirectory;
+            while (dir != null && !File.Exists(Path.Combine(dir, "MyDeusTools.sln")))
+            {
+                dir = Directory.GetParent(dir)?.FullName!;
+            }
+            Assert.NotNull(dir);
+
+            string enPath = Path.Combine(dir, "MyDeusTools.App", "Resources", "Languages", "Strings.en-US.xaml");
+            string viPath = Path.Combine(dir, "MyDeusTools.App", "Resources", "Languages", "Strings.vi-VN.xaml");
+
+            Assert.True(File.Exists(enPath), $"File not found: {enPath}");
+            Assert.True(File.Exists(viPath), $"File not found: {viPath}");
+
+            var enXml = XDocument.Load(enPath);
+            var viXml = XDocument.Load(viPath);
+            XNamespace xNs = "http://schemas.microsoft.com/winfx/2006/xaml";
+
+            var enKeys = enXml.Descendants()
+                .Select(e => e.Attribute(xNs + "Key")?.Value)
+                .Where(k => !string.IsNullOrEmpty(k))
+                .ToHashSet();
+
+            var viKeys = viXml.Descendants()
+                .Select(e => e.Attribute(xNs + "Key")?.Value)
+                .Where(k => !string.IsNullOrEmpty(k))
+                .ToHashSet();
+
+            Assert.NotEmpty(enKeys);
+            Assert.NotEmpty(viKeys);
+
+            var missingInVi = enKeys.Except(viKeys).ToList();
+            var missingInEn = viKeys.Except(enKeys).ToList();
+
+            Assert.Empty(missingInVi);
+            Assert.Empty(missingInEn);
+        }
+
+        [Theory]
+        [InlineData("WindowPinner_Title")]
+        [InlineData("WindowPinner_Pin")]
+        [InlineData("WindowPinner_Unpin")]
+        [InlineData("WindowPinner_ClearSearch")]
+        [InlineData("WindowPinner_StatusReady")]
+        [InlineData("TextDev_Title")]
+        [InlineData("TextDev_JsonInput")]
+        [InlineData("TextDev_JsonOutput")]
+        [InlineData("TextDev_Base64Input")]
+        [InlineData("TextDev_Base64Output")]
+        [InlineData("TextDev_UrlHtmlInput")]
+        [InlineData("TextDev_UrlHtmlOutput")]
+        [InlineData("TextDev_HashStringHeader")]
+        [InlineData("TextDev_HashTextHeader")]
+        [InlineData("TextDev_HashFileHeader")]
+        [InlineData("TextDev_InspectorPrompt")]
+        [InlineData("TextDev_StatsChars")]
+        [InlineData("TextDev_CaseHeader")]
+        [InlineData("TextDev_Format")]
+        [InlineData("TextDev_Minify")]
+        [InlineData("TextDev_Validate")]
+        [InlineData("TextDev_Clear")]
+        [InlineData("TextDev_Swap")]
+        [InlineData("Color_OverlayHelp")]
+        [InlineData("Qr_OverlayHelp")]
+        [InlineData("AutoClick_OverlayHelp")]
+        public void CriticalKeys_ShouldExistInBothDictionaries(string key)
+        {
+            string dir = AppContext.BaseDirectory;
+            while (dir != null && !File.Exists(Path.Combine(dir, "MyDeusTools.sln")))
+            {
+                dir = Directory.GetParent(dir)?.FullName!;
+            }
+            Assert.NotNull(dir);
+
+            string enPath = Path.Combine(dir, "MyDeusTools.App", "Resources", "Languages", "Strings.en-US.xaml");
+            string viPath = Path.Combine(dir, "MyDeusTools.App", "Resources", "Languages", "Strings.vi-VN.xaml");
+
+            var enXml = XDocument.Load(enPath);
+            var viXml = XDocument.Load(viPath);
+            XNamespace xNs = "http://schemas.microsoft.com/winfx/2006/xaml";
+
+            bool existsInEn = enXml.Descendants().Any(e => e.Attribute(xNs + "Key")?.Value == key);
+            bool existsInVi = viXml.Descendants().Any(e => e.Attribute(xNs + "Key")?.Value == key);
+
+            Assert.True(existsInEn, $"Key '{key}' missing from Strings.en-US.xaml");
+            Assert.True(existsInVi, $"Key '{key}' missing from Strings.vi-VN.xaml");
         }
     }
 }

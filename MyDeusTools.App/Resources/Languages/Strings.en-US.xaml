@@ -87,19 +87,58 @@
     <system:String x:Key="TextDev_Minify">Minify</system:String>
     <system:String x:Key="TextDev_Validate">Validate</system:String>
     <system:String x:Key="TextDev_Copy">Copy</system:String>
-    <system:String x:Key="TextDev_Paste">Paste from Clipboard</system:String>
+    <system:String x:Key="TextDev_Paste">Paste</system:String>
+    <system:String x:Key="TextDev_PasteClipboard">Paste from Clipboard</system:String>
     <system:String x:Key="TextDev_Clear">Clear All</system:String>
+    <system:String x:Key="TextDev_ClearShort">Clear</system:String>
+    <system:String x:Key="TextDev_Swap">Swap Input and Output</system:String>
     <system:String x:Key="TextDev_Encode">Encode</system:String>
     <system:String x:Key="TextDev_Decode">Decode</system:String>
     <system:String x:Key="TextDev_EncodeFile">Encode File...</system:String>
     <system:String x:Key="TextDev_SaveToFile">Save to File...</system:String>
+    <system:String x:Key="TextDev_JsonInput">JSON Input</system:String>
+    <system:String x:Key="TextDev_JsonOutput">JSON Output</system:String>
+    <system:String x:Key="TextDev_Base64Input">Input (Text or Base64)</system:String>
+    <system:String x:Key="TextDev_Base64Output">Output (Base64 or Decoded)</system:String>
+    <system:String x:Key="TextDev_UrlHtmlInput">Input (URL or HTML)</system:String>
+    <system:String x:Key="TextDev_UrlHtmlOutput">Converted Output</system:String>
+    <system:String x:Key="TextDev_HashStringHeader">Text String (Calculates hashes in real-time)</system:String>
+    <system:String x:Key="TextDev_HashTextHeader">Text Hashes</system:String>
+    <system:String x:Key="TextDev_HashFileHeader">File Hash Calculation</system:String>
+    <system:String x:Key="TextDev_ChooseFile">Choose file to hash...</system:String>
+    <system:String x:Key="TextDev_InspectorPrompt">Enter text for statistics and case conversions</system:String>
+    <system:String x:Key="TextDev_StatsChars">Characters</system:String>
+    <system:String x:Key="TextDev_StatsNoSpaces">No Spaces</system:String>
+    <system:String x:Key="TextDev_StatsWords">Words</system:String>
+    <system:String x:Key="TextDev_StatsLines">Lines</system:String>
+    <system:String x:Key="TextDev_CaseHeader">Case Transformations</system:String>
+    <system:String x:Key="TextDev_JsonValidFormatted">Valid JSON (Formatted)</system:String>
+    <system:String x:Key="TextDev_JsonValidMinified">Valid JSON (Minified)</system:String>
+    <system:String x:Key="TextDev_JsonValid">Valid JSON</system:String>
+    <system:String x:Key="TextDev_JsonInvalid">Invalid JSON: {0}</system:String>
+    <system:String x:Key="TextDev_JsonReady">Ready to format or validate JSON</system:String>
+    <system:String x:Key="TextDev_Base64Ready">Ready to encode or decode Base64</system:String>
+    <system:String x:Key="TextDev_UrlHtmlReady">Ready to process URL or HTML</system:String>
+    <system:String x:Key="TextDev_Base64Encoded">Encoded to Base64 successfully</system:String>
+    <system:String x:Key="TextDev_Base64Decoded">Decoded Base64 successfully</system:String>
+    <system:String x:Key="TextDev_UrlEncoded">URL encoded successfully</system:String>
+    <system:String x:Key="TextDev_UrlDecoded">URL decoded successfully</system:String>
+    <system:String x:Key="TextDev_HtmlEncoded">HTML entities encoded</system:String>
+    <system:String x:Key="TextDev_HtmlDecoded">HTML entities decoded</system:String>
+    <system:String x:Key="TextDev_FileEncoded">Encoded '{0}' to Base64</system:String>
+    <system:String x:Key="TextDev_FileSaved">Saved file: {0}</system:String>
+    <system:String x:Key="TextDev_Copied">Copied to clipboard</system:String>
+    <system:String x:Key="TextDev_Cleared">Cleared content</system:String>
 
     <!-- Window Pinner & Opacity Page -->
     <system:String x:Key="WindowPinner_Title">Window Pinner &amp; Transparency</system:String>
     <system:String x:Key="WindowPinner_Subtitle">Pin any app window Always-on-Top and adjust transparency (Opacity)</system:String>
-    <system:String x:Key="WindowPinner_PinActive">Pin Foreground Window</system:String>
-    <system:String x:Key="WindowPinner_Refresh">Refresh Windows</system:String>
+    <system:String x:Key="WindowPinner_PinActive">Pin Active</system:String>
+    <system:String x:Key="WindowPinner_Refresh">Refresh</system:String>
     <system:String x:Key="WindowPinner_Search">Search by window title or process name...</system:String>
+    <system:String x:Key="WindowPinner_ClearSearch">Clear</system:String>
+    <system:String x:Key="WindowPinner_Pin">Pin</system:String>
+    <system:String x:Key="WindowPinner_Unpin">Unpin</system:String>
     <system:String x:Key="WindowPinner_Pinned">Always on Top</system:String>
     <system:String x:Key="WindowPinner_Unpinned">Normal</system:String>
     <system:String x:Key="WindowPinner_Opacity">Opacity:</system:String>
@@ -108,5 +147,24 @@
     <system:String x:Key="WindowPinner_Empty">No open application windows found</system:String>
     <system:String x:Key="WindowPinner_PinnedCount">Pinned: </system:String>
     <system:String x:Key="WindowPinner_TotalCount">Total Windows: </system:String>
+    <system:String x:Key="WindowPinner_StatusReady">Ready to manage window pinning</system:String>
+    <system:String x:Key="WindowPinner_StatusLoaded">Loaded {0} windows ({1} pinned)</system:String>
+    <system:String x:Key="WindowPinner_StatusPinned">Pinned to top: {0}</system:String>
+    <system:String x:Key="WindowPinner_StatusUnpinned">Unpinned: {0}</system:String>
+    <system:String x:Key="WindowPinner_StatusOpacity">Opacity of {0}: {1}%</system:String>
+    <system:String x:Key="WindowPinner_StatusResetOpacity">Restored 100% opacity: {0}</system:String>
+    <system:String x:Key="WindowPinner_StatusBroughtToFront">Brought to front: {0}</system:String>
+    <system:String x:Key="WindowPinner_StatusNoForeground">No active window found</system:String>
+
+    <!-- Color Picker Overlay -->
+    <system:String x:Key="Color_OverlayHelp">Click mouse to pick color • Press ESC to cancel</system:String>
+    <system:String x:Key="Color_OverlaySub">HEX code will automatically be copied to Clipboard</system:String>
+
+    <!-- QR Snipping Overlay -->
+    <system:String x:Key="Qr_OverlayHelp">Drag mouse to select QR code region to scan</system:String>
+    <system:String x:Key="Qr_OverlaySub">Release mouse to decode • Press ESC to cancel</system:String>
+
+    <!-- Recording Overlay -->
+    <system:String x:Key="AutoClick_OverlayHelp">Click mouse to record waypoint. Press ENTER/ESC when done.</system:String>
 
 </ResourceDictionary>
