@@ -137,9 +137,11 @@
             </ui:Card>
 
             <!-- Windows List -->
-            <ScrollViewer HorizontalScrollBarVisibility="Disabled" 
+            <ScrollViewer x:Name="WindowsScrollViewer"
+                          HorizontalScrollBarVisibility="Disabled" 
                           VerticalScrollBarVisibility="Auto" 
-                          Background="Transparent">
+                          Background="Transparent"
+                          PreviewMouseWheel="OnScrollViewerPreviewMouseWheel">
                 <ScrollViewer.Style>
                     <Style TargetType="ScrollViewer">
                         <Setter Property="Visibility" Value="Visible"/>
@@ -299,6 +301,7 @@
                                             <Slider Grid.Column="1" 
                                                     Minimum="40" 
                                                     Maximum="255" 
+                                                    Focusable="False"
                                                     Value="{Binding Opacity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                                     VerticalAlignment="Center" 
                                                     Margin="0,0,16,0"/>

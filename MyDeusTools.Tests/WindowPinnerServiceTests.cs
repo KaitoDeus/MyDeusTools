@@ -38,6 +38,48 @@ namespace MyDeusTools.Tests
             page.UpdateLayout();
         }
 
+        [WpfFact]
+        public void WindowPinnerPage_MouseWheel_ScrollsScrollViewer()
+        {
+            var mockWindows = new List<WindowInfoModel>();
+            for (int i = 0; i < 20; i++)
+            {
+                mockWindows.Add(new WindowInfoModel { Handle = new IntPtr(100 + i), Title = $"Window {i}", ProcessName = $"proc{i}" });
+            }
+            var mockService = new MockWindowPinnerService(mockWindows);
+            var vm = new WindowPinnerViewModel(mockService);
+            var page = new MyDeusTools.App.Views.Pages.WindowPinnerPage(vm);
+            var window = new System.Windows.Window
+            {
+                Content = page,
+                Width = 1280,
+                Height = 400
+            };
+            window.Show();
+
+            try
+            {
+                window.UpdateLayout();
+                System.Windows.Threading.Dispatcher.CurrentDispatcher.Invoke(() => { }, System.Windows.Threading.DispatcherPriority.Render);
+
+                var scv = page.FindName("WindowsScrollViewer") as System.Windows.Controls.ScrollViewer;
+                Assert.NotNull(scv);
+
+                var mouseWheelEvent = new System.Windows.Input.MouseWheelEventArgs(
+                    System.Windows.Input.Mouse.PrimaryDevice, 0, -120)
+                {
+                    RoutedEvent = System.Windows.UIElement.PreviewMouseWheelEvent
+                };
+                scv.RaiseEvent(mouseWheelEvent);
+
+                Assert.True(mouseWheelEvent.Handled, "MouseWheel event should be handled by ScrollViewer");
+            }
+            finally
+            {
+                window.Close();
+            }
+        }
+
         [Theory]
         [InlineData((byte)255, 100)]
         [InlineData((byte)204, 80)]
