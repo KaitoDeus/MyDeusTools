@@ -25,16 +25,9 @@
           },
           colors: {
             brand: {
-              50: '#eff6ff',
-              100: '#dbeafe',
-              200: '#bfdbfe',
-              300: '#93c5fd',
-              400: '#60a5fa',
-              500: '#3b82f6',
-              600: '#2563eb',
-              700: '#1d4ed8',
-              800: '#1e40af',
-              900: '#1e3a8a',
+              50: '#eff6ff', 100: '#dbeafe', 200: '#bfdbfe', 300: '#93c5fd',
+              400: '#60a5fa', 500: '#3b82f6', 600: '#2563eb', 700: '#1d4ed8',
+              800: '#1e40af', 900: '#1e3a8a',
             }
           }
         }
@@ -42,47 +35,7 @@
     }
   </script>
 
-  <style>
-    /* Custom Mica & Fluent Glassmorphism Styling */
-    .glass-card {
-      background: rgba(255, 255, 255, 0.7);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 255, 255, 0.4);
-    }
-    .dark .glass-card {
-      background: rgba(18, 24, 38, 0.75);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-    }
-    .glass-nav {
-      background: rgba(255, 255, 255, 0.85);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-    }
-    .dark .glass-nav {
-      background: rgba(10, 15, 29, 0.85);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-    }
-    .gradient-glow {
-      background: radial-gradient(circle at 50% 0%, rgba(59, 130, 246, 0.18) 0%, transparent 65%);
-    }
-    .dark .gradient-glow {
-      background: radial-gradient(circle at 50% 0%, rgba(37, 99, 235, 0.25) 0%, transparent 70%);
-    }
-    .code-badge {
-      background: rgba(0, 0, 0, 0.04);
-      border: 1px solid rgba(0, 0, 0, 0.08);
-    }
-    .dark .code-badge {
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-    }
-  </style>
+  <link rel="stylesheet" href="assets/site.css" />
 </head>
 <body class="bg-slate-50 dark:bg-[#0a0f1d] text-slate-800 dark:text-slate-100 antialiased transition-colors duration-300 min-h-screen flex flex-col font-sans selection:bg-blue-500 selection:text-white">
 
@@ -94,27 +47,26 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
       
       <!-- Brand Logo -->
-      <a href="#" class="flex items-center gap-3 group">
+      <a href="index.html" class="flex items-center gap-3 group">
         <div class="w-9 h-9 rounded-xl overflow-hidden shadow-md shadow-blue-500/10 flex items-center justify-center p-0.5 bg-gradient-to-tr from-blue-600 to-indigo-500 group-hover:scale-105 transition-transform">
           <img src="avatar.ico" alt="MyDeusTools Logo" class="w-full h-full object-contain" />
         </div>
         <div>
           <span class="font-extrabold text-lg tracking-tight bg-gradient-to-r from-blue-600 via-indigo-600 to-sky-500 dark:from-blue-400 dark:via-indigo-300 dark:to-sky-400 bg-clip-text text-transparent">MyDeusTools</span>
-          <span class="hidden sm:inline-block ml-2 text-xs font-semibold px-2 py-0.5 rounded-full bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800">v1.0.0</span>
+          <span class="hidden sm:inline-block ml-2 text-xs font-semibold px-2 py-0.5 rounded-full bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800" data-i18n="nav_badge_v">v1.0.0</span>
         </div>
       </a>
 
       <!-- Navigation Links -->
       <nav class="hidden md:flex items-center gap-7 text-sm font-medium text-slate-600 dark:text-slate-300">
-        <a href="#features" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors" data-i18n="nav_features">Features</a>
-        <a href="#demo" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors" data-i18n="nav_demo">Interactive Demo</a>
-        <a href="#comparison" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors" data-i18n="nav_comparison">Why MyDeusTools</a>
-        <a href="#architecture" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors" data-i18n="nav_tech">Tech Stack</a>
-        <a href="#getting-started" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors" data-i18n="nav_start">Get Started</a>
-        <a href="#faq" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors" data-i18n="nav_faq">FAQ</a>
+        <a href="index.html" class="nav-link hover:text-blue-600 dark:hover:text-blue-400 transition-colors" data-i18n="nav_home">Home</a>
+        <a href="features.html" class="nav-link hover:text-blue-600 dark:hover:text-blue-400 transition-colors" data-i18n="nav_features">Features</a>
+        <a href="architecture.html" class="nav-link hover:text-blue-600 dark:hover:text-blue-400 transition-colors" data-i18n="nav_architecture">Architecture</a>
+        <a href="download.html" class="nav-link hover:text-blue-600 dark:hover:text-blue-400 transition-colors" data-i18n="nav_download">Download</a>
+        <a href="faq.html" class="nav-link hover:text-blue-600 dark:hover:text-blue-400 transition-colors" data-i18n="nav_faq">FAQ</a>
       </nav>
 
-      <!-- Action Controls: Lang Switch, Dark Mode, GitHub -->
+      <!-- Action Controls: Lang Switch, Dark Mode, GitHub, Mobile Menu -->
       <div class="flex items-center gap-2.5">
         <!-- Language Switcher Button -->
         <button id="langToggleBtn" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-200/70 hover:bg-slate-300/80 dark:bg-slate-800/80 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition-colors border border-slate-300/60 dark:border-slate-700/60" title="Switch Language">
@@ -124,9 +76,7 @@
 
         <!-- Dark/Light Theme Toggle -->
         <button id="themeToggleBtn" class="p-2 rounded-lg text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100 hover:bg-slate-200/60 dark:hover:bg-slate-800/70 transition-colors" title="Toggle Dark/Light Mode">
-          <!-- Moon Icon (for Light mode) -->
           <svg id="themeMoonIcon" class="w-4 h-4 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
-          <!-- Sun Icon (for Dark mode) -->
           <svg id="themeSunIcon" class="w-4 h-4 block" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 9h-1m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
         </button>
 
@@ -137,11 +87,25 @@
         </a>
 
         <!-- Download CTA in Nav -->
-        <a href="#getting-started" class="flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-blue-600 hover:bg-blue-700 text-white shadow-sm shadow-blue-500/30 transition-all hover:shadow-blue-500/50">
+        <a href="download.html" class="flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-blue-600 hover:bg-blue-700 text-white shadow-sm shadow-blue-500/30 transition-all hover:shadow-blue-500/50">
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
-          <span data-i18n="nav_download">Download</span>
+          <span data-i18n="nav_btn_download">Download</span>
         </a>
+
+        <!-- Mobile Menu Toggle Button -->
+        <button id="mobileMenuBtn" class="md:hidden p-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-200/60 dark:hover:bg-slate-800/70">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+        </button>
       </div>
+    </div>
+
+    <!-- Mobile Nav Dropdown -->
+    <div id="mobileMenu" class="hidden md:hidden glass-nav border-t border-slate-200 dark:border-slate-800 px-4 pt-3 pb-4 space-y-2 text-sm font-medium">
+      <a href="index.html" class="block px-3 py-2 rounded-lg hover:bg-blue-500/10 hover:text-blue-600 dark:hover:text-blue-400" data-i18n="nav_home">Home</a>
+      <a href="features.html" class="block px-3 py-2 rounded-lg hover:bg-blue-500/10 hover:text-blue-600 dark:hover:text-blue-400" data-i18n="nav_features">Features</a>
+      <a href="architecture.html" class="block px-3 py-2 rounded-lg hover:bg-blue-500/10 hover:text-blue-600 dark:hover:text-blue-400" data-i18n="nav_architecture">Architecture</a>
+      <a href="download.html" class="block px-3 py-2 rounded-lg hover:bg-blue-500/10 hover:text-blue-600 dark:hover:text-blue-400" data-i18n="nav_download">Download</a>
+      <a href="faq.html" class="block px-3 py-2 rounded-lg hover:bg-blue-500/10 hover:text-blue-600 dark:hover:text-blue-400" data-i18n="nav_faq">FAQ</a>
     </div>
   </header>
 
@@ -169,13 +133,13 @@
 
       <!-- CTA Buttons -->
       <div class="mt-9 flex flex-col sm:flex-row items-center justify-center gap-4">
-        <a href="#getting-started" class="w-full sm:w-auto flex items-center justify-center gap-2.5 px-7 py-3.5 rounded-xl font-bold text-sm bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 hover:-translate-y-0.5 transition-all">
+        <a href="download.html" class="w-full sm:w-auto flex items-center justify-center gap-2.5 px-7 py-3.5 rounded-xl font-bold text-sm bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 hover:-translate-y-0.5 transition-all">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
           <span data-i18n="hero_btn_download">Download for Windows (x64)</span>
         </a>
-        <a href="https://github.com/KaitoDeus/MyDeusTools" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto flex items-center justify-center gap-2.5 px-7 py-3.5 rounded-xl font-semibold text-sm bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700/80 text-slate-800 dark:text-slate-100 border border-slate-300 dark:border-slate-700 shadow-sm transition-all">
-          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"></path></svg>
-          <span data-i18n="hero_btn_github">View on GitHub</span>
+        <a href="features.html" class="w-full sm:w-auto flex items-center justify-center gap-2.5 px-7 py-3.5 rounded-xl font-semibold text-sm bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700/80 text-slate-800 dark:text-slate-100 border border-slate-300 dark:border-slate-700 shadow-sm transition-all">
+          <span data-i18n="hero_btn_features">Explore All 8 Features</span>
+          <svg class="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
         </a>
       </div>
 
@@ -512,8 +476,8 @@
     </div>
   </section>
 
-  <!-- ==================== BENTO FEATURES GRID ==================== -->
-  <section id="features" class="py-20 relative z-10">
+  <!-- ==================== SUITE OVERVIEW (LINKS TO FEATURES.HTML) ==================== -->
+  <section class="py-20 relative z-10">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       
       <div class="text-center max-w-3xl mx-auto mb-16">
@@ -526,123 +490,139 @@
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
         
         <!-- Feature 1: Window Pinner -->
-        <div class="glass-card rounded-2xl p-6 hover:-translate-y-1 transition-all duration-200 shadow-sm flex flex-col justify-between">
+        <a href="features.html#pinner" class="glass-card rounded-2xl p-6 hover:-translate-y-1 transition-all duration-200 shadow-sm flex flex-col justify-between group">
           <div>
-            <div class="w-12 h-12 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center text-2xl mb-4">📌</div>
-            <h3 class="text-lg font-bold mb-2 text-slate-900 dark:text-white" data-i18n="f1_title">Window Pinner &amp; Opacity</h3>
+            <div class="w-12 h-12 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition-transform">📌</div>
+            <h3 class="text-lg font-bold mb-2 text-slate-900 dark:text-white group-hover:text-blue-500 transition-colors" data-i18n="f1_title">Window Pinner &amp; Opacity</h3>
             <p class="text-xs leading-relaxed text-slate-600 dark:text-slate-400" data-i18n="f1_desc">
               Pin any application window to stay Always-on-Top (<code class="code-badge px-1 py-0.5 rounded text-[11px]">HWND_TOPMOST</code>). Adjust opacity smoothly in real-time with Win32 layered attributes and quick 1-click presets.
             </p>
           </div>
-          <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 text-[11px] font-semibold text-blue-600 dark:text-blue-400">
-            Win32 user32 Interop • 40%-100% Opacity
+          <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 text-[11px] font-semibold text-blue-600 dark:text-blue-400 flex items-center justify-between">
+            <span>Win32 user32 Interop</span>
+            <span>Explore →</span>
           </div>
-        </div>
+        </a>
 
         <!-- Feature 2: Auto Clicker Pro -->
-        <div class="glass-card rounded-2xl p-6 hover:-translate-y-1 transition-all duration-200 shadow-sm flex flex-col justify-between">
+        <a href="features.html#autoclicker" class="glass-card rounded-2xl p-6 hover:-translate-y-1 transition-all duration-200 shadow-sm flex flex-col justify-between group">
           <div>
-            <div class="w-12 h-12 rounded-xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 flex items-center justify-center text-2xl mb-4">🖱️</div>
-            <h3 class="text-lg font-bold mb-2 text-slate-900 dark:text-white" data-i18n="f2_title">Auto Clicker Pro</h3>
+            <div class="w-12 h-12 rounded-xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition-transform">🖱️</div>
+            <h3 class="text-lg font-bold mb-2 text-slate-900 dark:text-white group-hover:text-indigo-500 transition-colors" data-i18n="f2_title">Auto Clicker Pro</h3>
             <p class="text-xs leading-relaxed text-slate-600 dark:text-slate-400" data-i18n="f2_desc">
               Automate Left/Right/Middle clicks with microsecond accuracy. Features full-screen multi-monitor coordinate waypoint recording and safe 10ms hardware clamp.
             </p>
           </div>
-          <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 text-[11px] font-semibold text-indigo-600 dark:text-indigo-400">
-            Waypoint Playback • Global Hotkey (F6)
+          <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 text-[11px] font-semibold text-indigo-600 dark:text-indigo-400 flex items-center justify-between">
+            <span>Waypoint Playback • F6</span>
+            <span>Explore →</span>
           </div>
-        </div>
+        </a>
 
         <!-- Feature 3: Clipboard Manager -->
-        <div class="glass-card rounded-2xl p-6 hover:-translate-y-1 transition-all duration-200 shadow-sm flex flex-col justify-between">
+        <a href="features.html#clipboard" class="glass-card rounded-2xl p-6 hover:-translate-y-1 transition-all duration-200 shadow-sm flex flex-col justify-between group">
           <div>
-            <div class="w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-2xl mb-4">📋</div>
-            <h3 class="text-lg font-bold mb-2 text-slate-900 dark:text-white" data-i18n="f3_title">Clipboard Manager</h3>
+            <div class="w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition-transform">📋</div>
+            <h3 class="text-lg font-bold mb-2 text-slate-900 dark:text-white group-hover:text-emerald-500 transition-colors" data-i18n="f3_title">Clipboard Manager</h3>
             <p class="text-xs leading-relaxed text-slate-600 dark:text-slate-400" data-i18n="f3_desc">
               Hooks directly into Windows clipboard events (<code class="code-badge px-1 py-0.5 rounded text-[11px]">AddClipboardFormatListener</code>). Instant search, favorite item pinning, and 1-click re-copying.
             </p>
           </div>
-          <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 text-[11px] font-semibold text-emerald-600 dark:text-emerald-400">
-            Event-Driven Win32 • Zero Polling
+          <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 text-[11px] font-semibold text-emerald-600 dark:text-emerald-400 flex items-center justify-between">
+            <span>Event-Driven Win32</span>
+            <span>Explore →</span>
           </div>
-        </div>
+        </a>
 
         <!-- Feature 4: Color Eyedropper -->
-        <div class="glass-card rounded-2xl p-6 hover:-translate-y-1 transition-all duration-200 shadow-sm flex flex-col justify-between">
+        <a href="features.html#color" class="glass-card rounded-2xl p-6 hover:-translate-y-1 transition-all duration-200 shadow-sm flex flex-col justify-between group">
           <div>
-            <div class="w-12 h-12 rounded-xl bg-purple-500/10 text-purple-600 dark:text-purple-400 flex items-center justify-center text-2xl mb-4">🎨</div>
-            <h3 class="text-lg font-bold mb-2 text-slate-900 dark:text-white" data-i18n="f4_title">Color Picker &amp; Eyedropper</h3>
+            <div class="w-12 h-12 rounded-xl bg-purple-500/10 text-purple-600 dark:text-purple-400 flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition-transform">🎨</div>
+            <h3 class="text-lg font-bold mb-2 text-slate-900 dark:text-white group-hover:text-purple-500 transition-colors" data-i18n="f4_title">Color Picker &amp; Eyedropper</h3>
             <p class="text-xs leading-relaxed text-slate-600 dark:text-slate-400" data-i18n="f4_desc">
               Full-screen screen pixel picker featuring an 11x11 pixel real-time magnifier HUD. Copy color formats instantly in HEX, RGB, HSL, or HSV into palette history.
             </p>
           </div>
-          <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 text-[11px] font-semibold text-purple-600 dark:text-purple-400">
-            Pixel Magnifier HUD • HEX/RGB/HSV
+          <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 text-[11px] font-semibold text-purple-600 dark:text-purple-400 flex items-center justify-between">
+            <span>Pixel Magnifier HUD</span>
+            <span>Explore →</span>
           </div>
-        </div>
+        </a>
 
         <!-- Feature 5: QR Code Studio -->
-        <div class="glass-card rounded-2xl p-6 hover:-translate-y-1 transition-all duration-200 shadow-sm flex flex-col justify-between">
+        <a href="features.html#qrcode" class="glass-card rounded-2xl p-6 hover:-translate-y-1 transition-all duration-200 shadow-sm flex flex-col justify-between group">
           <div>
-            <div class="w-12 h-12 rounded-xl bg-sky-500/10 text-sky-600 dark:text-sky-400 flex items-center justify-center text-2xl mb-4">📱</div>
-            <h3 class="text-lg font-bold mb-2 text-slate-900 dark:text-white" data-i18n="f5_title">QR Code Studio</h3>
+            <div class="w-12 h-12 rounded-xl bg-sky-500/10 text-sky-600 dark:text-sky-400 flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition-transform">📱</div>
+            <h3 class="text-lg font-bold mb-2 text-slate-900 dark:text-white group-hover:text-sky-500 transition-colors" data-i18n="f5_title">QR Code Studio</h3>
             <p class="text-xs leading-relaxed text-slate-600 dark:text-slate-400" data-i18n="f5_desc">
               Generate crisp vector QR codes with instant PNG export or clipboard copy. Scan from screen region snip, image file, or clipboard bitmap with auto-URL opening.
             </p>
           </div>
-          <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 text-[11px] font-semibold text-sky-600 dark:text-sky-400">
-            ZXing.Net + QRCoder Engine
+          <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 text-[11px] font-semibold text-sky-600 dark:text-sky-400 flex items-center justify-between">
+            <span>ZXing.Net + QRCoder</span>
+            <span>Explore →</span>
           </div>
-        </div>
+        </a>
 
         <!-- Feature 6: Text & Dev Tools -->
-        <div class="glass-card rounded-2xl p-6 hover:-translate-y-1 transition-all duration-200 shadow-sm flex flex-col justify-between">
+        <a href="features.html#textdev" class="glass-card rounded-2xl p-6 hover:-translate-y-1 transition-all duration-200 shadow-sm flex flex-col justify-between group">
           <div>
-            <div class="w-12 h-12 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center text-2xl mb-4">🔤</div>
-            <h3 class="text-lg font-bold mb-2 text-slate-900 dark:text-white" data-i18n="f6_title">Text &amp; Dev Tools</h3>
+            <div class="w-12 h-12 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition-transform">🔤</div>
+            <h3 class="text-lg font-bold mb-2 text-slate-900 dark:text-white group-hover:text-amber-500 transition-colors" data-i18n="f6_title">Text &amp; Dev Tools</h3>
             <p class="text-xs leading-relaxed text-slate-600 dark:text-slate-400" data-i18n="f6_desc">
               JSON Studio (formatter/minifier/validator), Base64 encoder/decoder (text &amp; files), URL/HTML entity escaping, multi-hash generator (MD5, SHA-1, SHA-256, SHA-512), and case conversions.
             </p>
           </div>
-          <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 text-[11px] font-semibold text-amber-600 dark:text-amber-400">
-            Smart Whitespace Scrolling • 5 Tabs
+          <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 text-[11px] font-semibold text-amber-600 dark:text-amber-400 flex items-center justify-between">
+            <span>JSON • Base64 • Hashes</span>
+            <span>Explore →</span>
           </div>
-        </div>
+        </a>
 
         <!-- Feature 7: Sticky Notes -->
-        <div class="glass-card rounded-2xl p-6 hover:-translate-y-1 transition-all duration-200 shadow-sm flex flex-col justify-between">
+        <a href="features.html#stickynotes" class="glass-card rounded-2xl p-6 hover:-translate-y-1 transition-all duration-200 shadow-sm flex flex-col justify-between group">
           <div>
-            <div class="w-12 h-12 rounded-xl bg-rose-500/10 text-rose-600 dark:text-rose-400 flex items-center justify-center text-2xl mb-4">📝</div>
-            <h3 class="text-lg font-bold mb-2 text-slate-900 dark:text-white" data-i18n="f7_title">Sticky Notes</h3>
+            <div class="w-12 h-12 rounded-xl bg-rose-500/10 text-rose-600 dark:text-rose-400 flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition-transform">📝</div>
+            <h3 class="text-lg font-bold mb-2 text-slate-900 dark:text-white group-hover:text-rose-500 transition-colors" data-i18n="f7_title">Sticky Notes</h3>
             <p class="text-xs leading-relaxed text-slate-600 dark:text-slate-400" data-i18n="f7_desc">
               Card-based desktop note manager with auto-save JSON persistence. Pop out notes into borderless, floating, draggable topmost desktop pins.
             </p>
           </div>
-          <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 text-[11px] font-semibold text-rose-600 dark:text-rose-400">
-            Floating Borderless Windows • Auto-Save
+          <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 text-[11px] font-semibold text-rose-600 dark:text-rose-400 flex items-center justify-between">
+            <span>Floating Borderless Windows</span>
+            <span>Explore →</span>
           </div>
-        </div>
+        </a>
 
         <!-- Feature 8: Schedule Shutdown -->
-        <div class="glass-card rounded-2xl p-6 hover:-translate-y-1 transition-all duration-200 shadow-sm flex flex-col justify-between">
+        <a href="features.html#shutdown" class="glass-card rounded-2xl p-6 hover:-translate-y-1 transition-all duration-200 shadow-sm flex flex-col justify-between group">
           <div>
-            <div class="w-12 h-12 rounded-xl bg-teal-500/10 text-teal-600 dark:text-teal-400 flex items-center justify-center text-2xl mb-4">⏰</div>
-            <h3 class="text-lg font-bold mb-2 text-slate-900 dark:text-white" data-i18n="f8_title">Schedule Shutdown</h3>
+            <div class="w-12 h-12 rounded-xl bg-teal-500/10 text-teal-600 dark:text-teal-400 flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition-transform">⏰</div>
+            <h3 class="text-lg font-bold mb-2 text-slate-900 dark:text-white group-hover:text-teal-500 transition-colors" data-i18n="f8_title">Schedule Shutdown</h3>
             <p class="text-xs leading-relaxed text-slate-600 dark:text-slate-400" data-i18n="f8_desc">
               Automate Shutdown, Restart, or Hibernate on a scheduled countdown timer. Real-time visual ticking clock with instantaneous cancellation protection.
             </p>
           </div>
-          <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 text-[11px] font-semibold text-teal-600 dark:text-teal-400">
-            Countdown Clock • Instant Cancel
+          <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 text-[11px] font-semibold text-teal-600 dark:text-teal-400 flex items-center justify-between">
+            <span>Countdown Clock • Instant Cancel</span>
+            <span>Explore →</span>
           </div>
-        </div>
+        </a>
 
+      </div>
+
+      <!-- View All Details Button -->
+      <div class="mt-12 text-center">
+        <a href="features.html" class="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-bold bg-blue-50 dark:bg-blue-950/60 hover:bg-blue-100 dark:hover:bg-blue-900/60 text-blue-600 dark:text-blue-300 border border-blue-200 dark:border-blue-800/80 transition-colors shadow-sm">
+          <span>Read detailed guides for all 8 utilities</span>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+        </a>
       </div>
     </div>
   </section>
 
   <!-- ==================== WHY MYDEUSTOOLS COMPARISON ==================== -->
-  <section id="comparison" class="py-16 bg-slate-100/70 dark:bg-slate-900/40 border-y border-slate-200/80 dark:border-slate-800/80 relative z-10">
+  <section class="py-16 bg-slate-100/70 dark:bg-slate-900/40 border-y border-slate-200/80 dark:border-slate-800/80 relative z-10">
     <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
       
       <div class="text-center max-w-3xl mx-auto mb-12">
@@ -694,115 +674,22 @@
     </div>
   </section>
 
-  <!-- ==================== TECH STACK & ARCHITECTURE ==================== -->
-  <section id="architecture" class="py-20 relative z-10">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      
-      <div class="text-center max-w-3xl mx-auto mb-16">
-        <span class="text-xs font-bold uppercase tracking-wider text-blue-600 dark:text-blue-400" data-i18n="tech_badge">Built with Modern .NET</span>
-        <h2 class="text-3xl font-extrabold mt-2 tracking-tight" data-i18n="tech_title">Robust Architecture &amp; Clean Code</h2>
-        <p class="text-slate-600 dark:text-slate-300 mt-3 text-sm">Powered by modern Microsoft frameworks and zero-dependency native interop.</p>
-      </div>
-
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-        
-        <div class="glass-card p-5 rounded-xl border border-slate-200 dark:border-slate-800">
-          <div class="text-xs font-semibold text-slate-400 mb-1">Runtime &amp; Language</div>
-          <div class="font-extrabold text-base text-slate-900 dark:text-white">C# 12 • .NET 8</div>
-          <p class="text-xs text-slate-500 mt-2">Ahead-of-time ReadyToRun compilation for instant startup.</p>
-        </div>
-
-        <div class="glass-card p-5 rounded-xl border border-slate-200 dark:border-slate-800">
-          <div class="text-xs font-semibold text-slate-400 mb-1">UI Framework</div>
-          <div class="font-extrabold text-base text-slate-900 dark:text-white">WPF-UI 3.0</div>
-          <p class="text-xs text-slate-500 mt-2">Mica backdrop blur, dynamic dark/light theme, and Fluent design.</p>
-        </div>
-
-        <div class="glass-card p-5 rounded-xl border border-slate-200 dark:border-slate-800">
-          <div class="text-xs font-semibold text-slate-400 mb-1">Design Pattern</div>
-          <div class="font-extrabold text-base text-slate-900 dark:text-white">MVVM Toolkit</div>
-          <p class="text-xs text-slate-500 mt-2">CommunityToolkit.Mvvm for clean separation of concerns and DI.</p>
-        </div>
-
-        <div class="glass-card p-5 rounded-xl border border-slate-200 dark:border-slate-800">
-          <div class="text-xs font-semibold text-slate-400 mb-1">Verification</div>
-          <div class="font-extrabold text-base text-slate-900 dark:text-white">124 xUnit Tests</div>
-          <p class="text-xs text-slate-500 mt-2">100% test pass rate verifying services, DI, and bilingual symmetry.</p>
-        </div>
-
-      </div>
-
-    </div>
-  </section>
-
-  <!-- ==================== GETTING STARTED & DOWNLOAD ==================== -->
-  <section id="getting-started" class="py-20 bg-gradient-to-b from-blue-900/10 to-indigo-950/20 border-t border-slate-200/80 dark:border-slate-800/80 relative z-10">
-    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-      
+  <!-- ==================== CALL TO ACTION ==================== -->
+  <section class="py-20 bg-gradient-to-b from-blue-900/10 to-indigo-950/20 border-t border-slate-200/80 dark:border-slate-800/80 relative z-10">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
       <div class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center p-2 mx-auto mb-6 shadow-xl shadow-blue-500/20">
         <img src="avatar.ico" class="w-full h-full object-contain" alt="Icon">
       </div>
-
       <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight" data-i18n="get_title">Get MyDeusTools Today</h2>
-      <p class="text-slate-600 dark:text-slate-300 mt-3 text-base max-w-2xl mx-auto" data-i18n="get_sub">Run the standalone single-file binary or clone the repository to compile from source in seconds.</p>
-
-      <!-- Action Card -->
-      <div class="mt-10 glass-card rounded-2xl p-8 max-w-2xl mx-auto text-left border border-blue-500/20 shadow-xl">
-        <h3 class="font-bold text-base text-slate-900 dark:text-white mb-2" data-i18n="get_card_title">Option 1: Download Standalone Executable</h3>
-        <p class="text-xs text-slate-600 dark:text-slate-400 mb-5" data-i18n="get_card_desc">No installer or .NET runtime installation required. Download, double-click, and run immediately.</p>
-        
-        <a href="https://github.com/KaitoDeus/MyDeusTools/releases" target="_blank" rel="noopener noreferrer" class="w-full flex items-center justify-center gap-2.5 py-3 rounded-xl font-bold text-sm bg-blue-600 hover:bg-blue-700 text-white shadow-md shadow-blue-500/30 transition-all">
+      <p class="text-slate-600 dark:text-slate-300 mt-3 text-base max-w-xl mx-auto" data-i18n="get_sub">Run the standalone single-file binary or clone the repository to compile from source in seconds.</p>
+      <div class="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
+        <a href="download.html" class="w-full sm:w-auto flex items-center justify-center gap-2.5 px-8 py-3.5 rounded-xl font-bold text-sm bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-500/25 transition-all">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
           <span data-i18n="get_dl_btn">Download MyDeusTools.App.exe (v1.0.0)</span>
         </a>
-
-        <div class="my-6 border-t border-slate-200 dark:border-slate-800"></div>
-
-        <h3 class="font-bold text-base text-slate-900 dark:text-white mb-2" data-i18n="get_dev_title">Option 2: Build &amp; Publish from Source</h3>
-        <div class="bg-slate-950 p-4 rounded-xl font-mono text-xs text-slate-300 space-y-2 overflow-x-auto">
-          <div class="text-slate-500"># 1. Clone repository</div>
-          <div class="text-emerald-400">git clone https://github.com/KaitoDeus/MyDeusTools.git</div>
-          <div class="text-slate-500 mt-2"># 2. Run test suite (124 tests)</div>
-          <div class="text-emerald-400">dotnet test</div>
-          <div class="text-slate-500 mt-2"># 3. Publish single-file compressed executable</div>
-          <div class="text-emerald-400">dotnet publish MyDeusTools.App/MyDeusTools.App.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:EnableCompressionInSingleFile=true</div>
-        </div>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- ==================== FAQ SECTION ==================== -->
-  <section id="faq" class="py-16 relative z-10">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-      
-      <div class="text-center mb-12">
-        <h2 class="text-3xl font-extrabold tracking-tight" data-i18n="faq_title">Frequently Asked Questions</h2>
-        <p class="text-slate-600 dark:text-slate-400 mt-2 text-sm" data-i18n="faq_sub">Everything you need to know about MyDeusTools.</p>
-      </div>
-
-      <div class="space-y-3">
-        
-        <details class="glass-card rounded-xl p-4 border border-slate-200 dark:border-slate-800 cursor-pointer group">
-          <summary class="font-bold text-sm text-slate-900 dark:text-white flex justify-between items-center select-none" data-i18n="q1">Is MyDeusTools completely free and open-source?</summary>
-          <p class="text-xs text-slate-600 dark:text-slate-400 mt-3 leading-relaxed" data-i18n="a1">Yes, 100%! MyDeusTools is licensed under the permissive MIT License. You can inspect the source code, build your own binaries, and use it freely for personal or commercial projects.</p>
-        </details>
-
-        <details class="glass-card rounded-xl p-4 border border-slate-200 dark:border-slate-800 cursor-pointer group">
-          <summary class="font-bold text-sm text-slate-900 dark:text-white flex justify-between items-center select-none" data-i18n="q2">Does MyDeusTools collect any user data or telemetry?</summary>
-          <p class="text-xs text-slate-600 dark:text-slate-400 mt-3 leading-relaxed" data-i18n="a2">Never. MyDeusTools is 100% offline. All settings, sticky notes, and color histories are saved strictly as local JSON files on your machine with zero external network tracking.</p>
-        </details>
-
-        <details class="glass-card rounded-xl p-4 border border-slate-200 dark:border-slate-800 cursor-pointer group">
-          <summary class="font-bold text-sm text-slate-900 dark:text-white flex justify-between items-center select-none" data-i18n="q3">Do I need to install .NET 8 runtime to use the application?</summary>
-          <p class="text-xs text-slate-600 dark:text-slate-400 mt-3 leading-relaxed" data-i18n="a3">No! When compiled with the self-contained publish flag, the application bundles the minimal runtime components directly inside the single .exe file. It runs out of the box on Windows 10 and 11 (64-bit).</p>
-        </details>
-
-        <details class="glass-card rounded-xl p-4 border border-slate-200 dark:border-slate-800 cursor-pointer group">
-          <summary class="font-bold text-sm text-slate-900 dark:text-white flex justify-between items-center select-none" data-i18n="q4">How does Window Pinner and Opacity work?</summary>
-          <p class="text-xs text-slate-600 dark:text-slate-400 mt-3 leading-relaxed" data-i18n="a4">It utilizes native Win32 APIs (SetWindowPos with HWND_TOPMOST and SetLayeredWindowAttributes with LWA_ALPHA). This allows any standard application window on Windows to float above all others with custom transparency.</p>
-        </details>
-
+        <a href="architecture.html" class="w-full sm:w-auto px-6 py-3.5 rounded-xl font-semibold text-sm bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-100 border border-slate-300 dark:border-slate-700 transition-all">
+          <span data-i18n="view_arch_btn">Explore Architecture &amp; Tests (124/124)</span>
+        </a>
       </div>
     </div>
   </section>
@@ -810,41 +697,34 @@
   <!-- ==================== FOOTER ==================== -->
   <footer class="mt-auto border-t border-slate-200/80 dark:border-slate-800 py-10 relative z-10 bg-white/50 dark:bg-[#080d19]/80">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
-      
       <div class="flex items-center gap-2">
         <img src="avatar.ico" class="w-4 h-4 object-contain" alt="Icon">
         <span class="font-semibold text-slate-700 dark:text-slate-300">MyDeusTools</span>
-        <span>— Developed by <a href="https://github.com/KaitoDeus" target="_blank" class="font-semibold text-blue-600 dark:text-blue-400 hover:underline">KaitoDeus</a> &amp; Claude.</span>
+        <span data-i18n="footer_developed">— Developed by</span>
+        <a href="https://github.com/KaitoDeus" target="_blank" class="font-semibold text-blue-600 dark:text-blue-400 hover:underline">KaitoDeus</a> &amp; Claude.
       </div>
 
       <div class="flex items-center gap-6">
-        <a href="https://github.com/KaitoDeus/MyDeusTools" target="_blank" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">GitHub Repository</a>
-        <a href="https://github.com/KaitoDeus/MyDeusTools/blob/main/README.md" target="_blank" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Documentation</a>
-        <a href="https://github.com/KaitoDeus/MyDeusTools/blob/main/CONTRIBUTORS.md" target="_blank" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Contributors</a>
-        <a href="https://github.com/KaitoDeus/MyDeusTools/blob/main/LICENSE" target="_blank" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">MIT License</a>
+        <a href="https://github.com/KaitoDeus/MyDeusTools" target="_blank" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors" data-i18n="footer_github">GitHub Repository</a>
+        <a href="architecture.html" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors" data-i18n="nav_architecture">Architecture</a>
+        <a href="faq.html" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors" data-i18n="nav_faq">FAQ</a>
+        <a href="https://github.com/KaitoDeus/MyDeusTools/blob/main/LICENSE" target="_blank" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors" data-i18n="footer_license">MIT License</a>
       </div>
-
     </div>
   </footer>
 
-  <!-- ==================== JAVASCRIPT LOGIC ==================== -->
+  <!-- Scripts -->
+  <script src="assets/site.js"></script>
   <script>
-    // Bilingual Dictionaries
-    const i18nData = {
+    // Page-specific Translations
+    registerTranslations({
       en: {
-        nav_features: "Features",
-        nav_demo: "Interactive Demo",
-        nav_comparison: "Why MyDeusTools",
-        nav_tech: "Tech Stack",
-        nav_start: "Get Started",
-        nav_faq: "FAQ",
-        nav_download: "Download",
         hero_badge: "Windows 11 Fluent Design & Mica Backdrop • .NET 8.0",
         hero_title_1: "All your essential Windows utilities.",
         hero_title_2: "Unified into one modern suite.",
-        hero_subtitle: "Stop installing dozens of scattered, bloated utility tools. MyDeusTools brings Auto Clicker Pro, Window Pinner & Transparency, QR Studio, Clipboard History, Color Eyedropper, Sticky Notes, and Dev Tools into one blazing-fast, zero-dependency desktop application.",
+        hero_subtitle: "Say goodbye to scattered, bloated utility tools. MyDeusTools brings Auto Clicker Pro, Window Pinner & Transparency, QR Studio, Clipboard History, Color Eyedropper, Sticky Notes, and Dev Tools into one blazing-fast, zero-dependency desktop application.",
         hero_btn_download: "Download for Windows (x64)",
-        hero_btn_github: "View on GitHub",
+        hero_btn_features: "Explore All 8 Features",
         metric_ram: "Lightweight Memory Footprint",
         metric_offline: "Offline & Zero Telemetry",
         metric_portable: "Portable .EXE (Zero Installer)",
@@ -894,39 +774,18 @@
         comp_c3: "UI & Design System",
         comp_c4: "Multilingual Support",
         comp_c5: "Privacy & Telemetry",
-        tech_badge: "Built with Modern .NET",
-        tech_title: "Robust Architecture & Clean Code",
         get_title: "Get MyDeusTools Today",
         get_sub: "Run the standalone single-file binary or clone the repository to compile from source in seconds.",
-        get_card_title: "Option 1: Download Standalone Executable",
-        get_card_desc: "No installer or .NET runtime installation required. Download, double-click, and run immediately.",
         get_dl_btn: "Download MyDeusTools.App.exe (v1.0.0)",
-        get_dev_title: "Option 2: Build & Publish from Source",
-        faq_title: "Frequently Asked Questions",
-        faq_sub: "Everything you need to know about MyDeusTools.",
-        q1: "Is MyDeusTools completely free and open-source?",
-        a1: "Yes, 100%! MyDeusTools is licensed under the permissive MIT License. You can inspect the source code, build your own binaries, and use it freely for personal or commercial projects.",
-        q2: "Does MyDeusTools collect any user data or telemetry?",
-        a2: "Never. MyDeusTools is 100% offline. All settings, sticky notes, and color histories are saved strictly as local JSON files on your machine with zero external network tracking.",
-        q3: "Do I need to install .NET 8 runtime to use the application?",
-        a3: "No! When compiled with the self-contained publish flag, the application bundles the minimal runtime components directly inside the single .exe file. It runs out of the box on Windows 10 and 11 (64-bit).",
-        q4: "How does Window Pinner and Opacity work?",
-        a4: "It utilizes native Win32 APIs (SetWindowPos with HWND_TOPMOST and SetLayeredWindowAttributes with LWA_ALPHA). This allows any standard application window on Windows to float above all others with custom transparency."
+        view_arch_btn: "Explore Architecture & Tests (124/124)"
       },
       vi: {
-        nav_features: "Tính năng",
-        nav_demo: "Trải nghiệm thử",
-        nav_comparison: "So sánh",
-        nav_tech: "Công nghệ",
-        nav_start: "Cài đặt",
-        nav_faq: "Hỏi đáp",
-        nav_download: "Tải về",
         hero_badge: "Giao diện Windows 11 Fluent Design & Hiệu ứng Mica • .NET 8.0",
         hero_title_1: "Mọi công cụ tiện ích Windows thiết yếu.",
         hero_title_2: "Gói gọn trong một ứng dụng duy nhất.",
         hero_subtitle: "Không còn phải cài đặt hàng loạt phần mềm rời rạc nặng nề. MyDeusTools tích hợp Auto Clicker, Ghim & làm mờ cửa sổ nổi, Quét & Tạo mã QR, Lịch sử Clipboard, Bắt mã màu, Ghi chú Sticky và Bộ công cụ Dev trong một tệp thực thi duy nhất siêu nhẹ.",
         hero_btn_download: "Tải về cho Windows (x64)",
-        hero_btn_github: "Xem mã nguồn GitHub",
+        hero_btn_features: "Xem chi tiết cả 8 tính năng",
         metric_ram: "Mức tiêu thụ RAM siêu tiết kiệm",
         metric_offline: "100% Ngoại tuyến & Không thu thập dữ liệu",
         metric_portable: "Tệp .EXE chạy ngay (Không cần cài đặt)",
@@ -976,81 +835,12 @@
         comp_c3: "Giao diện người dùng",
         comp_c4: "Hỗ trợ đa ngôn ngữ",
         comp_c5: "Quyền riêng tư & Bảo mật",
-        tech_badge: "Xây dựng trên nền tảng .NET hiện đại",
-        tech_title: "Kiến trúc bền vững & Mã nguồn sạch",
         get_title: "Tải ngay MyDeusTools hôm nay",
         get_sub: "Sử dụng tệp thực thi đóng gói sẵn hoặc tự biên dịch từ mã nguồn chỉ trong vài bước đơn giản.",
-        get_card_title: "Cách 1: Tải tệp thực thi đơn (.EXE) đóng gói sẵn",
-        get_card_desc: "Không cần cài đặt bộ cài hay runtime .NET. Tải về và khởi chạy trực tiếp ngay lập tức.",
         get_dl_btn: "Tải về MyDeusTools.App.exe (v1.0.0)",
-        get_dev_title: "Cách 2: Tự biên dịch từ mã nguồn",
-        faq_title: "Câu hỏi thường gặp",
-        faq_sub: "Tất cả những thông tin bạn cần biết về MyDeusTools.",
-        q1: "MyDeusTools có hoàn toàn miễn phí và mã nguồn mở không?",
-        a1: "Chính xác 100%! Dự án phát hành theo giấy phép mã nguồn mở MIT License. Bạn có thể tự do xem mã nguồn, tự biên dịch và sử dụng cho mục đích cá nhân lẫn thương mại.",
-        q2: "MyDeusTools có thu thập dữ liệu người dùng hay theo dõi không?",
-        a2: "Hoàn toàn không. Ứng dụng chạy offline 100%. Mọi dữ liệu ghi chú, cấu hình, bảng màu đều được lưu tại ổ đĩa máy tính của bạn dưới dạng tệp JSON, không hề kết nối máy chủ ngoài.",
-        q3: "Tôi có cần cài đặt .NET Runtime để chạy ứng dụng không?",
-        a3: "Không cần! Bản đóng gói self-contained đã tích hợp sẵn thư viện cần thiết vào duy nhất 1 tệp .exe. Chạy mượt mà trên Windows 10 và 11 64-bit.",
-        q4: "Tính năng Ghim cửa sổ & Độ mờ hoạt động như thế nào?",
-        a4: "Ứng dụng tương tác với Windows API thông qua SetWindowPos (HWND_TOPMOST) và SetLayeredWindowAttributes (LWA_ALPHA), giúp ghim cửa sổ bất kỳ lên trên cùng và điều chỉnh độ trong suốt linh hoạt."
+        view_arch_btn: "Xem kiến trúc & Kiểm thử (124/124)"
       }
-    };
-
-    let currentLang = 'en';
-
-    function setLanguage(lang) {
-      currentLang = lang;
-      const data = i18nData[lang];
-      document.querySelectorAll('[data-i18n]').forEach(el => {
-        const key = el.getAttribute('data-i18n');
-        if (data[key]) {
-          el.innerHTML = data[key];
-        }
-      });
-
-      document.getElementById('langFlag').textContent = lang === 'en' ? '🇻🇳' : '🇬🇧';
-      document.getElementById('langLabel').textContent = lang === 'en' ? 'VIE' : 'ENG';
-    }
-
-    document.getElementById('langToggleBtn').addEventListener('click', () => {
-      setLanguage(currentLang === 'en' ? 'vi' : 'en');
     });
-
-    // Dark/Light Mode Logic
-    const themeBtn = document.getElementById('themeToggleBtn');
-    const moonIcon = document.getElementById('themeMoonIcon');
-    const sunIcon = document.getElementById('themeSunIcon');
-
-    function setTheme(isDark) {
-      if (isDark) {
-        document.documentElement.classList.add('dark');
-        sunIcon.classList.remove('hidden');
-        moonIcon.classList.add('hidden');
-      } else {
-        document.documentElement.classList.remove('dark');
-        sunIcon.classList.add('hidden');
-        moonIcon.classList.remove('hidden');
-      }
-    }
-
-    themeBtn.addEventListener('click', () => {
-      const isDark = document.documentElement.classList.contains('dark');
-      setTheme(!isDark);
-    });
-
-    // Copy helper
-    function copyCommand(btn, text) {
-      navigator.clipboard.writeText(text);
-      const original = btn.innerHTML;
-      btn.innerHTML = `<span class="text-emerald-400 font-bold">✓</span>`;
-      setTimeout(() => btn.innerHTML = original, 1500);
-    }
-
-    function copyColor(hex) {
-      navigator.clipboard.writeText(hex);
-      alert('Copied color ' + hex + ' to clipboard!');
-    }
 
     // Interactive Mockup Tab Switching
     function switchMockTab(tabId) {
@@ -1071,7 +861,7 @@
       }
     }
 
-    // Window Pinner Live Simulator
+    // Window Pinner Simulator
     let isMockPinned = true;
     function toggleMockPin() {
       isMockPinned = !isMockPinned;
@@ -1175,6 +965,11 @@
       if (val && val.trim()) {
         img.src = 'https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=' + encodeURIComponent(val.trim());
       }
+    }
+
+    function copyColor(hex) {
+      navigator.clipboard.writeText(hex);
+      alert('Copied color ' + hex + ' to clipboard!');
     }
 
     // Init

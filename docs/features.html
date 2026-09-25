@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Features & Utilities — MyDeusTools</title>
+  <meta name="description" content="In-depth breakdown of all 8 native Windows productivity utilities in MyDeusTools: Window Pinner, Auto Clicker Pro, Clipboard Manager, Color Eyedropper, QR Studio, Dev Tools, Sticky Notes, and Schedule Shutdown." />
+  <link rel="icon" type="image/x-icon" href="avatar.ico" />
+
+  <!-- Google Fonts & Tailwind CSS CDN -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            brand: {
+              50: '#eff6ff', 100: '#dbeafe', 200: '#bfdbfe', 300: '#93c5fd',
+              400: '#60a5fa', 500: '#3b82f6', 600: '#2563eb', 700: '#1d4ed8',
+              800: '#1e40af', 900: '#1e3a8a',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <link rel="stylesheet" href="assets/site.css" />
+</head>
+<body class="bg-slate-50 dark:bg-[#0a0f1d] text-slate-800 dark:text-slate-100 antialiased transition-colors duration-300 min-h-screen flex flex-col font-sans selection:bg-blue-500 selection:text-white">
+
+  <!-- Background Ambient Glow -->
+  <div class="fixed inset-0 pointer-events-none gradient-glow z-0"></div>
+
+  <!-- ==================== HEADER / NAVBAR ==================== -->
+  <header class="sticky top-0 z-50 glass-nav transition-all duration-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      
+      <!-- Brand Logo -->
+      <a href="index.html" class="flex items-center gap-3 group">
+        <div class="w-9 h-9 rounded-xl overflow-hidden shadow-md shadow-blue-500/10 flex items-center justify-center p-0.5 bg-gradient-to-tr from-blue-600 to-indigo-500 group-hover:scale-105 transition-transform">
+          <img src="avatar.ico" alt="MyDeusTools Logo" class="w-full h-full object-contain" />
+        </div>
+        <div>
+          <span class="font-extrabold text-lg tracking-tight bg-gradient-to-r from-blue-600 via-indigo-600 to-sky-500 dark:from-blue-400 dark:via-indigo-300 dark:to-sky-400 bg-clip-text text-transparent">MyDeusTools</span>
+          <span class="hidden sm:inline-block ml-2 text-xs font-semibold px-2 py-0.5 rounded-full bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800" data-i18n="nav_badge_v">v1.0.0</span>
+        </div>
+      </a>
+
+      <!-- Navigation Links -->
+      <nav class="hidden md:flex items-center gap-7 text-sm font-medium text-slate-600 dark:text-slate-300">
+        <a href="index.html" class="nav-link hover:text-blue-600 dark:hover:text-blue-400 transition-colors" data-i18n="nav_home">Home</a>
+        <a href="features.html" class="nav-link active hover:text-blue-600 dark:hover:text-blue-400 transition-colors" data-i18n="nav_features">Features</a>
+        <a href="architecture.html" class="nav-link hover:text-blue-600 dark:hover:text-blue-400 transition-colors" data-i18n="nav_architecture">Architecture</a>
+        <a href="download.html" class="nav-link hover:text-blue-600 dark:hover:text-blue-400 transition-colors" data-i18n="nav_download">Download</a>
+        <a href="faq.html" class="nav-link hover:text-blue-600 dark:hover:text-blue-400 transition-colors" data-i18n="nav_faq">FAQ</a>
+      </nav>
+
+      <!-- Action Controls -->
+      <div class="flex items-center gap-2.5">
+        <button id="langToggleBtn" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-200/70 hover:bg-slate-300/80 dark:bg-slate-800/80 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition-colors border border-slate-300/60 dark:border-slate-700/60" title="Switch Language">
+          <span id="langFlag">🇻🇳</span>
+          <span id="langLabel">VIE</span>
+        </button>
+
+        <button id="themeToggleBtn" class="p-2 rounded-lg text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100 hover:bg-slate-200/60 dark:hover:bg-slate-800/70 transition-colors" title="Toggle Dark/Light Mode">
+          <svg id="themeMoonIcon" class="w-4 h-4 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+          <svg id="themeSunIcon" class="w-4 h-4 block" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 9h-1m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+        </button>
+
+        <a href="https://github.com/KaitoDeus/MyDeusTools" target="_blank" rel="noopener noreferrer" class="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-900 text-white hover:bg-slate-800 dark:bg-slate-800 dark:hover:bg-slate-700 transition-colors border border-slate-700/50">
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"></path></svg>
+          <span>Star</span>
+        </a>
+
+        <a href="download.html" class="flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-blue-600 hover:bg-blue-700 text-white shadow-sm shadow-blue-500/30 transition-all hover:shadow-blue-500/50">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+          <span data-i18n="nav_btn_download">Download</span>
+        </a>
+
+        <button id="mobileMenuBtn" class="md:hidden p-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-200/60 dark:hover:bg-slate-800/70">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="hidden md:hidden glass-nav border-t border-slate-200 dark:border-slate-800 px-4 pt-3 pb-4 space-y-2 text-sm font-medium">
+      <a href="index.html" class="block px-3 py-2 rounded-lg hover:bg-blue-500/10 hover:text-blue-600 dark:hover:text-blue-400" data-i18n="nav_home">Home</a>
+      <a href="features.html" class="block px-3 py-2 rounded-lg hover:bg-blue-500/10 hover:text-blue-600 dark:hover:text-blue-400 active" data-i18n="nav_features">Features</a>
+      <a href="architecture.html" class="block px-3 py-2 rounded-lg hover:bg-blue-500/10 hover:text-blue-600 dark:hover:text-blue-400" data-i18n="nav_architecture">Architecture</a>
+      <a href="download.html" class="block px-3 py-2 rounded-lg hover:bg-blue-500/10 hover:text-blue-600 dark:hover:text-blue-400" data-i18n="nav_download">Download</a>
+      <a href="faq.html" class="block px-3 py-2 rounded-lg hover:bg-blue-500/10 hover:text-blue-600 dark:hover:text-blue-400" data-i18n="nav_faq">FAQ</a>
+    </div>
+  </header>
+
+  <!-- ==================== HERO SECTION ==================== -->
+  <section class="relative pt-14 pb-12 overflow-hidden z-10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-blue-100/80 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800/80 mb-4">
+        <span>🛠️ 8 Specialized Native Tools</span>
+      </div>
+      <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight" data-i18n="feat_page_title">
+        Every Utility, Masterfully Crafted
+      </h1>
+      <p class="mt-4 text-base sm:text-lg text-slate-600 dark:text-slate-300 max-w-2xl mx-auto" data-i18n="feat_page_sub">
+        Explore how each tool leverages low-level Win32 APIs, asynchronous C# 12, and Windows 11 Fluent design to deliver instant productivity without bloat.
+      </p>
+
+      <!-- Quick Jump Sticky Anchor Pills -->
+      <div class="mt-8 flex flex-wrap justify-center gap-2 max-w-4xl mx-auto text-xs font-semibold">
+        <a href="#pinner" class="px-3 py-1.5 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-blue-500 hover:text-blue-500 transition-all shadow-sm">📌 Window Pinner</a>
+        <a href="#autoclicker" class="px-3 py-1.5 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-indigo-500 hover:text-indigo-500 transition-all shadow-sm">🖱️ Auto Clicker</a>
+        <a href="#clipboard" class="px-3 py-1.5 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-emerald-500 hover:text-emerald-500 transition-all shadow-sm">📋 Clipboard Manager</a>
+        <a href="#color" class="px-3 py-1.5 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-purple-500 hover:text-purple-500 transition-all shadow-sm">🎨 Color Eyedropper</a>
+        <a href="#qrcode" class="px-3 py-1.5 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-sky-500 hover:text-sky-500 transition-all shadow-sm">📱 QR Code Studio</a>
+        <a href="#textdev" class="px-3 py-1.5 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-amber-500 hover:text-amber-500 transition-all shadow-sm">🔤 Text &amp; Dev Tools</a>
+        <a href="#stickynotes" class="px-3 py-1.5 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-rose-500 hover:text-rose-500 transition-all shadow-sm">📝 Sticky Notes</a>
+        <a href="#shutdown" class="px-3 py-1.5 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-teal-500 hover:text-teal-500 transition-all shadow-sm">⏰ Schedule Shutdown</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== DETAILED FEATURE SECTIONS ==================== -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-24 space-y-16 relative z-10">
+
+    <!-- 1. WINDOW PINNER & OPACITY -->
+    <section id="pinner" class="scroll-mt-24 glass-card rounded-3xl p-8 sm:p-10 border border-slate-200 dark:border-slate-800 shadow-xl">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <div class="lg:col-span-7">
+          <div class="flex items-center gap-3 mb-3">
+            <div class="w-10 h-10 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center text-xl">📌</div>
+            <span class="text-xs uppercase font-bold tracking-wider text-blue-600 dark:text-blue-400" data-i18n="pinner_badge">Desktop Management</span>
+          </div>
+          <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white" data-i18n="pinner_title">Window Pinner &amp; Transparency</h2>
+          <p class="text-sm text-slate-600 dark:text-slate-300 mt-3 leading-relaxed" data-i18n="pinner_long_desc">
+            Keep critical windows always on top of your workflow. Whether you're following a YouTube video tutorial while coding in VS Code, transcribing handwritten notes, or overlaying mockups on an active browser, Window Pinner eliminates window-switching friction.
+          </p>
+
+          <div class="mt-6 space-y-3">
+            <div class="flex items-start gap-3">
+              <span class="text-emerald-500 font-bold">✓</span>
+              <div class="text-xs text-slate-600 dark:text-slate-300">
+                <strong class="text-slate-900 dark:text-white" data-i18n="pinner_f1_t">Always-on-Top (HWND_TOPMOST):</strong> 
+                <span data-i18n="pinner_f1_d">Pins any application window to stay above all normal and full-screen windows seamlessly.</span>
+              </div>
+            </div>
+            <div class="flex items-start gap-3">
+              <span class="text-emerald-500 font-bold">✓</span>
+              <div class="text-xs text-slate-600 dark:text-slate-300">
+                <strong class="text-slate-900 dark:text-white" data-i18n="pinner_f2_t">Real-time Alpha Opacity:</strong> 
+                <span data-i18n="pinner_f2_d">Smoothly adjust transparency from 40% to 100% with immediate Win32 layered attribute reflection.</span>
+              </div>
+            </div>
+            <div class="flex items-start gap-3">
+              <span class="text-emerald-500 font-bold">✓</span>
+              <div class="text-xs text-slate-600 dark:text-slate-300">
+                <strong class="text-slate-900 dark:text-white" data-i18n="pinner_f3_t">Intelligent Window Filter:</strong> 
+                <span data-i18n="pinner_f3_d">Automatically cleans out ghost background threads, tooltip handles, and Windows system overlays.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lg:col-span-5 bg-slate-900 text-slate-200 rounded-2xl p-5 border border-slate-800 font-mono text-xs">
+          <div class="text-slate-500 mb-2">// Win32 user32.dll P/Invoke Details</div>
+          <div class="text-blue-400">SetWindowPos(</div>
+          <div class="pl-4 text-slate-300">hWnd,</div>
+          <div class="pl-4 text-emerald-400">HWND_TOPMOST, // (-1)</div>
+          <div class="pl-4 text-slate-300">0, 0, 0, 0,</div>
+          <div class="pl-4 text-amber-300">SWP_NOMOVE | SWP_NOSIZE</div>
+          <div class="text-blue-400">);</div>
+          <div class="my-3 border-t border-slate-800"></div>
+          <div class="text-blue-400">SetLayeredWindowAttributes(</div>
+          <div class="pl-4 text-slate-300">hWnd, 0,</div>
+          <div class="pl-4 text-emerald-400">(byte)(255 * opacity / 100),</div>
+          <div class="pl-4 text-amber-300">LWA_ALPHA // (0x02)</div>
+          <div class="text-blue-400">);</div>
+          <div class="mt-4 pt-3 border-t border-slate-800 text-[11px] text-slate-400">
+            Presets: 40% (Ghost), 70% (Tracing), 100% (Solid)
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. AUTO CLICKER PRO -->
+    <section id="autoclicker" class="scroll-mt-24 glass-card rounded-3xl p-8 sm:p-10 border border-slate-200 dark:border-slate-800 shadow-xl">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <div class="lg:col-span-7">
+          <div class="flex items-center gap-3 mb-3">
+            <div class="w-10 h-10 rounded-xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 flex items-center justify-center text-xl">🖱️</div>
+            <span class="text-xs uppercase font-bold tracking-wider text-indigo-600 dark:text-indigo-400" data-i18n="click_badge">Automation</span>
+          </div>
+          <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white" data-i18n="click_title">Auto Clicker Pro</h2>
+          <p class="text-sm text-slate-600 dark:text-slate-300 mt-3 leading-relaxed" data-i18n="click_long_desc">
+            Industrial-grade mouse clicker engineered for gaming, repetitive testing, and UI automation. Unlike basic tools, it includes multi-coordinate waypoint sequences and safety throttling.
+          </p>
+
+          <div class="mt-6 space-y-3">
+            <div class="flex items-start gap-3">
+              <span class="text-emerald-500 font-bold">✓</span>
+              <div class="text-xs text-slate-600 dark:text-slate-300">
+                <strong class="text-slate-900 dark:text-white" data-i18n="click_f1_t">Microsecond Accuracy with 10ms Safety Clamp:</strong> 
+                <span data-i18n="click_f1_d">Enforces an automatic 10ms minimum interval clamp to guarantee Windows UI responsiveness and prevent kernel lockup.</span>
+              </div>
+            </div>
+            <div class="flex items-start gap-3">
+              <span class="text-emerald-500 font-bold">✓</span>
+              <div class="text-xs text-slate-600 dark:text-slate-300">
+                <strong class="text-slate-900 dark:text-white" data-i18n="click_f2_t">Waypoint Coordinate Recording:</strong> 
+                <span data-i18n="click_f2_d">Record sequential screen coordinates (X, Y) across all connected monitors. Replay custom loops indefinitely.</span>
+              </div>
+            </div>
+            <div class="flex items-start gap-3">
+              <span class="text-emerald-500 font-bold">✓</span>
+              <div class="text-xs text-slate-600 dark:text-slate-300">
+                <strong class="text-slate-900 dark:text-white" data-i18n="click_f3_t">Global Hotkey (F6):</strong> 
+                <span data-i18n="click_f3_d">Start and stop clicking immediately from inside any fullscreen application or game without alt-tabbing.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lg:col-span-5 bg-white dark:bg-slate-900/90 rounded-2xl p-5 border border-slate-200 dark:border-slate-800 shadow-sm text-xs">
+          <div class="font-bold text-slate-900 dark:text-white mb-3">Specification Sheet</div>
+          <div class="space-y-2.5">
+            <div class="flex justify-between py-1 border-b border-slate-100 dark:border-slate-800">
+              <span class="text-slate-500">Supported Buttons</span>
+              <span class="font-semibold text-slate-800 dark:text-slate-200">Left, Right, Middle</span>
+            </div>
+            <div class="flex justify-between py-1 border-b border-slate-100 dark:border-slate-800">
+              <span class="text-slate-500">Click Types</span>
+              <span class="font-semibold text-slate-800 dark:text-slate-200">Single, Double Click</span>
+            </div>
+            <div class="flex justify-between py-1 border-b border-slate-100 dark:border-slate-800">
+              <span class="text-slate-500">Repeat Mode</span>
+              <span class="font-semibold text-slate-800 dark:text-slate-200">Infinite or Custom Counter</span>
+            </div>
+            <div class="flex justify-between py-1 border-b border-slate-100 dark:border-slate-800">
+              <span class="text-slate-500">Multi-Monitor Virtual Coordinates</span>
+              <span class="font-semibold text-emerald-500">Fully Supported</span>
+            </div>
+            <div class="flex justify-between py-1">
+              <span class="text-slate-500">Safety Stop Key</span>
+              <span class="font-mono font-bold text-blue-500">F6 / ESC</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. SMART CLIPBOARD MANAGER -->
+    <section id="clipboard" class="scroll-mt-24 glass-card rounded-3xl p-8 sm:p-10 border border-slate-200 dark:border-slate-800 shadow-xl">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <div class="lg:col-span-7">
+          <div class="flex items-center gap-3 mb-3">
+            <div class="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-xl">📋</div>
+            <span class="text-xs uppercase font-bold tracking-wider text-emerald-600 dark:text-emerald-400" data-i18n="clip_badge">Productivity</span>
+          </div>
+          <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white" data-i18n="clip_title">Smart Clipboard Manager</h2>
+          <p class="text-sm text-slate-600 dark:text-slate-300 mt-3 leading-relaxed" data-i18n="clip_long_desc">
+            Never lose a copied snippet again. Hooks directly into the native Windows clipboard message pump to store rich history with instant live search and persistent pinning.
+          </p>
+
+          <div class="mt-6 space-y-3">
+            <div class="flex items-start gap-3">
+              <span class="text-emerald-500 font-bold">✓</span>
+              <div class="text-xs text-slate-600 dark:text-slate-300">
+                <strong class="text-slate-900 dark:text-white" data-i18n="clip_f1_t">Zero CPU Polling:</strong> 
+                <span data-i18n="clip_f1_d">Uses Win32 AddClipboardFormatListener. The application sleeps until Windows notifies it of a clipboard change, consuming 0% idle CPU.</span>
+              </div>
+            </div>
+            <div class="flex items-start gap-3">
+              <span class="text-emerald-500 font-bold">✓</span>
+              <div class="text-xs text-slate-600 dark:text-slate-300">
+                <strong class="text-slate-900 dark:text-white" data-i18n="clip_f2_t">Favorite Item Pinning:</strong> 
+                <span data-i18n="clip_f2_d">Pin frequently used code templates, email snippets, or shell commands to the top so they are never trimmed by history limits.</span>
+              </div>
+            </div>
+            <div class="flex items-start gap-3">
+              <span class="text-emerald-500 font-bold">✓</span>
+              <div class="text-xs text-slate-600 dark:text-slate-300">
+                <strong class="text-slate-900 dark:text-white" data-i18n="clip_f3_t">100% Offline &amp; Private:</strong> 
+                <span data-i18n="clip_f3_d">All entries remain stored locally in your app data folder. Zero cloud sync, zero telemetry, zero risk of data leakage.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lg:col-span-5 bg-white dark:bg-slate-900/90 rounded-2xl p-5 border border-slate-200 dark:border-slate-800 shadow-sm text-xs">
+          <div class="font-bold text-slate-900 dark:text-white mb-2">Simulated Clipboard History</div>
+          <div class="space-y-2 mt-3">
+            <div class="p-2.5 rounded-lg bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-900 flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <span class="text-[10px] px-1.5 py-0.5 rounded bg-blue-600 text-white font-bold">PINNED</span>
+                <span class="font-mono text-slate-700 dark:text-slate-300">dotnet test --verbosity normal</span>
+              </div>
+              <span class="text-[11px] text-slate-400">12:30</span>
+            </div>
+            <div class="p-2.5 rounded-lg bg-slate-100 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 flex items-center justify-between">
+              <span class="font-mono text-slate-700 dark:text-slate-300">https://github.com/KaitoDeus/MyDeusTools</span>
+              <span class="text-[11px] text-slate-400">12:28</span>
+            </div>
+            <div class="p-2.5 rounded-lg bg-slate-100 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 flex items-center justify-between">
+              <span class="font-mono text-slate-700 dark:text-slate-300">#3B82F6 (Primary Accent Blue)</span>
+              <span class="text-[11px] text-slate-400">12:25</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. COLOR EYEDROPPER & PALETTE -->
+    <section id="color" class="scroll-mt-24 glass-card rounded-3xl p-8 sm:p-10 border border-slate-200 dark:border-slate-800 shadow-xl">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <div class="lg:col-span-7">
+          <div class="flex items-center gap-3 mb-3">
+            <div class="w-10 h-10 rounded-xl bg-purple-500/10 text-purple-600 dark:text-purple-400 flex items-center justify-center text-xl">🎨</div>
+            <span class="text-xs uppercase font-bold tracking-wider text-purple-600 dark:text-purple-400" data-i18n="color_badge">Design &amp; UI</span>
+          </div>
+          <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white" data-i18n="color_title">Color Eyedropper &amp; Palette</h2>
+          <p class="text-sm text-slate-600 dark:text-slate-300 mt-3 leading-relaxed" data-i18n="color_long_desc">
+            Instantly pick the exact color of any pixel on any monitor with an 11x11 real-time magnifier HUD. Converts instantly across all modern color standards.
+          </p>
+
+          <div class="mt-6 space-y-3">
+            <div class="flex items-start gap-3">
+              <span class="text-emerald-500 font-bold">✓</span>
+              <div class="text-xs text-slate-600 dark:text-slate-300">
+                <strong class="text-slate-900 dark:text-white" data-i18n="color_f1_t">11x11 Pixel Magnifier HUD:</strong> 
+                <span data-i18n="color_f1_d">Enlarges pixels directly underneath the cursor with a targeting reticle for exact single-pixel alignment.</span>
+              </div>
+            </div>
+            <div class="flex items-start gap-3">
+              <span class="text-emerald-500 font-bold">✓</span>
+              <div class="text-xs text-slate-600 dark:text-slate-300">
+                <strong class="text-slate-900 dark:text-white" data-i18n="color_f2_t">Multi-Format Conversion:</strong> 
+                <span data-i18n="color_f2_d">Instant conversion to HEX (#2563EB), RGB (rgb(37, 99, 235)), HSL, and HSV with 1-click clipboard copy.</span>
+              </div>
+            </div>
+            <div class="flex items-start gap-3">
+              <span class="text-emerald-500 font-bold">✓</span>
+              <div class="text-xs text-slate-600 dark:text-slate-300">
+                <strong class="text-slate-900 dark:text-white" data-i18n="color_f3_t">Palette History Collection:</strong> 
+                <span data-i18n="color_f3_d">All picked colors automatically accumulate into a project color board for quick export into CSS or Tailwind configs.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lg:col-span-5 bg-slate-900 text-white rounded-2xl p-5 border border-slate-800 flex flex-col items-center justify-center">
+          <div class="w-24 h-24 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-600 shadow-lg flex items-center justify-center font-mono font-bold text-sm mb-4">
+            #2563EB
+          </div>
+          <div class="w-full grid grid-cols-2 gap-2 text-center text-xs font-mono">
+            <div class="p-2 rounded bg-slate-800">HEX: #2563EB</div>
+            <div class="p-2 rounded bg-slate-800">RGB: 37, 99, 235</div>
+            <div class="p-2 rounded bg-slate-800">HSL: 221°, 83%, 53%</div>
+            <div class="p-2 rounded bg-slate-800">HSV: 221°, 84%, 92%</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. QR CODE STUDIO -->
+    <section id="qrcode" class="scroll-mt-24 glass-card rounded-3xl p-8 sm:p-10 border border-slate-200 dark:border-slate-800 shadow-xl">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <div class="lg:col-span-7">
+          <div class="flex items-center gap-3 mb-3">
+            <div class="w-10 h-10 rounded-xl bg-sky-500/10 text-sky-600 dark:text-sky-400 flex items-center justify-center text-xl">📱</div>
+            <span class="text-xs uppercase font-bold tracking-wider text-sky-600 dark:text-sky-400" data-i18n="qr_badge">Scanner &amp; Generator</span>
+          </div>
+          <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white" data-i18n="qr_title">QR Code Studio</h2>
+          <p class="text-sm text-slate-600 dark:text-slate-300 mt-3 leading-relaxed" data-i18n="qr_long_desc">
+            Dual-mode QR suite. Generate high-resolution vector and bitmap QR codes, or instantly scan any QR code on screen using the interactive snip rectangle.
+          </p>
+
+          <div class="mt-6 space-y-3">
+            <div class="flex items-start gap-3">
+              <span class="text-emerald-500 font-bold">✓</span>
+              <div class="text-xs text-slate-600 dark:text-slate-300">
+                <strong class="text-slate-900 dark:text-white" data-i18n="qr_f1_t">Screen Region Snipping:</strong> 
+                <span data-i18n="qr_f1_d">Drag a rectangle over any part of your monitors to scan a QR code from a website, PDF, or video.</span>
+              </div>
+            </div>
+            <div class="flex items-start gap-3">
+              <span class="text-emerald-500 font-bold">✓</span>
+              <div class="text-xs text-slate-600 dark:text-slate-300">
+                <strong class="text-slate-900 dark:text-white" data-i18n="qr_f2_t">Image File &amp; Clipboard Bitmap:</strong> 
+                <span data-i18n="qr_f2_d">Scan directly from files (PNG, JPG, BMP, WEBP) or straight from your clipboard with ZXing.Net decoding.</span>
+              </div>
+            </div>
+            <div class="flex items-start gap-3">
+              <span class="text-emerald-500 font-bold">✓</span>
+              <div class="text-xs text-slate-600 dark:text-slate-300">
+                <strong class="text-slate-900 dark:text-white" data-i18n="qr_f3_t">Auto URL Detection:</strong> 
+                <span data-i18n="qr_f3_d">Recognizes web URLs instantly with 1-click launch in your default system web browser.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lg:col-span-5 bg-white dark:bg-slate-900/90 rounded-2xl p-5 border border-slate-200 dark:border-slate-800 shadow-sm flex items-center justify-center">
+          <div class="text-center">
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=140x140&data=https://github.com/KaitoDeus/MyDeusTools" alt="QR" class="mx-auto rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 p-2 bg-white" />
+            <div class="text-xs font-mono text-slate-500 dark:text-slate-400 mt-3 select-all">https://github.com/KaitoDeus/MyDeusTools</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. TEXT & DEV TOOLS -->
+    <section id="textdev" class="scroll-mt-24 glass-card rounded-3xl p-8 sm:p-10 border border-slate-200 dark:border-slate-800 shadow-xl">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <div class="lg:col-span-7">
+          <div class="flex items-center gap-3 mb-3">
+            <div class="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center text-xl">🔤</div>
+            <span class="text-xs uppercase font-bold tracking-wider text-amber-600 dark:text-amber-400" data-i18n="textdev_badge">Developer Power Tools</span>
+          </div>
+          <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white" data-i18n="textdev_title">Text &amp; Dev Utilities</h2>
+          <p class="text-sm text-slate-600 dark:text-slate-300 mt-3 leading-relaxed" data-i18n="textdev_long_desc">
+            A comprehensive workbench with 5 dedicated tabs for engineers, analysts, and developers. Packed with smart whitespace scrolling for seamless usability.
+          </p>
+
+          <div class="mt-6 space-y-3">
+            <div class="flex items-start gap-3">
+              <span class="text-emerald-500 font-bold">✓</span>
+              <div class="text-xs text-slate-600 dark:text-slate-300">
+                <strong class="text-slate-900 dark:text-white" data-i18n="textdev_f1_t">JSON Studio:</strong> 
+                <span data-i18n="textdev_f1_d">Format (2-space indented), Minify, and syntax-validate JSON with pinpoint line/column error feedback.</span>
+              </div>
+            </div>
+            <div class="flex items-start gap-3">
+              <span class="text-emerald-500 font-bold">✓</span>
+              <div class="text-xs text-slate-600 dark:text-slate-300">
+                <strong class="text-slate-900 dark:text-white" data-i18n="textdev_f2_t">Base64 &amp; URL/HTML Studio:</strong> 
+                <span data-i18n="textdev_f2_d">Encode/decode raw strings and files to Base64 data URIs. Escape/unescape URL query params and HTML entities.</span>
+              </div>
+            </div>
+            <div class="flex items-start gap-3">
+              <span class="text-emerald-500 font-bold">✓</span>
+              <div class="text-xs text-slate-600 dark:text-slate-300">
+                <strong class="text-slate-900 dark:text-white" data-i18n="textdev_f3_t">Cryptographic Multi-Hash Generator:</strong> 
+                <span data-i18n="textdev_f3_d">Simultaneously compute MD5, SHA-1, SHA-256, and SHA-512 hashes in real-time as you type.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lg:col-span-5 bg-white dark:bg-slate-900/90 rounded-2xl p-5 border border-slate-200 dark:border-slate-800 shadow-sm text-xs font-mono space-y-2">
+          <div class="font-bold font-sans text-slate-900 dark:text-white mb-2">Simultaneous Hash Output</div>
+          <div class="p-2 rounded bg-slate-100 dark:bg-slate-800">
+            <span class="text-slate-400 block text-[10px]">MD5</span>
+            <span class="text-blue-500 break-all select-all font-semibold">900150983cd24fb0d6963f7d28e17f72</span>
+          </div>
+          <div class="p-2 rounded bg-slate-100 dark:bg-slate-800">
+            <span class="text-slate-400 block text-[10px]">SHA-256</span>
+            <span class="text-emerald-500 break-all select-all font-semibold">a591a6d40bf420404a011733cfb7b190d62c65bf0bcda32b57b277d9ad9f146e</span>
+          </div>
+          <div class="p-2 rounded bg-slate-100 dark:bg-slate-800">
+            <span class="text-slate-400 block text-[10px]">SHA-512</span>
+            <span class="text-purple-500 break-all select-all font-semibold">2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824...</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. STICKY NOTES -->
+    <section id="stickynotes" class="scroll-mt-24 glass-card rounded-3xl p-8 sm:p-10 border border-slate-200 dark:border-slate-800 shadow-xl">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <div class="lg:col-span-7">
+          <div class="flex items-center gap-3 mb-3">
+            <div class="w-10 h-10 rounded-xl bg-rose-500/10 text-rose-600 dark:text-rose-400 flex items-center justify-center text-xl">📝</div>
+            <span class="text-xs uppercase font-bold tracking-wider text-rose-600 dark:text-rose-400" data-i18n="sticky_badge">Organization</span>
+          </div>
+          <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white" data-i18n="sticky_title">Desktop Sticky Notes</h2>
+          <p class="text-sm text-slate-600 dark:text-slate-300 mt-3 leading-relaxed" data-i18n="sticky_long_desc">
+            Fast, lightweight notes that stay out of your way. Organize thoughts inside the card manager or pop them out into borderless, floating topmost pins.
+          </p>
+
+          <div class="mt-6 space-y-3">
+            <div class="flex items-start gap-3">
+              <span class="text-emerald-500 font-bold">✓</span>
+              <div class="text-xs text-slate-600 dark:text-slate-300">
+                <strong class="text-slate-900 dark:text-white" data-i18n="sticky_f1_t">Floating Borderless Windows:</strong> 
+                <span data-i18n="sticky_f1_d">Pop any note into a clean, borderless, draggable topmost window pinned anywhere on your monitors.</span>
+              </div>
+            </div>
+            <div class="flex items-start gap-3">
+              <span class="text-emerald-500 font-bold">✓</span>
+              <div class="text-xs text-slate-600 dark:text-slate-300">
+                <strong class="text-slate-900 dark:text-white" data-i18n="sticky_f2_t">Real-time JSON Persistence:</strong> 
+                <span data-i18n="sticky_f2_d">Edits save automatically to disk as you type. Never fear losing thoughts if your PC shuts down unexpectedly.</span>
+              </div>
+            </div>
+            <div class="flex items-start gap-3">
+              <span class="text-emerald-500 font-bold">✓</span>
+              <div class="text-xs text-slate-600 dark:text-slate-300">
+                <strong class="text-slate-900 dark:text-white" data-i18n="sticky_f3_t">Color Tag Categorization:</strong> 
+                <span data-i18n="sticky_f3_d">Color-code your notes (Yellow, Blue, Green, Purple) for rapid visual scanning.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lg:col-span-5 grid grid-cols-2 gap-3 text-xs">
+          <div class="p-4 rounded-2xl bg-amber-100 dark:bg-amber-950/70 border border-amber-300 dark:border-amber-800 text-amber-900 dark:text-amber-200">
+            <div class="font-bold flex justify-between mb-1">
+              <span>Sprint Goals</span>
+              <span>10:30</span>
+            </div>
+            <p class="leading-relaxed">- Ship MyDeusTools v1.0.0<br>- 124 Unit tests 100%<br>- GitHub Pages deployed</p>
+          </div>
+          <div class="p-4 rounded-2xl bg-sky-100 dark:bg-sky-950/70 border border-sky-300 dark:border-sky-800 text-sky-900 dark:text-sky-200">
+            <div class="font-bold flex justify-between mb-1">
+              <span>Color System</span>
+              <span>Yesterday</span>
+            </div>
+            <p class="leading-relaxed">Brand Blue: #2563EB<br>Dark BG: #0A0F1D<br>Card BG: #121826</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. SCHEDULE SHUTDOWN -->
+    <section id="shutdown" class="scroll-mt-24 glass-card rounded-3xl p-8 sm:p-10 border border-slate-200 dark:border-slate-800 shadow-xl">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <div class="lg:col-span-7">
+          <div class="flex items-center gap-3 mb-3">
+            <div class="w-10 h-10 rounded-xl bg-teal-500/10 text-teal-600 dark:text-teal-400 flex items-center justify-center text-xl">⏰</div>
+            <span class="text-xs uppercase font-bold tracking-wider text-teal-600 dark:text-teal-400" data-i18n="shut_badge">System Power</span>
+          </div>
+          <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white" data-i18n="shut_title">Schedule Shutdown</h2>
+          <p class="text-sm text-slate-600 dark:text-slate-300 mt-3 leading-relaxed" data-i18n="shut_long_desc">
+            Automate PC power state transitions with precision. Ideal for downloading large files overnight, rendering video projects, or enforcing sleep schedules.
+          </p>
+
+          <div class="mt-6 space-y-3">
+            <div class="flex items-start gap-3">
+              <span class="text-emerald-500 font-bold">✓</span>
+              <div class="text-xs text-slate-600 dark:text-slate-300">
+                <strong class="text-slate-900 dark:text-white" data-i18n="shut_f1_t">Three Power Modes:</strong> 
+                <span data-i18n="shut_f1_d">Shutdown, Restart, or Hibernate on a scheduled countdown.</span>
+              </div>
+            </div>
+            <div class="flex items-start gap-3">
+              <span class="text-emerald-500 font-bold">✓</span>
+              <div class="text-xs text-slate-600 dark:text-slate-300">
+                <strong class="text-slate-900 dark:text-white" data-i18n="shut_f2_t">Live Visual Ticking Clock:</strong> 
+                <span data-i18n="shut_f2_d">Displays hours, minutes, and seconds remaining with real-time UI synchronization.</span>
+              </div>
+            </div>
+            <div class="flex items-start gap-3">
+              <span class="text-emerald-500 font-bold">✓</span>
+              <div class="text-xs text-slate-600 dark:text-slate-300">
+                <strong class="text-slate-900 dark:text-white" data-i18n="shut_f3_t">Instant Abort Protection:</strong> 
+                <span data-i18n="shut_f3_d">Cancel scheduled shutdown commands instantly with a single click at any point before execution.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lg:col-span-5 bg-white dark:bg-slate-900/90 rounded-2xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm text-center">
+          <div class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Countdown Timer</div>
+          <div class="text-4xl font-extrabold font-mono text-teal-600 dark:text-teal-400">01 : 29 : 54</div>
+          <div class="text-xs text-slate-500 mt-2">Action: Scheduled Shutdown in 90 minutes</div>
+          <div class="mt-4 flex justify-center gap-2">
+            <button class="px-4 py-2 rounded-lg bg-rose-600 text-white font-semibold text-xs shadow-sm hover:bg-rose-700">Cancel Timer (Abort)</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="mt-auto border-t border-slate-200/80 dark:border-slate-800 py-10 relative z-10 bg-white/50 dark:bg-[#080d19]/80">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+      <div class="flex items-center gap-2">
+        <img src="avatar.ico" class="w-4 h-4 object-contain" alt="Icon">
+        <span class="font-semibold text-slate-700 dark:text-slate-300">MyDeusTools</span>
+        <span data-i18n="footer_developed">— Developed by</span>
+        <a href="https://github.com/KaitoDeus" target="_blank" class="font-semibold text-blue-600 dark:text-blue-400 hover:underline">KaitoDeus</a> &amp; Claude.
+      </div>
+
+      <div class="flex items-center gap-6">
+        <a href="index.html" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors" data-i18n="nav_home">Home</a>
+        <a href="architecture.html" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors" data-i18n="nav_architecture">Architecture</a>
+        <a href="download.html" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors" data-i18n="nav_download">Download</a>
+        <a href="faq.html" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors" data-i18n="nav_faq">FAQ</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="assets/site.js"></script>
+  <script>
+    registerTranslations({
+      en: {
+        feat_page_title: "Every Utility, Masterfully Crafted",
+        feat_page_sub: "Explore how each tool leverages low-level Win32 APIs, asynchronous C# 12, and Windows 11 Fluent design to deliver instant productivity without bloat.",
+        pinner_badge: "Desktop Management",
+        pinner_title: "Window Pinner & Transparency",
+        pinner_long_desc: "Keep critical windows always on top of your workflow. Whether you're following a YouTube video tutorial while coding in VS Code, transcribing handwritten notes, or overlaying mockups on an active browser, Window Pinner eliminates window-switching friction.",
+        pinner_f1_t: "Always-on-Top (HWND_TOPMOST):",
+        pinner_f1_d: "Pins any application window to stay above all normal and full-screen windows seamlessly.",
+        pinner_f2_t: "Real-time Alpha Opacity:",
+        pinner_f2_d: "Smoothly adjust transparency from 40% to 100% with immediate Win32 layered attribute reflection.",
+        pinner_f3_t: "Intelligent Window Filter:",
+        pinner_f3_d: "Automatically cleans out ghost background threads, tooltip handles, and Windows system overlays.",
+        click_badge: "Automation",
+        click_title: "Auto Clicker Pro",
+        click_long_desc: "Industrial-grade mouse clicker engineered for gaming, repetitive testing, and UI automation. Unlike basic tools, it includes multi-coordinate waypoint sequences and safety throttling.",
+        click_f1_t: "Microsecond Accuracy with 10ms Safety Clamp:",
+        click_f1_d: "Enforces an automatic 10ms minimum interval clamp to guarantee Windows UI responsiveness and prevent kernel lockup.",
+        click_f2_t: "Waypoint Coordinate Recording:",
+        click_f2_d: "Record sequential screen coordinates (X, Y) across all connected monitors. Replay custom loops indefinitely.",
+        click_f3_t: "Global Hotkey (F6):",
+        click_f3_d: "Start and stop clicking immediately from inside any fullscreen application or game without alt-tabbing.",
+        clip_badge: "Productivity",
+        clip_title: "Smart Clipboard Manager",
+        clip_long_desc: "Never lose a copied snippet again. Hooks directly into the native Windows clipboard message pump to store rich history with instant live search and persistent pinning.",
+        clip_f1_t: "Zero CPU Polling:",
+        clip_f1_d: "Uses Win32 AddClipboardFormatListener. The application sleeps until Windows notifies it of a clipboard change, consuming 0% idle CPU.",
+        clip_f2_t: "Favorite Item Pinning:",
+        clip_f2_d: "Pin frequently used code templates, email snippets, or shell commands to the top so they are never trimmed by history limits.",
+        clip_f3_t: "100% Offline & Private:",
+        clip_f3_d: "All entries remain stored locally in your app data folder. Zero cloud sync, zero telemetry, zero risk of data leakage.",
+        color_badge: "Design & UI",
+        color_title: "Color Eyedropper & Palette",
+        color_long_desc: "Instantly pick the exact color of any pixel on any monitor with an 11x11 real-time magnifier HUD. Converts instantly across all modern color standards.",
+        color_f1_t: "11x11 Pixel Magnifier HUD:",
+        color_f1_d: "Enlarges pixels directly underneath the cursor with a targeting reticle for exact single-pixel alignment.",
+        color_f2_t: "Multi-Format Conversion:",
+        color_f2_d: "Instant conversion to HEX (#2563EB), RGB, HSL, and HSV with 1-click clipboard copy.",
+        color_f3_t: "Palette History Collection:",
+        color_f3_d: "All picked colors automatically accumulate into a project color board for quick export into CSS or Tailwind configs.",
+        qr_badge: "Scanner & Generator",
+        qr_title: "QR Code Studio",
+        qr_long_desc: "Dual-mode QR suite. Generate high-resolution vector and bitmap QR codes, or instantly scan any QR code on screen using the interactive snip rectangle.",
+        qr_f1_t: "Screen Region Snipping:",
+        qr_f1_d: "Drag a rectangle over any part of your monitors to scan a QR code from a website, PDF, or video.",
+        qr_f2_t: "Image File & Clipboard Bitmap:",
+        qr_f2_d: "Scan directly from files (PNG, JPG, BMP, WEBP) or straight from your clipboard with ZXing.Net decoding.",
+        qr_f3_t: "Auto URL Detection:",
+        qr_f3_d: "Recognizes web URLs instantly with 1-click launch in your default system web browser.",
+        textdev_badge: "Developer Power Tools",
+        textdev_title: "Text & Dev Utilities",
+        textdev_long_desc: "A comprehensive workbench with 5 dedicated tabs for engineers, analysts, and developers. Packed with smart whitespace scrolling for seamless usability.",
+        textdev_f1_t: "JSON Studio:",
+        textdev_f1_d: "Format (2-space indented), Minify, and syntax-validate JSON with pinpoint line/column error feedback.",
+        textdev_f2_t: "Base64 & URL/HTML Studio:",
+        textdev_f2_d: "Encode/decode raw strings and files to Base64 data URIs. Escape/unescape URL query params and HTML entities.",
+        textdev_f3_t: "Cryptographic Multi-Hash Generator:",
+        textdev_f3_d: "Simultaneously compute MD5, SHA-1, SHA-256, and SHA-512 hashes in real-time as you type.",
+        sticky_badge: "Organization",
+        sticky_title: "Desktop Sticky Notes",
+        sticky_long_desc: "Fast, lightweight notes that stay out of your way. Organize thoughts inside the card manager or pop them out into borderless, floating topmost pins.",
+        sticky_f1_t: "Floating Borderless Windows:",
+        sticky_f1_d: "Pop any note into a clean, borderless, draggable topmost window pinned anywhere on your monitors.",
+        sticky_f2_t: "Real-time JSON Persistence:",
+        sticky_f2_d: "Edits save automatically to disk as you type. Never fear losing thoughts if your PC shuts down unexpectedly.",
+        sticky_f3_t: "Color Tag Categorization:",
+        sticky_f3_d: "Color-code your notes (Yellow, Blue, Green, Purple) for rapid visual scanning.",
+        shut_badge: "System Power",
+        shut_title: "Schedule Shutdown",
+        shut_long_desc: "Automate PC power state transitions with precision. Ideal for downloading large files overnight, rendering video projects, or enforcing sleep schedules.",
+        shut_f1_t: "Three Power Modes:",
+        shut_f1_d: "Shutdown, Restart, or Hibernate on a scheduled countdown.",
+        shut_f2_t: "Live Visual Ticking Clock:",
+        shut_f2_d: "Displays hours, minutes, and seconds remaining with real-time UI synchronization.",
+        shut_f3_t: "Instant Abort Protection:",
+        shut_f3_d: "Cancel scheduled shutdown commands instantly with a single click at any point before execution."
+      },
+      vi: {
+        feat_page_title: "Mọi Công Cụ Đều Được Chăm Chút Tỉ Mỉ",
+        feat_page_sub: "Khám phá cách từng tiện ích khai thác sâu Win32 API gốc, C# 12 bất đồng bộ và ngôn ngữ thiết kế Windows 11 Fluent để nâng tầm hiệu suất làm việc.",
+        pinner_badge: "Quản Lý Cửa Sổ Màn Hình",
+        pinner_title: "Ghim Cửa Sổ Nổi & Chỉnh Độ Mờ (Opacity)",
+        pinner_long_desc: "Giữ những cửa sổ quan trọng luôn nổi trên cùng không bị che khuất. Vừa xem video hướng dẫn trên YouTube vừa gõ code, đối chiếu tài liệu hay so sánh bản vẽ thiết kế trên màn hình mà không cần Alt-Tab liên tục.",
+        pinner_f1_t: "Luôn Trên Cùng (HWND_TOPMOST):",
+        pinner_f1_d: "Ghim cửa sổ ứng dụng bất kỳ nổi trên tất cả các cửa sổ thông thường và toàn màn hình.",
+        pinner_f2_t: "Điều Chỉnh Độ Mờ Thời Gian Thực:",
+        pinner_f2_d: "Kéo thanh trượt từ 40% đến 100% mượt mà, phản hồi tức thì thông qua thuộc tính phân lớp Windows API.",
+        pinner_f3_t: "Lọc Cửa Sổ Thông Minh:",
+        pinner_f3_d: "Tự động loại bỏ các tiến trình chạy ngầm vô hình, chú thích tooltip và cửa sổ hệ thống không cần thiết.",
+        click_badge: "Tự Động Hóa",
+        click_title: "Auto Clicker Pro",
+        click_long_desc: "Công cụ tự động click chuột chuyên nghiệp phục vụ chơi game, kiểm thử lặp lại và thao tác tự động. Hỗ trợ ghi chuỗi điểm tọa độ và chốt an toàn chống treo máy.",
+        click_f1_t: "Độ Chính Xác Cao Kèm Chốt An Toàn 10ms:",
+        click_f1_d: "Tự động giới hạn tốc độ tối thiểu 10ms giúp hệ điều hành không bị quá tải hay đơ giao diện.",
+        click_f2_t: "Ghi Điểm Tọa Độ Waypoint:",
+        click_f2_d: "Lưu lại danh sách các tọa độ (X, Y) trên nhiều màn hình khác nhau và chạy tuần hoàn theo ý muốn.",
+        click_f3_t: "Phím Tắt Toàn Cục (F6):",
+        click_f3_d: "Bật/Tắt click chuột ngay lập tức từ trong game hay ứng dụng toàn màn hình mà không cần chuyển cửa sổ.",
+        clip_badge: "Tiện Ích Năng Suất",
+        clip_title: "Quản Lý Bộ Nhớ Tạm (Clipboard)",
+        clip_long_desc: "Không bao giờ để mất các đoạn văn bản hay mã lệnh đã sao chép. Kết nối trực tiếp vào thông điệp Clipboard của Windows với tìm kiếm tức thì và ghim mục yêu thích.",
+        clip_f1_t: "Không Tốn CPU (Zero Polling):",
+        clip_f1_d: "Sử dụng AddClipboardFormatListener. Ứng dụng ở trạng thái ngủ cho đến khi Windows gửi thông báo có dữ liệu mới, tiêu thụ 0% CPU khi chờ.",
+        clip_f2_t: "Ghim Mục Quan Trọng:",
+        clip_f2_d: "Ghim các đoạn code mẫu, email thường dùng lên đầu danh sách để không bị xóa khi bộ nhớ đầy.",
+        clip_f3_t: "Ngoại Tuyến & Riêng Tư Tuyệt Đối:",
+        clip_f3_d: "Mọi dữ liệu lưu hoàn toàn tại máy tính cá nhân. Không đồng bộ đám mây, không gửi dữ liệu ra ngoài.",
+        color_badge: "Thiết Kế & Đồ Họa",
+        color_title: "Bắt Mã Màu Màn Hình & Kính Lúp",
+        color_long_desc: "Bắt chính xác màu sắc của bất kỳ điểm ảnh nào trên màn hình với kính lúp 11x11 pixel. Tự động chuyển đổi sang mọi định dạng màu phổ biến.",
+        color_f1_t: "Kính Lúp Phóng Đại 11x11 Pixel:",
+        color_f1_d: "Phóng to vùng điểm ảnh ngay dưới con trỏ chuột kèm tâm ngắm giúp chọn chính xác từng pixel.",
+        color_f2_t: "Đa Định Dạng Màu Sắc:",
+        color_f2_d: "Chuyển đổi tức thì giữa HEX, RGB, HSL và HSV kèm nút sao chép nhanh vào bộ nhớ tạm.",
+        color_f3_t: "Lưu Trữ Bảng Màu Dự Án:",
+        color_f3_d: "Các màu đã bắt sẽ tự động lưu vào bảng màu để bạn dễ dàng xuất ra cấu hình CSS hoặc Tailwind.",
+        qr_badge: "Quét & Tạo Mã QR",
+        qr_title: "Studio Mã QR",
+        qr_long_desc: "Bộ công cụ mã QR hai chiều. Vừa tạo mã QR sắc nét chất lượng cao, vừa quét mã trực tiếp trên màn hình thông qua vùng chọn kéo chuột.",
+        qr_f1_t: "Quét Vùng Màn Hình:",
+        qr_f1_d: "Kéo thả khung chọn trên bất kỳ vị trí màn hình nào để giải mã QR từ trang web, tài liệu PDF hoặc video.",
+        qr_f2_t: "Quét Từ Tệp Ảnh & Bộ Nhớ Tạm:",
+        qr_f2_d: "Đọc trực tiếp từ tệp hình ảnh (PNG, JPG, BMP) hoặc dán ảnh chụp màn hình từ clipboard.",
+        qr_f3_t: "Tự Động Nhận Diện Liên Kết (URL):",
+        qr_f3_d: "Phát hiện link web và cung cấp nút mở ngay trên trình duyệt mặc định chỉ với 1 cú click.",
+        textdev_badge: "Công Cụ Lập Trình Viên",
+        textdev_title: "Xử Lý Văn Bản & Công Cụ Dev",
+        textdev_long_desc: "Bàn làm việc đa năng gồm 5 tab chuyên biệt cho kỹ sư và lập trình viên. Tích hợp cuộn chuột thông minh trên cả vùng trống và ô nhập liệu.",
+        textdev_f1_t: "JSON Studio:",
+        textdev_f1_d: "Định dạng thụt lề 2 khoảng trắng, nén gọn (minify) và kiểm tra lỗi cú pháp hiển thị chính xác dòng/cột.",
+        textdev_f2_t: "Base64 & Mã Hóa URL/HTML:",
+        textdev_f2_d: "Mã hóa và giải mã chuỗi ký tự hoặc tệp tin sang Base64 Data URI. Xử lý ký tự đặc biệt URL và thực thể HTML.",
+        textdev_f3_t: "Máy Tính Mã Băm (Hash) Đồng Thời:",
+        textdev_f3_d: "Tự động tính cùng lúc các chuẩn mã băm MD5, SHA-1, SHA-256 và SHA-512 ngay khi bạn gõ phím.",
+        sticky_badge: "Ghi Chú & Quản Lý",
+        sticky_title: "Ghi Chú Sticky Notes",
+        sticky_long_desc: "Ghi chép nhanh chóng, tiện lợi. Quản lý danh sách ghi chú dạng thẻ hoặc tách riêng thành cửa sổ không viền nổi ghim trên màn hình.",
+        sticky_f1_t: "Cửa Sổ Ghi Chú Nổi Không Viền:",
+        sticky_f1_d: "Tách ghi chú thành cửa sổ độc lập, di chuyển tự do và ghim luôn trên cùng để dễ dàng theo dõi.",
+        sticky_f2_t: "Tự Động Lưu Thời Gian Thực:",
+        sticky_f2_d: "Nội dung được lưu vào tệp JSON ngay khi bạn gõ, không lo mất dữ liệu khi máy tắt đột ngột.",
+        sticky_f3_t: "Phân Loại Màu Sắc Trực Quan:",
+        sticky_f3_d: "Đánh dấu màu sắc thẻ ghi chú (Vàng, Xanh dương, Xanh lá, Tím) giúp tìm kiếm nhanh chóng.",
+        shut_badge: "Quản Lý Nguồn Điện",
+        shut_title: "Hẹn Giờ Tắt Máy",
+        shut_long_desc: "Lên lịch chuyển đổi trạng thái máy tính chính xác. Thích hợp khi tải tệp dung lượng lớn qua đêm, render video hoặc quản lý thời gian sử dụng máy tính.",
+        shut_f1_t: "Ba Chế Độ Nguồn:",
+        shut_f1_d: "Tắt máy (Shutdown), Khởi động lại (Restart) hoặc Ngủ đông (Hibernate) theo thời gian đếm ngược.",
+        shut_f2_t: "Đồng Hồ Đếm Ngược Trực Quan:",
+        shut_f2_d: "Hiển thị chi tiết giờ, phút, giây còn lại đồng bộ mượt mà theo từng giây.",
+        shut_f3_t: "Hủy Lệnh Tức Thì:",
+        shut_f3_d: "Nút hủy lệnh an toàn cho phép bạn dừng quá trình đếm ngược bất kỳ lúc nào chỉ bằng 1 cú nhấp chuột."
+      }
+    });
+  </script>
+</body>
+</html>
