@@ -46,8 +46,15 @@
     <system:String x:Key="Shutdown_Action_Shutdown">Tắt máy (Shutdown)</system:String>
     <system:String x:Key="Shutdown_Action_Restart">Khởi động lại (Restart)</system:String>
     <system:String x:Key="Shutdown_Action_Hibernate">Ngủ đông (Hibernate)</system:String>
+    <system:String x:Key="Shutdown_TimeSetup">Thiết lập thời gian chờ:</system:String>
+    <system:String x:Key="Shutdown_Hours">Giờ</system:String>
+    <system:String x:Key="Shutdown_Minutes">Phút</system:String>
+    <system:String x:Key="Shutdown_Seconds">Giây</system:String>
+    <system:String x:Key="Shutdown_Status">Trạng thái:</system:String>
     <system:String x:Key="Shutdown_Start">Bắt đầu đếm ngược</system:String>
     <system:String x:Key="Shutdown_Cancel">Hủy hẹn giờ</system:String>
+    <system:String x:Key="Shutdown_NoticeTitle">Lưu ý</system:String>
+    <system:String x:Key="Shutdown_NoticeMessage">Hành động hẹn giờ sử dụng tiến trình hệ thống Windows. Hãy đảm bảo bạn đã lưu lại các công việc đang làm.</system:String>
 
     <!-- Clipboard Manager Page -->
     <system:String x:Key="Clipboard_Title">Lịch sử khay nhớ tạm</system:String>

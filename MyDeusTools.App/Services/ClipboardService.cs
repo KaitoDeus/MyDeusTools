@@ -24,6 +24,7 @@ namespace MyDeusTools.App.Services
         private readonly string _filePath;
         private readonly int _maxItems;
         private readonly object _lock = new();
+        private readonly System.Threading.SemaphoreSlim _saveSemaphore = new(1, 1);
         private bool _isInternalCopy = false;
         private IntPtr _monitoredHwnd = IntPtr.Zero;
 
@@ -263,6 +264,7 @@ namespace MyDeusTools.App.Services
 
         public async Task SaveHistoryAsync()
         {
+            await _saveSemaphore.WaitAsync();
             try
             {
                 List<ClipboardItemModel> itemsToSave;
@@ -285,6 +287,10 @@ namespace MyDeusTools.App.Services
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine($"Lỗi khi lưu lịch sử Clipboard: {ex.Message}");
+            }
+            finally
+            {
+                _saveSemaphore.Release();
             }
         }
 

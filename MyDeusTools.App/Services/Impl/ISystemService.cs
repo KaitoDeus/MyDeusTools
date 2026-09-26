@@ -18,6 +18,8 @@ namespace MyDeusTools.App.Services.Impl
 
     public class SystemService : ISystemService
     {
+        private Process? _hibernateProcess;
+
         public void ScheduleShutdown(int seconds)
         {
             ScheduleAction(ShutdownMode.Shutdown, seconds);
@@ -25,6 +27,9 @@ namespace MyDeusTools.App.Services.Impl
 
         public void ScheduleAction(ShutdownMode mode, int seconds)
         {
+            // Luôn hủy bất kỳ lệnh hẹn giờ nào đã được lên lịch trước đó (Windows báo lỗi 1190 nếu không hủy trước)
+            CancelShutdown();
+
             string flag = mode switch
             {
                 ShutdownMode.Restart => "/r",
@@ -35,21 +40,42 @@ namespace MyDeusTools.App.Services.Impl
             if (mode == ShutdownMode.Hibernate)
             {
                 // Lên lịch ngủ đông: timeout rồi gọi shutdown /h
-                RunCommand("cmd.exe", $"/c timeout /t {seconds} /nobreak && shutdown /h");
+                _hibernateProcess = RunCommand("cmd.exe", $"/c timeout /t {seconds} /nobreak && shutdown /h");
             }
             else
             {
-                RunCommand("shutdown", $"{flag} /f /t {seconds}");
+                RunCommand("shutdown", $"{flag} /f /t {seconds}", waitForExit: true);
             }
         }
 
         public void CancelShutdown()
         {
-            // Lệnh: shutdown /a
-            RunCommand("shutdown", "/a");
+            // Hủy lệnh hẹn giờ Windows: shutdown /a
+            RunCommand("shutdown", "/a", waitForExit: true);
+
+            // Hủy tiến trình ngủ đông nếu đang chạy
+            if (_hibernateProcess != null)
+            {
+                try
+                {
+                    if (!_hibernateProcess.HasExited)
+                    {
+                        _hibernateProcess.Kill(entireProcessTree: true);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine($"Lỗi hủy tiến trình ngủ đông: {ex.Message}");
+                }
+                finally
+                {
+                    _hibernateProcess.Dispose();
+                    _hibernateProcess = null;
+                }
+            }
         }
 
-        private void RunCommand(string fileName, string arguments)
+        private Process? RunCommand(string fileName, string arguments, bool waitForExit = false)
         {
             try
             {
@@ -58,11 +84,17 @@ namespace MyDeusTools.App.Services.Impl
                     CreateNoWindow = true,
                     UseShellExecute = false
                 };
-                Process.Start(psi);
+                var process = Process.Start(psi);
+                if (waitForExit && process != null)
+                {
+                    process.WaitForExit(2000);
+                }
+                return process;
             }
             catch (Exception ex)
             {
                 Debug.WriteLine($"Lỗi thực thi lệnh hệ thống: {ex.Message}");
+                return null;
             }
         }
     }

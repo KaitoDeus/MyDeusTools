@@ -46,8 +46,15 @@
     <system:String x:Key="Shutdown_Action_Shutdown">Shutdown</system:String>
     <system:String x:Key="Shutdown_Action_Restart">Restart</system:String>
     <system:String x:Key="Shutdown_Action_Hibernate">Hibernate</system:String>
+    <system:String x:Key="Shutdown_TimeSetup">Set Countdown Time:</system:String>
+    <system:String x:Key="Shutdown_Hours">Hours</system:String>
+    <system:String x:Key="Shutdown_Minutes">Minutes</system:String>
+    <system:String x:Key="Shutdown_Seconds">Seconds</system:String>
+    <system:String x:Key="Shutdown_Status">Status:</system:String>
     <system:String x:Key="Shutdown_Start">Start Countdown</system:String>
     <system:String x:Key="Shutdown_Cancel">Cancel Schedule</system:String>
+    <system:String x:Key="Shutdown_NoticeTitle">Notice</system:String>
+    <system:String x:Key="Shutdown_NoticeMessage">Schedule shutdown utilizes Windows system processes. Please ensure you have saved all active work.</system:String>
 
     <!-- Clipboard Manager Page -->
     <system:String x:Key="Clipboard_Title">Clipboard Manager</system:String>

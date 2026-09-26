@@ -14,7 +14,7 @@
 
             <ui:Card Margin="0,0,0,15">
                 <StackPanel Margin="10">
-                    <TextBlock Text="Hành động:" Margin="0,0,0,8" FontWeight="SemiBold"/>
+                    <TextBlock Text="{DynamicResource Shutdown_Action}" Margin="0,0,0,8" FontWeight="SemiBold"/>
                     <ComboBox ItemsSource="{Binding ShutdownModes}" 
                               SelectedItem="{Binding SelectedMode, Mode=TwoWay}"
                               HorizontalAlignment="Stretch"/>
@@ -23,7 +23,7 @@
 
             <ui:Card Margin="0,0,0,20">
                 <StackPanel Margin="10">
-                    <TextBlock Text="Thiết lập thời gian chờ:" Margin="0,0,0,15" FontWeight="SemiBold"/>
+                    <TextBlock Text="{DynamicResource Shutdown_TimeSetup}" Margin="0,0,0,15" FontWeight="SemiBold"/>
                     
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -33,18 +33,18 @@
                         </Grid.ColumnDefinitions>
                         
                         <StackPanel Margin="0,0,10,0">
-                            <TextBlock Text="Giờ" Margin="0,0,0,5" FontSize="12"/>
-                            <ui:NumberBox Value="{Binding Hours, Mode=TwoWay}" Minimum="0" Maximum="23" />
+                            <TextBlock Text="{DynamicResource Shutdown_Hours}" Margin="0,0,0,5" FontSize="12"/>
+                            <ui:NumberBox Value="{Binding Hours, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Minimum="0" Maximum="23" />
                         </StackPanel>
 
                         <StackPanel Grid.Column="1" Margin="0,0,10,0">
-                            <TextBlock Text="Phút" Margin="0,0,0,5" FontSize="12"/>
-                            <ui:NumberBox Value="{Binding Minutes, Mode=TwoWay}" Minimum="0" Maximum="59" />
+                            <TextBlock Text="{DynamicResource Shutdown_Minutes}" Margin="0,0,0,5" FontSize="12"/>
+                            <ui:NumberBox Value="{Binding Minutes, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Minimum="0" Maximum="59" />
                         </StackPanel>
 
                         <StackPanel Grid.Column="2">
-                            <TextBlock Text="Giây" Margin="0,0,0,5" FontSize="12"/>
-                            <ui:NumberBox Value="{Binding Seconds, Mode=TwoWay}" Minimum="0" Maximum="59" />
+                            <TextBlock Text="{DynamicResource Shutdown_Seconds}" Margin="0,0,0,5" FontSize="12"/>
+                            <ui:NumberBox Value="{Binding Seconds, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Minimum="0" Maximum="59" />
                         </StackPanel>
                     </Grid>
                 </StackPanel>
@@ -60,19 +60,19 @@
                         </Grid.ColumnDefinitions>
                         
                         <StackPanel VerticalAlignment="Center">
-                            <TextBlock Text="Trạng thái:" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                            <TextBlock Text="{DynamicResource Shutdown_Status}" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                             <TextBlock Text="{Binding StatusMessage}" FontWeight="SemiBold" Margin="0,4,0,0"/>
                         </StackPanel>
 
                         <ui:Button Grid.Column="1" 
-                                   Content="Hủy lệnh" 
+                                   Content="{DynamicResource Shutdown_Cancel}" 
                                    Command="{Binding CancelCommand}"
                                    Appearance="Secondary"
                                    Margin="0,0,10,0"
                                    Padding="15,8"/>
 
                         <ui:Button Grid.Column="2" 
-                                   Content="Bắt đầu" 
+                                   Content="{DynamicResource Shutdown_Start}" 
                                    Command="{Binding ScheduleCommand}"
                                    Appearance="Primary"
                                    Padding="20,8"/>
@@ -87,8 +87,8 @@
                 </StackPanel>
             </ui:Card>
 
-            <ui:InfoBar Title="Lưu ý" 
-                        Message="Hành động hẹn giờ sử dụng tiến trình hệ thống Windows. Hãy đảm bảo bạn đã lưu lại các công việc đang làm."
+            <ui:InfoBar Title="{DynamicResource Shutdown_NoticeTitle}" 
+                        Message="{DynamicResource Shutdown_NoticeMessage}"
                         Severity="Informational"
                         IsOpen="True" />
         </StackPanel>

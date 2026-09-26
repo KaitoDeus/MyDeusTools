@@ -12,7 +12,7 @@
   <img src="https://img.shields.io/badge/.NET-8.0--windows-512BD4?logo=dotnet" alt=".NET 8" />
   <img src="https://img.shields.io/badge/UI-WPF--UI%203.0-0078D4?logo=windows" alt="WPF-UI" />
   <img src="https://img.shields.io/badge/Architecture-MVVM%20Toolkit-blue" alt="MVVM" />
-  <img src="https://img.shields.io/badge/Tests-124%20Passed%20(100%25)-brightgreen" alt="Tests" />
+  <img src="https://img.shields.io/badge/Tests-130%20Passed%20(100%25)-brightgreen" alt="Tests" />
   <img src="https://img.shields.io/badge/Platform-Windows%20x64-00A4EF" alt="Platform" />
   <img src="https://img.shields.io/badge/License-MIT-green" alt="License" />
 </p>
@@ -57,7 +57,7 @@ MyDeusTools is a lightweight, modern, and versatile Windows desktop utility suit
   - NHotkey.Wpf for global system-wide hotkeys
   - Hardcodet.NotifyIcon.Wpf for taskbar notification tray
   - QRCoder & ZXing.Net for QR code generation and decoding
-- **Testing**: xUnit 2.9, Moq 4.20, Xunit.StaFact (124/124 tests passing, 100% success rate)
+- **Testing**: xUnit 2.9, Moq 4.20, Xunit.StaFact (130/130 tests passing, 100% success rate)
 
 ---
 
