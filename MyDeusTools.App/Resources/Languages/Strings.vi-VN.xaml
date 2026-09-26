@@ -22,6 +22,7 @@
     <system:String x:Key="Nav_ColorPicker">Lấy mã màu (Color Picker)</system:String>
     <system:String x:Key="Nav_TextDevTools">Text &amp; Dev Tools</system:String>
     <system:String x:Key="Nav_WindowPinner">Ghim cửa sổ (Always on Top)</system:String>
+    <system:String x:Key="Nav_VideoConverter">Chuyển đổi Video</system:String>
 
     <!-- Sticky Notes Page -->
     <system:String x:Key="Sticky_Title">Ghi chú nổi</system:String>
@@ -173,5 +174,61 @@
 
     <!-- Recording Overlay -->
     <system:String x:Key="AutoClick_OverlayHelp">Click chuột để ghi điểm. Nhấn ENTER/ESC để hoàn tất.</system:String>
+
+    <!-- Video Converter Page -->
+    <system:String x:Key="Video_Title">Chuyển đổi Video</system:String>
+    <system:String x:Key="Video_EngineMissingTitle">Chưa cài đặt bộ máy chuyển đổi FFmpeg</system:String>
+    <system:String x:Key="Video_EngineMissingPrompt">FFmpeg là bộ máy chuyển đổi video &amp; âm thanh mạnh mẽ nhất. Bạn có thể tải tự động bản Portable nhẹ hoặc chọn tệp ffmpeg.exe sẵn có trên máy.</system:String>
+    <system:String x:Key="Video_DownloadPortable">Tải FFmpeg Portable (Tự động)</system:String>
+    <system:String x:Key="Video_BrowseExecutable">Chọn tệp ffmpeg.exe...</system:String>
+    <system:String x:Key="Video_SourceTitle">1. Tệp video nguồn</system:String>
+    <system:String x:Key="Video_DropZonePrompt">Kéo thả tệp video vào đây hoặc nhấn duyệt tệp</system:String>
+    <system:String x:Key="Video_DropZoneFormats">Hỗ trợ MP4, MKV, AVI, MOV, WMV, WebM, FLV, TS, M4V và nhiều định dạng khác</system:String>
+    <system:String x:Key="Video_BtnBrowseSource">Chọn tệp video nguồn...</system:String>
+    <system:String x:Key="Video_MetaSize">Kích thước:</system:String>
+    <system:String x:Key="Video_MetaDuration">Thời lượng:</system:String>
+    <system:String x:Key="Video_MetaResolution">Độ phân giải:</system:String>
+    <system:String x:Key="Video_MetaVideoCodec">Video:</system:String>
+    <system:String x:Key="Video_MetaAudioCodec">Audio:</system:String>
+    <system:String x:Key="Video_BtnChangeSource">Đổi tệp khác</system:String>
+    <system:String x:Key="Video_BtnClearSource">Xóa</system:String>
+    <system:String x:Key="Video_TargetFormatTitle">2. Chọn định dạng chuyển đổi</system:String>
+    <system:String x:Key="Video_FormatGroupVideo">Định dạng Video &amp; Ảnh động:</system:String>
+    <system:String x:Key="Video_FormatGroupAudio">Trích xuất âm thanh (Video sang Audio):</system:String>
+    <system:String x:Key="Video_SettingsTitle">3. Cấu hình &amp; Tùy chỉnh chất lượng</system:String>
+    <system:String x:Key="Video_OptResolution">Độ phân giải xuất:</system:String>
+    <system:String x:Key="Video_ResOriginal">Giữ nguyên gốc (Original)</system:String>
+    <system:String x:Key="Video_OptCodec">Bộ mã hóa (Codec):</system:String>
+    <system:String x:Key="Video_CodecAuto">Tự động (Theo định dạng)</system:String>
+    <system:String x:Key="Video_CodecCopy">Copy nguyên gốc (Stream Copy - Siêu tốc)</system:String>
+    <system:String x:Key="Video_OptQuality">Mức chất lượng (CRF):</system:String>
+    <system:String x:Key="Video_QualUltra">Cực cao (CRF 18 - Độ nét tối đa)</system:String>
+    <system:String x:Key="Video_QualHigh">Cao (CRF 21 - Cân bằng tối ưu)</system:String>
+    <system:String x:Key="Video_QualMedium">Trung bình (CRF 25)</system:String>
+    <system:String x:Key="Video_QualCompact">Tiết kiệm (CRF 28 - Dung lượng nhỏ)</system:String>
+    <system:String x:Key="Video_OptFps">Tốc độ khung hình (FPS):</system:String>
+    <system:String x:Key="Video_FpsOriginal">Giữ nguyên gốc</system:String>
+    <system:String x:Key="Video_OptAudioAction">Xử lý âm thanh:</system:String>
+    <system:String x:Key="Video_AudioKeep">Giữ nguyên âm thanh gốc</system:String>
+    <system:String x:Key="Video_AudioConvertAac">Chuyển sang định dạng AAC</system:String>
+    <system:String x:Key="Video_AudioConvertMp3">Chuyển sang định dạng MP3</system:String>
+    <system:String x:Key="Video_AudioMute">Tắt tiếng (Loại bỏ âm thanh)</system:String>
+    <system:String x:Key="Video_OptAudioBitrate">Chất lượng âm thanh (Bitrate):</system:String>
+    <system:String x:Key="Video_OptGpu">Kích hoạt tăng tốc phần cứng GPU (NVIDIA/Intel/AMD)</system:String>
+    <system:String x:Key="Video_OptTrim">Cắt đoạn video</system:String>
+    <system:String x:Key="Video_TrimStart">Bắt đầu:</system:String>
+    <system:String x:Key="Video_TrimEnd">Kết thúc:</system:String>
+    <system:String x:Key="Video_OutputFolderTitle">4. Thư mục lưu tệp đầu ra</system:String>
+    <system:String x:Key="Video_BtnBrowseOutput">Duyệt thư mục...</system:String>
+    <system:String x:Key="Video_OutputFilePreview">Tên tệp dự kiến:</system:String>
+    <system:String x:Key="Video_BtnStartConversion">Bắt đầu chuyển đổi</system:String>
+    <system:String x:Key="Video_StatTime">Thời gian xử lý</system:String>
+    <system:String x:Key="Video_StatSpeed">Tốc độ chuyển đổi</system:String>
+    <system:String x:Key="Video_StatFps">Tốc độ khung hình</system:String>
+    <system:String x:Key="Video_StatRemaining">Dự kiến còn lại</system:String>
+    <system:String x:Key="Video_BtnOpenFolder">Mở thư mục chứa</system:String>
+    <system:String x:Key="Video_BtnPlayOutput">Phát tệp video</system:String>
+    <system:String x:Key="Video_BtnCancelConversion">Hủy bỏ</system:String>
+    <system:String x:Key="Video_BtnToggleLogs">Xem nhật ký chi tiết</system:String>
 
 </ResourceDictionary>

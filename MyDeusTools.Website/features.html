@@ -518,7 +518,7 @@
               <span>Sprint Goals</span>
               <span>10:30</span>
             </div>
-            <p class="leading-relaxed">- Ship MyDeusTools v1.0.0<br>- 130 Unit tests 100%<br>- GitHub Pages deployed</p>
+            <p class="leading-relaxed">- Ship MyDeusTools v1.0.0<br>- 173 Unit tests 100%<br>- GitHub Pages deployed</p>
           </div>
           <div class="p-4 rounded-2xl bg-sky-100 dark:bg-sky-950/70 border border-sky-300 dark:border-sky-800 text-sky-900 dark:text-sky-200">
             <div class="font-bold flex justify-between mb-1">
@@ -576,6 +576,56 @@
           <div class="mt-4 flex justify-center gap-2">
             <button class="px-4 py-2 rounded-lg bg-rose-600 text-white font-semibold text-xs shadow-sm hover:bg-rose-700">Cancel Timer (Abort)</button>
           </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 9. VIDEO CONVERTER -->
+    <section id="videoconverter" class="scroll-mt-24 glass-card rounded-3xl p-8 sm:p-10 border border-slate-200 dark:border-slate-800 shadow-xl">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <div class="lg:col-span-7">
+          <div class="flex items-center gap-3 mb-3">
+            <div class="w-10 h-10 rounded-xl bg-violet-500/10 text-violet-600 dark:text-violet-400 flex items-center justify-center text-xl">🎬</div>
+            <span class="text-xs uppercase font-bold tracking-wider text-violet-600 dark:text-violet-400" data-i18n="video_badge">Multimedia Engine</span>
+          </div>
+          <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white" data-i18n="video_title">Video Converter &amp; Transcoder</h2>
+          <p class="text-sm text-slate-600 dark:text-slate-300 mt-3 leading-relaxed" data-i18n="video_long_desc">
+            Universal offline media transcode engine powered by portable FFmpeg. Convert videos between MP4, MKV, WebM, AVI, MOV, WMV, and animated GIF, extract high-bitrate audio, crop time segments, and accelerate rendering with GPU hardware.
+          </p>
+
+          <div class="mt-6 space-y-3">
+            <div class="flex items-start gap-3">
+              <span class="text-emerald-500 font-bold">✓</span>
+              <div class="text-xs text-slate-600 dark:text-slate-300">
+                <strong class="text-slate-900 dark:text-white" data-i18n="video_f1_t">14+ Output Formats &amp; Audio Extraction:</strong> 
+                <span data-i18n="video_f1_d">Convert containers seamlessly (MP4, MKV, WebM, AVI, MOV, WMV, GIF) and extract pure audio into MP3, WAV, AAC, M4A, or FLAC.</span>
+              </div>
+            </div>
+            <div class="flex items-start gap-3">
+              <span class="text-emerald-500 font-bold">✓</span>
+              <div class="text-xs text-slate-600 dark:text-slate-300">
+                <strong class="text-slate-900 dark:text-white" data-i18n="video_f2_t">Resolution Scaling &amp; CRF Quality:</strong> 
+                <span data-i18n="video_f2_d">Choose output presets from 4K UHD down to 360p mobile, fine-tune CRF compression (18 to 28), or perform instant lossless stream copy.</span>
+              </div>
+            </div>
+            <div class="flex items-start gap-3">
+              <span class="text-emerald-500 font-bold">✓</span>
+              <div class="text-xs text-slate-600 dark:text-slate-300">
+                <strong class="text-slate-900 dark:text-white" data-i18n="video_f3_t">GPU Acceleration &amp; Real-time Progress:</strong> 
+                <span data-i18n="video_f3_d">Leverage NVIDIA NVENC, Intel QSV, or AMD AMF hardware decoding with real-time FPS, speed multiplier, and ETA time estimation.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lg:col-span-5 bg-white dark:bg-slate-900/90 rounded-2xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm text-center">
+          <div class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Transcoding Progress</div>
+          <div class="text-4xl font-extrabold font-mono text-violet-600 dark:text-violet-400">78.5%</div>
+          <div class="text-xs text-slate-500 mt-2">Speed: 2.8x • 60 FPS • ETA: 00:00:22</div>
+          <div class="w-full bg-slate-100 dark:bg-slate-800 rounded-full h-2.5 my-4 overflow-hidden">
+            <div class="bg-violet-600 h-2.5 rounded-full" style="width: 78.5%"></div>
+          </div>
+          <div class="text-[11px] font-mono text-slate-400">sample_4k.mov &rarr; sample_4k_converted.mp4 (H.264 / 1080p)</div>
         </div>
       </div>
     </section>
@@ -679,7 +729,16 @@
         shut_f2_t: "Live Visual Ticking Clock:",
         shut_f2_d: "Displays hours, minutes, and seconds remaining with real-time UI synchronization.",
         shut_f3_t: "Instant Abort Protection:",
-        shut_f3_d: "Cancel scheduled shutdown commands instantly with a single click at any point before execution."
+        shut_f3_d: "Cancel scheduled shutdown commands instantly with a single click at any point before execution.",
+        video_badge: "Multimedia Engine",
+        video_title: "Video Converter & Transcoder",
+        video_long_desc: "Universal offline media transcode engine powered by portable FFmpeg. Convert videos between MP4, MKV, WebM, AVI, MOV, WMV, and animated GIF, extract high-bitrate audio, crop time segments, and accelerate rendering with GPU hardware.",
+        video_f1_t: "14+ Output Formats & Audio Extraction:",
+        video_f1_d: "Convert containers seamlessly (MP4, MKV, WebM, AVI, MOV, WMV, GIF) and extract pure audio into MP3, WAV, AAC, M4A, or FLAC.",
+        video_f2_t: "Resolution Scaling & CRF Quality:",
+        video_f2_d: "Choose output presets from 4K UHD down to 360p mobile, fine-tune CRF compression (18 to 28), or perform instant lossless stream copy.",
+        video_f3_t: "GPU Acceleration & Real-time Progress:",
+        video_f3_d: "Leverage NVIDIA NVENC, Intel QSV, or AMD AMF hardware decoding with real-time FPS, speed multiplier, and ETA time estimation."
       },
       vi: {
         feat_page_title: "Mọi Công Cụ Đều Được Chăm Chút Tỉ Mỉ",
@@ -755,7 +814,16 @@
         shut_f2_t: "Đồng Hồ Đếm Ngược Trực Quan:",
         shut_f2_d: "Hiển thị chi tiết giờ, phút, giây còn lại đồng bộ mượt mà theo từng giây.",
         shut_f3_t: "Hủy Lệnh Tức Thì:",
-        shut_f3_d: "Nút hủy lệnh an toàn cho phép bạn dừng quá trình đếm ngược bất kỳ lúc nào chỉ bằng 1 cú nhấp chuột."
+        shut_f3_d: "Nút hủy lệnh an toàn cho phép bạn dừng quá trình đếm ngược bất kỳ lúc nào chỉ bằng 1 cú nhấp chuột.",
+        video_badge: "Đa Phương Tiện & Video",
+        video_title: "Chuyển Đổi & Nén Video Đa Định Dạng",
+        video_long_desc: "Bộ công cụ chuyển mã video ngoại tuyến mạnh mẽ tích hợp FFmpeg di động. Hỗ trợ chuyển đổi giữa MP4, MKV, WebM, AVI, MOV, WMV và ảnh động GIF, trích xuất âm thanh chất lượng cao, cắt đoạn thời gian và tăng tốc phần cứng GPU.",
+        video_f1_t: "Hơn 14 Định Dạng & Tách Âm Thanh:",
+        video_f1_d: "Chuyển đổi linh hoạt giữa các định dạng video phổ biến và trích xuất âm thanh lossless sang MP3, WAV, AAC, M4A, hoặc FLAC.",
+        video_f2_t: "Tùy Chỉnh Độ Phân Giải & Chất Lượng CRF:",
+        video_f2_d: "Hạ hoặc nâng độ phân giải từ 4K UHD đến 360p, kiểm soát mức nén CRF (18 - 28) hoặc sao chép luồng trực tiếp không giảm chất lượng.",
+        video_f3_t: "Tăng Tốc Phần Cứng & Thống Kê Thời Gian Thực:",
+        video_f3_d: "Tận dụng GPU NVIDIA NVENC, Intel QSV, AMD AMF cùng hiển thị tốc độ xử lý, FPS, phần trăm tiến trình và thời gian dự kiến hoàn thành."
       }
     });
   </script>

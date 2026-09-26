@@ -1,0 +1,687 @@
+<Page x:Class="MyDeusTools.App.Views.Pages.VideoConverterPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+      xmlns:impl="clr-namespace:MyDeusTools.App.Services.Impl"
+      Title="Video Converter"
+      Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+      Background="Transparent">
+
+    <Grid Margin="35,20,35,20" Background="Transparent">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Grid Grid.Row="0" Margin="0,0,0,15">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Orientation="Vertical">
+                <TextBlock Text="{DynamicResource Video_Title}" 
+                           FontSize="26" 
+                           FontWeight="Bold"/>
+                <TextBlock Text="{Binding StatusMessage}" 
+                           FontSize="13" 
+                           Foreground="{DynamicResource TextFillColorSecondaryBrush}" 
+                           Margin="0,4,0,0"/>
+            </StackPanel>
+
+            <!-- Status Badges -->
+            <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                <Border Background="{DynamicResource CardBackgroundFillColorSecondaryBrush}" 
+                        CornerRadius="6" 
+                        Padding="12,6" 
+                        Margin="0,0,10,0">
+                    <StackPanel Orientation="Horizontal">
+                        <ui:SymbolIcon Symbol="Wrench24" Margin="0,0,6,0" FontSize="14"/>
+                        <TextBlock Text="{Binding EngineStatusText}" FontSize="12" FontWeight="SemiBold"/>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </Grid>
+
+        <!-- Scrollable Main Content -->
+        <ScrollViewer Grid.Row="1" 
+                      VerticalScrollBarVisibility="Auto" 
+                      HorizontalScrollBarVisibility="Disabled"
+                      Background="Transparent">
+            <StackPanel Margin="0,0,10,20">
+
+                <!-- ENGINE MISSING BANNER -->
+                <ui:Card Padding="16" Margin="0,0,0,16">
+                    <ui:Card.Style>
+                        <Style TargetType="ui:Card">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsEngineAvailable}" Value="False">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ui:Card.Style>
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <ui:SymbolIcon Grid.Column="0" Symbol="Warning24" 
+                                       Foreground="#EAB308" 
+                                       FontSize="28" 
+                                       VerticalAlignment="Center" 
+                                       Margin="0,0,16,0"/>
+
+                        <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                            <TextBlock Text="{DynamicResource Video_EngineMissingTitle}" 
+                                       FontWeight="Bold" 
+                                       FontSize="14"/>
+                            <TextBlock Text="{DynamicResource Video_EngineMissingPrompt}" 
+                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}" 
+                                       TextWrapping="Wrap" 
+                                       FontSize="12" 
+                                       Margin="0,2,0,0"/>
+                            
+                            <ProgressBar Value="{Binding DownloadProgress}" 
+                                         Maximum="100" 
+                                         Height="4" 
+                                         Margin="0,8,0,0">
+                                <ProgressBar.Style>
+                                    <Style TargetType="ProgressBar">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsDownloadingEngine}" Value="True">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </ProgressBar.Style>
+                            </ProgressBar>
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center" Margin="15,0,0,0">
+                            <ui:Button Content="{DynamicResource Video_DownloadPortable}" 
+                                       Command="{Binding DownloadEngineCommand}"
+                                       Appearance="Primary" 
+                                       Margin="0,0,8,0"
+                                       Padding="14,6"/>
+                            <ui:Button Content="{DynamicResource Video_BrowseExecutable}" 
+                                       Command="{Binding BrowseFfmpegCommand}"
+                                       Appearance="Secondary"
+                                       Padding="14,6"/>
+                        </StackPanel>
+                    </Grid>
+                </ui:Card>
+
+                <!-- 1. SOURCE FILE CARD -->
+                <ui:Card Padding="18" 
+                         Margin="0,0,0,16"
+                         AllowDrop="True" 
+                         Drop="DropArea_Drop" 
+                         DragOver="DropArea_DragOver">
+                    <StackPanel>
+                        <TextBlock Text="{DynamicResource Video_SourceTitle}" 
+                                   FontWeight="SemiBold" 
+                                   FontSize="15" 
+                                   Margin="0,0,0,12"/>
+
+                        <!-- State: No File Selected -->
+                        <Border BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}" 
+                                BorderThickness="2" 
+                                CornerRadius="8" 
+                                Padding="25" 
+                                Background="Transparent"
+                                Cursor="Hand">
+                            <Border.Style>
+                                <Style TargetType="Border">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding HasInputFile}" Value="True">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+
+                            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <ui:SymbolIcon Symbol="Video24" FontSize="40" Margin="0,0,0,10" HorizontalAlignment="Center"/>
+                                <TextBlock Text="{DynamicResource Video_DropZonePrompt}" 
+                                           FontWeight="SemiBold" 
+                                           FontSize="14" 
+                                           HorizontalAlignment="Center"/>
+                                <TextBlock Text="{DynamicResource Video_DropZoneFormats}" 
+                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}" 
+                                           FontSize="12" 
+                                           Margin="0,4,0,14" 
+                                           HorizontalAlignment="Center"/>
+                                <ui:Button Content="{DynamicResource Video_BtnBrowseSource}" 
+                                           Command="{Binding SelectInputFileCommand}"
+                                           Appearance="Primary"
+                                           HorizontalAlignment="Center"
+                                           Padding="20,8"/>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- State: File Selected Details -->
+                        <Grid>
+                            <Grid.Style>
+                                <Style TargetType="Grid">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding HasInputFile}" Value="True">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Grid.Style>
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="{Binding InputFileName}" 
+                                           FontSize="16" 
+                                           FontWeight="Bold" 
+                                           TextTrimming="CharacterEllipsis"/>
+                                <TextBlock Text="{Binding InputFilePath}" 
+                                           FontSize="11" 
+                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}" 
+                                           TextTrimming="CharacterEllipsis" 
+                                           Margin="0,2,0,10"/>
+
+                                <!-- Badges Grid -->
+                                <WrapPanel Margin="0,4,0,0">
+                                    <Border Background="{DynamicResource CardBackgroundFillColorSecondaryBrush}" CornerRadius="4" Padding="8,4" Margin="0,0,8,6">
+                                        <TextBlock FontSize="12">
+                                            <Run Text="{DynamicResource Video_MetaSize}" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                                            <Run Text=" "/><Run Text="{Binding InputFileSizeFormatted}" FontWeight="SemiBold"/>
+                                        </TextBlock>
+                                    </Border>
+
+                                    <Border Background="{DynamicResource CardBackgroundFillColorSecondaryBrush}" CornerRadius="4" Padding="8,4" Margin="0,0,8,6">
+                                        <TextBlock FontSize="12">
+                                            <Run Text="{DynamicResource Video_MetaDuration}" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                                            <Run Text=" "/><Run Text="{Binding DurationFormatted}" FontWeight="SemiBold"/>
+                                        </TextBlock>
+                                    </Border>
+
+                                    <Border Background="{DynamicResource CardBackgroundFillColorSecondaryBrush}" CornerRadius="4" Padding="8,4" Margin="0,0,8,6">
+                                        <TextBlock FontSize="12">
+                                            <Run Text="{DynamicResource Video_MetaResolution}" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                                            <Run Text=" "/><Run Text="{Binding ResolutionFormatted}" FontWeight="SemiBold"/>
+                                        </TextBlock>
+                                    </Border>
+
+                                    <Border Background="{DynamicResource CardBackgroundFillColorSecondaryBrush}" CornerRadius="4" Padding="8,4" Margin="0,0,8,6">
+                                        <TextBlock FontSize="12">
+                                            <Run Text="{DynamicResource Video_MetaVideoCodec}" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                                            <Run Text=" "/><Run Text="{Binding VideoCodecFormatted}" FontWeight="SemiBold"/>
+                                        </TextBlock>
+                                    </Border>
+
+                                    <Border Background="{DynamicResource CardBackgroundFillColorSecondaryBrush}" CornerRadius="4" Padding="8,4" Margin="0,0,8,6">
+                                        <TextBlock FontSize="12">
+                                            <Run Text="{DynamicResource Video_MetaAudioCodec}" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                                            <Run Text=" "/><Run Text="{Binding AudioCodecFormatted}" FontWeight="SemiBold"/>
+                                        </TextBlock>
+                                    </Border>
+                                </WrapPanel>
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" Margin="16,0,0,0">
+                                <ui:Button Content="{DynamicResource Video_BtnChangeSource}" 
+                                           Command="{Binding SelectInputFileCommand}"
+                                           Appearance="Secondary"
+                                           Margin="0,0,8,0"
+                                           Padding="14,8"/>
+                                <ui:Button Content="{DynamicResource Video_BtnClearSource}" 
+                                           Command="{Binding ClearInputCommand}"
+                                           Appearance="Transparent"
+                                           Padding="12,8"/>
+                            </StackPanel>
+                        </Grid>
+
+                    </StackPanel>
+                </ui:Card>
+
+                <!-- 2. TARGET FORMAT SELECTION CARD -->
+                <ui:Card Padding="18" Margin="0,0,0,16">
+                    <StackPanel>
+                        <TextBlock Text="{DynamicResource Video_TargetFormatTitle}" 
+                                   FontWeight="SemiBold" 
+                                   FontSize="15" 
+                                   Margin="0,0,0,12"/>
+
+                        <!-- Format Pills -->
+                        <TextBlock Text="{DynamicResource Video_FormatGroupVideo}" 
+                                   FontSize="12" 
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" 
+                                   Margin="0,0,0,8"/>
+
+                        <WrapPanel Margin="0,0,0,14">
+                            <RadioButton Content="MP4" Tag="Mp4" Command="{Binding QuickSelectFormatCommand}" CommandParameter="Mp4" Style="{StaticResource {x:Type ToggleButton}}" IsChecked="True" Margin="0,0,8,8" Padding="18,6"/>
+                            <RadioButton Content="MKV" Tag="Mkv" Command="{Binding QuickSelectFormatCommand}" CommandParameter="Mkv" Style="{StaticResource {x:Type ToggleButton}}" Margin="0,0,8,8" Padding="18,6"/>
+                            <RadioButton Content="WEBM" Tag="Webm" Command="{Binding QuickSelectFormatCommand}" CommandParameter="Webm" Style="{StaticResource {x:Type ToggleButton}}" Margin="0,0,8,8" Padding="18,6"/>
+                            <RadioButton Content="AVI" Tag="Avi" Command="{Binding QuickSelectFormatCommand}" CommandParameter="Avi" Style="{StaticResource {x:Type ToggleButton}}" Margin="0,0,8,8" Padding="18,6"/>
+                            <RadioButton Content="MOV" Tag="Mov" Command="{Binding QuickSelectFormatCommand}" CommandParameter="Mov" Style="{StaticResource {x:Type ToggleButton}}" Margin="0,0,8,8" Padding="18,6"/>
+                            <RadioButton Content="WMV" Tag="Wmv" Command="{Binding QuickSelectFormatCommand}" CommandParameter="Wmv" Style="{StaticResource {x:Type ToggleButton}}" Margin="0,0,8,8" Padding="18,6"/>
+                            <RadioButton Content="GIF" Tag="Gif" Command="{Binding QuickSelectFormatCommand}" CommandParameter="Gif" Style="{StaticResource {x:Type ToggleButton}}" Margin="0,0,8,8" Padding="18,6"/>
+                            <RadioButton Content="FLV" Tag="Flv" Command="{Binding QuickSelectFormatCommand}" CommandParameter="Flv" Style="{StaticResource {x:Type ToggleButton}}" Margin="0,0,8,8" Padding="18,6"/>
+                        </WrapPanel>
+
+                        <TextBlock Text="{DynamicResource Video_FormatGroupAudio}" 
+                                   FontSize="12" 
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" 
+                                   Margin="0,0,0,8"/>
+
+                        <WrapPanel>
+                            <RadioButton Content="MP3" Tag="Mp3" Command="{Binding QuickSelectFormatCommand}" CommandParameter="Mp3" Style="{StaticResource {x:Type ToggleButton}}" Margin="0,0,8,8" Padding="18,6"/>
+                            <RadioButton Content="WAV" Tag="Wav" Command="{Binding QuickSelectFormatCommand}" CommandParameter="Wav" Style="{StaticResource {x:Type ToggleButton}}" Margin="0,0,8,8" Padding="18,6"/>
+                            <RadioButton Content="AAC" Tag="Aac" Command="{Binding QuickSelectFormatCommand}" CommandParameter="Aac" Style="{StaticResource {x:Type ToggleButton}}" Margin="0,0,8,8" Padding="18,6"/>
+                            <RadioButton Content="M4A" Tag="M4a" Command="{Binding QuickSelectFormatCommand}" CommandParameter="M4a" Style="{StaticResource {x:Type ToggleButton}}" Margin="0,0,8,8" Padding="18,6"/>
+                            <RadioButton Content="FLAC" Tag="Flac" Command="{Binding QuickSelectFormatCommand}" CommandParameter="Flac" Style="{StaticResource {x:Type ToggleButton}}" Margin="0,0,8,8" Padding="18,6"/>
+                        </WrapPanel>
+                    </StackPanel>
+                </ui:Card>
+
+                <!-- 3. PARAMETERS CARD -->
+                <ui:Card Padding="18" Margin="0,0,0,16">
+                    <StackPanel>
+                        <TextBlock Text="{DynamicResource Video_SettingsTitle}" 
+                                   FontWeight="SemiBold" 
+                                   FontSize="15" 
+                                   Margin="0,0,0,12"/>
+
+                        <!-- Video Specific Settings Grid -->
+                        <Grid Margin="0,0,0,12">
+                            <Grid.Style>
+                                <Style TargetType="Grid">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsAudioOnlyFormat}" Value="True">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Grid.Style>
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="16"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <!-- Resolution -->
+                            <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,0,0,12">
+                                <TextBlock Text="{DynamicResource Video_OptResolution}" 
+                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}" 
+                                           Margin="0,0,0,6" FontSize="12"/>
+                                <ComboBox SelectedIndex="{Binding SelectedResolution, Mode=TwoWay}" HorizontalAlignment="Stretch">
+                                    <ComboBoxItem Content="{DynamicResource Video_ResOriginal}"/>
+                                    <ComboBoxItem Content="4K UHD (3840x2160)"/>
+                                    <ComboBoxItem Content="2K QHD (2560x1440)"/>
+                                    <ComboBoxItem Content="1080p FHD (1920x1080)"/>
+                                    <ComboBoxItem Content="720p HD (1280x720)"/>
+                                    <ComboBoxItem Content="480p SD (854x480)"/>
+                                    <ComboBoxItem Content="360p Low (640x360)"/>
+                                </ComboBox>
+                            </StackPanel>
+
+                            <!-- Codec -->
+                            <StackPanel Grid.Row="0" Grid.Column="2" Margin="0,0,0,12">
+                                <TextBlock Text="{DynamicResource Video_OptCodec}" 
+                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}" 
+                                           Margin="0,0,0,6" FontSize="12"/>
+                                <ComboBox SelectedIndex="{Binding SelectedCodec, Mode=TwoWay}" HorizontalAlignment="Stretch">
+                                    <ComboBoxItem Content="{DynamicResource Video_CodecAuto}"/>
+                                    <ComboBoxItem Content="H.264 / AVC (libx264)"/>
+                                    <ComboBoxItem Content="H.265 / HEVC (libx265)"/>
+                                    <ComboBoxItem Content="VP9 (libvpx-vp9)"/>
+                                    <ComboBoxItem Content="{DynamicResource Video_CodecCopy}"/>
+                                </ComboBox>
+                            </StackPanel>
+
+                            <!-- Quality CRF -->
+                            <StackPanel Grid.Row="1" Grid.Column="0">
+                                <TextBlock Text="{DynamicResource Video_OptQuality}" 
+                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}" 
+                                           Margin="0,0,0,6" FontSize="12"/>
+                                <ComboBox SelectedIndex="{Binding SelectedQuality, Mode=TwoWay}" HorizontalAlignment="Stretch">
+                                    <ComboBoxItem Content="{DynamicResource Video_QualUltra}"/>
+                                    <ComboBoxItem Content="{DynamicResource Video_QualHigh}"/>
+                                    <ComboBoxItem Content="{DynamicResource Video_QualMedium}"/>
+                                    <ComboBoxItem Content="{DynamicResource Video_QualCompact}"/>
+                                </ComboBox>
+                            </StackPanel>
+
+                            <!-- Frame Rate -->
+                            <StackPanel Grid.Row="1" Grid.Column="2">
+                                <TextBlock Text="{DynamicResource Video_OptFps}" 
+                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}" 
+                                           Margin="0,0,0,6" FontSize="12"/>
+                                <ComboBox SelectedIndex="{Binding SelectedFrameRate, Mode=TwoWay}" HorizontalAlignment="Stretch">
+                                    <ComboBoxItem Content="{DynamicResource Video_FpsOriginal}"/>
+                                    <ComboBoxItem Content="60 FPS"/>
+                                    <ComboBoxItem Content="30 FPS"/>
+                                    <ComboBoxItem Content="24 FPS (Cinematic)"/>
+                                </ComboBox>
+                            </StackPanel>
+                        </Grid>
+
+                        <!-- Audio Bitrate & Controls -->
+                        <Grid Margin="0,0,0,12">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="16"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="{DynamicResource Video_OptAudioAction}" 
+                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}" 
+                                           Margin="0,0,0,6" FontSize="12"/>
+                                <ComboBox SelectedIndex="{Binding SelectedAudioOption, Mode=TwoWay}" HorizontalAlignment="Stretch">
+                                    <ComboBoxItem Content="{DynamicResource Video_AudioKeep}"/>
+                                    <ComboBoxItem Content="{DynamicResource Video_AudioConvertAac}"/>
+                                    <ComboBoxItem Content="{DynamicResource Video_AudioConvertMp3}"/>
+                                    <ComboBoxItem Content="{DynamicResource Video_AudioMute}"/>
+                                </ComboBox>
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="2">
+                                <TextBlock Text="{DynamicResource Video_OptAudioBitrate}" 
+                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}" 
+                                           Margin="0,0,0,6" FontSize="12"/>
+                                <ComboBox SelectedIndex="{Binding SelectedAudioBitrate, Mode=TwoWay}" HorizontalAlignment="Stretch">
+                                    <ComboBoxItem Content="128 kbps (Tiêu chuẩn)"/>
+                                    <ComboBoxItem Content="192 kbps (Chất lượng cao)"/>
+                                    <ComboBoxItem Content="256 kbps (Rất cao)"/>
+                                    <ComboBoxItem Content="320 kbps (Cực đại)"/>
+                                </ComboBox>
+                            </StackPanel>
+                        </Grid>
+
+                        <!-- Extra Options: GPU Acceleration & Trimming -->
+                        <Grid Margin="0,8,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="30"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <CheckBox Grid.Column="0" 
+                                      Content="{DynamicResource Video_OptGpu}" 
+                                      IsChecked="{Binding UseGpuAcceleration}" 
+                                      VerticalAlignment="Center"/>
+
+                            <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+                                <CheckBox Content="{DynamicResource Video_OptTrim}" 
+                                          IsChecked="{Binding EnableTrimming}" 
+                                          VerticalAlignment="Center" 
+                                          Margin="0,0,15,0"/>
+
+                                <TextBlock Text="{DynamicResource Video_TrimStart}" 
+                                           VerticalAlignment="Center" 
+                                           FontSize="12" 
+                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}" 
+                                           Margin="0,0,6,0"/>
+                                <TextBox Text="{Binding StartTimeText, UpdateSourceTrigger=PropertyChanged}" 
+                                         Width="80" 
+                                         IsEnabled="{Binding EnableTrimming}" 
+                                         Padding="6,3" 
+                                         Margin="0,0,15,0"/>
+
+                                <TextBlock Text="{DynamicResource Video_TrimEnd}" 
+                                           VerticalAlignment="Center" 
+                                           FontSize="12" 
+                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}" 
+                                           Margin="0,0,6,0"/>
+                                <TextBox Text="{Binding EndTimeText, UpdateSourceTrigger=PropertyChanged}" 
+                                         Width="80" 
+                                         IsEnabled="{Binding EnableTrimming}" 
+                                         Padding="6,3"/>
+                            </StackPanel>
+                        </Grid>
+
+                    </StackPanel>
+                </ui:Card>
+
+                <!-- 4. OUTPUT LOCATION & START CARD -->
+                <ui:Card Padding="18" Margin="0,0,0,16">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel Grid.Column="0" Margin="0,0,16,0">
+                            <TextBlock Text="{DynamicResource Video_OutputFolderTitle}" 
+                                       FontWeight="SemiBold" 
+                                       FontSize="13" 
+                                       Margin="0,0,0,6"/>
+
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                
+                                <TextBox Grid.Column="0" 
+                                         Text="{Binding OutputDirectory, UpdateSourceTrigger=PropertyChanged}" 
+                                         VerticalAlignment="Center" 
+                                         Padding="8,5"/>
+
+                                <ui:Button Grid.Column="1" 
+                                           Content="{DynamicResource Video_BtnBrowseOutput}" 
+                                           Command="{Binding SelectOutputDirectoryCommand}"
+                                           Appearance="Secondary" 
+                                           Margin="8,0,0,0" 
+                                           Padding="14,6"/>
+                            </Grid>
+
+                            <TextBlock FontSize="11" 
+                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}" 
+                                       Margin="0,6,0,0">
+                                <Run Text="{DynamicResource Video_OutputFilePreview}"/>
+                                <Run Text=" "/><Run Text="{Binding OutputFileName}" FontWeight="SemiBold"/>
+                            </TextBlock>
+                        </StackPanel>
+
+                        <!-- Big CTA Button -->
+                        <ui:Button Grid.Column="1" 
+                                   Content="{DynamicResource Video_BtnStartConversion}" 
+                                   Command="{Binding StartConversionCommand}"
+                                   IsEnabled="{Binding CanStartConversion}"
+                                   Appearance="Primary"
+                                   VerticalAlignment="Center"
+                                   Padding="28,14"
+                                   FontSize="15"
+                                   FontWeight="Bold"/>
+                    </Grid>
+                </ui:Card>
+
+                <!-- 5. PROGRESS & EXECUTION STATS CARD -->
+                <ui:Card Padding="18" Margin="0,0,0,16">
+                    <ui:Card.Style>
+                        <Style TargetType="ui:Card">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsConverting}" Value="True">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding IsCompleted}" Value="True">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ui:Card.Style>
+
+                    <StackPanel>
+                        <!-- Header & Badges -->
+                        <Grid Margin="0,0,0,10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <ui:SymbolIcon Symbol="ArrowClockwise24" 
+                                               FontSize="18" 
+                                               Margin="0,0,8,0" 
+                                               Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"/>
+                                <TextBlock Text="{Binding StatusMessage}" 
+                                           FontWeight="SemiBold" 
+                                           FontSize="14"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                <TextBlock FontSize="14" FontWeight="Bold" Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}">
+                                    <Run Text="{Binding ProgressPercentage, StringFormat={}{0:0.0}}"/><Run Text="%"/>
+                                </TextBlock>
+                            </StackPanel>
+                        </Grid>
+
+                        <!-- Progress Bar -->
+                        <ProgressBar Value="{Binding ProgressPercentage}" 
+                                     Maximum="100" 
+                                     Height="8" 
+                                     Margin="0,0,0,12"/>
+
+                        <!-- Stats Row -->
+                        <Grid Margin="0,0,0,14">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="{DynamicResource Video_StatTime}" FontSize="11" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                                <TextBlock Text="{Binding ProgressCurrentTime}" FontWeight="SemiBold" FontSize="13" Margin="0,2,0,0"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="1">
+                                <TextBlock Text="{DynamicResource Video_StatSpeed}" FontSize="11" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                                <TextBlock Text="{Binding ProgressSpeed}" FontWeight="SemiBold" FontSize="13" Margin="0,2,0,0"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="2">
+                                <TextBlock Text="{DynamicResource Video_StatFps}" FontSize="11" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                                <TextBlock Text="{Binding ProgressFps}" FontWeight="SemiBold" FontSize="13" Margin="0,2,0,0"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="3">
+                                <TextBlock Text="{DynamicResource Video_StatRemaining}" FontSize="11" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                                <TextBlock Text="{Binding ProgressEstimatedRemaining}" FontWeight="SemiBold" FontSize="13" Margin="0,2,0,0"/>
+                            </StackPanel>
+                        </Grid>
+
+                        <!-- Action Buttons -->
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Grid.Column="0" Orientation="Horizontal">
+                                <!-- When completed -->
+                                <ui:Button Content="{DynamicResource Video_BtnOpenFolder}" 
+                                           Command="{Binding OpenOutputFolderCommand}"
+                                           Appearance="Primary" 
+                                           Margin="0,0,8,0"
+                                           Padding="14,6">
+                                    <ui:Button.Style>
+                                        <Style TargetType="ui:Button">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsCompleted}" Value="True">
+                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </ui:Button.Style>
+                                </ui:Button>
+
+                                <ui:Button Content="{DynamicResource Video_BtnPlayOutput}" 
+                                           Command="{Binding OpenOutputFileCommand}"
+                                           Appearance="Secondary"
+                                           Margin="0,0,8,0"
+                                           Padding="14,6">
+                                    <ui:Button.Style>
+                                        <Style TargetType="ui:Button">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsCompleted}" Value="True">
+                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </ui:Button.Style>
+                                </ui:Button>
+
+                                <!-- When converting -->
+                                <ui:Button Content="{DynamicResource Video_BtnCancelConversion}" 
+                                           Command="{Binding CancelConversionCommand}"
+                                           Appearance="Secondary" 
+                                           Padding="14,6">
+                                    <ui:Button.Style>
+                                        <Style TargetType="ui:Button">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsConverting}" Value="True">
+                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </ui:Button.Style>
+                                </ui:Button>
+                            </StackPanel>
+
+                            <ui:Button Grid.Column="1" 
+                                       Content="{DynamicResource Video_BtnToggleLogs}" 
+                                       Command="{Binding ToggleLogCommand}"
+                                       Appearance="Transparent"
+                                       Padding="10,6"/>
+                        </Grid>
+
+                        <!-- Log Console -->
+                        <TextBox Text="{Binding LogText, Mode=OneWay}" 
+                                 IsReadOnly="True" 
+                                 FontFamily="Consolas" 
+                                 FontSize="11" 
+                                 Height="120" 
+                                 Margin="0,12,0,0" 
+                                 TextWrapping="Wrap" 
+                                 VerticalScrollBarVisibility="Auto" 
+                                 Background="{DynamicResource CardBackgroundFillColorSecondaryBrush}">
+                            <TextBox.Style>
+                                <Style TargetType="TextBox">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsLogExpanded}" Value="True">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBox.Style>
+                        </TextBox>
+
+                    </StackPanel>
+                </ui:Card>
+
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</Page>

@@ -22,6 +22,7 @@
     <system:String x:Key="Nav_ColorPicker">Color Picker</system:String>
     <system:String x:Key="Nav_TextDevTools">Text &amp; Dev Tools</system:String>
     <system:String x:Key="Nav_WindowPinner">Window Pinner (TopMost)</system:String>
+    <system:String x:Key="Nav_VideoConverter">Video Converter</system:String>
 
     <!-- Sticky Notes Page -->
     <system:String x:Key="Sticky_Title">Sticky Notes</system:String>
@@ -173,5 +174,61 @@
 
     <!-- Recording Overlay -->
     <system:String x:Key="AutoClick_OverlayHelp">Click mouse to record waypoint. Press ENTER/ESC when done.</system:String>
+
+    <!-- Video Converter Page -->
+    <system:String x:Key="Video_Title">Video Converter</system:String>
+    <system:String x:Key="Video_EngineMissingTitle">FFmpeg conversion engine not detected</system:String>
+    <system:String x:Key="Video_EngineMissingPrompt">FFmpeg is the most powerful video &amp; audio conversion engine. You can automatically download the lightweight portable release or select an existing ffmpeg.exe on your computer.</system:String>
+    <system:String x:Key="Video_DownloadPortable">Download Portable FFmpeg (Auto)</system:String>
+    <system:String x:Key="Video_BrowseExecutable">Browse ffmpeg.exe...</system:String>
+    <system:String x:Key="Video_SourceTitle">1. Source Video File</system:String>
+    <system:String x:Key="Video_DropZonePrompt">Drag and drop video file here or click to browse</system:String>
+    <system:String x:Key="Video_DropZoneFormats">Supports MP4, MKV, AVI, MOV, WMV, WebM, FLV, TS, M4V, and more</system:String>
+    <system:String x:Key="Video_BtnBrowseSource">Select Source Video...</system:String>
+    <system:String x:Key="Video_MetaSize">Size:</system:String>
+    <system:String x:Key="Video_MetaDuration">Duration:</system:String>
+    <system:String x:Key="Video_MetaResolution">Resolution:</system:String>
+    <system:String x:Key="Video_MetaVideoCodec">Video:</system:String>
+    <system:String x:Key="Video_MetaAudioCodec">Audio:</system:String>
+    <system:String x:Key="Video_BtnChangeSource">Change File</system:String>
+    <system:String x:Key="Video_BtnClearSource">Clear</system:String>
+    <system:String x:Key="Video_TargetFormatTitle">2. Select Target Format</system:String>
+    <system:String x:Key="Video_FormatGroupVideo">Video &amp; Animation Formats:</system:String>
+    <system:String x:Key="Video_FormatGroupAudio">Audio Extraction (Video to Audio):</system:String>
+    <system:String x:Key="Video_SettingsTitle">3. Conversion &amp; Quality Settings</system:String>
+    <system:String x:Key="Video_OptResolution">Output Resolution:</system:String>
+    <system:String x:Key="Video_ResOriginal">Keep Original Resolution</system:String>
+    <system:String x:Key="Video_OptCodec">Video Codec:</system:String>
+    <system:String x:Key="Video_CodecAuto">Auto (Default for container)</system:String>
+    <system:String x:Key="Video_CodecCopy">Lossless Stream Copy (Ultra Fast)</system:String>
+    <system:String x:Key="Video_OptQuality">Quality Profile (CRF):</system:String>
+    <system:String x:Key="Video_QualUltra">Ultra High (CRF 18 - Maximum sharpness)</system:String>
+    <system:String x:Key="Video_QualHigh">High (CRF 21 - Optimal balance)</system:String>
+    <system:String x:Key="Video_QualMedium">Medium (CRF 25)</system:String>
+    <system:String x:Key="Video_QualCompact">Compact (CRF 28 - Small file size)</system:String>
+    <system:String x:Key="Video_OptFps">Frame Rate (FPS):</system:String>
+    <system:String x:Key="Video_FpsOriginal">Keep Original FPS</system:String>
+    <system:String x:Key="Video_OptAudioAction">Audio Stream:</system:String>
+    <system:String x:Key="Video_AudioKeep">Keep Original Audio</system:String>
+    <system:String x:Key="Video_AudioConvertAac">Encode to AAC</system:String>
+    <system:String x:Key="Video_AudioConvertMp3">Encode to MP3</system:String>
+    <system:String x:Key="Video_AudioMute">Mute (Remove Audio)</system:String>
+    <system:String x:Key="Video_OptAudioBitrate">Audio Quality (Bitrate):</system:String>
+    <system:String x:Key="Video_OptGpu">Enable Hardware GPU Acceleration (NVIDIA/Intel/AMD)</system:String>
+    <system:String x:Key="Video_OptTrim">Trim Video Segment</system:String>
+    <system:String x:Key="Video_TrimStart">Start:</system:String>
+    <system:String x:Key="Video_TrimEnd">End:</system:String>
+    <system:String x:Key="Video_OutputFolderTitle">4. Output Destination Directory</system:String>
+    <system:String x:Key="Video_BtnBrowseOutput">Browse Folder...</system:String>
+    <system:String x:Key="Video_OutputFilePreview">Target Output File:</system:String>
+    <system:String x:Key="Video_BtnStartConversion">Start Conversion</system:String>
+    <system:String x:Key="Video_StatTime">Time Elapsed</system:String>
+    <system:String x:Key="Video_StatSpeed">Conversion Speed</system:String>
+    <system:String x:Key="Video_StatFps">Frame Rate</system:String>
+    <system:String x:Key="Video_StatRemaining">Estimated Remaining</system:String>
+    <system:String x:Key="Video_BtnOpenFolder">Open Containing Folder</system:String>
+    <system:String x:Key="Video_BtnPlayOutput">Play Converted Video</system:String>
+    <system:String x:Key="Video_BtnCancelConversion">Cancel</system:String>
+    <system:String x:Key="Video_BtnToggleLogs">View Detailed Logs</system:String>
 
 </ResourceDictionary>

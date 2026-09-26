@@ -92,6 +92,13 @@
                             <ui:SymbolIcon Symbol="Pin24" />
                         </ui:NavigationViewItem.Icon>
                     </ui:NavigationViewItem>
+
+                    <ui:NavigationViewItem Content="{DynamicResource Nav_VideoConverter}" 
+                                           TargetPageType="{x:Type pages:VideoConverterPage}">
+                        <ui:NavigationViewItem.Icon>
+                            <ui:SymbolIcon Symbol="Video24" />
+                        </ui:NavigationViewItem.Icon>
+                    </ui:NavigationViewItem>
                 </ui:NavigationView.MenuItems>
 
                 <ui:NavigationView.FooterMenuItems>
