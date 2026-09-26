@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Frequently Asked Questions &amp; Support — MyDeusTools</title>
+  <meta name="description" content="Answers to common questions about MyDeusTools: open source MIT license, 100% offline privacy, Windows SmartScreen false positives, Win32 mechanics, and troubleshooting." />
+  <link rel="icon" type="image/x-icon" href="avatar.ico" />
+
+  <!-- Google Fonts & Tailwind CSS CDN -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            brand: {
+              50: '#eff6ff', 100: '#dbeafe', 200: '#bfdbfe', 300: '#93c5fd',
+              400: '#60a5fa', 500: '#3b82f6', 600: '#2563eb', 700: '#1d4ed8',
+              800: '#1e40af', 900: '#1e3a8a',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <link rel="stylesheet" href="assets/site.css" />
+</head>
+<body class="bg-slate-50 dark:bg-[#0a0f1d] text-slate-800 dark:text-slate-100 antialiased transition-colors duration-300 min-h-screen flex flex-col font-sans selection:bg-blue-500 selection:text-white">
+
+  <!-- Ambient Glow -->
+  <div class="fixed inset-0 pointer-events-none gradient-glow z-0"></div>
+
+  <!-- ==================== HEADER ==================== -->
+  <header class="sticky top-0 z-50 glass-nav transition-all duration-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      
+      <!-- Brand Logo -->
+      <a href="index.html" class="flex items-center gap-3 group">
+        <div class="w-9 h-9 rounded-xl overflow-hidden shadow-md shadow-blue-500/10 flex items-center justify-center p-0.5 bg-gradient-to-tr from-blue-600 to-indigo-500 group-hover:scale-105 transition-transform">
+          <img src="avatar.ico" alt="MyDeusTools Logo" class="w-full h-full object-contain" />
+        </div>
+        <div>
+          <span class="font-extrabold text-lg tracking-tight bg-gradient-to-r from-blue-600 via-indigo-600 to-sky-500 dark:from-blue-400 dark:via-indigo-300 dark:to-sky-400 bg-clip-text text-transparent">MyDeusTools</span>
+          <span class="hidden sm:inline-block ml-2 text-xs font-semibold px-2 py-0.5 rounded-full bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800" data-i18n="nav_badge_v">v1.0.0</span>
+        </div>
+      </a>
+
+      <!-- Navigation Links -->
+      <nav class="hidden md:flex items-center gap-7 text-sm font-medium text-slate-600 dark:text-slate-300">
+        <a href="index.html" class="nav-link hover:text-blue-600 dark:hover:text-blue-400 transition-colors" data-i18n="nav_home">Home</a>
+        <a href="features.html" class="nav-link hover:text-blue-600 dark:hover:text-blue-400 transition-colors" data-i18n="nav_features">Features</a>
+        <a href="architecture.html" class="nav-link hover:text-blue-600 dark:hover:text-blue-400 transition-colors" data-i18n="nav_architecture">Architecture</a>
+        <a href="download.html" class="nav-link hover:text-blue-600 dark:hover:text-blue-400 transition-colors" data-i18n="nav_download">Download</a>
+        <a href="faq.html" class="nav-link active hover:text-blue-600 dark:hover:text-blue-400 transition-colors" data-i18n="nav_faq">FAQ</a>
+      </nav>
+
+      <!-- Action Controls -->
+      <div class="flex items-center gap-2.5">
+        <button id="langToggleBtn" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-200/70 hover:bg-slate-300/80 dark:bg-slate-800/80 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition-colors border border-slate-300/60 dark:border-slate-700/60" title="Switch Language">
+          <span id="langFlag">🇻🇳</span>
+          <span id="langLabel">VIE</span>
+        </button>
+
+        <button id="themeToggleBtn" class="p-2 rounded-lg text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100 hover:bg-slate-200/60 dark:hover:bg-slate-800/70 transition-colors" title="Toggle Dark/Light Mode">
+          <svg id="themeMoonIcon" class="w-4 h-4 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+          <svg id="themeSunIcon" class="w-4 h-4 block" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 9h-1m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+        </button>
+
+        <a href="https://github.com/KaitoDeus/MyDeusTools" target="_blank" rel="noopener noreferrer" class="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-900 text-white hover:bg-slate-800 dark:bg-slate-800 dark:hover:bg-slate-700 transition-colors border border-slate-700/50">
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"></path></svg>
+          <span>Star</span>
+        </a>
+
+        <a href="download.html" class="flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-blue-600 hover:bg-blue-700 text-white shadow-sm shadow-blue-500/30 transition-all hover:shadow-blue-500/50">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+          <span data-i18n="nav_btn_download">Download</span>
+        </a>
+
+        <button id="mobileMenuBtn" class="md:hidden p-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-200/60 dark:hover:bg-slate-800/70">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Nav -->
+    <div id="mobileMenu" class="hidden md:hidden glass-nav border-t border-slate-200 dark:border-slate-800 px-4 pt-3 pb-4 space-y-2 text-sm font-medium">
+      <a href="index.html" class="block px-3 py-2 rounded-lg hover:bg-blue-500/10 hover:text-blue-600 dark:hover:text-blue-400" data-i18n="nav_home">Home</a>
+      <a href="features.html" class="block px-3 py-2 rounded-lg hover:bg-blue-500/10 hover:text-blue-600 dark:hover:text-blue-400" data-i18n="nav_features">Features</a>
+      <a href="architecture.html" class="block px-3 py-2 rounded-lg hover:bg-blue-500/10 hover:text-blue-600 dark:hover:text-blue-400" data-i18n="nav_architecture">Architecture</a>
+      <a href="download.html" class="block px-3 py-2 rounded-lg hover:bg-blue-500/10 hover:text-blue-600 dark:hover:text-blue-400" data-i18n="nav_download">Download</a>
+      <a href="faq.html" class="block px-3 py-2 rounded-lg hover:bg-blue-500/10 hover:text-blue-600 dark:hover:text-blue-400 active" data-i18n="nav_faq">FAQ</a>
+    </div>
+  </header>
+
+  <!-- ==================== HERO SECTION ==================== -->
+  <section class="relative pt-14 pb-12 overflow-hidden z-10">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-blue-100/80 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800/80 mb-4">
+        <span>💡 Frequently Asked Questions</span>
+      </div>
+      <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight" data-i18n="faq_hero_title">
+        Answers &amp; Technical Support
+      </h1>
+      <p class="mt-4 text-base sm:text-lg text-slate-600 dark:text-slate-300 max-w-xl mx-auto" data-i18n="faq_hero_sub">
+        Learn more about privacy, security, false positive SmartScreen warnings, Win32 mechanics, and how to get involved.
+      </p>
+    </div>
+  </section>
+
+  <!-- ==================== FAQ ACCORDIONS ==================== -->
+  <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pb-24 space-y-10 relative z-10">
+
+    <!-- Category 1: General & Licensing -->
+    <div>
+      <h2 class="text-lg font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
+        <span>📜</span>
+        <span data-i18n="cat_general">General &amp; Open Source Licensing</span>
+      </h2>
+      <div class="space-y-3">
+        <details class="glass-card rounded-2xl p-5 border border-slate-200 dark:border-slate-800 cursor-pointer group shadow-sm">
+          <summary class="font-bold text-sm text-slate-900 dark:text-white flex justify-between items-center select-none" data-i18n="faq_q1">
+            Is MyDeusTools completely free and open-source?
+          </summary>
+          <p class="text-xs text-slate-600 dark:text-slate-300 mt-3 leading-relaxed" data-i18n="faq_a1">
+            Yes, 100%! MyDeusTools is licensed under the permissive MIT License. You are free to inspect the full source code, make forks, submit improvements, and utilize it for both personal and commercial use without fees or royalties.
+          </p>
+        </details>
+
+        <details class="glass-card rounded-2xl p-5 border border-slate-200 dark:border-slate-800 cursor-pointer group shadow-sm">
+          <summary class="font-bold text-sm text-slate-900 dark:text-white flex justify-between items-center select-none" data-i18n="faq_q2">
+            Who builds and maintains MyDeusTools?
+          </summary>
+          <p class="text-xs text-slate-600 dark:text-slate-300 mt-3 leading-relaxed" data-i18n="faq_a2">
+            MyDeusTools is built by KaitoDeus in collaborative pair programming with Claude (Anthropic). Every commit, refactor, and feature adheres to rigorous code standards with 173 passing unit tests.
+          </p>
+        </details>
+      </div>
+    </div>
+
+    <!-- Category 2: Security & Privacy -->
+    <div>
+      <h2 class="text-lg font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
+        <span>🛡️</span>
+        <span data-i18n="cat_sec">Security, Privacy &amp; SmartScreen</span>
+      </h2>
+      <div class="space-y-3">
+        <details class="glass-card rounded-2xl p-5 border border-slate-200 dark:border-slate-800 cursor-pointer group shadow-sm" open>
+          <summary class="font-bold text-sm text-slate-900 dark:text-white flex justify-between items-center select-none" data-i18n="faq_q3">
+            Why does Windows Defender / SmartScreen say "Windows protected your PC"?
+          </summary>
+          <div class="text-xs text-slate-600 dark:text-slate-300 mt-3 leading-relaxed space-y-2">
+            <p data-i18n="faq_a3_p1">
+              This is a standard false positive common to all new open-source software. Microsoft SmartScreen displays this prompt for any freshly published executable that has not yet established reputation or purchased an expensive commercial Extended Validation (EV) certificate ($400+/year).
+            </p>
+            <p data-i18n="faq_a3_p2">
+              Furthermore, utilities like Auto Clicker (which programmatically emulates mouse clicks via <code class="code-badge px-1 py-0.5 rounded">mouse_event</code>) and Window Pinner (which changes window TopMost flags via <code class="code-badge px-1 py-0.5 rounded">SetWindowPos</code>) can trigger heuristic scanner alerts.
+            </p>
+            <p class="font-semibold text-slate-800 dark:text-slate-200" data-i18n="faq_a3_p3">
+              How to bypass: Click "More info" on the SmartScreen dialog, then click "Run anyway". You can also verify the SHA-256 hash or compile the application yourself directly from source code.
+            </p>
+          </div>
+        </details>
+
+        <details class="glass-card rounded-2xl p-5 border border-slate-200 dark:border-slate-800 cursor-pointer group shadow-sm">
+          <summary class="font-bold text-sm text-slate-900 dark:text-white flex justify-between items-center select-none" data-i18n="faq_q4">
+            Does MyDeusTools transmit any data or telemetry?
+          </summary>
+          <p class="text-xs text-slate-600 dark:text-slate-300 mt-3 leading-relaxed" data-i18n="faq_a4">
+            Never. The application operates 100% offline. It contains zero analytics libraries, zero tracking pixels, and zero background network calls. All sticky notes, palette history, and settings are saved locally in your user profile folder (%AppData%\MyDeusTools).
+          </p>
+        </details>
+      </div>
+    </div>
+
+    <!-- Category 3: Features & Technical Mechanics -->
+    <div>
+      <h2 class="text-lg font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
+        <span>⚙️</span>
+        <span data-i18n="cat_tech">Features &amp; Technical Mechanics</span>
+      </h2>
+      <div class="space-y-3">
+        <details class="glass-card rounded-2xl p-5 border border-slate-200 dark:border-slate-800 cursor-pointer group shadow-sm">
+          <summary class="font-bold text-sm text-slate-900 dark:text-white flex justify-between items-center select-none" data-i18n="faq_q5">
+            Why does Auto Clicker enforce a 10ms minimum interval clamp?
+          </summary>
+          <p class="text-xs text-slate-600 dark:text-slate-300 mt-3 leading-relaxed" data-i18n="faq_a5">
+            If an auto clicker generates hundreds of mouse clicks per millisecond with zero delay, the Windows kernel input dispatcher and graphics compositor can easily become flooded, freezing the UI and mouse pointer. The 10ms safety threshold guarantees blazing-fast click speed (up to 100 clicks/sec) while keeping the operating system responsive so you can hit F6 to stop at any time.
+          </p>
+        </details>
+
+        <details class="glass-card rounded-2xl p-5 border border-slate-200 dark:border-slate-800 cursor-pointer group shadow-sm">
+          <summary class="font-bold text-sm text-slate-900 dark:text-white flex justify-between items-center select-none" data-i18n="faq_q6">
+            Does MyDeusTools support multiple monitors?
+          </summary>
+          <p class="text-xs text-slate-600 dark:text-slate-300 mt-3 leading-relaxed" data-i18n="faq_a6">
+            Yes, fully! Screen snipping for QR codes, pixel magnification HUD for the Color Eyedropper, and waypoint coordinate recording for Auto Clicker all work seamlessly across virtual screen bounds regardless of your multi-monitor layout or individual monitor DPI scalings.
+          </p>
+        </details>
+
+        <details class="glass-card rounded-2xl p-5 border border-slate-200 dark:border-slate-800 cursor-pointer group shadow-sm">
+          <summary class="font-bold text-sm text-slate-900 dark:text-white flex justify-between items-center select-none" data-i18n="faq_q7">
+            How do I switch the application language between English and Vietnamese?
+          </summary>
+          <p class="text-xs text-slate-600 dark:text-slate-300 mt-3 leading-relaxed" data-i18n="faq_a7">
+            Inside the desktop app, navigate to Settings and select either English or Vietnamese. The interface updates instantaneously without requiring an application restart. All 8 tools are 100% translated.
+          </p>
+        </details>
+      </div>
+    </div>
+
+    <!-- Category 4: Contributing & Issues -->
+    <div>
+      <h2 class="text-lg font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
+        <span>🤝</span>
+        <span data-i18n="cat_contrib">Contributions &amp; Feedback</span>
+      </h2>
+      <div class="space-y-3">
+        <details class="glass-card rounded-2xl p-5 border border-slate-200 dark:border-slate-800 cursor-pointer group shadow-sm">
+          <summary class="font-bold text-sm text-slate-900 dark:text-white flex justify-between items-center select-none" data-i18n="faq_q8">
+            How can I submit a bug report or request a new feature?
+          </summary>
+          <p class="text-xs text-slate-600 dark:text-slate-300 mt-3 leading-relaxed" data-i18n="faq_a8">
+            Please open an issue directly on the <a href="https://github.com/KaitoDeus/MyDeusTools/issues" target="_blank" class="text-blue-500 font-semibold hover:underline">GitHub Issues page</a>. Provide details about your Windows version, steps to reproduce, or proposed utility requirements.
+          </p>
+        </details>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="mt-auto border-t border-slate-200/80 dark:border-slate-800 py-10 relative z-10 bg-white/50 dark:bg-[#080d19]/80">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+      <div class="flex items-center gap-2">
+        <img src="avatar.ico" class="w-4 h-4 object-contain" alt="Icon">
+        <span class="font-semibold text-slate-700 dark:text-slate-300">MyDeusTools</span>
+        <span data-i18n="footer_developed">— Developed by</span>
+        <a href="https://github.com/KaitoDeus" target="_blank" class="font-semibold text-blue-600 dark:text-blue-400 hover:underline">KaitoDeus</a> &amp; Claude.
+      </div>
+
+      <div class="flex items-center gap-6">
+        <a href="index.html" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors" data-i18n="nav_home">Home</a>
+        <a href="features.html" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors" data-i18n="nav_features">Features</a>
+        <a href="architecture.html" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors" data-i18n="nav_architecture">Architecture</a>
+        <a href="download.html" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors" data-i18n="nav_download">Download</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="assets/site.js"></script>
+  <script>
+    registerTranslations({
+      en: {
+        faq_hero_title: "Answers & Technical Support",
+        faq_hero_sub: "Learn more about privacy, security, false positive SmartScreen warnings, Win32 mechanics, and how to get involved.",
+        cat_general: "General & Open Source Licensing",
+        faq_q1: "Is MyDeusTools completely free and open-source?",
+        faq_a1: "Yes, 100%! MyDeusTools is licensed under the permissive MIT License. You are free to inspect the full source code, make forks, submit improvements, and utilize it for both personal and commercial use without fees or royalties.",
+        faq_q2: "Who builds and maintains MyDeusTools?",
+        faq_a2: "MyDeusTools is built by KaitoDeus in collaborative pair programming with Claude (Anthropic). Every commit, refactor, and feature adheres to rigorous code standards with 173 passing unit tests.",
+        cat_sec: "Security, Privacy & SmartScreen",
+        faq_q3: "Why does Windows Defender / SmartScreen say 'Windows protected your PC'?",
+        faq_a3_p1: "This is a standard false positive common to all new open-source software. Microsoft SmartScreen displays this prompt for any freshly published executable that has not yet established reputation or purchased an expensive commercial Extended Validation (EV) certificate ($400+/year).",
+        faq_a3_p2: "Furthermore, utilities like Auto Clicker (which programmatically emulates mouse clicks via mouse_event) and Window Pinner (which changes window TopMost flags via SetWindowPos) can trigger heuristic scanner alerts.",
+        faq_a3_p3: "How to bypass: Click 'More info' on the SmartScreen dialog, then click 'Run anyway'. You can also verify the SHA-256 hash or compile the application yourself directly from source code.",
+        faq_q4: "Does MyDeusTools transmit any data or telemetry?",
+        faq_a4: "Never. The application operates 100% offline. It contains zero analytics libraries, zero tracking pixels, and zero background network calls. All sticky notes, palette history, and settings are saved locally in your user profile folder (%AppData%\\MyDeusTools).",
+        cat_tech: "Features & Technical Mechanics",
+        faq_q5: "Why does Auto Clicker enforce a 10ms minimum interval clamp?",
+        faq_a5: "If an auto clicker generates hundreds of mouse clicks per millisecond with zero delay, the Windows kernel input dispatcher and graphics compositor can easily become flooded, freezing the UI and mouse pointer. The 10ms safety threshold guarantees blazing-fast click speed (up to 100 clicks/sec) while keeping the operating system responsive so you can hit F6 to stop at any time.",
+        faq_q6: "Does MyDeusTools support multiple monitors?",
+        faq_a6: "Yes, fully! Screen snipping for QR codes, pixel magnification HUD for the Color Eyedropper, and waypoint coordinate recording for Auto Clicker all work seamlessly across virtual screen bounds regardless of your multi-monitor layout or individual monitor DPI scalings.",
+        faq_q7: "How do I switch the application language between English and Vietnamese?",
+        faq_a7: "Inside the desktop app, navigate to Settings and select either English or Vietnamese. The interface updates instantaneously without requiring an application restart. All 9 tools are 100% translated.",
+        cat_contrib: "Contributions & Feedback",
+        faq_q8: "How can I submit a bug report or request a new feature?",
+        faq_a8: "Please open an issue directly on the GitHub Issues page. Provide details about your Windows version, steps to reproduce, or proposed utility requirements."
+      },
+      vi: {
+        faq_hero_title: "Giải Đáp & Hỗ Trợ Kỹ Thuật",
+        faq_hero_sub: "Tìm hiểu chi tiết về quyền riêng tư, giải thích cảnh báo SmartScreen của Windows, cơ chế Win32 và cách đóng góp cho dự án.",
+        cat_general: "Thông Tin Chung & Giấy Phép Mã Nguồn Mở",
+        faq_q1: "MyDeusTools có hoàn toàn miễn phí và mã nguồn mở không?",
+        faq_a1: "Hoàn toàn miễn phí 100%! Dự án phát hành theo giấy phép MIT License. Bạn có toàn quyền xem mã nguồn, sao chép, tùy biến và sử dụng cho mục đích cá nhân lẫn thương mại mà không chịu bất kỳ chi phí bản quyền nào.",
+        faq_q2: "Ai phát triển và duy trì MyDeusTools?",
+        faq_a2: "MyDeusTools được phát triển bởi KaitoDeus cùng với Claude (Anthropic). Mọi tính năng và bản cập nhật đều tuân thủ các chuẩn mực kỹ thuật cao nhất với 173 bài kiểm thử tự động đạt 100%.",
+        cat_sec: "Bảo Mật, Riêng Tư & Cảnh Báo SmartScreen",
+        faq_q3: "Tại sao Windows SmartScreen lại hiện thông báo 'Windows protected your PC'?",
+        faq_a3_p1: "Đây là hiện tượng nhận diện nhầm (false positive) phổ biến của các phần mềm mã nguồn mở độc lập mới phát hành. Microsoft SmartScreen sẽ hiển thị cảnh báo này với các tệp thực thi mới chưa có lượng tải đủ lớn hoặc chưa mua chứng chỉ số EV tốn phí hàng năm ($400+/năm).",
+        faq_a3_p2: "Ngoài ra, các công cụ tương tác chuột tự động (qua mouse_event) và ghim cửa sổ hệ thống (qua SetWindowPos) thường bị bộ máy quét máy học của Windows chú ý.",
+        faq_a3_p3: "Cách mở: Bạn chỉ cần nhấn vào 'More info' (Thêm thông tin) trên bảng thông báo, sau đó chọn 'Run anyway' (Vẫn chạy). Bạn cũng có thể kiểm tra mã băm SHA-256 hoặc tự biên dịch trực tiếp từ mã nguồn GitHub.",
+        faq_q4: "MyDeusTools có gửi dữ liệu hay lịch sử sử dụng ra ngoài không?",
+        faq_a4: "Tuyệt đối không! Ứng dụng chạy hoàn toàn offline 100%. Không chứa bất kỳ thư viện theo dõi, Google Analytics hay cuộc gọi mạng ngầm nào. Mọi ghi chú, bảng màu và thiết lập đều được lưu trữ trực tiếp tại máy tính của bạn (%AppData%\\MyDeusTools).",
+        cat_tech: "Tính Năng & Cơ Chế Kỹ Thuật",
+        faq_q5: "Tại sao Auto Clicker lại bắt buộc giới hạn tốc độ tối thiểu 10ms?",
+        faq_a5: "Nếu click chuột diễn ra hàng trăm lần mỗi mili-giây không kiểm soát, hàng đợi thông điệp của Windows và driver đồ họa sẽ bị nghẽn, dẫn đến treo con trỏ chuột và đơ giao diện máy tính. Mức chốt 10ms vừa đảm bảo tốc độ cực nhanh (100 lần click/giây) vừa giữ cho Windows luôn mượt mà để bạn nhấn F6 dừng lại bất kỳ lúc nào.",
+        faq_q6: "MyDeusTools có hỗ trợ thiết lập nhiều màn hình không?",
+        faq_a6: "Hỗ trợ tuyệt vời! Tính năng quét mã QR, kính lúp bắt mã màu và chuỗi tọa độ Auto Clicker đều tự động nhận diện không gian ảo của toàn bộ các màn hình hiển thị, bất kể độ phân giải hay tỷ lệ phóng to DPI khác nhau.",
+        faq_q7: "Làm thế nào để chuyển đổi ngôn ngữ giữa tiếng Anh và tiếng Việt?",
+        faq_a7: "Trong ứng dụng desktop, bạn vào mục Cài đặt (Settings) và chọn Tiếng Việt hoặc English. Toàn bộ giao diện của cả 8 công cụ sẽ chuyển đổi ngay lập tức mà không cần khởi động lại ứng dụng.",
+        cat_contrib: "Đóng Góp & Phản Hồi",
+        faq_q8: "Làm thế nào để báo cáo lỗi hoặc đề xuất tính năng mới?",
+        faq_a8: "Hãy tạo một Issue trực tiếp trên trang GitHub Issues của dự án. Vui lòng cung cấp phiên bản Windows đang dùng, các bước tái hiện lỗi hoặc mô tả tiện ích bạn mong muốn."
+      }
+    });
+  </script>
+</body>
+</html>

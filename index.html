@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MyDeusTools — Modern All-in-One Desktop Utility Suite for Windows 10 & 11</title>
+  <meta name="description" content="Lightweight, modern Windows utility suite: Auto Clicker, Window Pinner & Transparency, QR Code Studio, Clipboard Manager, Color Eyedropper, Sticky Notes, and Dev Tools in a single native .NET 8 application." />
+  <meta name="keywords" content="Windows utility, Auto Clicker, Window Pinner, TopMost, Color Picker, QR Code, Clipboard Manager, JSON Formatter, WPF-UI, .NET 8" />
+  <link rel="icon" type="image/x-icon" href="avatar.ico" />
+
+  <!-- Google Fonts & Tailwind CSS CDN -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            brand: {
+              50: '#eff6ff', 100: '#dbeafe', 200: '#bfdbfe', 300: '#93c5fd',
+              400: '#60a5fa', 500: '#3b82f6', 600: '#2563eb', 700: '#1d4ed8',
+              800: '#1e40af', 900: '#1e3a8a',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <link rel="stylesheet" href="assets/site.css" />
+</head>
+<body class="bg-slate-50 dark:bg-[#0a0f1d] text-slate-800 dark:text-slate-100 antialiased transition-colors duration-300 min-h-screen flex flex-col font-sans selection:bg-blue-500 selection:text-white">
+
+  <!-- Background Ambient Glow -->
+  <div class="fixed inset-0 pointer-events-none gradient-glow z-0"></div>
+
+  <!-- ==================== HEADER / NAVBAR ==================== -->
+  <header class="sticky top-0 z-50 glass-nav transition-all duration-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      
+      <!-- Brand Logo -->
+      <a href="index.html" class="flex items-center gap-3 group">
+        <div class="w-9 h-9 rounded-xl overflow-hidden shadow-md shadow-blue-500/10 flex items-center justify-center p-0.5 bg-gradient-to-tr from-blue-600 to-indigo-500 group-hover:scale-105 transition-transform">
+          <img src="avatar.ico" alt="MyDeusTools Logo" class="w-full h-full object-contain" />
+        </div>
+        <div>
+          <span class="font-extrabold text-lg tracking-tight bg-gradient-to-r from-blue-600 via-indigo-600 to-sky-500 dark:from-blue-400 dark:via-indigo-300 dark:to-sky-400 bg-clip-text text-transparent">MyDeusTools</span>
+          <span class="hidden sm:inline-block ml-2 text-xs font-semibold px-2 py-0.5 rounded-full bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800" data-i18n="nav_badge_v">v1.0.0</span>
+        </div>
+      </a>
+
+      <!-- Navigation Links -->
+      <nav class="hidden md:flex items-center gap-7 text-sm font-medium text-slate-600 dark:text-slate-300">
+        <a href="index.html" class="nav-link hover:text-blue-600 dark:hover:text-blue-400 transition-colors" data-i18n="nav_home">Home</a>
+        <a href="features.html" class="nav-link hover:text-blue-600 dark:hover:text-blue-400 transition-colors" data-i18n="nav_features">Features</a>
+        <a href="architecture.html" class="nav-link hover:text-blue-600 dark:hover:text-blue-400 transition-colors" data-i18n="nav_architecture">Architecture</a>
+        <a href="download.html" class="nav-link hover:text-blue-600 dark:hover:text-blue-400 transition-colors" data-i18n="nav_download">Download</a>
+        <a href="faq.html" class="nav-link hover:text-blue-600 dark:hover:text-blue-400 transition-colors" data-i18n="nav_faq">FAQ</a>
+      </nav>
+
+      <!-- Action Controls: Lang Switch, Dark Mode, GitHub, Mobile Menu -->
+      <div class="flex items-center gap-2.5">
+        <!-- Language Switcher Button -->
+        <button id="langToggleBtn" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-200/70 hover:bg-slate-300/80 dark:bg-slate-800/80 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition-colors border border-slate-300/60 dark:border-slate-700/60" title="Switch Language">
+          <span id="langFlag">🇻🇳</span>
+          <span id="langLabel">VIE</span>
+        </button>
+
+        <!-- Dark/Light Theme Toggle -->
+        <button id="themeToggleBtn" class="p-2 rounded-lg text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100 hover:bg-slate-200/60 dark:hover:bg-slate-800/70 transition-colors" title="Toggle Dark/Light Mode">
+          <svg id="themeMoonIcon" class="w-4 h-4 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+          <svg id="themeSunIcon" class="w-4 h-4 block" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 9h-1m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+        </button>
+
+        <!-- GitHub Link -->
+        <a href="https://github.com/KaitoDeus/MyDeusTools" target="_blank" rel="noopener noreferrer" class="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-900 text-white hover:bg-slate-800 dark:bg-slate-800 dark:hover:bg-slate-700 transition-colors border border-slate-700/50">
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"></path></svg>
+          <span>Star</span>
+        </a>
+
+        <!-- Download CTA in Nav -->
+        <a href="download.html" class="flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-blue-600 hover:bg-blue-700 text-white shadow-sm shadow-blue-500/30 transition-all hover:shadow-blue-500/50">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+          <span data-i18n="nav_btn_download">Download</span>
+        </a>
+
+        <!-- Mobile Menu Toggle Button -->
+        <button id="mobileMenuBtn" class="md:hidden p-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-200/60 dark:hover:bg-slate-800/70">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Nav Dropdown -->
+    <div id="mobileMenu" class="hidden md:hidden glass-nav border-t border-slate-200 dark:border-slate-800 px-4 pt-3 pb-4 space-y-2 text-sm font-medium">
+      <a href="index.html" class="block px-3 py-2 rounded-lg hover:bg-blue-500/10 hover:text-blue-600 dark:hover:text-blue-400" data-i18n="nav_home">Home</a>
+      <a href="features.html" class="block px-3 py-2 rounded-lg hover:bg-blue-500/10 hover:text-blue-600 dark:hover:text-blue-400" data-i18n="nav_features">Features</a>
+      <a href="architecture.html" class="block px-3 py-2 rounded-lg hover:bg-blue-500/10 hover:text-blue-600 dark:hover:text-blue-400" data-i18n="nav_architecture">Architecture</a>
+      <a href="download.html" class="block px-3 py-2 rounded-lg hover:bg-blue-500/10 hover:text-blue-600 dark:hover:text-blue-400" data-i18n="nav_download">Download</a>
+      <a href="faq.html" class="block px-3 py-2 rounded-lg hover:bg-blue-500/10 hover:text-blue-600 dark:hover:text-blue-400" data-i18n="nav_faq">FAQ</a>
+    </div>
+  </header>
+
+  <!-- ==================== HERO SECTION ==================== -->
+  <section class="relative pt-16 pb-20 md:pt-24 md:pb-28 overflow-hidden z-10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      
+      <!-- Pill Badge -->
+      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-blue-100/80 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800/80 mb-7 shadow-sm">
+        <span class="flex h-2 w-2 rounded-full bg-blue-600 animate-pulse"></span>
+        <span data-i18n="hero_badge">Windows 11 Fluent Design &amp; Mica Backdrop • .NET 8.0</span>
+      </div>
+
+      <!-- Main Headline -->
+      <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight max-w-4xl mx-auto leading-tight md:leading-[1.15]">
+        <span data-i18n="hero_title_1">All your essential Windows utilities.</span>
+        <br />
+        <span class="bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-500 dark:from-blue-400 dark:via-indigo-300 dark:to-cyan-400 bg-clip-text text-transparent" data-i18n="hero_title_2">Unified into one modern suite.</span>
+      </h1>
+
+      <!-- Subtitle -->
+      <p class="mt-6 text-lg sm:text-xl text-slate-600 dark:text-slate-300 max-w-3xl mx-auto leading-relaxed" data-i18n="hero_subtitle">
+        Say goodbye to scattered, bloated utility tools. MyDeusTools brings Auto Clicker Pro, Window Pinner &amp; Transparency, QR Studio, Clipboard History, Color Eyedropper, Sticky Notes, and Dev Tools into one blazing-fast, zero-dependency desktop application.
+      </p>
+
+      <!-- CTA Buttons -->
+      <div class="mt-9 flex flex-col sm:flex-row items-center justify-center gap-4">
+        <a href="download.html" class="w-full sm:w-auto flex items-center justify-center gap-2.5 px-7 py-3.5 rounded-xl font-bold text-sm bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 hover:-translate-y-0.5 transition-all">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+          <span data-i18n="hero_btn_download">Download for Windows (x64)</span>
+        </a>
+        <a href="features.html" class="w-full sm:w-auto flex items-center justify-center gap-2.5 px-7 py-3.5 rounded-xl font-semibold text-sm bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700/80 text-slate-800 dark:text-slate-100 border border-slate-300 dark:border-slate-700 shadow-sm transition-all">
+          <span data-i18n="hero_btn_features">Explore All 8 Features</span>
+          <svg class="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+        </a>
+      </div>
+
+      <!-- Quick Run Command -->
+      <div class="mt-8 flex items-center justify-center">
+        <div class="inline-flex items-center gap-3 px-4 py-2 rounded-xl text-xs font-mono code-badge text-slate-700 dark:text-slate-300 shadow-sm max-w-xl overflow-x-auto">
+          <span class="text-blue-500 font-bold">$</span>
+          <span class="select-all">git clone https://github.com/KaitoDeus/MyDeusTools.git &amp;&amp; cd MyDeusTools &amp;&amp; dotnet run --project MyDeusTools.App</span>
+          <button onclick="copyCommand(this, 'git clone https://github.com/KaitoDeus/MyDeusTools.git && cd MyDeusTools && dotnet run --project MyDeusTools.App')" class="ml-2 text-slate-400 hover:text-blue-500" title="Copy to clipboard">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Value Props Highlights -->
+      <div class="mt-14 grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-4xl mx-auto pt-6 border-t border-slate-200/80 dark:border-slate-800/80 text-left">
+        <div class="p-3">
+          <div class="text-2xl font-extrabold text-blue-600 dark:text-blue-400">&lt; 35 MB</div>
+          <div class="text-xs text-slate-500 dark:text-slate-400 mt-1 font-medium" data-i18n="metric_ram">Lightweight Memory Footprint</div>
+        </div>
+        <div class="p-3">
+          <div class="text-2xl font-extrabold text-indigo-600 dark:text-indigo-400">100%</div>
+          <div class="text-xs text-slate-500 dark:text-slate-400 mt-1 font-medium" data-i18n="metric_offline">Offline &amp; Zero Telemetry</div>
+        </div>
+        <div class="p-3">
+          <div class="text-2xl font-extrabold text-sky-600 dark:text-sky-400">Single File</div>
+          <div class="text-xs text-slate-500 dark:text-slate-400 mt-1 font-medium" data-i18n="metric_portable">Portable .EXE (Zero Installer)</div>
+        </div>
+        <div class="p-3">
+          <div class="text-2xl font-extrabold text-emerald-600 dark:text-emerald-400">173 / 173</div>
+          <div class="text-xs text-slate-500 dark:text-slate-400 mt-1 font-medium" data-i18n="metric_tests">100% Unit Test Pass Rate</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== INTERACTIVE LIVE DEMO MOCKUP ==================== -->
+  <section id="demo" class="py-16 bg-slate-100/70 dark:bg-slate-900/40 border-y border-slate-200/80 dark:border-slate-800/80 relative z-10">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="text-center max-w-3xl mx-auto mb-12">
+        <span class="text-xs font-bold uppercase tracking-wider text-blue-600 dark:text-blue-400" data-i18n="demo_badge">Live Interactive Simulator</span>
+        <h2 class="text-3xl font-extrabold mt-2 tracking-tight" data-i18n="demo_title">Experience MyDeusTools in your browser</h2>
+        <p class="text-slate-600 dark:text-slate-400 mt-3 text-sm" data-i18n="demo_sub">Click through the tools on the sidebar to test real-time features like window transparency, JSON formatting, hash computation, and clicker emulation.</p>
+      </div>
+
+      <!-- App Window Mockup Container -->
+      <div class="rounded-2xl overflow-hidden shadow-2xl border border-slate-300 dark:border-slate-700/80 bg-white dark:bg-[#111827] flex flex-col h-[580px]">
+        
+        <!-- Window Title Bar -->
+        <div class="h-10 bg-slate-200/80 dark:bg-[#0c1220] border-b border-slate-300/80 dark:border-slate-800 px-4 flex items-center justify-between select-none">
+          <div class="flex items-center gap-2.5">
+            <img src="avatar.ico" class="w-4 h-4 object-contain" alt="Icon">
+            <span class="text-xs font-semibold text-slate-700 dark:text-slate-300">MyDeusTools (Fluent Design Simulator)</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <div class="w-3 h-3 rounded-full bg-amber-400/80"></div>
+            <div class="w-3 h-3 rounded-full bg-emerald-500/80"></div>
+            <div class="w-3 h-3 rounded-full bg-rose-500/80"></div>
+          </div>
+        </div>
+
+        <!-- Window Body: Sidebar + Main Content -->
+        <div class="flex-1 flex overflow-hidden">
+          
+          <!-- Mockup Sidebar -->
+          <div class="w-56 bg-slate-100 dark:bg-[#0e1626] border-r border-slate-200 dark:border-slate-800 p-2.5 flex flex-col justify-between shrink-0">
+            <div class="space-y-1">
+              <button onclick="switchMockTab('pinner')" id="tab-pinner" class="mock-tab-btn active w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-semibold text-left transition-all bg-blue-600 text-white shadow-sm">
+                <span>📌</span>
+                <span data-i18n="tab_pinner">Window Pinner</span>
+              </button>
+              <button onclick="switchMockTab('autoclick')" id="tab-autoclick" class="mock-tab-btn w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium text-left text-slate-600 dark:text-slate-400 hover:bg-slate-200/60 dark:hover:bg-slate-800 transition-all">
+                <span>🖱️</span>
+                <span data-i18n="tab_autoclick">Auto Clicker Pro</span>
+              </button>
+              <button onclick="switchMockTab('textdev')" id="tab-textdev" class="mock-tab-btn w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium text-left text-slate-600 dark:text-slate-400 hover:bg-slate-200/60 dark:hover:bg-slate-800 transition-all">
+                <span>🔤</span>
+                <span data-i18n="tab_textdev">Text &amp; Dev Tools</span>
+              </button>
+              <button onclick="switchMockTab('clipboard')" id="tab-clipboard" class="mock-tab-btn w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium text-left text-slate-600 dark:text-slate-400 hover:bg-slate-200/60 dark:hover:bg-slate-800 transition-all">
+                <span>📋</span>
+                <span data-i18n="tab_clipboard">Clipboard Manager</span>
+              </button>
+              <button onclick="switchMockTab('color')" id="tab-color" class="mock-tab-btn w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium text-left text-slate-600 dark:text-slate-400 hover:bg-slate-200/60 dark:hover:bg-slate-800 transition-all">
+                <span>🎨</span>
+                <span data-i18n="tab_color">Color Eyedropper</span>
+              </button>
+              <button onclick="switchMockTab('qrcode')" id="tab-qrcode" class="mock-tab-btn w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium text-left text-slate-600 dark:text-slate-400 hover:bg-slate-200/60 dark:hover:bg-slate-800 transition-all">
+                <span>📱</span>
+                <span data-i18n="tab_qrcode">QR Code Studio</span>
+              </button>
+              <button onclick="switchMockTab('sticky')" id="tab-sticky" class="mock-tab-btn w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium text-left text-slate-600 dark:text-slate-400 hover:bg-slate-200/60 dark:hover:bg-slate-800 transition-all">
+                <span>📝</span>
+                <span data-i18n="tab_sticky">Sticky Notes</span>
+              </button>
+            </div>
+
+            <!-- Bottom Mock Settings -->
+            <div class="pt-3 border-t border-slate-200 dark:border-slate-800 text-[11px] text-slate-500 flex flex-col gap-1.5 px-1">
+              <div class="flex items-center justify-between">
+                <span>🌐 EN / VIE</span>
+                <span class="text-blue-500 font-semibold">Active</span>
+              </div>
+              <div class="flex items-center justify-between">
+                <span>🚀 Startup: OFF</span>
+                <span class="text-slate-400">Registry</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Mockup Main Stage -->
+          <div class="flex-1 p-6 overflow-y-auto bg-slate-50/50 dark:bg-[#111827]">
+            
+            <!-- 1. MOCK TAB: WINDOW PINNER -->
+            <div id="mock-panel-pinner" class="mock-panel block">
+              <div class="flex items-center justify-between mb-4">
+                <div>
+                  <h3 class="font-bold text-lg text-slate-900 dark:text-white" data-i18n="pinner_heading">Window Pinner &amp; Transparency</h3>
+                  <p class="text-xs text-slate-500 dark:text-slate-400" data-i18n="pinner_desc">Pin any app Always-on-Top and adjust live opacity</p>
+                </div>
+                <div class="flex gap-2">
+                  <span class="text-xs px-2.5 py-1 rounded bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-300 font-semibold">Windows: 3</span>
+                  <span class="text-xs px-2.5 py-1 rounded bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 font-semibold" id="pinnedCountBadge">Pinned: 1</span>
+                </div>
+              </div>
+
+              <!-- Interactive Window Card 1 -->
+              <div class="bg-white dark:bg-[#182234] border border-slate-200 dark:border-slate-700/80 rounded-xl p-4 shadow-sm mb-3.5 transition-all" id="mockWindowCard">
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-lg bg-blue-500/10 text-blue-500 flex items-center justify-center font-bold text-xs">VS</div>
+                    <div>
+                      <div class="flex items-center gap-2">
+                        <span id="pinBadge" class="text-[10px] uppercase font-bold tracking-wider px-1.5 py-0.5 rounded bg-blue-600 text-white">Always on Top</span>
+                        <span class="font-semibold text-sm">Visual Studio Code — MyDeusTools.sln</span>
+                      </div>
+                      <span class="text-xs text-slate-400">Code.exe [PID: 14820]</span>
+                    </div>
+                  </div>
+                  <button onclick="toggleMockPin()" id="btnMockPin" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors">
+                    Unpin
+                  </button>
+                </div>
+
+                <!-- Opacity Slider -->
+                <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center gap-4">
+                  <span class="text-xs font-semibold text-slate-500">Opacity: <span id="opacityLabel" class="text-blue-500 font-bold">100%</span></span>
+                  <input type="range" min="30" max="100" value="100" class="flex-1 accent-blue-600" oninput="changeMockOpacity(this.value)" />
+                  <div class="flex gap-1">
+                    <button onclick="changeMockOpacity(100)" class="text-[11px] px-2 py-0.5 rounded hover:bg-slate-100 dark:hover:bg-slate-800">100%</button>
+                    <button onclick="changeMockOpacity(70)" class="text-[11px] px-2 py-0.5 rounded hover:bg-slate-100 dark:hover:bg-slate-800">70%</button>
+                    <button onclick="changeMockOpacity(40)" class="text-[11px] px-2 py-0.5 rounded hover:bg-slate-100 dark:hover:bg-slate-800">40%</button>
+                  </div>
+                </div>
+
+                <!-- Live Simulation Preview Box -->
+                <div class="mt-3 p-3 rounded-lg bg-slate-900 text-slate-300 font-mono text-xs overflow-hidden transition-opacity duration-150" id="simulatedWindowBox">
+                  <div class="text-slate-500 mb-1">// Simulated Visual Studio Code Window Preview</div>
+                  <div>public void TogglePin(WindowInfoModel window) {</div>
+                  <div class="pl-4">SetWindowPos(window.Handle, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);</div>
+                  <div>}</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 2. MOCK TAB: AUTO CLICKER PRO -->
+            <div id="mock-panel-autoclick" class="mock-panel hidden">
+              <div class="flex items-center justify-between mb-4">
+                <div>
+                  <h3 class="font-bold text-lg text-slate-900 dark:text-white" data-i18n="autoclick_heading">Auto Clicker Pro</h3>
+                  <p class="text-xs text-slate-500 dark:text-slate-400" data-i18n="autoclick_desc">High-speed clicks with safety clamp &amp; waypoint recording</p>
+                </div>
+                <span class="text-xs px-2.5 py-1 rounded bg-slate-200 dark:bg-slate-800 font-mono">Hotkey: F6</span>
+              </div>
+
+              <div class="grid grid-cols-2 gap-4 mb-4">
+                <div class="bg-white dark:bg-[#182234] p-4 rounded-xl border border-slate-200 dark:border-slate-700/80">
+                  <label class="text-xs font-semibold text-slate-500 mb-1 block">Interval (Milliseconds)</label>
+                  <input type="number" id="mockInterval" value="50" min="10" class="w-full px-3 py-1.5 text-sm rounded-lg bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 font-mono" />
+                  <div class="text-[11px] text-slate-400 mt-1">Safe clamp: min 10ms</div>
+                </div>
+                <div class="bg-white dark:bg-[#182234] p-4 rounded-xl border border-slate-200 dark:border-slate-700/80">
+                  <label class="text-xs font-semibold text-slate-500 mb-1 block">Mouse Button &amp; Type</label>
+                  <select class="w-full px-3 py-1.5 text-sm rounded-lg bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700">
+                    <option>Left Click (Single)</option>
+                    <option>Right Click (Single)</option>
+                    <option>Double Click (Left)</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Interactive Simulator Box -->
+              <div class="bg-white dark:bg-[#182234] p-5 rounded-xl border border-slate-200 dark:border-slate-700/80 text-center">
+                <div class="text-3xl font-extrabold font-mono text-blue-600 dark:text-blue-400" id="clickCounter">0 Clicks</div>
+                <div class="mt-3 flex justify-center gap-3">
+                  <button onclick="toggleMockClicker()" id="btnMockClicker" class="px-5 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs transition-colors">Start Emulation (F6)</button>
+                  <button onclick="resetMockClicker()" class="px-4 py-2 rounded-lg bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-xs font-semibold">Reset</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- 3. MOCK TAB: TEXT & DEV TOOLS -->
+            <div id="mock-panel-textdev" class="mock-panel hidden">
+              <div class="flex items-center justify-between mb-4">
+                <div>
+                  <h3 class="font-bold text-lg text-slate-900 dark:text-white" data-i18n="textdev_heading">JSON Studio &amp; Multi-Hash Generator</h3>
+                  <p class="text-xs text-slate-500 dark:text-slate-400">Live JSON formatting, validation, and real-time SHA-256 computation</p>
+                </div>
+                <div class="flex gap-2">
+                  <button onclick="formatMockJson()" class="px-3 py-1 rounded bg-blue-600 text-white text-xs font-semibold hover:bg-blue-700">Format JSON</button>
+                  <button onclick="minifyMockJson()" class="px-3 py-1 rounded bg-slate-200 dark:bg-slate-800 text-xs font-semibold hover:bg-slate-300 dark:hover:bg-slate-700">Minify</button>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-2 gap-3 mb-3">
+                <div>
+                  <span class="text-xs font-semibold text-slate-500 mb-1 block">Input Text / JSON</span>
+                  <textarea id="mockJsonInput" rows="5" class="w-full p-2.5 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 font-mono text-xs">{"app":"MyDeusTools","version":"1.0.0","tools":["Pinner","AutoClicker","DevTools"]}</textarea>
+                </div>
+                <div>
+                  <span class="text-xs font-semibold text-slate-500 mb-1 block">Formatted Output</span>
+                  <textarea id="mockJsonOutput" readonly rows="5" class="w-full p-2.5 rounded-lg bg-slate-100 dark:bg-[#151d2c] border border-slate-200 dark:border-slate-700 font-mono text-xs text-blue-600 dark:text-blue-300"></textarea>
+                </div>
+              </div>
+
+              <!-- Real-time Hash Generator Preview -->
+              <div class="p-3 bg-white dark:bg-[#182234] rounded-xl border border-slate-200 dark:border-slate-700/80">
+                <span class="text-xs font-semibold text-slate-400 block mb-1">Live SHA-256 Hash of Input:</span>
+                <div id="mockHashResult" class="font-mono text-xs text-emerald-600 dark:text-emerald-400 break-all select-all font-semibold">Type above to calculate hash...</div>
+              </div>
+            </div>
+
+            <!-- 4. MOCK TAB: CLIPBOARD MANAGER -->
+            <div id="mock-panel-clipboard" class="mock-panel hidden">
+              <div class="flex items-center justify-between mb-3">
+                <h3 class="font-bold text-lg text-slate-900 dark:text-white" data-i18n="clip_heading">Clipboard Manager History</h3>
+                <span class="text-xs text-slate-400">Win32 Native Format Listener</span>
+              </div>
+              <div class="space-y-2">
+                <div class="p-3 bg-white dark:bg-[#182234] rounded-lg border border-slate-200 dark:border-slate-700 flex justify-between items-center">
+                  <div class="flex items-center gap-2">
+                    <span class="text-xs px-1.5 py-0.5 rounded bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300 font-bold">PINNED</span>
+                    <span class="text-xs font-mono text-slate-700 dark:text-slate-300">https://github.com/KaitoDeus/MyDeusTools</span>
+                  </div>
+                  <button onclick="alert('Copied to clipboard!')" class="text-xs px-2.5 py-1 rounded bg-slate-100 dark:bg-slate-700 hover:bg-slate-200">Copy</button>
+                </div>
+                <div class="p-3 bg-white dark:bg-[#182234] rounded-lg border border-slate-200 dark:border-slate-700 flex justify-between items-center">
+                  <span class="text-xs font-mono text-slate-700 dark:text-slate-300">dotnet publish -c Release -r win-x64 --self-contained</span>
+                  <button onclick="alert('Copied to clipboard!')" class="text-xs px-2.5 py-1 rounded bg-slate-100 dark:bg-slate-700 hover:bg-slate-200">Copy</button>
+                </div>
+                <div class="p-3 bg-white dark:bg-[#182234] rounded-lg border border-slate-200 dark:border-slate-700 flex justify-between items-center">
+                  <span class="text-xs font-mono text-slate-700 dark:text-slate-300">#3B82F6 (Accent Primary)</span>
+                  <button onclick="alert('Copied to clipboard!')" class="text-xs px-2.5 py-1 rounded bg-slate-100 dark:bg-slate-700 hover:bg-slate-200">Copy</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- 5. MOCK TAB: COLOR PICKER -->
+            <div id="mock-panel-color" class="mock-panel hidden">
+              <div class="flex items-center justify-between mb-4">
+                <h3 class="font-bold text-lg text-slate-900 dark:text-white" data-i18n="color_heading">Color Eyedropper &amp; Palette</h3>
+                <span class="text-xs text-slate-400">11x11 Pixel Magnifier HUD</span>
+              </div>
+              <div class="grid grid-cols-4 gap-3 text-center">
+                <div class="p-4 rounded-xl bg-blue-600 text-white cursor-pointer hover:scale-105 transition-transform" onclick="copyColor('#2563EB')">
+                  <div class="font-bold text-sm">#2563EB</div>
+                  <div class="text-[11px] opacity-80 mt-1">RGB(37, 99, 235)</div>
+                </div>
+                <div class="p-4 rounded-xl bg-indigo-600 text-white cursor-pointer hover:scale-105 transition-transform" onclick="copyColor('#4F46E5')">
+                  <div class="font-bold text-sm">#4F46E5</div>
+                  <div class="text-[11px] opacity-80 mt-1">RGB(79, 70, 229)</div>
+                </div>
+                <div class="p-4 rounded-xl bg-emerald-600 text-white cursor-pointer hover:scale-105 transition-transform" onclick="copyColor('#059669')">
+                  <div class="font-bold text-sm">#059669</div>
+                  <div class="text-[11px] opacity-80 mt-1">RGB(5, 150, 105)</div>
+                </div>
+                <div class="p-4 rounded-xl bg-amber-500 text-white cursor-pointer hover:scale-105 transition-transform" onclick="copyColor('#F59E0B')">
+                  <div class="font-bold text-sm">#F59E0B</div>
+                  <div class="text-[11px] opacity-80 mt-1">RGB(245, 158, 11)</div>
+                </div>
+              </div>
+              <div class="mt-4 text-xs text-center text-slate-400">Click any swatch to copy HEX to clipboard</div>
+            </div>
+
+            <!-- 6. MOCK TAB: QR CODE STUDIO -->
+            <div id="mock-panel-qrcode" class="mock-panel hidden">
+              <div class="flex items-center justify-between mb-4">
+                <h3 class="font-bold text-lg text-slate-900 dark:text-white" data-i18n="qr_heading">QR Code Studio</h3>
+                <span class="text-xs text-slate-400">Generate &amp; Screen Snipping</span>
+              </div>
+              <div class="flex items-center gap-5">
+                <div class="w-32 h-32 bg-white p-2 rounded-xl border border-slate-300 dark:border-slate-700 flex items-center justify-center shrink-0">
+                  <img id="mockQrImg" src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=https://github.com/KaitoDeus/MyDeusTools" alt="QR Preview" class="w-full h-full object-contain">
+                </div>
+                <div class="flex-1">
+                  <label class="text-xs font-semibold text-slate-500 block mb-1">Enter URL or Plain Text</label>
+                  <input type="text" id="mockQrInput" value="https://github.com/KaitoDeus/MyDeusTools" oninput="updateMockQr(this.value)" class="w-full px-3 py-2 text-xs rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 font-mono mb-2" />
+                  <div class="flex gap-2">
+                    <button onclick="alert('QR Image copied to clipboard!')" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-blue-600 text-white hover:bg-blue-700">Copy Image</button>
+                    <button onclick="alert('Snip screen mode activated!')" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-200 dark:bg-slate-700 hover:bg-slate-300">Snip Screen (Overlay)</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 7. MOCK TAB: STICKY NOTES -->
+            <div id="mock-panel-sticky" class="mock-panel hidden">
+              <div class="flex items-center justify-between mb-4">
+                <h3 class="font-bold text-lg text-slate-900 dark:text-white" data-i18n="sticky_heading">Sticky Notes</h3>
+                <span class="text-xs text-slate-400">Auto-saved JSON &amp; Borderless Floating Pin</span>
+              </div>
+              <div class="grid grid-cols-2 gap-3">
+                <div class="p-4 rounded-xl bg-amber-100 dark:bg-amber-950/60 border border-amber-300/80 dark:border-amber-700/60 text-amber-900 dark:text-amber-200">
+                  <div class="flex justify-between items-center text-xs font-bold mb-2">
+                    <span>📌 Release Checklist</span>
+                    <span>14:02</span>
+                  </div>
+                  <p class="text-xs leading-relaxed">- Complete unit test suite (173/173)<br>- Verify dual-language runtime switch<br>- Package portable win-x64 .exe</p>
+                </div>
+                <div class="p-4 rounded-xl bg-blue-100 dark:bg-blue-950/60 border border-blue-300/80 dark:border-blue-700/60 text-blue-900 dark:text-blue-200">
+                  <div class="flex justify-between items-center text-xs font-bold mb-2">
+                    <span>💡 Idea: Global Shortcuts</span>
+                    <span>Yesterday</span>
+                  </div>
+                  <p class="text-xs leading-relaxed">NHotkey global hooks for instant TopMost toggle without switching active windows.</p>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== SUITE OVERVIEW (LINKS TO FEATURES.HTML) ==================== -->
+  <section class="py-20 relative z-10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <span class="text-xs font-bold uppercase tracking-wider text-blue-600 dark:text-blue-400" data-i18n="feat_badge">Comprehensive Toolset</span>
+        <h2 class="text-3xl sm:text-4xl font-extrabold mt-2 tracking-tight" data-i18n="feat_title">Engineered for Everyday Windows Power Users</h2>
+        <p class="text-slate-600 dark:text-slate-300 mt-4 text-base" data-i18n="feat_desc">Every utility is built with native Win32 APIs, modern asynchronous architecture, and intuitive Windows 11 aesthetics.</p>
+      </div>
+
+      <!-- Bento Grid (8 Cards) -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+        
+        <!-- Feature 1: Window Pinner -->
+        <a href="features.html#pinner" class="glass-card rounded-2xl p-6 hover:-translate-y-1 transition-all duration-200 shadow-sm flex flex-col justify-between group">
+          <div>
+            <div class="w-12 h-12 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition-transform">📌</div>
+            <h3 class="text-lg font-bold mb-2 text-slate-900 dark:text-white group-hover:text-blue-500 transition-colors" data-i18n="f1_title">Window Pinner &amp; Opacity</h3>
+            <p class="text-xs leading-relaxed text-slate-600 dark:text-slate-400" data-i18n="f1_desc">
+              Pin any application window to stay Always-on-Top (<code class="code-badge px-1 py-0.5 rounded text-[11px]">HWND_TOPMOST</code>). Adjust opacity smoothly in real-time with Win32 layered attributes and quick 1-click presets.
+            </p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 text-[11px] font-semibold text-blue-600 dark:text-blue-400 flex items-center justify-between">
+            <span>Win32 user32 Interop</span>
+            <span>Explore →</span>
+          </div>
+        </a>
+
+        <!-- Feature 2: Auto Clicker Pro -->
+        <a href="features.html#autoclicker" class="glass-card rounded-2xl p-6 hover:-translate-y-1 transition-all duration-200 shadow-sm flex flex-col justify-between group">
+          <div>
+            <div class="w-12 h-12 rounded-xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition-transform">🖱️</div>
+            <h3 class="text-lg font-bold mb-2 text-slate-900 dark:text-white group-hover:text-indigo-500 transition-colors" data-i18n="f2_title">Auto Clicker Pro</h3>
+            <p class="text-xs leading-relaxed text-slate-600 dark:text-slate-400" data-i18n="f2_desc">
+              Automate Left/Right/Middle clicks with microsecond accuracy. Features full-screen multi-monitor coordinate waypoint recording and safe 10ms hardware clamp.
+            </p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 text-[11px] font-semibold text-indigo-600 dark:text-indigo-400 flex items-center justify-between">
+            <span>Waypoint Playback • F6</span>
+            <span>Explore →</span>
+          </div>
+        </a>
+
+        <!-- Feature 3: Clipboard Manager -->
+        <a href="features.html#clipboard" class="glass-card rounded-2xl p-6 hover:-translate-y-1 transition-all duration-200 shadow-sm flex flex-col justify-between group">
+          <div>
+            <div class="w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition-transform">📋</div>
+            <h3 class="text-lg font-bold mb-2 text-slate-900 dark:text-white group-hover:text-emerald-500 transition-colors" data-i18n="f3_title">Clipboard Manager</h3>
+            <p class="text-xs leading-relaxed text-slate-600 dark:text-slate-400" data-i18n="f3_desc">
+              Hooks directly into Windows clipboard events (<code class="code-badge px-1 py-0.5 rounded text-[11px]">AddClipboardFormatListener</code>). Instant search, favorite item pinning, and 1-click re-copying.
+            </p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 text-[11px] font-semibold text-emerald-600 dark:text-emerald-400 flex items-center justify-between">
+            <span>Event-Driven Win32</span>
+            <span>Explore →</span>
+          </div>
+        </a>
+
+        <!-- Feature 4: Color Eyedropper -->
+        <a href="features.html#color" class="glass-card rounded-2xl p-6 hover:-translate-y-1 transition-all duration-200 shadow-sm flex flex-col justify-between group">
+          <div>
+            <div class="w-12 h-12 rounded-xl bg-purple-500/10 text-purple-600 dark:text-purple-400 flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition-transform">🎨</div>
+            <h3 class="text-lg font-bold mb-2 text-slate-900 dark:text-white group-hover:text-purple-500 transition-colors" data-i18n="f4_title">Color Picker &amp; Eyedropper</h3>
+            <p class="text-xs leading-relaxed text-slate-600 dark:text-slate-400" data-i18n="f4_desc">
+              Full-screen screen pixel picker featuring an 11x11 pixel real-time magnifier HUD. Copy color formats instantly in HEX, RGB, HSL, or HSV into palette history.
+            </p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 text-[11px] font-semibold text-purple-600 dark:text-purple-400 flex items-center justify-between">
+            <span>Pixel Magnifier HUD</span>
+            <span>Explore →</span>
+          </div>
+        </a>
+
+        <!-- Feature 5: QR Code Studio -->
+        <a href="features.html#qrcode" class="glass-card rounded-2xl p-6 hover:-translate-y-1 transition-all duration-200 shadow-sm flex flex-col justify-between group">
+          <div>
+            <div class="w-12 h-12 rounded-xl bg-sky-500/10 text-sky-600 dark:text-sky-400 flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition-transform">📱</div>
+            <h3 class="text-lg font-bold mb-2 text-slate-900 dark:text-white group-hover:text-sky-500 transition-colors" data-i18n="f5_title">QR Code Studio</h3>
+            <p class="text-xs leading-relaxed text-slate-600 dark:text-slate-400" data-i18n="f5_desc">
+              Generate crisp vector QR codes with instant PNG export or clipboard copy. Scan from screen region snip, image file, or clipboard bitmap with auto-URL opening.
+            </p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 text-[11px] font-semibold text-sky-600 dark:text-sky-400 flex items-center justify-between">
+            <span>ZXing.Net + QRCoder</span>
+            <span>Explore →</span>
+          </div>
+        </a>
+
+        <!-- Feature 6: Text & Dev Tools -->
+        <a href="features.html#textdev" class="glass-card rounded-2xl p-6 hover:-translate-y-1 transition-all duration-200 shadow-sm flex flex-col justify-between group">
+          <div>
+            <div class="w-12 h-12 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition-transform">🔤</div>
+            <h3 class="text-lg font-bold mb-2 text-slate-900 dark:text-white group-hover:text-amber-500 transition-colors" data-i18n="f6_title">Text &amp; Dev Tools</h3>
+            <p class="text-xs leading-relaxed text-slate-600 dark:text-slate-400" data-i18n="f6_desc">
+              JSON Studio (formatter/minifier/validator), Base64 encoder/decoder (text &amp; files), URL/HTML entity escaping, multi-hash generator (MD5, SHA-1, SHA-256, SHA-512), and case conversions.
+            </p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 text-[11px] font-semibold text-amber-600 dark:text-amber-400 flex items-center justify-between">
+            <span>JSON • Base64 • Hashes</span>
+            <span>Explore →</span>
+          </div>
+        </a>
+
+        <!-- Feature 7: Sticky Notes -->
+        <a href="features.html#stickynotes" class="glass-card rounded-2xl p-6 hover:-translate-y-1 transition-all duration-200 shadow-sm flex flex-col justify-between group">
+          <div>
+            <div class="w-12 h-12 rounded-xl bg-rose-500/10 text-rose-600 dark:text-rose-400 flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition-transform">📝</div>
+            <h3 class="text-lg font-bold mb-2 text-slate-900 dark:text-white group-hover:text-rose-500 transition-colors" data-i18n="f7_title">Sticky Notes</h3>
+            <p class="text-xs leading-relaxed text-slate-600 dark:text-slate-400" data-i18n="f7_desc">
+              Card-based desktop note manager with auto-save JSON persistence. Pop out notes into borderless, floating, draggable topmost desktop pins.
+            </p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 text-[11px] font-semibold text-rose-600 dark:text-rose-400 flex items-center justify-between">
+            <span>Floating Borderless Windows</span>
+            <span>Explore →</span>
+          </div>
+        </a>
+
+        <!-- Feature 8: Schedule Shutdown -->
+        <a href="features.html#shutdown" class="glass-card rounded-2xl p-6 hover:-translate-y-1 transition-all duration-200 shadow-sm flex flex-col justify-between group">
+          <div>
+            <div class="w-12 h-12 rounded-xl bg-teal-500/10 text-teal-600 dark:text-teal-400 flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition-transform">⏰</div>
+            <h3 class="text-lg font-bold mb-2 text-slate-900 dark:text-white group-hover:text-teal-500 transition-colors" data-i18n="f8_title">Schedule Shutdown</h3>
+            <p class="text-xs leading-relaxed text-slate-600 dark:text-slate-400" data-i18n="f8_desc">
+              Automate Shutdown, Restart, or Hibernate on a scheduled countdown timer. Real-time visual ticking clock with instantaneous cancellation protection.
+            </p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 text-[11px] font-semibold text-teal-600 dark:text-teal-400 flex items-center justify-between">
+            <span>Countdown Clock • Instant Cancel</span>
+            <span>Explore →</span>
+          </div>
+        </a>
+
+        <!-- Feature 9: Video Converter -->
+        <a href="features.html#videoconverter" class="glass-card rounded-2xl p-6 hover:-translate-y-1 transition-all duration-200 shadow-sm flex flex-col justify-between group">
+          <div>
+            <div class="w-12 h-12 rounded-xl bg-violet-500/10 text-violet-600 dark:text-violet-400 flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition-transform">🎬</div>
+            <h3 class="text-lg font-bold mb-2 text-slate-900 dark:text-white group-hover:text-violet-500 transition-colors" data-i18n="f9_title">Video Converter &amp; Transcoder</h3>
+            <p class="text-xs leading-relaxed text-slate-600 dark:text-slate-400" data-i18n="f9_desc">
+              Convert videos between MP4, MKV, WebM, AVI, MOV, WMV, and animated GIF. Extract audio to MP3, WAV, AAC, and scale resolution with GPU acceleration.
+            </p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 text-[11px] font-semibold text-violet-600 dark:text-violet-400 flex items-center justify-between">
+            <span>FFmpeg • 14+ Formats • GPU</span>
+            <span>Explore →</span>
+          </div>
+        </a>
+
+      </div>
+
+      <!-- View All Details Button -->
+      <div class="mt-12 text-center">
+        <a href="features.html" class="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-bold bg-blue-50 dark:bg-blue-950/60 hover:bg-blue-100 dark:hover:bg-blue-900/60 text-blue-600 dark:text-blue-300 border border-blue-200 dark:border-blue-800/80 transition-colors shadow-sm">
+          <span>Read detailed guides for all 9 utilities</span>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== WHY MYDEUSTOOLS COMPARISON ==================== -->
+  <section class="py-16 bg-slate-100/70 dark:bg-slate-900/40 border-y border-slate-200/80 dark:border-slate-800/80 relative z-10">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="text-center max-w-3xl mx-auto mb-12">
+        <h2 class="text-3xl font-extrabold tracking-tight" data-i18n="comp_title">Why Choose MyDeusTools?</h2>
+        <p class="text-slate-600 dark:text-slate-400 mt-2 text-sm" data-i18n="comp_sub">Comparing traditional scattered utility apps vs. the consolidated MyDeusTools approach.</p>
+      </div>
+
+      <div class="glass-card rounded-2xl overflow-hidden shadow-sm border border-slate-300 dark:border-slate-700">
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs">
+            <thead>
+              <tr class="bg-slate-200/70 dark:bg-slate-800/80 border-b border-slate-300 dark:border-slate-700">
+                <th class="p-4 font-bold text-slate-700 dark:text-slate-300">Feature / Attribute</th>
+                <th class="p-4 font-bold text-slate-500 dark:text-slate-400">Traditional Separate Apps</th>
+                <th class="p-4 font-bold text-blue-600 dark:text-blue-400 bg-blue-50/50 dark:bg-blue-950/30">MyDeusTools Suite</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-200 dark:divide-slate-800 font-medium">
+              <tr>
+                <td class="p-4 font-semibold text-slate-900 dark:text-white" data-i18n="comp_c1">Memory Usage (RAM)</td>
+                <td class="p-4 text-rose-500">400 MB - 1.2 GB (Multiple Electron apps)</td>
+                <td class="p-4 text-emerald-600 dark:text-emerald-400 font-bold bg-blue-50/50 dark:bg-blue-950/30">~30 - 45 MB total</td>
+              </tr>
+              <tr>
+                <td class="p-4 font-semibold text-slate-900 dark:text-white" data-i18n="comp_c2">Distribution &amp; Portability</td>
+                <td class="p-4 text-slate-500">5-8 different installers, registry junk</td>
+                <td class="p-4 text-emerald-600 dark:text-emerald-400 font-bold bg-blue-50/50 dark:bg-blue-950/30">Zero-dependency, single-file .exe</td>
+              </tr>
+              <tr>
+                <td class="p-4 font-semibold text-slate-900 dark:text-white" data-i18n="comp_c3">UI &amp; Design System</td>
+                <td class="p-4 text-slate-500">Inconsistent, dated Win32 / web wrappers</td>
+                <td class="p-4 text-emerald-600 dark:text-emerald-400 font-bold bg-blue-50/50 dark:bg-blue-950/30">Windows 11 Fluent UI + Mica Backdrop</td>
+              </tr>
+              <tr>
+                <td class="p-4 font-semibold text-slate-900 dark:text-white" data-i18n="comp_c4">Multilingual Support</td>
+                <td class="p-4 text-slate-500">English only or requires restart</td>
+                <td class="p-4 text-emerald-600 dark:text-emerald-400 font-bold bg-blue-50/50 dark:bg-blue-950/30">Instant EN &amp; VIE switch without restart</td>
+              </tr>
+              <tr>
+                <td class="p-4 font-semibold text-slate-900 dark:text-white" data-i18n="comp_c5">Privacy &amp; Telemetry</td>
+                <td class="p-4 text-rose-500">Analytics, cloud syncing, background updaters</td>
+                <td class="p-4 text-emerald-600 dark:text-emerald-400 font-bold bg-blue-50/50 dark:bg-blue-950/30">100% Offline, Zero tracking, Open Source</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==================== CALL TO ACTION ==================== -->
+  <section class="py-20 bg-gradient-to-b from-blue-900/10 to-indigo-950/20 border-t border-slate-200/80 dark:border-slate-800/80 relative z-10">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <div class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center p-2 mx-auto mb-6 shadow-xl shadow-blue-500/20">
+        <img src="avatar.ico" class="w-full h-full object-contain" alt="Icon">
+      </div>
+      <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight" data-i18n="get_title">Get MyDeusTools Today</h2>
+      <p class="text-slate-600 dark:text-slate-300 mt-3 text-base max-w-xl mx-auto" data-i18n="get_sub">Run the standalone single-file binary or clone the repository to compile from source in seconds.</p>
+      <div class="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
+        <a href="download.html" class="w-full sm:w-auto flex items-center justify-center gap-2.5 px-8 py-3.5 rounded-xl font-bold text-sm bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-500/25 transition-all">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+          <span data-i18n="get_dl_btn">Download MyDeusTools.App.exe (v1.0.0)</span>
+        </a>
+        <a href="architecture.html" class="w-full sm:w-auto px-6 py-3.5 rounded-xl font-semibold text-sm bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-100 border border-slate-300 dark:border-slate-700 transition-all">
+          <span data-i18n="view_arch_btn">Explore Architecture &amp; Tests (173/173)</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="mt-auto border-t border-slate-200/80 dark:border-slate-800 py-10 relative z-10 bg-white/50 dark:bg-[#080d19]/80">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+      <div class="flex items-center gap-2">
+        <img src="avatar.ico" class="w-4 h-4 object-contain" alt="Icon">
+        <span class="font-semibold text-slate-700 dark:text-slate-300">MyDeusTools</span>
+        <span data-i18n="footer_developed">— Developed by</span>
+        <a href="https://github.com/KaitoDeus" target="_blank" class="font-semibold text-blue-600 dark:text-blue-400 hover:underline">KaitoDeus</a> &amp; Claude.
+      </div>
+
+      <div class="flex items-center gap-6">
+        <a href="https://github.com/KaitoDeus/MyDeusTools" target="_blank" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors" data-i18n="footer_github">GitHub Repository</a>
+        <a href="architecture.html" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors" data-i18n="nav_architecture">Architecture</a>
+        <a href="faq.html" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors" data-i18n="nav_faq">FAQ</a>
+        <a href="https://github.com/KaitoDeus/MyDeusTools/blob/main/LICENSE" target="_blank" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors" data-i18n="footer_license">MIT License</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="assets/site.js"></script>
+  <script>
+    // Page-specific Translations
+    registerTranslations({
+      en: {
+        hero_badge: "Windows 11 Fluent Design & Mica Backdrop • .NET 8.0",
+        hero_title_1: "All your essential Windows utilities.",
+        hero_title_2: "Unified into one modern suite.",
+        hero_subtitle: "Say goodbye to scattered, bloated utility tools. MyDeusTools brings Auto Clicker Pro, Window Pinner & Transparency, QR Studio, Clipboard History, Color Eyedropper, Sticky Notes, and Dev Tools into one blazing-fast, zero-dependency desktop application.",
+        hero_btn_download: "Download for Windows (x64)",
+        hero_btn_features: "Explore All 8 Features",
+        metric_ram: "Lightweight Memory Footprint",
+        metric_offline: "Offline & Zero Telemetry",
+        metric_portable: "Portable .EXE (Zero Installer)",
+        metric_tests: "100% Unit Test Pass Rate",
+        demo_badge: "Live Interactive Simulator",
+        demo_title: "Experience MyDeusTools in your browser",
+        demo_sub: "Click through the tools on the sidebar to test real-time features like window transparency, JSON formatting, hash computation, and clicker emulation.",
+        tab_pinner: "Window Pinner",
+        tab_autoclick: "Auto Clicker Pro",
+        tab_textdev: "Text & Dev Tools",
+        tab_clipboard: "Clipboard Manager",
+        tab_color: "Color Eyedropper",
+        tab_qrcode: "QR Code Studio",
+        tab_sticky: "Sticky Notes",
+        pinner_heading: "Window Pinner & Transparency",
+        pinner_desc: "Pin any app Always-on-Top and adjust live opacity",
+        autoclick_heading: "Auto Clicker Pro",
+        autoclick_desc: "High-speed clicks with safety clamp & waypoint recording",
+        textdev_heading: "JSON Studio & Multi-Hash Generator",
+        clip_heading: "Clipboard Manager History",
+        color_heading: "Color Eyedropper & Palette",
+        qr_heading: "QR Code Studio",
+        sticky_heading: "Sticky Notes",
+        feat_badge: "Comprehensive Toolset",
+        feat_title: "Engineered for Everyday Windows Power Users",
+        feat_desc: "Every utility is built with native Win32 APIs, modern asynchronous architecture, and intuitive Windows 11 aesthetics.",
+        f1_title: "Window Pinner & Opacity",
+        f1_desc: "Pin any application window to stay Always-on-Top (HWND_TOPMOST). Adjust opacity smoothly in real-time with Win32 layered attributes and quick 1-click presets.",
+        f2_title: "Auto Clicker Pro",
+        f2_desc: "Automate Left/Right/Middle clicks with microsecond accuracy. Features full-screen multi-monitor coordinate waypoint recording and safe 10ms hardware clamp.",
+        f3_title: "Clipboard Manager",
+        f3_desc: "Hooks directly into Windows clipboard events (AddClipboardFormatListener). Instant search, favorite item pinning, and 1-click re-copying.",
+        f4_title: "Color Picker & Eyedropper",
+        f4_desc: "Full-screen screen pixel picker featuring an 11x11 pixel real-time magnifier HUD. Copy color formats instantly in HEX, RGB, HSL, or HSV into palette history.",
+        f5_title: "QR Code Studio",
+        f5_desc: "Generate crisp vector QR codes with instant PNG export or clipboard copy. Scan from screen region snip, image file, or clipboard bitmap with auto-URL opening.",
+        f6_title: "Text & Dev Tools",
+        f6_desc: "JSON Studio (formatter/minifier/validator), Base64 encoder/decoder (text & files), URL/HTML entity escaping, multi-hash generator (MD5, SHA-1, SHA-256, SHA-512), and case conversions.",
+        f7_title: "Sticky Notes",
+        f7_desc: "Card-based desktop note manager with auto-save JSON persistence. Pop out notes into borderless, floating, draggable topmost desktop pins.",
+        f8_title: "Schedule Shutdown",
+        f8_desc: "Automate Shutdown, Restart, or Hibernate on a scheduled countdown timer. Real-time visual ticking clock with instantaneous cancellation protection.",
+        comp_title: "Why Choose MyDeusTools?",
+        comp_sub: "Comparing traditional scattered utility apps vs. the consolidated MyDeusTools approach.",
+        comp_c1: "Memory Usage (RAM)",
+        comp_c2: "Distribution & Portability",
+        comp_c3: "UI & Design System",
+        comp_c4: "Multilingual Support",
+        comp_c5: "Privacy & Telemetry",
+        f9_title: "Video Converter & Transcoder",
+        f9_desc: "Convert videos between MP4, MKV, WebM, AVI, MOV, WMV, and animated GIF. Extract audio to MP3, WAV, AAC, and scale resolution with GPU acceleration.",
+        get_title: "Get MyDeusTools Today",
+        get_sub: "Run the standalone single-file binary or clone the repository to compile from source in seconds.",
+        get_dl_btn: "Download MyDeusTools.App.exe (v1.0.0)",
+        view_arch_btn: "Explore Architecture & Tests (173/173)"
+      },
+      vi: {
+        hero_badge: "Giao diện Windows 11 Fluent Design & Hiệu ứng Mica • .NET 8.0",
+        hero_title_1: "Mọi công cụ tiện ích Windows thiết yếu.",
+        hero_title_2: "Gói gọn trong một ứng dụng duy nhất.",
+        hero_subtitle: "Không còn phải cài đặt hàng loạt phần mềm rời rạc nặng nề. MyDeusTools tích hợp Auto Clicker, Ghim & làm mờ cửa sổ nổi, Quét & Tạo mã QR, Lịch sử Clipboard, Bắt mã màu, Ghi chú Sticky, Bộ công cụ Dev và Chuyển đổi Video trong một tệp thực thi duy nhất siêu nhẹ.",
+        hero_btn_download: "Tải về cho Windows (x64)",
+        hero_btn_features: "Xem chi tiết cả 9 tính năng",
+        metric_ram: "Mức tiêu thụ RAM siêu tiết kiệm",
+        metric_offline: "100% Ngoại tuyến & Không thu thập dữ liệu",
+        metric_portable: "Tệp .EXE chạy ngay (Không cần cài đặt)",
+        metric_tests: "173/173 Kiểm thử tự động đạt 100%",
+        demo_badge: "Mô phỏng tương tác trực tiếp",
+        demo_title: "Trải nghiệm MyDeusTools ngay trên trình duyệt",
+        demo_sub: "Nhấp chọn các tính năng trên thanh bên để thử nghiệm ghim cửa sổ, chỉnh độ trong suốt, định dạng JSON, tính mã băm và click chuột tự động.",
+        tab_pinner: "Ghim cửa sổ nổi",
+        tab_autoclick: "Auto Clicker Pro",
+        tab_textdev: "Xử lý văn bản & Dev",
+        tab_clipboard: "Quản lý Clipboard",
+        tab_color: "Bắt mã màu màn hình",
+        tab_qrcode: "Studio Mã QR",
+        tab_sticky: "Ghi chú Sticky Notes",
+        pinner_heading: "Ghim cửa sổ nổi & Chỉnh độ mờ (Opacity)",
+        pinner_desc: "Ghim bất kỳ cửa sổ nào luôn nổi trên cùng và tinh chỉnh độ trong suốt",
+        autoclick_heading: "Auto Clicker Pro",
+        autoclick_desc: "Tự động click chuột tốc độ cao kèm phím tắt và ghi chuỗi tọa độ",
+        textdev_heading: "JSON Studio & Máy tính mã băm (Hash)",
+        clip_heading: "Lịch sử bộ nhớ tạm (Clipboard)",
+        color_heading: "Bắt màu màn hình & Kính lúp Pixel",
+        qr_heading: "Tạo & Quét mã QR",
+        sticky_heading: "Ghi chú dán màn hình",
+        feat_badge: "Bộ công cụ toàn diện",
+        feat_title: "Thiết kế tối ưu cho người dùng Windows chuyên nghiệp",
+        feat_desc: "Mọi tính năng đều tận dụng Win32 API gốc, kiến trúc bất đồng bộ hiện đại và ngôn ngữ thiết kế Windows 11 Fluent đẹp mắt.",
+        f1_title: "Ghim cửa sổ & Làm mờ",
+        f1_desc: "Ghim cửa sổ ứng dụng bất kỳ luôn hiển thị trên cùng (HWND_TOPMOST). Điều chỉnh độ trong suốt theo thời gian thực từ 40% đến 100% mượt mà.",
+        f2_title: "Auto Clicker Pro",
+        f2_desc: "Tự động click chuột Trái/Phải/Giữa với độ trễ tính bằng mili-giây. Hỗ trợ ghi lại tọa độ theo điểm và phím tắt F6 tiện lợi.",
+        f3_title: "Quản lý Clipboard",
+        f3_desc: "Lắng nghe sự kiện Clipboard bằng Win32 API trực tiếp. Tìm kiếm nhanh, ghim mục quan trọng và sao chép lại chỉ bằng 1 cú click.",
+        f4_title: "Bắt màu & Kính lúp",
+        f4_desc: "Bắt màu bất kỳ điểm ảnh nào trên màn hình với kính lúp phóng to 11x11 pixel. Sao chép tức thì mã HEX, RGB, HSL, HSV vào bảng màu.",
+        f5_title: "Studio Mã QR",
+        f5_desc: "Tạo mã QR chất lượng cao và quét mã từ vùng chọn màn hình, tệp ảnh có sẵn hoặc bộ nhớ tạm với khả năng tự nhận diện URL.",
+        f6_title: "Công cụ Dev & Văn bản",
+        f6_desc: "Định dạng và nén JSON, mã hóa/giải mã Base64 (chuỗi & tệp tin), tính toán mã băm tức thì (MD5, SHA-1, SHA-256, SHA-512) và đổi kiểu chữ.",
+        f7_title: "Ghi chú Sticky Notes",
+        f7_desc: "Quản lý thẻ ghi chú tự động lưu vào tệp JSON. Tách riêng thành cửa sổ ghi chú không viền nổi trên màn hình làm việc.",
+        f8_title: "Hẹn giờ tắt máy",
+        f8_desc: "Lên lịch Tắt máy, Khởi động lại hoặc Ngủ đông với đồng hồ đếm ngược trực quan và khả năng hủy lệnh bất cứ lúc nào.",
+        f9_title: "Chuyển đổi Video & Trích xuất âm thanh",
+        f9_desc: "Chuyển đổi linh hoạt giữa MP4, MKV, WebM, AVI, MOV, WMV và ảnh động GIF. Trích xuất âm thanh MP3/WAV/AAC, cắt đoạn video, nén CRF và tăng tốc phần cứng GPU.",
+        comp_title: "Tại sao nên chọn MyDeusTools?",
+        comp_sub: "So sánh giữa việc cài đặt nhiều phần mềm rời rạc và việc sử dụng bộ công cụ tích hợp MyDeusTools.",
+        comp_c1: "Mức chiếm dụng RAM",
+        comp_c2: "Phân phối & Tính cơ động",
+        comp_c3: "Giao diện người dùng",
+        comp_c4: "Hỗ trợ đa ngôn ngữ",
+        comp_c5: "Quyền riêng tư & Bảo mật",
+        get_title: "Tải ngay MyDeusTools hôm nay",
+        get_sub: "Sử dụng tệp thực thi đóng gói sẵn hoặc tự biên dịch từ mã nguồn chỉ trong vài bước đơn giản.",
+        get_dl_btn: "Tải về MyDeusTools.App.exe (v1.0.0)",
+        view_arch_btn: "Xem kiến trúc & Kiểm thử (173/173)"
+      }
+    });
+
+    // Interactive Mockup Tab Switching
+    function switchMockTab(tabId) {
+      document.querySelectorAll('.mock-tab-btn').forEach(btn => {
+        btn.classList.remove('bg-blue-600', 'text-white', 'shadow-sm', 'font-semibold');
+        btn.classList.add('text-slate-600', 'dark:text-slate-400', 'font-medium');
+      });
+      const activeBtn = document.getElementById('tab-' + tabId);
+      if (activeBtn) {
+        activeBtn.classList.add('bg-blue-600', 'text-white', 'shadow-sm', 'font-semibold');
+        activeBtn.classList.remove('text-slate-600', 'dark:text-slate-400', 'font-medium');
+      }
+
+      document.querySelectorAll('.mock-panel').forEach(panel => panel.classList.add('hidden'));
+      const activePanel = document.getElementById('mock-panel-' + tabId);
+      if (activePanel) {
+        activePanel.classList.remove('hidden');
+      }
+    }
+
+    // Window Pinner Simulator
+    let isMockPinned = true;
+    function toggleMockPin() {
+      isMockPinned = !isMockPinned;
+      const btn = document.getElementById('btnMockPin');
+      const badge = document.getElementById('pinBadge');
+      const count = document.getElementById('pinnedCountBadge');
+
+      if (isMockPinned) {
+        btn.textContent = 'Unpin';
+        badge.classList.remove('hidden');
+        count.textContent = 'Pinned: 1';
+      } else {
+        btn.textContent = 'Pin to Top';
+        badge.classList.add('hidden');
+        count.textContent = 'Pinned: 0';
+      }
+    }
+
+    function changeMockOpacity(val) {
+      document.getElementById('opacityLabel').textContent = val + '%';
+      const simBox = document.getElementById('simulatedWindowBox');
+      simBox.style.opacity = (val / 100).toString();
+    }
+
+    // Auto Clicker Simulator
+    let clickCount = 0;
+    let clickerInterval = null;
+    function toggleMockClicker() {
+      const btn = document.getElementById('btnMockClicker');
+      if (clickerInterval) {
+        clearInterval(clickerInterval);
+        clickerInterval = null;
+        btn.textContent = 'Start Emulation (F6)';
+        btn.classList.remove('bg-rose-600', 'hover:bg-rose-700');
+        btn.classList.add('bg-blue-600', 'hover:bg-blue-700');
+      } else {
+        const ms = Math.max(10, parseInt(document.getElementById('mockInterval').value) || 50);
+        btn.textContent = 'Stop Emulation (F6)';
+        btn.classList.remove('bg-blue-600', 'hover:bg-blue-700');
+        btn.classList.add('bg-rose-600', 'hover:bg-rose-700');
+        clickerInterval = setInterval(() => {
+          clickCount += 1;
+          document.getElementById('clickCounter').textContent = clickCount + ' Clicks';
+        }, ms);
+      }
+    }
+
+    function resetMockClicker() {
+      if (clickerInterval) toggleMockClicker();
+      clickCount = 0;
+      document.getElementById('clickCounter').textContent = '0 Clicks';
+    }
+
+    // Text & Dev Tools Simulator
+    function formatMockJson() {
+      try {
+        const input = document.getElementById('mockJsonInput').value;
+        const parsed = JSON.parse(input);
+        document.getElementById('mockJsonOutput').value = JSON.stringify(parsed, null, 2);
+        calcMockHash(input);
+      } catch (e) {
+        document.getElementById('mockJsonOutput').value = 'Error: ' + e.message;
+      }
+    }
+
+    function minifyMockJson() {
+      try {
+        const input = document.getElementById('mockJsonInput').value;
+        const parsed = JSON.parse(input);
+        document.getElementById('mockJsonOutput').value = JSON.stringify(parsed);
+        calcMockHash(input);
+      } catch (e) {
+        document.getElementById('mockJsonOutput').value = 'Error: ' + e.message;
+      }
+    }
+
+    async function calcMockHash(str) {
+      if (!str) {
+        document.getElementById('mockHashResult').textContent = 'Type above to calculate hash...';
+        return;
+      }
+      try {
+        const encoder = new TextEncoder();
+        const data = encoder.encode(str);
+        const hashBuf = await crypto.subtle.digest('SHA-256', data);
+        const hashArr = Array.from(new Uint8Array(hashBuf));
+        const hashHex = hashArr.map(b => b.toString(16).padStart(2, '0')).join('');
+        document.getElementById('mockHashResult').textContent = hashHex;
+      } catch {
+        document.getElementById('mockHashResult').textContent = 'SHA-256 preview requires HTTPS or modern crypto.';
+      }
+    }
+
+    document.getElementById('mockJsonInput').addEventListener('input', (e) => {
+      calcMockHash(e.target.value);
+    });
+
+    // QR Code Live Simulator
+    function updateMockQr(val) {
+      const img = document.getElementById('mockQrImg');
+      if (val && val.trim()) {
+        img.src = 'https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=' + encodeURIComponent(val.trim());
+      }
+    }
+
+    function copyColor(hex) {
+      navigator.clipboard.writeText(hex);
+      alert('Copied color ' + hex + ' to clipboard!');
+    }
+
+    // Init
+    formatMockJson();
+  </script>
+</body>
+</html>
