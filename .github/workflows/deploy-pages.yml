@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
@@ -18,7 +18,25 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  deploy:
+  deploy-gh-pages:
+    name: Deploy to gh-pages Branch
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Deploy to GitHub Pages (gh-pages branch)
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./MyDeusTools.Website
+          keep_files: false
+          force_orphan: true
+
+  deploy-actions-pages:
+    name: Deploy to GitHub Actions Pages
+    needs: deploy-gh-pages
+    continue-on-error: true
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -28,6 +46,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Setup Pages
+        id: setup_pages
         uses: actions/configure-pages@v5
 
       - name: Upload Artifact
@@ -38,3 +57,4 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+

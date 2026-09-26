@@ -14,6 +14,10 @@
     <FileVersion>1.0.0.0</FileVersion>
     <AssemblyVersion>1.0.0.0</AssemblyVersion>
     <ApplicationIcon>Resources\avatar.ico</ApplicationIcon>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Authors>KaitoDeus, Claude</Authors>
+    <Company>KaitoDeus</Company>
+    <RepositoryUrl>https://github.com/KaitoDeus/MyDeusTools</RepositoryUrl>
     
     <!-- Tối ưu đóng gói Single File -->
     <PublishSingleFile>true</PublishSingleFile>
