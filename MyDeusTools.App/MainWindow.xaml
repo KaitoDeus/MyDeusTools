@@ -99,6 +99,13 @@
                             <ui:SymbolIcon Symbol="Video24" />
                         </ui:NavigationViewItem.Icon>
                     </ui:NavigationViewItem>
+
+                    <ui:NavigationViewItem Content="{DynamicResource Nav_ImageStudio}" 
+                                           TargetPageType="{x:Type pages:ImageStudioPage}">
+                        <ui:NavigationViewItem.Icon>
+                            <ui:SymbolIcon Symbol="ImageMultiple24" />
+                        </ui:NavigationViewItem.Icon>
+                    </ui:NavigationViewItem>
                 </ui:NavigationView.MenuItems>
 
                 <ui:NavigationView.FooterMenuItems>

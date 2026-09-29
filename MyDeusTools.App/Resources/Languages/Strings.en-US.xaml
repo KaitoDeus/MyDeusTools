@@ -231,4 +231,54 @@
     <system:String x:Key="Video_BtnCancelConversion">Cancel</system:String>
     <system:String x:Key="Video_BtnToggleLogs">View Detailed Logs</system:String>
 
+    <!-- Image Studio Page -->
+    <system:String x:Key="Nav_ImageStudio">Image Studio</system:String>
+    <system:String x:Key="Image_Title">Image Studio &amp; Optimizer</system:String>
+    <system:String x:Key="Image_Subtitle">Compress, resize, convert formats (WebP, PNG, JPG, ICO), and strip EXIF metadata</system:String>
+    <system:String x:Key="Image_DropTitle">Drag and drop images or folders here</system:String>
+    <system:String x:Key="Image_DropSubtitle">Supports PNG, JPG, JPEG, WebP, BMP, TIFF, GIF, ICO</system:String>
+    <system:String x:Key="Image_BrowseFiles">Browse Files</system:String>
+    <system:String x:Key="Image_BrowseFolder">Browse Folder</system:String>
+    <system:String x:Key="Image_QueueTitle">Image Queue</system:String>
+    <system:String x:Key="Image_ClearAll">Clear All</system:String>
+    <system:String x:Key="Image_TotalFiles">Files:</system:String>
+    <system:String x:Key="Image_TotalSaved">Total Saved:</system:String>
+    <system:String x:Key="Image_TargetFormat">Target Format</system:String>
+    <system:String x:Key="Image_Quality">Compression Quality</system:String>
+    <system:String x:Key="Image_QualityWeb">Web (60%)</system:String>
+    <system:String x:Key="Image_QualityBalanced">Balanced (80%)</system:String>
+    <system:String x:Key="Image_QualityHigh">High (90%)</system:String>
+    <system:String x:Key="Image_QualityLossless">Max (100%)</system:String>
+    <system:String x:Key="Image_ResizeTitle">Resize &amp; Scaling</system:String>
+    <system:String x:Key="Image_ResizeMode_Original">Keep Original</system:String>
+    <system:String x:Key="Image_ResizeMode_Percentage">By Percentage</system:String>
+    <system:String x:Key="Image_ResizeMode_ByWidth">Specify Width</system:String>
+    <system:String x:Key="Image_ResizeMode_ByHeight">Specify Height</system:String>
+    <system:String x:Key="Image_ResizeMode_Custom">Exact Dimensions</system:String>
+    <system:String x:Key="Image_KeepAspectRatio">Maintain Aspect Ratio</system:String>
+    <system:String x:Key="Image_Width">Width (px):</system:String>
+    <system:String x:Key="Image_Height">Height (px):</system:String>
+    <system:String x:Key="Image_Percent">Scale (%):</system:String>
+    <system:String x:Key="Image_RotateFlipTitle">Orientation</system:String>
+    <system:String x:Key="Image_Rotate_None">Normal</system:String>
+    <system:String x:Key="Image_Rotate_90">Rotate 90° CW</system:String>
+    <system:String x:Key="Image_Rotate_180">Rotate 180°</system:String>
+    <system:String x:Key="Image_Rotate_270">Rotate 270°</system:String>
+    <system:String x:Key="Image_Flip_H">Flip Horizontal</system:String>
+    <system:String x:Key="Image_Flip_V">Flip Vertical</system:String>
+    <system:String x:Key="Image_PrivacyTitle">Privacy &amp; Options</system:String>
+    <system:String x:Key="Image_StripExif">Strip EXIF / GPS Metadata</system:String>
+    <system:String x:Key="Image_Overwrite">Overwrite existing files</system:String>
+    <system:String x:Key="Image_FileSuffix">Output suffix:</system:String>
+    <system:String x:Key="Image_OutputDir">Output Folder:</system:String>
+    <system:String x:Key="Image_ChooseDir">Browse...</system:String>
+    <system:String x:Key="Image_ResetDir">Same as source</system:String>
+    <system:String x:Key="Image_StartBtn">Start Batch Conversion</system:String>
+    <system:String x:Key="Image_CancelBtn">Cancel</system:String>
+    <system:String x:Key="Image_OpenFolder">Open Folder</system:String>
+    <system:String x:Key="Image_StatusPending">Pending</system:String>
+    <system:String x:Key="Image_StatusProcessing">Processing...</system:String>
+    <system:String x:Key="Image_StatusDone">Done</system:String>
+    <system:String x:Key="Image_StatusError">Error</system:String>
+
 </ResourceDictionary>

@@ -179,6 +179,8 @@ namespace MyDeusTools.Tests
         [InlineData("AutoClick_OverlayHelp")]
         [InlineData("Nav_VideoConverter")]
         [InlineData("Video_Title")]
+        [InlineData("Nav_ImageStudio")]
+        [InlineData("Image_Title")]
         public void CriticalKeys_ShouldExistInBothDictionaries(string key)
         {
             string dir = AppContext.BaseDirectory;

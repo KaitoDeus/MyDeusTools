@@ -12,7 +12,7 @@
   <img src="https://img.shields.io/badge/.NET-8.0--windows-512BD4?logo=dotnet" alt=".NET 8" />
   <img src="https://img.shields.io/badge/UI-WPF--UI%203.0-0078D4?logo=windows" alt="WPF-UI" />
   <img src="https://img.shields.io/badge/Architecture-MVVM%20Toolkit-blue" alt="MVVM" />
-  <img src="https://img.shields.io/badge/Tests-173%20Passed%20(100%25)-brightgreen" alt="Tests" />
+  <img src="https://img.shields.io/badge/Tests-198%20Passed%20(100%25)-brightgreen" alt="Tests" />
   <img src="https://img.shields.io/badge/Platform-Windows%20x64-00A4EF" alt="Platform" />
   <img src="https://img.shields.io/badge/License-MIT-green" alt="License" />
 </p>
@@ -25,7 +25,7 @@
 
 ## Overview
 
-MyDeusTools is a lightweight, modern, and versatile Windows desktop utility suite built with WPF and WPF-UI 3.0 (Windows 11 Fluent Design & Mica Backdrop). Instead of installing multiple standalone applications, MyDeusTools consolidates essential daily productivity tools into a single, cohesive application that packages into a zero-dependency, self-contained single-file executable.
+MyDeusTools is a lightweight, modern, and versatile Windows desktop utility suite built with WPF and WPF-UI 3.0 (Windows 11 Fluent Design & Mica Backdrop). Consolidates 10 essential daily productivity tools into a single, cohesive application that packages into a zero-dependency, self-contained single-file executable.
 
 ---
 
@@ -42,6 +42,7 @@ MyDeusTools is a lightweight, modern, and versatile Windows desktop utility suit
 | **Text & Dev Tools** | Swiss Army knife for text and code: JSON Formatter and Minifier with syntax validator, Base64 encoder/decoder (Text and Files), URL and HTML entity escaping, instant multi-hash generator (MD5, SHA-1, SHA-256, SHA-512), case converter (camel, Pascal, snake, kebab, UPPER, lower, Title), and text statistics analyzer. |
 | **Window Pinner & Transparency** | Pin any third-party application window to remain Always-on-Top (HWND_TOPMOST), smoothly adjust real-time opacity and transparency (Win32 WS_EX_LAYERED with SetLayeredWindowAttributes), quick opacity presets (100%, 80%, 60%, 40%), 1-click active window pinning, and bring-to-front window activation. |
 | **Video Converter & Transcoder** | Fast and versatile multimedia converter supporting diverse containers (MP4, MKV, WebM, AVI, MOV, WMV, GIF, FLV), audio extraction (MP3, WAV, AAC, M4A, FLAC), resolution scaling (4K to 360p), CRF quality controls (Ultra, High, Medium, Compact), lossless stream copy, GPU hardware acceleration, video trimming, and real-time progress parsing. |
+| **Image Studio & Optimizer** | High-performance batch image compressor and converter supporting WebP, PNG, JPEG, ICO, BMP, and TIFF. Features quality level tuning (1-100%), multi-mode scaling (percentage, fixed width/height, aspect-ratio preserved bounding box), multi-layer Windows .ico generation (16px to 256px), EXIF/GPS privacy stripping, and real-time disk space savings calculation. |
 | **Bilingual Localization (EN & VIE)** | Instant runtime switching between English and Vietnamese across all navigation menus and pages without requiring application restarts, with persistent settings (Data/settings.json). |
 | **System Tray & Windows Startup** | Minimize-to-tray lifecycle management (Hardcodet.NotifyIcon), instant Dark/Light theme switching, and Windows startup toggle via CurrentUser Registry. |
 

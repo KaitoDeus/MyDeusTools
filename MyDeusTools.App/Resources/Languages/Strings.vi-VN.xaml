@@ -231,4 +231,54 @@
     <system:String x:Key="Video_BtnCancelConversion">Hủy bỏ</system:String>
     <system:String x:Key="Video_BtnToggleLogs">Xem nhật ký chi tiết</system:String>
 
+    <!-- Image Studio Page -->
+    <system:String x:Key="Nav_ImageStudio">Xử lý &amp; Nén ảnh</system:String>
+    <system:String x:Key="Image_Title">Xử lý &amp; Nén ảnh Hàng loạt</system:String>
+    <system:String x:Key="Image_Subtitle">Nén dung lượng, đổi kích thước, chuyển đổi định dạng (WebP, PNG, JPG, ICO) và xóa dữ liệu EXIF</system:String>
+    <system:String x:Key="Image_DropTitle">Kéo thả hình ảnh hoặc thư mục vào đây</system:String>
+    <system:String x:Key="Image_DropSubtitle">Hỗ trợ định dạng PNG, JPG, JPEG, WebP, BMP, TIFF, GIF, ICO</system:String>
+    <system:String x:Key="Image_BrowseFiles">Chọn tệp tin</system:String>
+    <system:String x:Key="Image_BrowseFolder">Chọn thư mục</system:String>
+    <system:String x:Key="Image_QueueTitle">Hàng đợi xử lý</system:String>
+    <system:String x:Key="Image_ClearAll">Xóa tất cả</system:String>
+    <system:String x:Key="Image_TotalFiles">Số tệp:</system:String>
+    <system:String x:Key="Image_TotalSaved">Đã tiết kiệm:</system:String>
+    <system:String x:Key="Image_TargetFormat">Định dạng xuất</system:String>
+    <system:String x:Key="Image_Quality">Chất lượng nén</system:String>
+    <system:String x:Key="Image_QualityWeb">Web (60%)</system:String>
+    <system:String x:Key="Image_QualityBalanced">Cân bằng (80%)</system:String>
+    <system:String x:Key="Image_QualityHigh">Cao (90%)</system:String>
+    <system:String x:Key="Image_QualityLossless">Tối đa (100%)</system:String>
+    <system:String x:Key="Image_ResizeTitle">Kích thước &amp; Tỷ lệ</system:String>
+    <system:String x:Key="Image_ResizeMode_Original">Giữ nguyên gốc</system:String>
+    <system:String x:Key="Image_ResizeMode_Percentage">Theo phần trăm</system:String>
+    <system:String x:Key="Image_ResizeMode_ByWidth">Theo chiều rộng</system:String>
+    <system:String x:Key="Image_ResizeMode_ByHeight">Theo chiều cao</system:String>
+    <system:String x:Key="Image_ResizeMode_Custom">Kích thước cố định</system:String>
+    <system:String x:Key="Image_KeepAspectRatio">Giữ đúng tỷ lệ ảnh</system:String>
+    <system:String x:Key="Image_Width">Chiều rộng (px):</system:String>
+    <system:String x:Key="Image_Height">Chiều cao (px):</system:String>
+    <system:String x:Key="Image_Percent">Tỷ lệ (%):</system:String>
+    <system:String x:Key="Image_RotateFlipTitle">Xoay &amp; Lật ảnh</system:String>
+    <system:String x:Key="Image_Rotate_None">Bình thường</system:String>
+    <system:String x:Key="Image_Rotate_90">Xoay 90°</system:String>
+    <system:String x:Key="Image_Rotate_180">Xoay 180°</system:String>
+    <system:String x:Key="Image_Rotate_270">Xoay 270°</system:String>
+    <system:String x:Key="Image_Flip_H">Lật ngang</system:String>
+    <system:String x:Key="Image_Flip_V">Lật dọc</system:String>
+    <system:String x:Key="Image_PrivacyTitle">Quyền riêng tư &amp; Tùy chọn</system:String>
+    <system:String x:Key="Image_StripExif">Xóa dữ liệu EXIF / GPS cá nhân</system:String>
+    <system:String x:Key="Image_Overwrite">Ghi đè nếu tệp đã tồn tại</system:String>
+    <system:String x:Key="Image_FileSuffix">Hậu tố tên tệp:</system:String>
+    <system:String x:Key="Image_OutputDir">Thư mục xuất:</system:String>
+    <system:String x:Key="Image_ChooseDir">Chọn...</system:String>
+    <system:String x:Key="Image_ResetDir">Cùng thư mục gốc</system:String>
+    <system:String x:Key="Image_StartBtn">Bắt đầu xử lý hàng loạt</system:String>
+    <system:String x:Key="Image_CancelBtn">Hủy bỏ</system:String>
+    <system:String x:Key="Image_OpenFolder">Mở thư mục</system:String>
+    <system:String x:Key="Image_StatusPending">Chờ xử lý</system:String>
+    <system:String x:Key="Image_StatusProcessing">Đang xử lý...</system:String>
+    <system:String x:Key="Image_StatusDone">Hoàn tất</system:String>
+    <system:String x:Key="Image_StatusError">Lỗi</system:String>
+
 </ResourceDictionary>

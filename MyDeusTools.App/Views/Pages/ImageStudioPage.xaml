@@ -1,0 +1,551 @@
+<Page x:Class="MyDeusTools.App.Views.Pages.ImageStudioPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+      xmlns:impl="clr-namespace:MyDeusTools.App.Services.Impl"
+      Title="Image Studio"
+      Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+      Background="Transparent">
+
+    <Grid Margin="30,16,30,16" Background="Transparent">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- HEADER -->
+        <Grid Grid.Row="0" Margin="0,0,0,12">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Orientation="Vertical">
+                <TextBlock Text="{DynamicResource Image_Title}" 
+                           FontSize="24" 
+                           FontWeight="Bold"/>
+                <TextBlock Text="{DynamicResource Image_Subtitle}" 
+                           FontSize="12" 
+                           Foreground="{DynamicResource TextFillColorSecondaryBrush}" 
+                           Margin="0,2,0,0"/>
+            </StackPanel>
+
+            <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                <Border Background="{DynamicResource CardBackgroundFillColorSecondaryBrush}" 
+                        CornerRadius="6" 
+                        Padding="12,6" 
+                        Margin="0,0,10,0">
+                    <StackPanel Orientation="Horizontal">
+                        <ui:SymbolIcon Symbol="ImageMultiple24" Margin="0,0,6,0" FontSize="14"/>
+                        <TextBlock Text="{Binding TotalSavedDisplay, StringFormat='{}Tiết kiệm: {0}'}" 
+                                   FontSize="12" FontWeight="SemiBold"/>
+                    </StackPanel>
+                </Border>
+
+                <ui:Button Content="{DynamicResource Image_OpenFolder}" 
+                           Command="{Binding OpenOutputFolderCommand}"
+                           Appearance="Secondary" 
+                           Icon="FolderOpen24"/>
+            </StackPanel>
+        </Grid>
+
+        <!-- MAIN 2-COLUMN LAYOUT -->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="380"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- LEFT COLUMN: DRAG & DROP + QUEUE -->
+            <Grid Grid.Column="0" Margin="0,0,16,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <!-- DROP ZONE -->
+                <Border Grid.Row="0"
+                        x:Name="DropZoneBorder"
+                        Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
+                        BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}"
+                        BorderThickness="1.5"
+                        CornerRadius="10"
+                        Padding="16,14"
+                        Margin="0,0,0,12"
+                        AllowDrop="True"
+                        DragOver="DropZoneBorder_DragOver"
+                        Drop="DropZoneBorder_Drop">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <ui:SymbolIcon Grid.Column="0" Symbol="CloudArrowUp24" 
+                                       FontSize="36" 
+                                       Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}" 
+                                       Margin="0,0,14,0" 
+                                       VerticalAlignment="Center"/>
+
+                        <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                            <TextBlock Text="{DynamicResource Image_DropTitle}" 
+                                       FontWeight="SemiBold" 
+                                       FontSize="14"/>
+                            <TextBlock Text="{DynamicResource Image_DropSubtitle}" 
+                                       FontSize="11" 
+                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}" 
+                                       Margin="0,2,0,0"/>
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+                            <ui:Button Content="{DynamicResource Image_BrowseFiles}" 
+                                       Command="{Binding AddFilesCommand}"
+                                       Appearance="Primary" 
+                                       Icon="DocumentAdd24"
+                                       Margin="0,0,8,0"/>
+                            <ui:Button Content="{DynamicResource Image_BrowseFolder}" 
+                                       Command="{Binding AddFolderCommand}"
+                                       Appearance="Secondary" 
+                                       Icon="FolderAdd24"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+                <!-- QUEUE SUMMARY BAR -->
+                <Grid Grid.Row="1" Margin="2,0,2,8">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock Text="{DynamicResource Image_QueueTitle}" FontWeight="SemiBold" FontSize="13"/>
+                        <Border Background="{DynamicResource AccentFillColorDefaultBrush}" 
+                                CornerRadius="10" 
+                                Padding="8,1" 
+                                Margin="8,0,0,0">
+                            <TextBlock Text="{Binding TotalFilesCount}" 
+                                       Foreground="White" 
+                                       FontSize="11" 
+                                       FontWeight="Bold"/>
+                        </Border>
+                    </StackPanel>
+
+                    <ui:Button Grid.Column="2" 
+                               Content="{DynamicResource Image_ClearAll}" 
+                               Command="{Binding ClearFilesCommand}"
+                               Appearance="Transparent" 
+                               Icon="Delete24" 
+                               FontSize="11"
+                               Padding="6,2"/>
+                </Grid>
+
+                <!-- FILE LIST -->
+                <Border Grid.Row="2"
+                        Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
+                        BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}"
+                        BorderThickness="1"
+                        CornerRadius="8"
+                        Padding="6">
+                    <ListView ItemsSource="{Binding Files}"
+                              SelectedItem="{Binding SelectedFile}"
+                              BorderThickness="0"
+                              Background="Transparent"
+                              ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Border Background="{DynamicResource CardBackgroundFillColorSecondaryBrush}"
+                                        CornerRadius="6"
+                                        Padding="10,8"
+                                        Margin="0,2,0,4">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <!-- Format Pill -->
+                                        <Border Grid.Column="0" 
+                                                Background="{DynamicResource AccentFillColorDefaultBrush}" 
+                                                CornerRadius="4" 
+                                                Padding="6,3" 
+                                                Margin="0,0,10,0" 
+                                                VerticalAlignment="Center">
+                                            <TextBlock Text="{Binding Format}" 
+                                                       FontSize="10" 
+                                                       FontWeight="Bold" 
+                                                       Foreground="White"/>
+                                        </Border>
+
+                                        <!-- Name & Original Metadata -->
+                                        <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="0,0,8,0">
+                                            <TextBlock Text="{Binding FileName}" 
+                                                       FontWeight="SemiBold" 
+                                                       FontSize="12" 
+                                                       TextTrimming="CharacterEllipsis"/>
+                                            <StackPanel Orientation="Horizontal" Margin="0,2,0,0">
+                                                <TextBlock Text="{Binding OriginalDimensions}" 
+                                                           FontSize="10" 
+                                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                                                <TextBlock Text=" • " 
+                                                           FontSize="10" 
+                                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                                                <TextBlock Text="{Binding OriginalSizeFormatted}" 
+                                                           FontSize="10" 
+                                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                                            </StackPanel>
+                                        </StackPanel>
+
+                                        <!-- Reduction & Output Stats -->
+                                        <StackPanel Grid.Column="2" 
+                                                    VerticalAlignment="Center" 
+                                                    HorizontalAlignment="Right" 
+                                                    Margin="0,0,12,0">
+                                            <TextBlock Text="{Binding OutputSizeFormatted}" 
+                                                       FontWeight="Bold" 
+                                                       FontSize="11" 
+                                                       HorizontalAlignment="Right"/>
+                                            <TextBlock Text="{Binding ReductionDisplay}" 
+                                                       FontSize="10" 
+                                                       Foreground="#10B981" 
+                                                       FontWeight="SemiBold" 
+                                                       HorizontalAlignment="Right"/>
+                                        </StackPanel>
+
+                                        <!-- Status Badge -->
+                                        <Border Grid.Column="3" 
+                                                CornerRadius="4" 
+                                                Padding="6,3" 
+                                                Margin="0,0,8,0" 
+                                                VerticalAlignment="Center"
+                                                Background="{DynamicResource CardBackgroundFillColorDefaultBrush}">
+                                            <TextBlock Text="{Binding StatusDisplay}" 
+                                                       FontSize="10" 
+                                                       FontWeight="SemiBold"/>
+                                        </Border>
+
+                                        <!-- Action Buttons -->
+                                        <StackPanel Grid.Column="4" Orientation="Horizontal" VerticalAlignment="Center">
+                                            <ui:Button Icon="ArrowUpRight24" 
+                                                       Command="{Binding DataContext.OpenOutputFileCommand, RelativeSource={RelativeSource AncestorType=Page}}"
+                                                       CommandParameter="{Binding}"
+                                                       Appearance="Transparent" 
+                                                       Padding="4" 
+                                                       Margin="0,0,2,0"/>
+                                            <ui:Button Icon="Dismiss24" 
+                                                       Command="{Binding DataContext.RemoveFileCommand, RelativeSource={RelativeSource AncestorType=Page}}"
+                                                       CommandParameter="{Binding}"
+                                                       Appearance="Transparent" 
+                                                       Padding="4"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </Border>
+            </Grid>
+
+            <!-- RIGHT COLUMN: CONTROLS & SETTINGS SIDEBAR -->
+            <ScrollViewer Grid.Column="1" 
+                          VerticalScrollBarVisibility="Auto" 
+                          HorizontalScrollBarVisibility="Disabled">
+                <StackPanel Margin="0,0,4,10">
+
+                    <!-- FORMAT SELECTOR CARD -->
+                    <ui:Card Padding="12" Margin="0,0,0,10">
+                        <StackPanel>
+                            <TextBlock Text="{DynamicResource Image_TargetFormat}" 
+                                       FontWeight="Bold" 
+                                       FontSize="12" 
+                                       Margin="0,0,0,8"/>
+                            <WrapPanel Orientation="Horizontal">
+                                <RadioButton Content="WebP" 
+                                             IsChecked="{Binding TargetFormat, Converter={x:Static impl:ImageFormatConverter.Instance}, ConverterParameter={x:Static impl:ImageTargetFormat.WebP}}"
+                                             GroupName="TargetFormatGroup" 
+                                             Margin="0,0,8,6"/>
+                                <RadioButton Content="PNG" 
+                                             IsChecked="{Binding TargetFormat, Converter={x:Static impl:ImageFormatConverter.Instance}, ConverterParameter={x:Static impl:ImageTargetFormat.Png}}"
+                                             GroupName="TargetFormatGroup" 
+                                             Margin="0,0,8,6"/>
+                                <RadioButton Content="JPEG" 
+                                             IsChecked="{Binding TargetFormat, Converter={x:Static impl:ImageFormatConverter.Instance}, ConverterParameter={x:Static impl:ImageTargetFormat.Jpeg}}"
+                                             GroupName="TargetFormatGroup" 
+                                             Margin="0,0,8,6"/>
+                                <RadioButton Content="ICO" 
+                                             IsChecked="{Binding TargetFormat, Converter={x:Static impl:ImageFormatConverter.Instance}, ConverterParameter={x:Static impl:ImageTargetFormat.Ico}}"
+                                             GroupName="TargetFormatGroup" 
+                                             Margin="0,0,8,6"/>
+                                <RadioButton Content="BMP" 
+                                             IsChecked="{Binding TargetFormat, Converter={x:Static impl:ImageFormatConverter.Instance}, ConverterParameter={x:Static impl:ImageTargetFormat.Bmp}}"
+                                             GroupName="TargetFormatGroup" 
+                                             Margin="0,0,8,6"/>
+                                <RadioButton Content="TIFF" 
+                                             IsChecked="{Binding TargetFormat, Converter={x:Static impl:ImageFormatConverter.Instance}, ConverterParameter={x:Static impl:ImageTargetFormat.Tiff}}"
+                                             GroupName="TargetFormatGroup" 
+                                             Margin="0,0,8,6"/>
+                            </WrapPanel>
+                        </StackPanel>
+                    </ui:Card>
+
+                    <!-- QUALITY SLIDER CARD -->
+                    <ui:Card Padding="12" Margin="0,0,0,10">
+                        <StackPanel>
+                            <Grid Margin="0,0,0,6">
+                                <TextBlock Text="{DynamicResource Image_Quality}" FontWeight="Bold" FontSize="12"/>
+                                <TextBlock Text="{Binding Quality, StringFormat='{}{0}%'}" 
+                                           HorizontalAlignment="Right" 
+                                           FontWeight="Bold" 
+                                           FontSize="12"
+                                           Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"/>
+                            </Grid>
+
+                            <Slider Minimum="1" Maximum="100" 
+                                    Value="{Binding Quality, Mode=TwoWay}" 
+                                    TickFrequency="5" 
+                                    IsSnapToTickEnabled="False"
+                                    Margin="0,0,0,8"/>
+
+                            <WrapPanel Orientation="Horizontal">
+                                <ui:Button Content="{DynamicResource Image_QualityWeb}" 
+                                           Command="{Binding QuickQualityCommand}" 
+                                           CommandParameter="60" 
+                                           Appearance="Secondary" 
+                                           FontSize="10" 
+                                           Padding="6,3" 
+                                           Margin="0,0,4,4"/>
+                                <ui:Button Content="{DynamicResource Image_QualityBalanced}" 
+                                           Command="{Binding QuickQualityCommand}" 
+                                           CommandParameter="80" 
+                                           Appearance="Secondary" 
+                                           FontSize="10" 
+                                           Padding="6,3" 
+                                           Margin="0,0,4,4"/>
+                                <ui:Button Content="{DynamicResource Image_QualityHigh}" 
+                                           Command="{Binding QuickQualityCommand}" 
+                                           CommandParameter="90" 
+                                           Appearance="Secondary" 
+                                           FontSize="10" 
+                                           Padding="6,3" 
+                                           Margin="0,0,4,4"/>
+                                <ui:Button Content="{DynamicResource Image_QualityLossless}" 
+                                           Command="{Binding QuickQualityCommand}" 
+                                           CommandParameter="100" 
+                                           Appearance="Secondary" 
+                                           FontSize="10" 
+                                           Padding="6,3" 
+                                           Margin="0,0,4,4"/>
+                            </WrapPanel>
+                        </StackPanel>
+                    </ui:Card>
+
+                    <!-- RESIZE CARD -->
+                    <ui:Card Padding="12" Margin="0,0,0,10">
+                        <StackPanel>
+                            <TextBlock Text="{DynamicResource Image_ResizeTitle}" FontWeight="Bold" FontSize="12" Margin="0,0,0,6"/>
+
+                            <ComboBox SelectedIndex="{Binding ResizeMode, Converter={x:Static impl:ResizeModeIndexConverter.Instance}}" 
+                                      Margin="0,0,0,8">
+                                <ComboBoxItem Content="{DynamicResource Image_ResizeMode_Original}"/>
+                                <ComboBoxItem Content="{DynamicResource Image_ResizeMode_Percentage}"/>
+                                <ComboBoxItem Content="{DynamicResource Image_ResizeMode_ByWidth}"/>
+                                <ComboBoxItem Content="{DynamicResource Image_ResizeMode_ByHeight}"/>
+                                <ComboBoxItem Content="{DynamicResource Image_ResizeMode_Custom}"/>
+                            </ComboBox>
+
+                            <!-- Percentage Mode -->
+                            <StackPanel Margin="0,0,0,6">
+                                <StackPanel.Style>
+                                    <Style TargetType="StackPanel">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ResizeMode}" Value="{x:Static impl:ImageResizeMode.Percentage}">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </StackPanel.Style>
+                                <Grid Margin="0,0,0,4">
+                                    <TextBlock Text="{DynamicResource Image_Percent}" FontSize="11"/>
+                                    <TextBlock Text="{Binding ResizePercent, StringFormat='{}{0}%'}" 
+                                               HorizontalAlignment="Right" 
+                                               FontSize="11" 
+                                               FontWeight="Bold"/>
+                                </Grid>
+                                <Slider Minimum="10" Maximum="200" Value="{Binding ResizePercent, Mode=TwoWay}"/>
+                            </StackPanel>
+
+                            <!-- Dimensions Mode -->
+                            <Grid Margin="0,0,0,6">
+                                <Grid.Style>
+                                    <Style TargetType="Grid">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ResizeMode}" Value="{x:Static impl:ImageResizeMode.CustomDimensions}">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding ResizeMode}" Value="{x:Static impl:ImageResizeMode.ByWidth}">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding ResizeMode}" Value="{x:Static impl:ImageResizeMode.ByHeight}">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Grid.Style>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <StackPanel Grid.Column="0" Margin="0,0,4,0">
+                                    <TextBlock Text="{DynamicResource Image_Width}" FontSize="11" Margin="0,0,0,2"/>
+                                    <ui:TextBox Text="{Binding TargetWidth, UpdateSourceTrigger=PropertyChanged}"/>
+                                </StackPanel>
+
+                                <StackPanel Grid.Column="1" Margin="4,0,0,0">
+                                    <TextBlock Text="{DynamicResource Image_Height}" FontSize="11" Margin="0,0,0,2"/>
+                                    <ui:TextBox Text="{Binding TargetHeight, UpdateSourceTrigger=PropertyChanged}"/>
+                                </StackPanel>
+                            </Grid>
+
+                            <CheckBox Content="{DynamicResource Image_KeepAspectRatio}" 
+                                      IsChecked="{Binding KeepAspectRatio, Mode=TwoWay}" 
+                                      FontSize="11" 
+                                      Margin="0,0,0,6"/>
+
+                            <!-- Quick Presets -->
+                            <WrapPanel Orientation="Horizontal">
+                                <ui:Button Content="Avatar 256" 
+                                           Command="{Binding QuickResizePresetCommand}" 
+                                           CommandParameter="Avatar_256" 
+                                           Appearance="Secondary" 
+                                           FontSize="10" 
+                                           Padding="5,2" 
+                                           Margin="0,0,4,4"/>
+                                <ui:Button Content="Thumb 640" 
+                                           Command="{Binding QuickResizePresetCommand}" 
+                                           CommandParameter="Thumb_640" 
+                                           Appearance="Secondary" 
+                                           FontSize="10" 
+                                           Padding="5,2" 
+                                           Margin="0,0,4,4"/>
+                                <ui:Button Content="HD 720p" 
+                                           Command="{Binding QuickResizePresetCommand}" 
+                                           CommandParameter="HD_720" 
+                                           Appearance="Secondary" 
+                                           FontSize="10" 
+                                           Padding="5,2" 
+                                           Margin="0,0,4,4"/>
+                                <ui:Button Content="FHD 1080p" 
+                                           Command="{Binding QuickResizePresetCommand}" 
+                                           CommandParameter="FHD_1080" 
+                                           Appearance="Secondary" 
+                                           FontSize="10" 
+                                           Padding="5,2" 
+                                           Margin="0,0,4,4"/>
+                            </WrapPanel>
+                        </StackPanel>
+                    </ui:Card>
+
+                    <!-- ORIENTATION & PRIVACY CARD -->
+                    <ui:Card Padding="12" Margin="0,0,0,10">
+                        <StackPanel>
+                            <TextBlock Text="{DynamicResource Image_PrivacyTitle}" FontWeight="Bold" FontSize="12" Margin="0,0,0,6"/>
+
+                            <CheckBox Content="{DynamicResource Image_StripExif}" 
+                                      IsChecked="{Binding StripExifMetadata, Mode=TwoWay}" 
+                                      FontSize="11" 
+                                      Margin="0,0,0,6"/>
+
+                            <CheckBox Content="{DynamicResource Image_Overwrite}" 
+                                      IsChecked="{Binding OverwriteExisting, Mode=TwoWay}" 
+                                      FontSize="11" 
+                                      Margin="0,0,0,6"/>
+
+                            <Grid Margin="0,4,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="{DynamicResource Image_FileSuffix}" 
+                                           FontSize="11" 
+                                           VerticalAlignment="Center" 
+                                           Margin="0,0,8,0"/>
+                                <ui:TextBox Grid.Column="1" Text="{Binding FileNameSuffix, UpdateSourceTrigger=PropertyChanged}"/>
+                            </Grid>
+                        </StackPanel>
+                    </ui:Card>
+
+                    <!-- ACTION BUTTONS & PROGRESS -->
+                    <StackPanel Margin="0,4,0,0">
+                        <ProgressBar Value="{Binding OverallProgressPercent}" 
+                                     Maximum="100" 
+                                     Height="4" 
+                                     Margin="0,0,0,8">
+                            <ProgressBar.Style>
+                                <Style TargetType="ProgressBar">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsProcessing}" Value="True">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ProgressBar.Style>
+                        </ProgressBar>
+
+                        <TextBlock Text="{Binding StatusMessage}" 
+                                   FontSize="11" 
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" 
+                                   TextTrimming="CharacterEllipsis" 
+                                   Margin="0,0,0,8"/>
+
+                        <Grid>
+                            <ui:Button Content="{DynamicResource Image_StartBtn}" 
+                                       Command="{Binding StartConversionCommand}"
+                                       Appearance="Primary" 
+                                       Icon="Play24" 
+                                       HorizontalAlignment="Stretch">
+                                <ui:Button.Style>
+                                    <Style TargetType="ui:Button">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsProcessing}" Value="True">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </ui:Button.Style>
+                            </ui:Button>
+
+                            <ui:Button Content="{DynamicResource Image_CancelBtn}" 
+                                       Command="{Binding CancelConversionCommand}"
+                                       Appearance="Danger" 
+                                       Icon="Stop24" 
+                                       HorizontalAlignment="Stretch">
+                                <ui:Button.Style>
+                                    <Style TargetType="ui:Button">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsProcessing}" Value="True">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </ui:Button.Style>
+                            </ui:Button>
+                        </Grid>
+                    </StackPanel>
+
+                </StackPanel>
+            </ScrollViewer>
+        </Grid>
+    </Grid>
+</Page>

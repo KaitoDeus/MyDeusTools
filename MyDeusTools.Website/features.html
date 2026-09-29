@@ -630,6 +630,56 @@
       </div>
     </section>
 
+    <!-- 10. IMAGE STUDIO -->
+    <section id="imagestudio" class="scroll-mt-24 glass-card rounded-3xl p-8 sm:p-10 border border-slate-200 dark:border-slate-800 shadow-xl">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <div class="lg:col-span-7">
+          <div class="flex items-center gap-3 mb-3">
+            <div class="w-10 h-10 rounded-xl bg-pink-500/10 text-pink-600 dark:text-pink-400 flex items-center justify-center text-xl">🖼️</div>
+            <span class="text-xs uppercase font-bold tracking-wider text-pink-600 dark:text-pink-400" data-i18n="img_badge">Image Engine</span>
+          </div>
+          <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white" data-i18n="img_title">Image Studio &amp; Batch Optimizer</h2>
+          <p class="text-sm text-slate-600 dark:text-slate-300 mt-3 leading-relaxed" data-i18n="img_long_desc">
+            Ultra-fast batch image processing engine. Compress photos and screenshots to WebP, PNG, JPEG, and TIFF, generate multi-resolution Windows .ico files, resize with aspect-ratio preservation, and strip personal EXIF/GPS metadata with 1 click.
+          </p>
+
+          <div class="mt-6 space-y-3">
+            <div class="flex items-start gap-3">
+              <span class="text-emerald-500 font-bold">✓</span>
+              <div class="text-xs text-slate-600 dark:text-slate-300">
+                <strong class="text-slate-900 dark:text-white" data-i18n="img_f1_t">WebP &amp; Multi-Format Conversion:</strong> 
+                <span data-i18n="img_f1_d">Convert images into modern WebP (60-80% smaller) or lossless PNG/JPEG/BMP/TIFF in seconds.</span>
+              </div>
+            </div>
+            <div class="flex items-start gap-3">
+              <span class="text-emerald-500 font-bold">✓</span>
+              <div class="text-xs text-slate-600 dark:text-slate-300">
+                <strong class="text-slate-900 dark:text-white" data-i18n="img_f2_t">Multi-Layer Windows Icon (.ICO):</strong> 
+                <span data-i18n="img_f2_d">Automatically generate authentic Windows application icons containing 16, 32, 48, 64, 128, and 256 pixel layers.</span>
+              </div>
+            </div>
+            <div class="flex items-start gap-3">
+              <span class="text-emerald-500 font-bold">✓</span>
+              <div class="text-xs text-slate-600 dark:text-slate-300">
+                <strong class="text-slate-900 dark:text-white" data-i18n="img_f3_t">EXIF &amp; GPS Privacy Scrubbing:</strong> 
+                <span data-i18n="img_f3_d">Strip hidden location coordinates, camera models, and timestamps before publishing to social media.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lg:col-span-5 bg-white dark:bg-slate-900/90 rounded-2xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm text-center">
+          <div class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Batch Optimization Queue</div>
+          <div class="text-4xl font-extrabold font-mono text-pink-600 dark:text-pink-400">-72.4%</div>
+          <div class="text-xs text-slate-500 mt-2">Saved 18.6 MB • 24 / 24 Images Processed</div>
+          <div class="w-full bg-slate-100 dark:bg-slate-800 rounded-full h-2.5 my-4 overflow-hidden">
+            <div class="bg-pink-600 h-2.5 rounded-full" style="width: 100%"></div>
+          </div>
+          <div class="text-[11px] font-mono text-slate-400">banner_4k.png &rarr; banner_4k_min.webp (Quality: 80%)</div>
+        </div>
+      </div>
+    </section>
+
   </main>
 
   <!-- ==================== FOOTER ==================== -->
@@ -738,7 +788,16 @@
         video_f2_t: "Resolution Scaling & CRF Quality:",
         video_f2_d: "Choose output presets from 4K UHD down to 360p mobile, fine-tune CRF compression (18 to 28), or perform instant lossless stream copy.",
         video_f3_t: "GPU Acceleration & Real-time Progress:",
-        video_f3_d: "Leverage NVIDIA NVENC, Intel QSV, or AMD AMF hardware decoding with real-time FPS, speed multiplier, and ETA time estimation."
+        video_f3_d: "Leverage NVIDIA NVENC, Intel QSV, or AMD AMF hardware decoding with real-time FPS, speed multiplier, and ETA time estimation.",
+        img_badge: "Image Engine",
+        img_title: "Image Studio & Batch Optimizer",
+        img_long_desc: "Ultra-fast batch image processing engine. Compress photos and screenshots to WebP, PNG, JPEG, and TIFF, generate multi-resolution Windows .ico files, resize with aspect-ratio preservation, and strip personal EXIF/GPS metadata with 1 click.",
+        img_f1_t: "WebP & Multi-Format Conversion:",
+        img_f1_d: "Convert images into modern WebP (60-80% smaller) or lossless PNG/JPEG/BMP/TIFF in seconds.",
+        img_f2_t: "Multi-Layer Windows Icon (.ICO):",
+        img_f2_d: "Automatically generate authentic Windows application icons containing 16, 32, 48, 64, 128, and 256 pixel layers.",
+        img_f3_t: "EXIF & GPS Privacy Scrubbing:",
+        img_f3_d: "Strip hidden location coordinates, camera models, and timestamps before publishing to social media."
       },
       vi: {
         feat_page_title: "Mọi Công Cụ Đều Được Chăm Chút Tỉ Mỉ",
@@ -823,7 +882,16 @@
         video_f2_t: "Tùy Chỉnh Độ Phân Giải & Chất Lượng CRF:",
         video_f2_d: "Hạ hoặc nâng độ phân giải từ 4K UHD đến 360p, kiểm soát mức nén CRF (18 - 28) hoặc sao chép luồng trực tiếp không giảm chất lượng.",
         video_f3_t: "Tăng Tốc Phần Cứng & Thống Kê Thời Gian Thực:",
-        video_f3_d: "Tận dụng GPU NVIDIA NVENC, Intel QSV, AMD AMF cùng hiển thị tốc độ xử lý, FPS, phần trăm tiến trình và thời gian dự kiến hoàn thành."
+        video_f3_d: "Tận dụng GPU NVIDIA NVENC, Intel QSV, AMD AMF cùng hiển thị tốc độ xử lý, FPS, phần trăm tiến trình và thời gian dự kiến hoàn thành.",
+        img_badge: "Đồ Họa & Nén Ảnh",
+        img_title: "Xử Lý & Nén Ảnh Hàng Loạt",
+        img_long_desc: "Động cơ xử lý ảnh hàng loạt siêu tốc. Nén ảnh chụp và ảnh màn hình sang WebP, PNG, JPEG, TIFF, tạo tệp Icon Windows (.ico) đa kích thước 16-256px, đổi kích thước giữ tỷ lệ và xóa siêu dữ liệu EXIF/GPS riêng tư chỉ với 1 cú click.",
+        img_f1_t: "Chuyển Đổi WebP & Đa Định Dạng:",
+        img_f1_d: "Chuyển đổi ảnh sang WebP hiện đại (nhẹ hơn 60-80%) hoặc PNG/JPEG/BMP/TIFF không suy hao chất lượng chỉ trong tích tắc.",
+        img_f2_t: "Tạo Icon Windows Đa Tầng (.ICO):",
+        img_f2_d: "Tự động đóng gói biểu tượng ứng dụng Windows chuẩn chứa các lớp kích thước 16, 32, 48, 64, 128 và 256 pixel.",
+        img_f3_t: "Xóa Dữ Liệu EXIF & Tọa Độ GPS Cá Nhân:",
+        img_f3_d: "Loại bỏ thông tin vị trí chụp ảnh, loại thiết bị và ngày giờ trước khi chia sẻ lên mạng xã hội hoặc gửi cho đối tác."
       }
     });
   </script>
