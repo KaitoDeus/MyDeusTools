@@ -38,6 +38,8 @@ public partial class MainWindow : FluentWindow
 
         // Khởi tạo trạng thái khởi động cùng Windows
         UpdateAutoStartUI();
+        UpdateThemeUI();
+        UpdateTrayLanguage();
 
         // Lắng nghe sự kiện Clipboard hệ thống
         SourceInitialized += MainWindow_SourceInitialized;
@@ -68,24 +70,27 @@ public partial class MainWindow : FluentWindow
         return IntPtr.Zero;
     }
 
+    private System.Windows.Controls.MenuItem? _trayOpenItem;
+    private System.Windows.Controls.MenuItem? _trayExitItem;
+
     private void InitializeTray()
     {
+        _trayOpenItem = new System.Windows.Controls.MenuItem { Header = _languageService.GetString("App_Tray_Open", "Open Application") };
+        _trayOpenItem.Click += OnShowMainWindow;
+
+        _trayExitItem = new System.Windows.Controls.MenuItem { Header = _languageService.GetString("App_Tray_Exit", "Exit") };
+        _trayExitItem.Click += OnExitApp;
+
         _notifyIcon = new TaskbarIcon
         {
-            ToolTipText = "MyDeusTools is running",
+            ToolTipText = _languageService.GetString("App_Tray_Tooltip", "MyDeusTools"),
             IconSource = new System.Windows.Media.Imaging.BitmapImage(new Uri("pack://application:,,,/Resources/avatar.ico")),
             ContextMenu = new System.Windows.Controls.ContextMenu()
         };
 
-        var openItem = new System.Windows.Controls.MenuItem { Header = "Mở ứng dụng" };
-        openItem.Click += OnShowMainWindow;
-
-        var exitItem = new System.Windows.Controls.MenuItem { Header = "Thoát" };
-        exitItem.Click += OnExitApp;
-
-        _notifyIcon.ContextMenu.Items.Add(openItem);
+        _notifyIcon.ContextMenu.Items.Add(_trayOpenItem);
         _notifyIcon.ContextMenu.Items.Add(new System.Windows.Controls.Separator());
-        _notifyIcon.ContextMenu.Items.Add(exitItem);
+        _notifyIcon.ContextMenu.Items.Add(_trayExitItem);
 
         _notifyIcon.TrayLeftMouseUp += (s, e) => ShowWindow();
     }
@@ -124,6 +129,7 @@ public partial class MainWindow : FluentWindow
             : Wpf.Ui.Appearance.ApplicationTheme.Dark;
 
         Wpf.Ui.Appearance.ApplicationThemeManager.Apply(newTheme);
+        UpdateThemeUI();
     }
 
     private void OnLanguageClick(object sender, RoutedEventArgs e)
@@ -134,10 +140,34 @@ public partial class MainWindow : FluentWindow
     private void OnLanguageChanged(AppLanguage lang)
     {
         UpdateAutoStartUI();
+        UpdateThemeUI();
+        UpdateTrayLanguage();
+    }
+
+    private void UpdateTrayLanguage()
+    {
         if (_notifyIcon != null)
         {
             _notifyIcon.ToolTipText = _languageService.GetString("App_Tray_Tooltip", "MyDeusTools");
         }
+        if (_trayOpenItem != null)
+        {
+            _trayOpenItem.Header = _languageService.GetString("App_Tray_Open", "Open Application");
+        }
+        if (_trayExitItem != null)
+        {
+            _trayExitItem.Header = _languageService.GetString("App_Tray_Exit", "Exit");
+        }
+    }
+
+    private void UpdateThemeUI()
+    {
+        var currentTheme = Wpf.Ui.Appearance.ApplicationThemeManager.GetAppTheme();
+        var isDark = currentTheme == Wpf.Ui.Appearance.ApplicationTheme.Dark;
+        ThemeToggleButton.Content = isDark
+            ? _languageService.GetString("App_Theme_Dark", "Theme: Dark")
+            : _languageService.GetString("App_Theme_Light", "Theme: Light");
+        ThemeToggleIcon.Symbol = isDark ? SymbolRegular.WeatherMoon24 : SymbolRegular.WeatherSunny24;
     }
 
     private void OnAutoStartClick(object sender, RoutedEventArgs e)

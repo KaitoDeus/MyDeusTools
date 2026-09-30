@@ -3,7 +3,7 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
       xmlns:impl="clr-namespace:MyDeusTools.App.Services.Impl"
-      Title="Video Converter"
+      Title="{DynamicResource Video_Title}"
       Foreground="{DynamicResource TextFillColorPrimaryBrush}"
       Background="Transparent">
 
@@ -404,10 +404,10 @@
                                            Foreground="{DynamicResource TextFillColorSecondaryBrush}" 
                                            Margin="0,0,0,6" FontSize="12"/>
                                 <ComboBox SelectedIndex="{Binding SelectedAudioBitrate, Mode=TwoWay}" HorizontalAlignment="Stretch">
-                                    <ComboBoxItem Content="128 kbps (Tiêu chuẩn)"/>
-                                    <ComboBoxItem Content="192 kbps (Chất lượng cao)"/>
-                                    <ComboBoxItem Content="256 kbps (Rất cao)"/>
-                                    <ComboBoxItem Content="320 kbps (Cực đại)"/>
+                                    <ComboBoxItem Content="{DynamicResource Video_Bitrate128}"/>
+                                    <ComboBoxItem Content="{DynamicResource Video_Bitrate192}"/>
+                                    <ComboBoxItem Content="{DynamicResource Video_Bitrate256}"/>
+                                    <ComboBoxItem Content="{DynamicResource Video_Bitrate320}"/>
                                 </ComboBox>
                             </StackPanel>
                         </Grid>

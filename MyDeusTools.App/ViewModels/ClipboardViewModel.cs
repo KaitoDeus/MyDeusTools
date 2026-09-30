@@ -11,6 +11,10 @@ namespace MyDeusTools.App.ViewModels
     public partial class ClipboardViewModel : ObservableObject
     {
         private readonly IClipboardService _clipboardService;
+        private readonly ILanguageService? _languageService;
+
+        private string GetLoc(string key, string fallback) =>
+            _languageService?.GetString(key, fallback) ?? fallback;
 
         private string _searchText = string.Empty;
         public string SearchText
@@ -48,9 +52,23 @@ namespace MyDeusTools.App.ViewModels
 
         public ObservableCollection<ClipboardItemModel> FilteredItems { get; } = new();
 
-        public ClipboardViewModel(IClipboardService clipboardService)
+        public ClipboardViewModel(IClipboardService clipboardService, ILanguageService? languageService = null)
         {
             _clipboardService = clipboardService;
+            _languageService = languageService;
+
+            if (_languageService != null)
+            {
+                _languageService.LanguageChanged += _ =>
+                {
+                    if (StatusMessage == "Sẵn sàng theo dõi khay nhớ tạm" || StatusMessage == "Ready to track clipboard")
+                    {
+                        StatusMessage = GetLoc("Clipboard_StatusReady", "Sẵn sàng theo dõi khay nhớ tạm");
+                    }
+                };
+            }
+
+            _statusMessage = GetLoc("Clipboard_StatusReady", "Sẵn sàng theo dõi khay nhớ tạm");
             _clipboardService.ClipboardChanged += OnClipboardServiceChanged;
 
             ApplyFilter();
@@ -96,7 +114,8 @@ namespace MyDeusTools.App.ViewModels
         {
             if (item == null) return;
             _clipboardService.CopyItem(item);
-            StatusMessage = $"Đã sao chép: {item.Preview}";
+            string fmt = GetLoc("Clipboard_StatusCopied", "Đã sao chép: {0}");
+            StatusMessage = string.Format(fmt, item.Preview);
             ApplyFilter();
         }
 
@@ -105,7 +124,7 @@ namespace MyDeusTools.App.ViewModels
         {
             if (item == null) return;
             _clipboardService.RemoveItem(item);
-            StatusMessage = "Đã xóa 1 mục khỏi lịch sử";
+            StatusMessage = GetLoc("Clipboard_StatusDeleted", "Đã xóa 1 mục khỏi lịch sử");
             ApplyFilter();
         }
 
@@ -114,7 +133,9 @@ namespace MyDeusTools.App.ViewModels
         {
             if (item == null) return;
             _clipboardService.TogglePin(item);
-            StatusMessage = item.IsPinned ? "Đã ghim mục này" : "Đã bỏ ghim mục này";
+            StatusMessage = item.IsPinned 
+                ? GetLoc("Clipboard_StatusPinned", "Đã ghim mục này") 
+                : GetLoc("Clipboard_StatusUnpinned", "Đã bỏ ghim mục này");
             ApplyFilter();
         }
 
@@ -122,7 +143,7 @@ namespace MyDeusTools.App.ViewModels
         private void ClearHistory()
         {
             _clipboardService.ClearHistory(keepPinned: true);
-            StatusMessage = "Đã xóa toàn bộ lịch sử (giữ lại các mục đã ghim)";
+            StatusMessage = GetLoc("Clipboard_StatusCleared", "Đã xóa toàn bộ lịch sử (giữ lại các mục đã ghim)");
             ApplyFilter();
         }
 

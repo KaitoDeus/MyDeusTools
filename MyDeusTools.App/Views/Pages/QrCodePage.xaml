@@ -66,7 +66,7 @@
                 <StackPanel Grid.Column="0" Margin="0,0,20,0">
                     <ui:Card Margin="0,0,0,15" Padding="16">
                         <StackPanel>
-                            <TextBlock Text="Nội dung mã QR (Văn bản / Đường dẫn URL)" 
+                            <TextBlock Text="{DynamicResource Qr_InputContentHeader}" 
                                        FontWeight="SemiBold" 
                                        Margin="0,0,0,10"/>
 
@@ -80,7 +80,7 @@
                                      Padding="10"
                                      Margin="0,0,0,10"/>
 
-                            <TextBlock Text="Gõ nội dung hoặc dán liên kết vào ô trên để tạo mã QR tự động tức thì." 
+                            <TextBlock Text="{DynamicResource Qr_InputContentPrompt}" 
                                        FontSize="12" 
                                        Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                         </StackPanel>
@@ -88,19 +88,19 @@
 
                     <ui:Card Padding="16">
                         <StackPanel>
-                            <TextBlock Text="Hành động xuất mã QR" 
+                            <TextBlock Text="{DynamicResource Qr_ActionsHeader}" 
                                        FontWeight="SemiBold" 
                                        Margin="0,0,0,12"/>
 
                             <StackPanel Orientation="Horizontal">
-                                <ui:Button Content="Lưu ảnh PNG" 
+                                <ui:Button Content="{DynamicResource Qr_SavePng}" 
                                            Icon="{ui:SymbolIcon Symbol=Save24}"
                                            Command="{Binding SaveImageCommand}"
                                            Appearance="Primary"
                                            Padding="18,8"
                                            Margin="0,0,12,0"/>
 
-                                <ui:Button Content="Sao chép ảnh" 
+                                <ui:Button Content="{DynamicResource Qr_CopyImage}" 
                                            Icon="{ui:SymbolIcon Symbol=Copy24}"
                                            Command="{Binding CopyImageCommand}"
                                            Appearance="Secondary"
@@ -126,12 +126,12 @@
                                    Stretch="Uniform"/>
                         </Border>
 
-                        <TextBlock Text="Xem trước mã QR" 
+                        <TextBlock Text="{DynamicResource Qr_PreviewHeader}" 
                                    FontWeight="SemiBold" 
                                    HorizontalAlignment="Center" 
                                    Margin="0,15,0,4"/>
 
-                        <TextBlock Text="Độ nét cao • Sẵn sàng quét" 
+                        <TextBlock Text="{DynamicResource Qr_PreviewBadge}" 
                                    FontSize="12" 
                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}" 
                                    HorizontalAlignment="Center"/>
@@ -160,26 +160,26 @@
                 <!-- Action Triggers -->
                 <ui:Card Grid.Row="0" Margin="0,0,0,20" Padding="16">
                     <StackPanel>
-                        <TextBlock Text="Chọn phương thức quét mã QR" 
+                        <TextBlock Text="{DynamicResource Qr_ScanMethodsHeader}" 
                                    FontWeight="SemiBold" 
                                    Margin="0,0,0,12"/>
 
                         <StackPanel Orientation="Horizontal">
-                            <ui:Button Content="Quét từ màn hình" 
+                            <ui:Button Content="{DynamicResource Qr_SnipScreen}" 
                                        Icon="{ui:SymbolIcon Symbol=Crop24}"
                                        Command="{Binding ScanScreenCommand}"
                                        Appearance="Primary"
                                        Padding="20,10"
                                        Margin="0,0,12,0"/>
 
-                            <ui:Button Content="Chọn tệp hình ảnh..." 
+                            <ui:Button Content="{DynamicResource Qr_ScanFile}" 
                                        Icon="{ui:SymbolIcon Symbol=FolderOpen24}"
                                        Command="{Binding ScanFileCommand}"
                                        Appearance="Secondary"
                                        Padding="18,10"
                                        Margin="0,0,12,0"/>
 
-                            <ui:Button Content="Dán ảnh từ Clipboard" 
+                            <ui:Button Content="{DynamicResource Qr_ScanClipboard}" 
                                        Icon="{ui:SymbolIcon Symbol=ClipboardPaste24}"
                                        Command="{Binding ScanClipboardCommand}"
                                        Appearance="Secondary"
@@ -211,12 +211,12 @@
                                            HorizontalAlignment="Center" 
                                            Foreground="{DynamicResource TextFillColorTertiaryBrush}"
                                            Margin="0,0,0,15"/>
-                            <TextBlock Text="Chưa có kết quả quét" 
+                            <TextBlock Text="{DynamicResource Qr_EmptyResultTitle}" 
                                        FontSize="18" 
                                        FontWeight="SemiBold" 
                                        HorizontalAlignment="Center"
                                        Margin="0,0,0,6"/>
-                            <TextBlock Text="Nhấn 'Quét từ màn hình' để chọn vùng bất kỳ có mã QR, hoặc mở ảnh mã QR có sẵn trên máy để giải mã." 
+                            <TextBlock Text="{DynamicResource Qr_EmptyResultDesc}" 
                                        TextWrapping="Wrap" 
                                        TextAlignment="Center"
                                        Foreground="{DynamicResource TextFillColorSecondaryBrush}"
@@ -243,20 +243,20 @@
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
 
-                                <TextBlock Text="Nội dung mã QR đã giải mã:" 
+                                <TextBlock Text="{DynamicResource Qr_DecodedContentHeader}" 
                                            FontWeight="SemiBold" 
                                            FontSize="15" 
                                            VerticalAlignment="Center"/>
 
                                 <StackPanel Grid.Column="1" Orientation="Horizontal">
-                                    <ui:Button Content="Sao chép" 
+                                    <ui:Button Content="{DynamicResource Qr_CopyResult}" 
                                                Icon="{ui:SymbolIcon Symbol=Copy24}"
                                                Command="{Binding CopyResultCommand}"
                                                Appearance="Primary"
                                                Padding="16,6"
                                                Margin="0,0,8,0"/>
 
-                                    <ui:Button Content="Mở liên kết" 
+                                    <ui:Button Content="{DynamicResource Qr_OpenUrl}" 
                                                Icon="{ui:SymbolIcon Symbol=Globe24}"
                                                Command="{Binding OpenUrlCommand}"
                                                Appearance="Secondary"
@@ -274,7 +274,7 @@
                                         </ui:Button.Style>
                                     </ui:Button>
 
-                                    <ui:Button Content="Xóa" 
+                                    <ui:Button Content="{DynamicResource TextDev_ClearShort}" 
                                                Icon="{ui:SymbolIcon Symbol=Delete24}"
                                                Command="{Binding ClearScanCommand}"
                                                Appearance="Transparent"

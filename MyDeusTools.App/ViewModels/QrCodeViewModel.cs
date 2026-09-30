@@ -14,6 +14,10 @@ namespace MyDeusTools.App.ViewModels
     public partial class QrCodeViewModel : ObservableObject
     {
         private readonly IQrCodeService _qrCodeService;
+        private readonly ILanguageService? _languageService;
+
+        private string GetLoc(string key, string fallback) =>
+            _languageService?.GetString(key, fallback) ?? fallback;
 
         // --- Generator State ---
         private string _inputText = "https://github.com";
@@ -80,9 +84,23 @@ namespace MyDeusTools.App.ViewModels
             set => SetProperty(ref _statusMessage, value);
         }
 
-        public QrCodeViewModel(IQrCodeService qrCodeService)
+        public QrCodeViewModel(IQrCodeService qrCodeService, ILanguageService? languageService = null)
         {
             _qrCodeService = qrCodeService;
+            _languageService = languageService;
+
+            if (_languageService != null)
+            {
+                _languageService.LanguageChanged += _ =>
+                {
+                    if (StatusMessage == "Sẵn sàng tạo hoặc quét mã QR" || StatusMessage == "Ready to generate or scan QR code")
+                    {
+                        StatusMessage = GetLoc("Qr_StatusReady", "Sẵn sàng tạo hoặc quét mã QR");
+                    }
+                };
+            }
+
+            _statusMessage = GetLoc("Qr_StatusReady", "Sẵn sàng tạo hoặc quét mã QR");
             GenerateQr();
         }
 
@@ -93,7 +111,7 @@ namespace MyDeusTools.App.ViewModels
             {
                 GeneratedImage = null;
                 HasGeneratedImage = false;
-                StatusMessage = "Vui lòng nhập nội dung để tạo mã QR.";
+                StatusMessage = GetLoc("Qr_StatusEnterContent", "Vui lòng nhập nội dung để tạo mã QR.");
                 return;
             }
 
@@ -101,11 +119,11 @@ namespace MyDeusTools.App.ViewModels
             {
                 GeneratedImage = _qrCodeService.GenerateQrCode(InputText);
                 HasGeneratedImage = true;
-                StatusMessage = "Đã tạo mã QR thành công!";
+                StatusMessage = GetLoc("Qr_StatusGenerated", "Đã tạo mã QR thành công!");
             }
             catch (Exception ex)
             {
-                StatusMessage = $"Lỗi tạo mã QR: {ex.Message}";
+                StatusMessage = string.Format(GetLoc("Qr_StatusGenError", "Lỗi tạo mã QR: {0}"), ex.Message);
                 HasGeneratedImage = false;
             }
         }
@@ -128,12 +146,12 @@ namespace MyDeusTools.App.ViewModels
                 {
                     byte[] pngBytes = _qrCodeService.GenerateQrCodePng(InputText, 20);
                     File.WriteAllBytes(dialog.FileName, pngBytes);
-                    StatusMessage = $"Đã lưu mã QR vào: {Path.GetFileName(dialog.FileName)}";
+                    StatusMessage = string.Format(GetLoc("Qr_StatusSaved", "Đã lưu mã QR vào: {0}"), Path.GetFileName(dialog.FileName));
                 }
             }
             catch (Exception ex)
             {
-                StatusMessage = $"Lỗi khi lưu ảnh: {ex.Message}";
+                StatusMessage = string.Format(GetLoc("Qr_StatusSaveError", "Lỗi khi lưu ảnh: {0}"), ex.Message);
             }
         }
 
@@ -145,18 +163,18 @@ namespace MyDeusTools.App.ViewModels
             try
             {
                 Clipboard.SetImage(GeneratedImage);
-                StatusMessage = "Đã sao chép ảnh mã QR vào khay nhớ tạm!";
+                StatusMessage = GetLoc("Qr_StatusImageCopied", "Đã sao chép ảnh mã QR vào khay nhớ tạm!");
             }
             catch (Exception ex)
             {
-                StatusMessage = $"Lỗi sao chép ảnh: {ex.Message}";
+                StatusMessage = string.Format(GetLoc("Qr_StatusCopyError", "Lỗi sao chép ảnh: {0}"), ex.Message);
             }
         }
 
         [RelayCommand]
         public void ScanScreen()
         {
-            StatusMessage = "Đang chọn vùng màn hình để quét...";
+            StatusMessage = GetLoc("Qr_StatusSelectingRegion", "Đang chọn vùng màn hình để quét...");
 
             var overlay = new QrSnippingOverlayWindow();
             overlay.RegionSelected += (x, y, w, h) =>
@@ -169,18 +187,18 @@ namespace MyDeusTools.App.ViewModels
                     if (!string.IsNullOrEmpty(result))
                     {
                         ScannedResult = result;
-                        StatusMessage = "Quét mã QR từ màn hình thành công!";
+                        StatusMessage = GetLoc("Qr_StatusScanSuccess", "Quét mã QR từ màn hình thành công!");
                     }
                     else
                     {
-                        StatusMessage = "Không tìm thấy mã QR trong vùng vừa chọn.";
+                        StatusMessage = GetLoc("Qr_StatusNotFoundInRegion", "Không tìm thấy mã QR trong vùng vừa chọn.");
                     }
                 });
             };
 
             overlay.SnippingCanceled += () =>
             {
-                StatusMessage = "Đã hủy thao tác quét màn hình.";
+                StatusMessage = GetLoc("Qr_StatusScanCanceled", "Đã hủy thao tác quét màn hình.");
             };
 
             overlay.ShowDialog();
@@ -193,8 +211,8 @@ namespace MyDeusTools.App.ViewModels
             {
                 var dialog = new OpenFileDialog
                 {
-                    Filter = "Hình ảnh (*.png;*.jpg;*.jpeg;*.bmp;*.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.webp|Tất cả tệp (*.*)|*.*",
-                    Title = "Chọn hình ảnh chứa mã QR"
+                    Filter = GetLoc("Qr_DialogFilter", "Hình ảnh (*.png;*.jpg;*.jpeg;*.bmp;*.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.webp|Tất cả tệp (*.*)|*.*"),
+                    Title = GetLoc("Qr_DialogTitle", "Chọn hình ảnh chứa mã QR")
                 };
 
                 if (dialog.ShowDialog() == true)
@@ -203,17 +221,17 @@ namespace MyDeusTools.App.ViewModels
                     if (!string.IsNullOrEmpty(result))
                     {
                         ScannedResult = result;
-                        StatusMessage = $"Quét thành công từ file: {Path.GetFileName(dialog.FileName)}";
+                        StatusMessage = string.Format(GetLoc("Qr_StatusFileSuccess", "Quét thành công từ file: {0}"), Path.GetFileName(dialog.FileName));
                     }
                     else
                     {
-                        StatusMessage = "Không tìm thấy hoặc không thể đọc mã QR từ file hình ảnh.";
+                        StatusMessage = GetLoc("Qr_StatusFileNotFound", "Không tìm thấy hoặc không thể đọc mã QR từ file hình ảnh.");
                     }
                 }
             }
             catch (Exception ex)
             {
-                StatusMessage = $"Lỗi đọc file: {ex.Message}";
+                StatusMessage = string.Format(GetLoc("Qr_StatusFileError", "Lỗi đọc file: {0}"), ex.Message);
             }
         }
 
@@ -231,17 +249,17 @@ namespace MyDeusTools.App.ViewModels
                         if (!string.IsNullOrEmpty(result))
                         {
                             ScannedResult = result;
-                            StatusMessage = "Quét thành công mã QR từ hình ảnh trong Clipboard!";
+                            StatusMessage = GetLoc("Qr_StatusClipboardSuccess", "Quét thành công mã QR từ hình ảnh trong Clipboard!");
                             return;
                         }
                     }
                 }
 
-                StatusMessage = "Khay nhớ tạm không chứa ảnh hoặc không đọc được mã QR.";
+                StatusMessage = GetLoc("Qr_StatusClipboardEmpty", "Khay nhớ tạm không chứa ảnh hoặc không đọc được mã QR.");
             }
             catch (Exception ex)
             {
-                StatusMessage = $"Lỗi đọc từ clipboard: {ex.Message}";
+                StatusMessage = string.Format(GetLoc("Qr_StatusClipboardError", "Lỗi đọc từ clipboard: {0}"), ex.Message);
             }
         }
 
@@ -253,11 +271,11 @@ namespace MyDeusTools.App.ViewModels
             try
             {
                 Clipboard.SetText(ScannedResult);
-                StatusMessage = "Đã sao chép kết quả quét vào khay nhớ tạm!";
+                StatusMessage = GetLoc("Qr_StatusResultCopied", "Đã sao chép kết quả quét vào khay nhớ tạm!");
             }
             catch (Exception ex)
             {
-                StatusMessage = $"Lỗi sao chép: {ex.Message}";
+                StatusMessage = string.Format(GetLoc("Qr_StatusCopyError", "Lỗi sao chép: {0}"), ex.Message);
             }
         }
 
@@ -272,7 +290,7 @@ namespace MyDeusTools.App.ViewModels
             }
             catch (Exception ex)
             {
-                StatusMessage = $"Không thể mở liên kết: {ex.Message}";
+                StatusMessage = string.Format(GetLoc("Qr_StatusOpenUrlError", "Không thể mở liên kết: {0}"), ex.Message);
             }
         }
 
@@ -280,7 +298,7 @@ namespace MyDeusTools.App.ViewModels
         public void ClearScan()
         {
             ScannedResult = string.Empty;
-            StatusMessage = "Đã xóa kết quả quét.";
+            StatusMessage = GetLoc("Qr_StatusResultCleared", "Đã xóa kết quả quét.");
         }
     }
 }

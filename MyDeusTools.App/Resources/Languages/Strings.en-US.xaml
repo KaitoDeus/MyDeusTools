@@ -31,6 +31,7 @@
     <system:String x:Key="Sticky_Empty">No notes yet. Click 'Add Note' to start.</system:String>
     <system:String x:Key="Sticky_Pin">Pin to Desktop</system:String>
     <system:String x:Key="Sticky_Delete">Delete</system:String>
+    <system:String x:Key="Sticky_NewNoteContent">New note...</system:String>
 
     <!-- Auto Clicker Page -->
     <system:String x:Key="AutoClick_Title">Auto Clicker Pro</system:String>
@@ -47,6 +48,9 @@
     <system:String x:Key="Shutdown_Action_Shutdown">Shutdown</system:String>
     <system:String x:Key="Shutdown_Action_Restart">Restart</system:String>
     <system:String x:Key="Shutdown_Action_Hibernate">Hibernate</system:String>
+    <system:String x:Key="Shutdown_Mode_Shutdown">shutdown</system:String>
+    <system:String x:Key="Shutdown_Mode_Restart">restart</system:String>
+    <system:String x:Key="Shutdown_Mode_Hibernate">hibernate</system:String>
     <system:String x:Key="Shutdown_TimeSetup">Set Countdown Time:</system:String>
     <system:String x:Key="Shutdown_Hours">Hours</system:String>
     <system:String x:Key="Shutdown_Minutes">Minutes</system:String>
@@ -280,5 +284,182 @@
     <system:String x:Key="Image_StatusProcessing">Processing...</system:String>
     <system:String x:Key="Image_StatusDone">Done</system:String>
     <system:String x:Key="Image_StatusError">Error</system:String>
+    <system:String x:Key="Image_StatusCanceled">Canceled</system:String>
+    <system:String x:Key="Image_TotalSavedPrefix">Saved: </system:String>
+    <system:String x:Key="Image_StatusReady">Ready to add images to queue.</system:String>
+    <system:String x:Key="Image_DialogTitleFiles">Select images to compress or convert</system:String>
+    <system:String x:Key="Image_DialogFilterFiles">All Images|*.jpg;*.jpeg;*.png;*.webp;*.bmp;*.tif;*.tiff;*.gif;*.ico|PNG Files (*.png)|*.png|JPEG Files (*.jpg;*.jpeg)|*.jpg;*.jpeg|WebP Files (*.webp)|*.webp|Icon Files (*.ico)|*.ico|All Files (*.*)|*.*</system:String>
+    <system:String x:Key="Image_DialogTitleFolder">Select folder containing images</system:String>
+    <system:String x:Key="Image_DialogTitleOutput">Select output directory for processed images</system:String>
+    <system:String x:Key="Image_StatusLoaded">Added {0} new images to queue.</system:String>
+    <system:String x:Key="Image_StatusCleared">Image queue cleared.</system:String>
+    <system:String x:Key="Image_StatusEmptyQueue">Please add at least one image to queue.</system:String>
+    <system:String x:Key="Image_StatusWebPFFmpeg">WebP format requires FFmpeg engine. Please install FFmpeg or switch to PNG/JPEG/ICO.</system:String>
+    <system:String x:Key="Image_StatusBatchStarting">Starting batch processing...</system:String>
+    <system:String x:Key="Image_StatusProcessingItem">Processing ({0}/{1}): {2}</system:String>
+    <system:String x:Key="Image_StatusCompleted">Finished processing {0} images!</system:String>
+    <system:String x:Key="Image_StatusCanceledMsg">Image processing canceled.</system:String>
+    <system:String x:Key="Image_StatusErrorMsg">Error: {0}</system:String>
+    <system:String x:Key="Image_StatusCanceling">Sending cancel request...</system:String>
+    <system:String x:Key="Image_StatusInvalidDir">No valid output directory.</system:String>
+
+    <!-- Shell / Tray / Common -->
+    <system:String x:Key="App_Tray_Open">Open Application</system:String>
+    <system:String x:Key="App_Tray_Exit">Exit</system:String>
+    <system:String x:Key="App_Language_SwitchTooltip">Switch Language / Chuyển đổi ngôn ngữ</system:String>
+
+    <!-- Sticky Note -->
+    <system:String x:Key="Sticky_NoteWindowTitle">Note</system:String>
+    <system:String x:Key="Sticky_PinnedHeader">📌 Pinned Note</system:String>
+
+    <!-- Auto Clicker UI & Status -->
+    <system:String x:Key="AutoClick_Tab_Basic">Basic Configuration</system:String>
+    <system:String x:Key="AutoClick_Tab_Interval">Interval &amp; Repeat</system:String>
+    <system:String x:Key="AutoClick_Tab_Record">Record Waypoints</system:String>
+    <system:String x:Key="AutoClick_MouseButton">Mouse Button</system:String>
+    <system:String x:Key="AutoClick_MouseLeft">Left Mouse Button</system:String>
+    <system:String x:Key="AutoClick_MouseRight">Right Mouse Button</system:String>
+    <system:String x:Key="AutoClick_MouseMiddle">Middle Mouse Button (Scroll)</system:String>
+    <system:String x:Key="AutoClick_ClickType">Click Type</system:String>
+    <system:String x:Key="AutoClick_ClickSingle">Single Click</system:String>
+    <system:String x:Key="AutoClick_ClickDouble">Double Click</system:String>
+    <system:String x:Key="AutoClick_Hotkey">Hotkey</system:String>
+    <system:String x:Key="AutoClick_ChangeHotkey">Change Hotkey</system:String>
+    <system:String x:Key="AutoClick_IntervalTitle">Interval Between Clicks</system:String>
+    <system:String x:Key="AutoClick_Ms">Ms</system:String>
+    <system:String x:Key="AutoClick_RepeatCount">Repeat Count</system:String>
+    <system:String x:Key="AutoClick_RepeatInfinite">Enter 0 for infinite repeat</system:String>
+    <system:String x:Key="AutoClick_RepeatPlaceholder">e.g., 100</system:String>
+    <system:String x:Key="AutoClick_RecordedCount">Recorded Waypoints</system:String>
+    <system:String x:Key="AutoClick_TipTitle">Tip</system:String>
+    <system:String x:Key="AutoClick_TipMessage">You can press the hotkey at any time to Toggle Start/Stop.</system:String>
+    <system:String x:Key="AutoClick_OverlayRecorded">Recorded {0} waypoints. Click to record more. Press ENTER/ESC to finish.</system:String>
+    <system:String x:Key="AutoClick_StatusReady">Ready</system:String>
+    <system:String x:Key="AutoClick_StatusStopped">Stopped</system:String>
+    <system:String x:Key="AutoClick_StatusListening">Press any key combination to assign (Except ESC)...</system:String>
+    <system:String x:Key="AutoClick_StatusHotkeyCanceled">Hotkey change canceled.</system:String>
+    <system:String x:Key="AutoClick_StatusHotkeyChanged">Hotkey changed to: {0}</system:String>
+    <system:String x:Key="AutoClick_StatusRunningReplay">Running (Waypoint Replay)...</system:String>
+    <system:String x:Key="AutoClick_StatusRunning">Running...</system:String>
+    <system:String x:Key="AutoClick_StatusPointRecorded">Recorded point #{0} at: {1}, {2}</system:String>
+    <system:String x:Key="AutoClick_StatusRecordingExit">Exited waypoint recording mode.</system:String>
+    <system:String x:Key="AutoClick_StatusWaitingClick">Waiting for click to record waypoint...</system:String>
+    <system:String x:Key="AutoClick_StatusClearedPoints">Cleared recorded waypoints</system:String>
+    <system:String x:Key="AutoClick_BtnStartFmt">Start ({0})</system:String>
+    <system:String x:Key="AutoClick_BtnStopFmt">Stop ({0})</system:String>
+
+    <!-- Shutdown Page Status -->
+    <system:String x:Key="Shutdown_StatusReady">Ready</system:String>
+    <system:String x:Key="Shutdown_ErrorTimeZero">Please set time greater than 0!</system:String>
+    <system:String x:Key="Shutdown_StatusScheduled">Scheduled {0} in {1}h {2}m {3}s</system:String>
+    <system:String x:Key="Shutdown_StatusUpdated">Updated countdown for {0} in {1}h {2}m {3}s</system:String>
+    <system:String x:Key="Shutdown_StatusCanceled">Cancelled scheduled shutdown</system:String>
+    <system:String x:Key="Shutdown_StatusTimeUp">Countdown finished!</system:String>
+
+    <!-- Clipboard Manager UI & Status -->
+    <system:String x:Key="Clipboard_SavedPrefix">Storing: </system:String>
+    <system:String x:Key="Clipboard_ItemsUnit">items</system:String>
+    <system:String x:Key="Clipboard_ClearSearch">Clear</system:String>
+    <system:String x:Key="Clipboard_EmptyDescription">Whenever you copy any text, it will automatically be stored and shown here for quick reuse.</system:String>
+    <system:String x:Key="Clipboard_PinnedBadge">PINNED</system:String>
+    <system:String x:Key="Clipboard_CharsSuffix">chars)</system:String>
+    <system:String x:Key="Clipboard_CopyAgain">Copy Again</system:String>
+    <system:String x:Key="Clipboard_TooltipPin">Pin / Unpin</system:String>
+    <system:String x:Key="Clipboard_TooltipDelete">Delete item</system:String>
+    <system:String x:Key="Clipboard_StatusReady">Ready to track clipboard</system:String>
+    <system:String x:Key="Clipboard_StatusCopied">Copied: {0}</system:String>
+    <system:String x:Key="Clipboard_StatusDeleted">Removed 1 item from history</system:String>
+    <system:String x:Key="Clipboard_StatusPinned">Pinned this item</system:String>
+    <system:String x:Key="Clipboard_StatusUnpinned">Unpinned this item</system:String>
+    <system:String x:Key="Clipboard_StatusCleared">Cleared history (retained pinned items)</system:String>
+
+    <!-- Color Picker UI & Status -->
+    <system:String x:Key="Color_SelectedDetails">Selected Color Details</system:String>
+    <system:String x:Key="Color_PinnedBadge">PINNED</system:String>
+    <system:String x:Key="Color_CopyBtn">Copy</system:String>
+    <system:String x:Key="Color_ColorsUnit">colors</system:String>
+    <system:String x:Key="Color_EmptyHistory">No colors picked yet</system:String>
+    <system:String x:Key="Color_EmptyDescription">Click 'Pick Color from Screen' to pick any color pixel currently displayed on your desktop.</system:String>
+    <system:String x:Key="Color_TooltipPin">Pin color</system:String>
+    <system:String x:Key="Color_TooltipDelete">Delete color</system:String>
+    <system:String x:Key="Color_StatusReady">Ready to pick colors from screen</system:String>
+    <system:String x:Key="Color_StatusPicking">Move cursor to pixel and click to pick...</system:String>
+    <system:String x:Key="Color_StatusPickedCopied">Picked color {0} and copied to clipboard!</system:String>
+    <system:String x:Key="Color_StatusPicked">Picked color {0}!</system:String>
+    <system:String x:Key="Color_StatusCanceled">Color picking canceled.</system:String>
+    <system:String x:Key="Color_StatusViewing">Viewing details for color {0}</system:String>
+    <system:String x:Key="Color_StatusCopied">Copied: {0}</system:String>
+    <system:String x:Key="Color_StatusCopyError">Copy error: {0}</system:String>
+    <system:String x:Key="Color_StatusPinned">Pinned color {0}</system:String>
+    <system:String x:Key="Color_StatusUnpinned">Unpinned color {0}</system:String>
+    <system:String x:Key="Color_StatusDeleted">Removed color {0} from history.</system:String>
+    <system:String x:Key="Color_StatusCleared">Cleared color history (retained pinned colors).</system:String>
+
+    <!-- QR Code UI & Status -->
+    <system:String x:Key="Qr_InputContentHeader">QR Content (Text / URL Address)</system:String>
+    <system:String x:Key="Qr_InputContentPrompt">Type text or paste a link into the box above to generate a QR code instantly.</system:String>
+    <system:String x:Key="Qr_ActionsHeader">QR Export Actions</system:String>
+    <system:String x:Key="Qr_PreviewHeader">QR Code Preview</system:String>
+    <system:String x:Key="Qr_PreviewBadge">High Definition • Ready to scan</system:String>
+    <system:String x:Key="Qr_ScanMethodsHeader">Choose QR Scan Method</system:String>
+    <system:String x:Key="Qr_EmptyResultTitle">No QR scan result yet</system:String>
+    <system:String x:Key="Qr_EmptyResultDesc">Click 'Snip Screen Area' to scan any QR code on screen, or open an existing image file to decode.</system:String>
+    <system:String x:Key="Qr_DecodedContentHeader">Decoded QR Content:</system:String>
+    <system:String x:Key="Qr_CopyResult">Copy</system:String>
+    <system:String x:Key="Qr_OpenUrl">Open Link</system:String>
+    <system:String x:Key="Qr_StatusReady">Ready to generate or scan QR code</system:String>
+    <system:String x:Key="Qr_StatusEnterContent">Please enter content to generate QR code.</system:String>
+    <system:String x:Key="Qr_StatusGenerated">QR code generated successfully!</system:String>
+    <system:String x:Key="Qr_StatusGenError">Error generating QR code: {0}</system:String>
+    <system:String x:Key="Qr_StatusSaved">Saved QR code to: {0}</system:String>
+    <system:String x:Key="Qr_StatusSaveError">Error saving image: {0}</system:String>
+    <system:String x:Key="Qr_StatusImageCopied">QR code image copied to clipboard!</system:String>
+    <system:String x:Key="Qr_StatusCopyError">Error copying image: {0}</system:String>
+    <system:String x:Key="Qr_StatusSelectingRegion">Selecting screen region to scan...</system:String>
+    <system:String x:Key="Qr_StatusScanSuccess">Scanned QR code from screen successfully!</system:String>
+    <system:String x:Key="Qr_StatusNotFoundInRegion">No QR code found in selected region.</system:String>
+    <system:String x:Key="Qr_StatusScanCanceled">Screen scan canceled.</system:String>
+    <system:String x:Key="Qr_DialogTitle">Select image containing QR code</system:String>
+    <system:String x:Key="Qr_DialogFilter">Images (*.png;*.jpg;*.jpeg;*.bmp;*.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.webp|All Files (*.*)|*.*</system:String>
+    <system:String x:Key="Qr_StatusFileSuccess">Scanned successfully from file: {0}</system:String>
+    <system:String x:Key="Qr_StatusFileNotFound">Could not find or read QR code from image file.</system:String>
+    <system:String x:Key="Qr_StatusFileError">Error reading file: {0}</system:String>
+    <system:String x:Key="Qr_StatusClipboardSuccess">Scanned QR code from clipboard image successfully!</system:String>
+    <system:String x:Key="Qr_StatusClipboardEmpty">Clipboard does not contain an image or QR code could not be decoded.</system:String>
+    <system:String x:Key="Qr_StatusClipboardError">Error reading from clipboard: {0}</system:String>
+    <system:String x:Key="Qr_StatusResultCopied">Scanned result copied to clipboard!</system:String>
+    <system:String x:Key="Qr_StatusOpenUrlError">Could not open link: {0}</system:String>
+    <system:String x:Key="Qr_StatusResultCleared">Scanned result cleared.</system:String>
+
+    <!-- Video Converter Quality & Status -->
+    <system:String x:Key="Video_Bitrate128">128 kbps (Standard)</system:String>
+    <system:String x:Key="Video_Bitrate192">192 kbps (High Quality)</system:String>
+    <system:String x:Key="Video_Bitrate256">256 kbps (Very High)</system:String>
+    <system:String x:Key="Video_Bitrate320">320 kbps (Maximum)</system:String>
+    <system:String x:Key="Video_EngineReady">Ready ({0})</system:String>
+    <system:String x:Key="Video_EngineNotInstalled">FFmpeg engine not installed</system:String>
+    <system:String x:Key="Video_StatusReady">Ready to convert video</system:String>
+    <system:String x:Key="Video_StatusAnalyzing">Analyzing video media info...</system:String>
+    <system:String x:Key="Video_StatusLoaded">Loaded file: {0} ({1})</system:String>
+    <system:String x:Key="Video_StatusLoadedSimple">Source selected. Click Start to convert.</system:String>
+    <system:String x:Key="Video_DialogSourceTitle">Select source video file</system:String>
+    <system:String x:Key="Video_DialogSourceFilter">All Video/Audio Files|*.mp4;*.mkv;*.avi;*.mov;*.wmv;*.webm;*.flv;*.ts;*.m4v;*.3gp;*.mp3;*.wav;*.aac|Video Files (*.mp4;*.mkv;*.avi;*.mov)|*.mp4;*.mkv;*.avi;*.mov|All Files (*.*)|*.*</system:String>
+    <system:String x:Key="Video_DialogOutputTitle">Select output destination folder</system:String>
+    <system:String x:Key="Video_StatusSelectSourcePrompt">Please select a source video file!</system:String>
+    <system:String x:Key="Video_StatusEngineMissingPrompt">FFmpeg engine not detected! Please install or link it first.</system:String>
+    <system:String x:Key="Video_StatusConverting">Converting video...</system:String>
+    <system:String x:Key="Video_StatusSuccess">Converted successfully: {0}</system:String>
+    <system:String x:Key="Video_StatusFailed">Conversion failed! View logs for details.</system:String>
+    <system:String x:Key="Video_StatusCanceled">Conversion canceled.</system:String>
+    <system:String x:Key="Video_StatusError">Error: {0}</system:String>
+    <system:String x:Key="Video_StatusStopping">Stopping conversion process...</system:String>
+    <system:String x:Key="Video_StatusDownloadingEngine">Downloading FFmpeg Portable engine...</system:String>
+    <system:String x:Key="Video_StatusDownloadingProgress">Downloading FFmpeg: {0:0.0}%</system:String>
+    <system:String x:Key="Video_StatusDownloadSuccess">FFmpeg engine installed successfully! Ready to convert.</system:String>
+    <system:String x:Key="Video_StatusDownloadFailed">Download failed. Please check internet connection or browse local ffmpeg.exe.</system:String>
+    <system:String x:Key="Video_StatusDownloadError">Download error: {0}</system:String>
+    <system:String x:Key="Video_DialogFfmpegTitle">Select ffmpeg.exe executable</system:String>
+    <system:String x:Key="Video_StatusLinkedEngine">Linked engine: {0}</system:String>
+    <system:String x:Key="Video_StatusCannotOpenFile">Cannot open file: {0}</system:String>
 
 </ResourceDictionary>

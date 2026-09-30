@@ -25,9 +25,9 @@
 
         <!-- Navigation Buttons -->
         <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,20">
-            <RadioButton x:Name="BtnForm1" Content="Cấu hình cơ bản" Style="{StaticResource {x:Type ToggleButton}}" IsChecked="True" Margin="0,0,10,0" Padding="20,8"/>
-            <RadioButton x:Name="BtnForm2" Content="Khoảng cách &amp; Lặp lại" Style="{StaticResource {x:Type ToggleButton}}" Margin="0,0,10,0" Padding="20,8"/>
-            <RadioButton x:Name="BtnForm3" Content="Ghi tọa độ" Style="{StaticResource {x:Type ToggleButton}}" Padding="20,8"/>
+            <RadioButton x:Name="BtnForm1" Content="{DynamicResource AutoClick_Tab_Basic}" Style="{StaticResource {x:Type ToggleButton}}" IsChecked="True" Margin="0,0,10,0" Padding="20,8"/>
+            <RadioButton x:Name="BtnForm2" Content="{DynamicResource AutoClick_Tab_Interval}" Style="{StaticResource {x:Type ToggleButton}}" Margin="0,0,10,0" Padding="20,8"/>
+            <RadioButton x:Name="BtnForm3" Content="{DynamicResource AutoClick_Tab_Record}" Style="{StaticResource {x:Type ToggleButton}}" Padding="20,8"/>
         </StackPanel>
 
         <!-- Form 1: Cấu hình cơ bản -->
@@ -44,23 +44,66 @@
             </StackPanel.Style>
             <ui:Card Margin="0,0,0,10">
                 <StackPanel>
-                    <TextBlock Text="Phím chuột" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,0,8"/>
+                    <TextBlock Text="{DynamicResource AutoClick_MouseButton}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,0,8"/>
                     <ComboBox ItemsSource="{Binding MouseButtons}" 
                               SelectedItem="{Binding SelectedMouseButton}" 
-                              HorizontalAlignment="Stretch"/>
+                              HorizontalAlignment="Stretch">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock>
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="Text" Value="{Binding}"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding}" Value="Left">
+                                                    <Setter Property="Text" Value="{DynamicResource AutoClick_MouseLeft}"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding}" Value="Right">
+                                                    <Setter Property="Text" Value="{DynamicResource AutoClick_MouseRight}"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding}" Value="Middle">
+                                                    <Setter Property="Text" Value="{DynamicResource AutoClick_MouseMiddle}"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
                 </StackPanel>
             </ui:Card>
             <ui:Card Margin="0,0,0,10">
                 <StackPanel>
-                    <TextBlock Text="Kiểu click" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,0,8"/>
+                    <TextBlock Text="{DynamicResource AutoClick_ClickType}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,0,8"/>
                     <ComboBox ItemsSource="{Binding ClickTypes}" 
                               SelectedItem="{Binding SelectedClickType}" 
-                              HorizontalAlignment="Stretch"/>
+                              HorizontalAlignment="Stretch">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock>
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="Text" Value="{Binding}"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding}" Value="Single">
+                                                    <Setter Property="Text" Value="{DynamicResource AutoClick_ClickSingle}"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding}" Value="Double">
+                                                    <Setter Property="Text" Value="{DynamicResource AutoClick_ClickDouble}"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
                 </StackPanel>
             </ui:Card>
             <ui:Card Margin="0,0,0,10">
                 <StackPanel>
-                    <TextBlock Text="Phím tắt" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,0,8"/>
+                    <TextBlock Text="{DynamicResource AutoClick_Hotkey}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,0,8"/>
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
@@ -71,7 +114,7 @@
                                    FontWeight="SemiBold" 
                                    FontSize="14"/>
                         <ui:Button Grid.Column="1" 
-                                   Content="Đổi phím tắt" 
+                                   Content="{DynamicResource AutoClick_ChangeHotkey}" 
                                    Command="{Binding StartListeningCommand}"
                                    Appearance="Secondary"
                                    Padding="16,4"/>
@@ -94,7 +137,7 @@
             </StackPanel.Style>
             <ui:Card Margin="0,0,0,10">
                 <StackPanel>
-                    <TextBlock Text="Thời gian nghỉ giữa các lần Click" FontWeight="SemiBold" Margin="0,0,0,15"/>
+                    <TextBlock Text="{DynamicResource AutoClick_IntervalTitle}" FontWeight="SemiBold" Margin="0,0,0,15"/>
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
@@ -107,16 +150,16 @@
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                         
-                        <TextBlock Grid.Column="0" Text="Giờ" Foreground="{DynamicResource TextFillColorSecondaryBrush}" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                        <TextBlock Grid.Column="0" Text="{DynamicResource Shutdown_Hours}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" VerticalAlignment="Center" Margin="0,0,10,0"/>
                         <ui:NumberBox Grid.Column="1" Value="{Binding Hours}" Minimum="0" Maximum="23" Margin="0,0,20,0"/>
                         
-                        <TextBlock Grid.Column="2" Text="Phút" Foreground="{DynamicResource TextFillColorSecondaryBrush}" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                        <TextBlock Grid.Column="2" Text="{DynamicResource Shutdown_Minutes}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" VerticalAlignment="Center" Margin="0,0,10,0"/>
                         <ui:NumberBox Grid.Column="3" Value="{Binding Minutes}" Minimum="0" Maximum="59" Margin="0,0,20,0"/>
                         
-                        <TextBlock Grid.Column="4" Text="Giây" Foreground="{DynamicResource TextFillColorSecondaryBrush}" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                        <TextBlock Grid.Column="4" Text="{DynamicResource Shutdown_Seconds}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" VerticalAlignment="Center" Margin="0,0,10,0"/>
                         <ui:NumberBox Grid.Column="5" Value="{Binding Seconds}" Minimum="0" Maximum="59" Margin="0,0,20,0"/>
                         
-                        <TextBlock Grid.Column="6" Text="Ms" Foreground="{DynamicResource TextFillColorSecondaryBrush}" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                        <TextBlock Grid.Column="6" Text="{DynamicResource AutoClick_Ms}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" VerticalAlignment="Center" Margin="0,0,10,0"/>
                         <ui:NumberBox Grid.Column="7" Value="{Binding Milliseconds}" Minimum="10" Maximum="999"/>
                     </Grid>
                 </StackPanel>
@@ -124,9 +167,9 @@
 
             <ui:Card Margin="0,0,0,10">
                 <StackPanel>
-                    <TextBlock Text="Số lần lặp lại" FontWeight="SemiBold" Margin="0,0,0,10"/>
-                    <TextBlock Text="Nhập 0 để lặp lại vô hạn" Foreground="{DynamicResource TextFillColorSecondaryBrush}" FontSize="12" Margin="0,0,0,8"/>
-                    <ui:NumberBox Value="{Binding RepeatCount}" Minimum="0" PlaceholderText="Ví dụ: 100"/>
+                    <TextBlock Text="{DynamicResource AutoClick_RepeatCount}" FontWeight="SemiBold" Margin="0,0,0,10"/>
+                    <TextBlock Text="{DynamicResource AutoClick_RepeatInfinite}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" FontSize="12" Margin="0,0,0,8"/>
+                    <ui:NumberBox Value="{Binding RepeatCount}" Minimum="0" PlaceholderText="{DynamicResource AutoClick_RepeatPlaceholder}"/>
                 </StackPanel>
             </ui:Card>
         </StackPanel>
@@ -151,7 +194,7 @@
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
                     <StackPanel VerticalAlignment="Center">
-                        <TextBlock Text="Số điểm đã ghi" FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                        <TextBlock Text="{DynamicResource AutoClick_RecordedCount}" FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                         <TextBlock Text="{Binding RecordedPointsCount}" FontSize="18" FontWeight="SemiBold"/>
                     </StackPanel>
                     <ui:Button Grid.Column="1" 
@@ -160,7 +203,7 @@
                                Icon="{ui:SymbolIcon Record24}"
                                Margin="0,0,10,0"/>
                     <ui:Button Grid.Column="2" 
-                               Content="Xóa" 
+                               Content="{DynamicResource TextDev_ClearShort}" 
                                Command="{Binding ClearRecordingCommand}"
                                Appearance="Secondary"
                                Icon="{ui:SymbolIcon Delete24}"/>
@@ -176,7 +219,7 @@
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
                 <StackPanel VerticalAlignment="Center">
-                    <TextBlock Text="Trạng thái" FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                    <TextBlock Text="{DynamicResource Shutdown_Status}" FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                     <TextBlock Text="{Binding StatusText}" FontSize="18" FontWeight="SemiBold"/>
                 </StackPanel>
                 <ui:Button Grid.Column="1" 
@@ -188,8 +231,8 @@
             </Grid>
         </ui:Card>
 
-        <ui:InfoBar Grid.Row="4" Title="Mẹo" 
-                    Message="Bạn có thể nhấn phím tắt bất cứ lúc nào để Bật/Tắt clicker." 
+        <ui:InfoBar Grid.Row="4" Title="{DynamicResource AutoClick_TipTitle}" 
+                    Message="{DynamicResource AutoClick_TipMessage}" 
                     Severity="Informational" 
                     IsOpen="True" 
                     IsClosable="False"/>

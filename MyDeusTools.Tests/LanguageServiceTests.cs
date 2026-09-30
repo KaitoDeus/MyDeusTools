@@ -179,8 +179,18 @@ namespace MyDeusTools.Tests
         [InlineData("AutoClick_OverlayHelp")]
         [InlineData("Nav_VideoConverter")]
         [InlineData("Video_Title")]
+        [InlineData("Video_Bitrate128")]
+        [InlineData("Video_Bitrate320")]
         [InlineData("Nav_ImageStudio")]
         [InlineData("Image_Title")]
+        [InlineData("Image_TotalSavedPrefix")]
+        [InlineData("Image_StatusPending")]
+        [InlineData("Sticky_NewNoteContent")]
+        [InlineData("Sticky_NoteWindowTitle")]
+        [InlineData("Sticky_PinnedHeader")]
+        [InlineData("Shutdown_Mode_Shutdown")]
+        [InlineData("Shutdown_Mode_Restart")]
+        [InlineData("Shutdown_Mode_Hibernate")]
         public void CriticalKeys_ShouldExistInBothDictionaries(string key)
         {
             string dir = AppContext.BaseDirectory;

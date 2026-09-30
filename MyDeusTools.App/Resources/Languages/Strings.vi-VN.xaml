@@ -31,6 +31,7 @@
     <system:String x:Key="Sticky_Empty">Chưa có ghi chú nào. Nhấn 'Thêm ghi chú' để bắt đầu.</system:String>
     <system:String x:Key="Sticky_Pin">Ghim lên desktop</system:String>
     <system:String x:Key="Sticky_Delete">Xóa</system:String>
+    <system:String x:Key="Sticky_NewNoteContent">Ghi chú mới...</system:String>
 
     <!-- Auto Clicker Page -->
     <system:String x:Key="AutoClick_Title">Tự động click chuột (Auto Clicker Pro)</system:String>
@@ -47,6 +48,9 @@
     <system:String x:Key="Shutdown_Action_Shutdown">Tắt máy (Shutdown)</system:String>
     <system:String x:Key="Shutdown_Action_Restart">Khởi động lại (Restart)</system:String>
     <system:String x:Key="Shutdown_Action_Hibernate">Ngủ đông (Hibernate)</system:String>
+    <system:String x:Key="Shutdown_Mode_Shutdown">tắt máy</system:String>
+    <system:String x:Key="Shutdown_Mode_Restart">khởi động lại</system:String>
+    <system:String x:Key="Shutdown_Mode_Hibernate">ngủ đông</system:String>
     <system:String x:Key="Shutdown_TimeSetup">Thiết lập thời gian chờ:</system:String>
     <system:String x:Key="Shutdown_Hours">Giờ</system:String>
     <system:String x:Key="Shutdown_Minutes">Phút</system:String>
@@ -280,5 +284,182 @@
     <system:String x:Key="Image_StatusProcessing">Đang xử lý...</system:String>
     <system:String x:Key="Image_StatusDone">Hoàn tất</system:String>
     <system:String x:Key="Image_StatusError">Lỗi</system:String>
+    <system:String x:Key="Image_StatusCanceled">Đã hủy</system:String>
+    <system:String x:Key="Image_TotalSavedPrefix">Tiết kiệm: </system:String>
+    <system:String x:Key="Image_StatusReady">Sẵn sàng thêm ảnh vào hàng đợi.</system:String>
+    <system:String x:Key="Image_DialogTitleFiles">Chọn hình ảnh để nén hoặc chuyển đổi</system:String>
+    <system:String x:Key="Image_DialogFilterFiles">Tất cả hình ảnh|*.jpg;*.jpeg;*.png;*.webp;*.bmp;*.tif;*.tiff;*.gif;*.ico|PNG Files (*.png)|*.png|JPEG Files (*.jpg;*.jpeg)|*.jpg;*.jpeg|WebP Files (*.webp)|*.webp|Icon Files (*.ico)|*.ico|Tất cả tệp (*.*)|*.*</system:String>
+    <system:String x:Key="Image_DialogTitleFolder">Chọn thư mục chứa hình ảnh</system:String>
+    <system:String x:Key="Image_DialogTitleOutput">Chọn thư mục lưu ảnh xuất ra</system:String>
+    <system:String x:Key="Image_StatusLoaded">Đã nạp {0} ảnh mới vào hàng đợi.</system:String>
+    <system:String x:Key="Image_StatusCleared">Đã dọn sạch danh sách ảnh.</system:String>
+    <system:String x:Key="Image_StatusEmptyQueue">Vui lòng thêm ít nhất một ảnh vào hàng đợi.</system:String>
+    <system:String x:Key="Image_StatusWebPFFmpeg">Định dạng WebP yêu cầu công cụ FFmpeg. Vui lòng tải FFmpeg hoặc đổi sang PNG/JPEG/ICO.</system:String>
+    <system:String x:Key="Image_StatusBatchStarting">Đang bắt đầu xử lý hàng loạt...</system:String>
+    <system:String x:Key="Image_StatusProcessingItem">Đang xử lý ({0}/{1}): {2}</system:String>
+    <system:String x:Key="Image_StatusCompleted">Hoàn tất xử lý {0} ảnh!</system:String>
+    <system:String x:Key="Image_StatusCanceledMsg">Đã hủy tiến trình xử lý ảnh.</system:String>
+    <system:String x:Key="Image_StatusErrorMsg">Lỗi: {0}</system:String>
+    <system:String x:Key="Image_StatusCanceling">Đang gửi yêu cầu hủy...</system:String>
+    <system:String x:Key="Image_StatusInvalidDir">Chưa có thư mục đầu ra hợp lệ.</system:String>
+
+    <!-- Shell / Tray / Common -->
+    <system:String x:Key="App_Tray_Open">Mở ứng dụng</system:String>
+    <system:String x:Key="App_Tray_Exit">Thoát</system:String>
+    <system:String x:Key="App_Language_SwitchTooltip">Chuyển đổi ngôn ngữ / Switch Language</system:String>
+
+    <!-- Sticky Note -->
+    <system:String x:Key="Sticky_NoteWindowTitle">Ghi chú</system:String>
+    <system:String x:Key="Sticky_PinnedHeader">📌 Ghi chú nổi</system:String>
+
+    <!-- Auto Clicker UI & Status -->
+    <system:String x:Key="AutoClick_Tab_Basic">Cấu hình cơ bản</system:String>
+    <system:String x:Key="AutoClick_Tab_Interval">Khoảng cách &amp; Lặp lại</system:String>
+    <system:String x:Key="AutoClick_Tab_Record">Ghi tọa độ</system:String>
+    <system:String x:Key="AutoClick_MouseButton">Phím chuột</system:String>
+    <system:String x:Key="AutoClick_MouseLeft">Chuột trái</system:String>
+    <system:String x:Key="AutoClick_MouseRight">Chuột phải</system:String>
+    <system:String x:Key="AutoClick_MouseMiddle">Chuột giữa (Con lăn)</system:String>
+    <system:String x:Key="AutoClick_ClickType">Kiểu click</system:String>
+    <system:String x:Key="AutoClick_ClickSingle">Click đơn (1 lần)</system:String>
+    <system:String x:Key="AutoClick_ClickDouble">Click đúp (2 lần)</system:String>
+    <system:String x:Key="AutoClick_Hotkey">Phím tắt</system:String>
+    <system:String x:Key="AutoClick_ChangeHotkey">Đổi phím tắt</system:String>
+    <system:String x:Key="AutoClick_IntervalTitle">Thời gian nghỉ giữa các lần Click</system:String>
+    <system:String x:Key="AutoClick_Ms">Ms</system:String>
+    <system:String x:Key="AutoClick_RepeatCount">Số lần lặp lại</system:String>
+    <system:String x:Key="AutoClick_RepeatInfinite">Nhập 0 để lặp lại vô hạn</system:String>
+    <system:String x:Key="AutoClick_RepeatPlaceholder">Ví dụ: 100</system:String>
+    <system:String x:Key="AutoClick_RecordedCount">Số điểm đã ghi</system:String>
+    <system:String x:Key="AutoClick_TipTitle">Mẹo</system:String>
+    <system:String x:Key="AutoClick_TipMessage">Bạn có thể nhấn phím tắt bất cứ lúc nào để Bật/Tắt clicker.</system:String>
+    <system:String x:Key="AutoClick_OverlayRecorded">Đã ghi {0} điểm. Click tiếp để ghi thêm. Nhấn ENTER/ESC để hoàn tất.</system:String>
+    <system:String x:Key="AutoClick_StatusReady">Sẵn sàng</system:String>
+    <system:String x:Key="AutoClick_StatusStopped">Đã dừng</system:String>
+    <system:String x:Key="AutoClick_StatusListening">Nhấn tổ hợp phím bất kỳ để gán (Trừ ESC)...</system:String>
+    <system:String x:Key="AutoClick_StatusHotkeyCanceled">Đã hủy đổi phím tắt.</system:String>
+    <system:String x:Key="AutoClick_StatusHotkeyChanged">Đã đổi phím tắt thành: {0}</system:String>
+    <system:String x:Key="AutoClick_StatusRunningReplay">Đang chạy (Replay)...</system:String>
+    <system:String x:Key="AutoClick_StatusRunning">Đang chạy...</system:String>
+    <system:String x:Key="AutoClick_StatusPointRecorded">Đã ghi điểm thứ {0} tại: {1}, {2}</system:String>
+    <system:String x:Key="AutoClick_StatusRecordingExit">Đã thoát chế độ ghi tọa độ.</system:String>
+    <system:String x:Key="AutoClick_StatusWaitingClick">Đang chờ click để ghi tọa độ...</system:String>
+    <system:String x:Key="AutoClick_StatusClearedPoints">Đã xóa các điểm ghi</system:String>
+    <system:String x:Key="AutoClick_BtnStartFmt">Bắt đầu ({0})</system:String>
+    <system:String x:Key="AutoClick_BtnStopFmt">Dừng lại ({0})</system:String>
+
+    <!-- Shutdown Page Status -->
+    <system:String x:Key="Shutdown_StatusReady">Sẵn sàng</system:String>
+    <system:String x:Key="Shutdown_ErrorTimeZero">Vui lòng nhập thời gian lớn hơn 0!</system:String>
+    <system:String x:Key="Shutdown_StatusScheduled">Đã hẹn giờ {0} sau {1}h {2}m {3}s</system:String>
+    <system:String x:Key="Shutdown_StatusUpdated">Đã cập nhật hẹn giờ {0} sau {1}h {2}m {3}s</system:String>
+    <system:String x:Key="Shutdown_StatusCanceled">Đã hủy lệnh hẹn giờ</system:String>
+    <system:String x:Key="Shutdown_StatusTimeUp">Đã hết thời gian chờ!</system:String>
+
+    <!-- Clipboard Manager UI & Status -->
+    <system:String x:Key="Clipboard_SavedPrefix">Đang lưu: </system:String>
+    <system:String x:Key="Clipboard_ItemsUnit">mục</system:String>
+    <system:String x:Key="Clipboard_ClearSearch">Xóa tìm</system:String>
+    <system:String x:Key="Clipboard_EmptyDescription">Khi bạn sao chép bất kỳ văn bản nào, nó sẽ tự động được lưu và hiển thị tại đây để bạn sử dụng lại nhanh chóng.</system:String>
+    <system:String x:Key="Clipboard_PinnedBadge">ĐÃ GHIM</system:String>
+    <system:String x:Key="Clipboard_CharsSuffix">ký tự)</system:String>
+    <system:String x:Key="Clipboard_CopyAgain">Sao chép lại</system:String>
+    <system:String x:Key="Clipboard_TooltipPin">Ghim / Bỏ ghim</system:String>
+    <system:String x:Key="Clipboard_TooltipDelete">Xóa mục này</system:String>
+    <system:String x:Key="Clipboard_StatusReady">Sẵn sàng theo dõi khay nhớ tạm</system:String>
+    <system:String x:Key="Clipboard_StatusCopied">Đã sao chép: {0}</system:String>
+    <system:String x:Key="Clipboard_StatusDeleted">Đã xóa 1 mục khỏi lịch sử</system:String>
+    <system:String x:Key="Clipboard_StatusPinned">Đã ghim mục này</system:String>
+    <system:String x:Key="Clipboard_StatusUnpinned">Đã bỏ ghim mục này</system:String>
+    <system:String x:Key="Clipboard_StatusCleared">Đã xóa toàn bộ lịch sử (giữ lại các mục đã ghim)</system:String>
+
+    <!-- Color Picker UI & Status -->
+    <system:String x:Key="Color_SelectedDetails">Chi tiết màu đang chọn</system:String>
+    <system:String x:Key="Color_PinnedBadge">ĐÃ GHIM</system:String>
+    <system:String x:Key="Color_CopyBtn">Sao chép</system:String>
+    <system:String x:Key="Color_ColorsUnit">màu</system:String>
+    <system:String x:Key="Color_EmptyHistory">Chưa có mã màu nào</system:String>
+    <system:String x:Key="Color_EmptyDescription">Nhấn nút 'Chấm màu màn hình' để chọn bất kỳ màu sắc nào đang hiển thị trên máy tính của bạn.</system:String>
+    <system:String x:Key="Color_TooltipPin">Ghim màu này</system:String>
+    <system:String x:Key="Color_TooltipDelete">Xóa màu này</system:String>
+    <system:String x:Key="Color_StatusReady">Sẵn sàng bắt màu màn hình</system:String>
+    <system:String x:Key="Color_StatusPicking">Rê chuột đến vùng cần lấy màu và click để chọn...</system:String>
+    <system:String x:Key="Color_StatusPickedCopied">Đã bắt màu {0} và sao chép vào khay nhớ tạm!</system:String>
+    <system:String x:Key="Color_StatusPicked">Đã bắt màu {0}!</system:String>
+    <system:String x:Key="Color_StatusCanceled">Đã hủy thao tác bắt màu.</system:String>
+    <system:String x:Key="Color_StatusViewing">Đang xem chi tiết màu {0}</system:String>
+    <system:String x:Key="Color_StatusCopied">Đã sao chép: {0}</system:String>
+    <system:String x:Key="Color_StatusCopyError">Lỗi sao chép: {0}</system:String>
+    <system:String x:Key="Color_StatusPinned">Đã ghim màu {0}</system:String>
+    <system:String x:Key="Color_StatusUnpinned">Đã bỏ ghim màu {0}</system:String>
+    <system:String x:Key="Color_StatusDeleted">Đã xóa màu {0} khỏi lịch sử.</system:String>
+    <system:String x:Key="Color_StatusCleared">Đã xóa toàn bộ lịch sử (giữ lại các màu đã ghim).</system:String>
+
+    <!-- QR Code UI & Status -->
+    <system:String x:Key="Qr_InputContentHeader">Nội dung mã QR (Văn bản / Đường dẫn URL)</system:String>
+    <system:String x:Key="Qr_InputContentPrompt">Gõ nội dung hoặc dán liên kết vào ô trên để tạo mã QR tự động tức thì.</system:String>
+    <system:String x:Key="Qr_ActionsHeader">Hành động xuất mã QR</system:String>
+    <system:String x:Key="Qr_PreviewHeader">Xem trước mã QR</system:String>
+    <system:String x:Key="Qr_PreviewBadge">Độ nét cao • Sẵn sàng quét</system:String>
+    <system:String x:Key="Qr_ScanMethodsHeader">Chọn phương thức quét mã QR</system:String>
+    <system:String x:Key="Qr_EmptyResultTitle">Chưa có kết quả quét</system:String>
+    <system:String x:Key="Qr_EmptyResultDesc">Nhấn 'Cắt vùng quét màn hình' để chọn vùng bất kỳ có mã QR, hoặc mở ảnh mã QR có sẵn trên máy để giải mã.</system:String>
+    <system:String x:Key="Qr_DecodedContentHeader">Nội dung mã QR đã giải mã:</system:String>
+    <system:String x:Key="Qr_CopyResult">Sao chép</system:String>
+    <system:String x:Key="Qr_OpenUrl">Mở liên kết</system:String>
+    <system:String x:Key="Qr_StatusReady">Sẵn sàng tạo hoặc quét mã QR</system:String>
+    <system:String x:Key="Qr_StatusEnterContent">Vui lòng nhập nội dung để tạo mã QR.</system:String>
+    <system:String x:Key="Qr_StatusGenerated">Đã tạo mã QR thành công!</system:String>
+    <system:String x:Key="Qr_StatusGenError">Lỗi tạo mã QR: {0}</system:String>
+    <system:String x:Key="Qr_StatusSaved">Đã lưu mã QR vào: {0}</system:String>
+    <system:String x:Key="Qr_StatusSaveError">Lỗi khi lưu ảnh: {0}</system:String>
+    <system:String x:Key="Qr_StatusImageCopied">Đã sao chép ảnh mã QR vào khay nhớ tạm!</system:String>
+    <system:String x:Key="Qr_StatusCopyError">Lỗi sao chép ảnh: {0}</system:String>
+    <system:String x:Key="Qr_StatusSelectingRegion">Đang chọn vùng màn hình để quét...</system:String>
+    <system:String x:Key="Qr_StatusScanSuccess">Quét mã QR từ màn hình thành công!</system:String>
+    <system:String x:Key="Qr_StatusNotFoundInRegion">Không tìm thấy mã QR trong vùng vừa chọn.</system:String>
+    <system:String x:Key="Qr_StatusScanCanceled">Đã hủy thao tác quét màn hình.</system:String>
+    <system:String x:Key="Qr_DialogTitle">Chọn hình ảnh chứa mã QR</system:String>
+    <system:String x:Key="Qr_DialogFilter">Hình ảnh (*.png;*.jpg;*.jpeg;*.bmp;*.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.webp|Tất cả tệp (*.*)|*.*</system:String>
+    <system:String x:Key="Qr_StatusFileSuccess">Quét thành công từ file: {0}</system:String>
+    <system:String x:Key="Qr_StatusFileNotFound">Không tìm thấy hoặc không thể đọc mã QR từ file hình ảnh.</system:String>
+    <system:String x:Key="Qr_StatusFileError">Lỗi đọc file: {0}</system:String>
+    <system:String x:Key="Qr_StatusClipboardSuccess">Quét thành công mã QR từ hình ảnh trong Clipboard!</system:String>
+    <system:String x:Key="Qr_StatusClipboardEmpty">Khay nhớ tạm không chứa ảnh hoặc không đọc được mã QR.</system:String>
+    <system:String x:Key="Qr_StatusClipboardError">Lỗi đọc từ clipboard: {0}</system:String>
+    <system:String x:Key="Qr_StatusResultCopied">Đã sao chép kết quả quét vào khay nhớ tạm!</system:String>
+    <system:String x:Key="Qr_StatusOpenUrlError">Không thể mở liên kết: {0}</system:String>
+    <system:String x:Key="Qr_StatusResultCleared">Đã xóa kết quả quét.</system:String>
+
+    <!-- Video Converter Quality & Status -->
+    <system:String x:Key="Video_Bitrate128">128 kbps (Tiêu chuẩn)</system:String>
+    <system:String x:Key="Video_Bitrate192">192 kbps (Chất lượng cao)</system:String>
+    <system:String x:Key="Video_Bitrate256">256 kbps (Rất cao)</system:String>
+    <system:String x:Key="Video_Bitrate320">320 kbps (Cực đại)</system:String>
+    <system:String x:Key="Video_EngineReady">Sẵn sàng ({0})</system:String>
+    <system:String x:Key="Video_EngineNotInstalled">Chưa cài đặt bộ máy FFmpeg</system:String>
+    <system:String x:Key="Video_StatusReady">Sẵn sàng chuyển đổi video</system:String>
+    <system:String x:Key="Video_StatusAnalyzing">Đang phân tích thông tin video...</system:String>
+    <system:String x:Key="Video_StatusLoaded">Đã tải tệp: {0} ({1})</system:String>
+    <system:String x:Key="Video_StatusLoadedSimple">Đã chọn tệp. Nhấn Bắt đầu để chuyển đổi.</system:String>
+    <system:String x:Key="Video_DialogSourceTitle">Chọn tệp video nguồn</system:String>
+    <system:String x:Key="Video_DialogSourceFilter">Tất cả tệp video/âm thanh|*.mp4;*.mkv;*.avi;*.mov;*.wmv;*.webm;*.flv;*.ts;*.m4v;*.3gp;*.mp3;*.wav;*.aac|Video Files (*.mp4;*.mkv;*.avi;*.mov)|*.mp4;*.mkv;*.avi;*.mov|Tất cả tệp (*.*)|*.*</system:String>
+    <system:String x:Key="Video_DialogOutputTitle">Chọn thư mục lưu tệp đầu ra</system:String>
+    <system:String x:Key="Video_StatusSelectSourcePrompt">Vui lòng chọn tệp video nguồn!</system:String>
+    <system:String x:Key="Video_StatusEngineMissingPrompt">Chưa phát hiện bộ máy FFmpeg! Vui lòng cài đặt trước.</system:String>
+    <system:String x:Key="Video_StatusConverting">Đang chuyển đổi video...</system:String>
+    <system:String x:Key="Video_StatusSuccess">Chuyển đổi thành công: {0}</system:String>
+    <system:String x:Key="Video_StatusFailed">Quá trình chuyển đổi gặp lỗi! Xem nhật ký (Logs) để biết chi tiết.</system:String>
+    <system:String x:Key="Video_StatusCanceled">Đã hủy bỏ chuyển đổi.</system:String>
+    <system:String x:Key="Video_StatusError">Lỗi: {0}</system:String>
+    <system:String x:Key="Video_StatusStopping">Đang dừng tiến trình chuyển đổi...</system:String>
+    <system:String x:Key="Video_StatusDownloadingEngine">Đang tải bộ máy FFmpeg Portable...</system:String>
+    <system:String x:Key="Video_StatusDownloadingProgress">Đang tải FFmpeg: {0:0.0}%</system:String>
+    <system:String x:Key="Video_StatusDownloadSuccess">Cài đặt bộ máy FFmpeg thành công! Đã sẵn sàng chuyển đổi.</system:String>
+    <system:String x:Key="Video_StatusDownloadFailed">Tải thất bại. Vui lòng kiểm tra kết nối mạng hoặc chọn tệp ffmpeg.exe sẵn có.</system:String>
+    <system:String x:Key="Video_StatusDownloadError">Lỗi tải: {0}</system:String>
+    <system:String x:Key="Video_DialogFfmpegTitle">Chọn tệp thực thi ffmpeg.exe</system:String>
+    <system:String x:Key="Video_StatusLinkedEngine">Đã liên kết bộ máy: {0}</system:String>
+    <system:String x:Key="Video_StatusCannotOpenFile">Không thể mở tệp: {0}</system:String>
 
 </ResourceDictionary>

@@ -3,7 +3,7 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
       xmlns:models="clr-namespace:MyDeusTools.App.Services.Impl"
-      Title="Sticky Note"
+      Title="{DynamicResource Sticky_Title}"
       Foreground="{DynamicResource TextFillColorPrimaryBrush}"
       Background="Transparent">
 
@@ -68,7 +68,7 @@
                                             <ui:Button Padding="4"
                                                        Margin="0,0,4,0"
                                                        Appearance="Transparent"
-                                                       ToolTip="Ghim lên màn hình"
+                                                       ToolTip="{DynamicResource Sticky_Pin}"
                                                        Command="{Binding DataContext.PinNoteCommand, RelativeSource={RelativeSource AncestorType=Page}}"
                                                        CommandParameter="{Binding}">
                                                 <ui:SymbolIcon Symbol="Pin24" FontSize="16"/>
@@ -76,6 +76,7 @@
 
                                             <ui:Button Padding="4"
                                                        Appearance="Transparent"
+                                                       ToolTip="{DynamicResource Sticky_Delete}"
                                                        Command="{Binding DataContext.DeleteNoteCommand, RelativeSource={RelativeSource AncestorType=Page}}"
                                                        CommandParameter="{Binding}">
                                                 <ui:SymbolIcon Symbol="Delete24" FontSize="16" Foreground="{DynamicResource SystemFillColorCriticalBrush}"/>

@@ -9,6 +9,7 @@ namespace MyDeusTools.App.ViewModels
     public partial class StickyNoteViewModel : ObservableObject
     {
         private readonly IStickyNoteService _noteService;
+        private readonly ILanguageService? _languageService;
 
         private ObservableCollection<StickyNoteModel> _notes;
         public ObservableCollection<StickyNoteModel> Notes
@@ -17,18 +18,20 @@ namespace MyDeusTools.App.ViewModels
             set => SetProperty(ref _notes, value);
         }
 
-        public StickyNoteViewModel(IStickyNoteService noteService)
+        public StickyNoteViewModel(IStickyNoteService noteService, ILanguageService? languageService = null)
         {
             _noteService = noteService;
+            _languageService = languageService;
             _notes = _noteService.GetNotes();
         }
 
         [RelayCommand]
         private void AddNote()
         {
+            string defaultContent = _languageService?.GetString("Sticky_NewNoteContent", "Ghi chú mới...") ?? "Ghi chú mới...";
             var newNote = new StickyNoteModel
             {
-                Content = "Ghi chú mới...",
+                Content = defaultContent,
                 CreatedAt = System.DateTime.Now
             };
             _noteService.AddNote(newNote);

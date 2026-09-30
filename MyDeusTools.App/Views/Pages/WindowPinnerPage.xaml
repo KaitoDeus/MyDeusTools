@@ -3,7 +3,7 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
       xmlns:models="clr-namespace:MyDeusTools.App.Services.Impl"
-      Title="Window Pinner"
+      Title="{DynamicResource WindowPinner_Title}"
       Foreground="{DynamicResource TextFillColorPrimaryBrush}"
       Background="Transparent">
 
@@ -235,7 +235,7 @@
                                                 </Border.Style>
                                                 <ui:Button Appearance="Primary"
                                                            Padding="14,6"
-                                                           ToolTip="Always on Top"
+                                                           ToolTip="{DynamicResource WindowPinner_Pinned}"
                                                            Command="{Binding DataContext.TogglePinCommand, RelativeSource={RelativeSource AncestorType=Page}}"
                                                            CommandParameter="{Binding}">
                                                     <StackPanel Orientation="Horizontal">
@@ -259,7 +259,7 @@
                                                 </Border.Style>
                                                 <ui:Button Appearance="Secondary"
                                                            Padding="14,6"
-                                                           ToolTip="Normal window"
+                                                           ToolTip="{DynamicResource WindowPinner_Unpinned}"
                                                            Command="{Binding DataContext.TogglePinCommand, RelativeSource={RelativeSource AncestorType=Page}}"
                                                            CommandParameter="{Binding}">
                                                     <StackPanel Orientation="Horizontal">

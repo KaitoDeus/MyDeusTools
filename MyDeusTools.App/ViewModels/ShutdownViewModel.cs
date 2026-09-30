@@ -10,8 +10,12 @@ namespace MyDeusTools.App.ViewModels
     public partial class ShutdownViewModel : ObservableObject
     {
         private readonly ISystemService _systemService;
+        private readonly ILanguageService? _languageService;
         private readonly DispatcherTimer _countdownTimer;
         private int _remainingSeconds;
+
+        private string GetLoc(string key, string fallback) =>
+            _languageService?.GetString(key, fallback) ?? fallback;
 
         // Mode selection
         public ObservableCollection<ShutdownMode> ShutdownModes { get; } = new()
@@ -43,9 +47,24 @@ namespace MyDeusTools.App.ViewModels
         private bool _isScheduled = false;
         public bool IsScheduled { get => _isScheduled; set => SetProperty(ref _isScheduled, value); }
 
-        public ShutdownViewModel(ISystemService systemService)
+        public ShutdownViewModel(ISystemService systemService, ILanguageService? languageService = null)
         {
             _systemService = systemService;
+            _languageService = languageService;
+
+            if (_languageService != null)
+            {
+                _languageService.LanguageChanged += _ =>
+                {
+                    if (!_isScheduled && (StatusMessage == "Sẵn sàng" || StatusMessage == "Ready"))
+                    {
+                        StatusMessage = GetLoc("Shutdown_StatusReady", "Sẵn sàng");
+                    }
+                };
+            }
+
+            _statusMessage = GetLoc("Shutdown_StatusReady", "Sẵn sàng");
+
             _countdownTimer = new DispatcherTimer
             {
                 Interval = TimeSpan.FromSeconds(1)
@@ -60,7 +79,7 @@ namespace MyDeusTools.App.ViewModels
             
             if (totalSeconds <= 0)
             {
-                StatusMessage = "Vui lòng nhập thời gian lớn hơn 0!";
+                StatusMessage = GetLoc("Shutdown_ErrorTimeZero", "Vui lòng nhập thời gian lớn hơn 0!");
                 return;
             }
 
@@ -76,17 +95,19 @@ namespace MyDeusTools.App.ViewModels
 
             string modeName = SelectedMode switch
             {
-                ShutdownMode.Restart => "khởi động lại",
-                ShutdownMode.Hibernate => "ngủ đông",
-                _ => "tắt máy"
+                ShutdownMode.Restart => GetLoc("Shutdown_Mode_Restart", "khởi động lại"),
+                ShutdownMode.Hibernate => GetLoc("Shutdown_Mode_Hibernate", "ngủ đông"),
+                _ => GetLoc("Shutdown_Mode_Shutdown", "tắt máy")
             };
 
             bool wasScheduled = _isScheduled;
             IsScheduled = true;
 
-            StatusMessage = wasScheduled 
-                ? $"Đã cập nhật hẹn giờ {modeName} sau {Hours}h {Minutes}m {Seconds}s" 
-                : $"Đã hẹn giờ {modeName} sau {Hours}h {Minutes}m {Seconds}s";
+            string fmt = wasScheduled 
+                ? GetLoc("Shutdown_StatusUpdated", "Đã cập nhật hẹn giờ {0} sau {1}h {2}m {3}s")
+                : GetLoc("Shutdown_StatusScheduled", "Đã hẹn giờ {0} sau {1}h {2}m {3}s");
+
+            StatusMessage = string.Format(fmt, modeName, Hours, Minutes, Seconds);
         }
 
         [RelayCommand]
@@ -97,7 +118,7 @@ namespace MyDeusTools.App.ViewModels
             CountdownText = "";
             IsScheduled = false;
             _systemService.CancelShutdown();
-            StatusMessage = "Đã hủy lệnh hẹn giờ";
+            StatusMessage = GetLoc("Shutdown_StatusCanceled", "Đã hủy lệnh hẹn giờ");
         }
 
         private void CountdownTimer_Tick(object? sender, EventArgs e)
@@ -109,7 +130,7 @@ namespace MyDeusTools.App.ViewModels
                 _remainingSeconds = 0;
                 CountdownText = "00:00:00";
                 IsScheduled = false;
-                StatusMessage = "Đã hết thời gian chờ!";
+                StatusMessage = GetLoc("Shutdown_StatusTimeUp", "Đã hết thời gian chờ!");
                 return;
             }
 

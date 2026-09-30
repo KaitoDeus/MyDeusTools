@@ -12,6 +12,10 @@ namespace MyDeusTools.App.ViewModels
     public partial class ColorPickerViewModel : ObservableObject
     {
         private readonly IColorPickerService _colorPickerService;
+        private readonly ILanguageService? _languageService;
+
+        private string GetLoc(string key, string fallback) =>
+            _languageService?.GetString(key, fallback) ?? fallback;
 
         private ColorItemModel? _selectedColor;
         public ColorItemModel? SelectedColor
@@ -49,9 +53,23 @@ namespace MyDeusTools.App.ViewModels
 
         public ObservableCollection<ColorItemModel> History => _colorPickerService.History;
 
-        public ColorPickerViewModel(IColorPickerService colorPickerService)
+        public ColorPickerViewModel(IColorPickerService colorPickerService, ILanguageService? languageService = null)
         {
             _colorPickerService = colorPickerService;
+            _languageService = languageService;
+
+            if (_languageService != null)
+            {
+                _languageService.LanguageChanged += _ =>
+                {
+                    if (StatusMessage == "Sẵn sàng bắt màu màn hình" || StatusMessage == "Ready to pick colors from screen")
+                    {
+                        StatusMessage = GetLoc("Color_StatusReady", "Sẵn sàng bắt màu màn hình");
+                    }
+                };
+            }
+
+            _statusMessage = GetLoc("Color_StatusReady", "Sẵn sàng bắt màu màn hình");
             _colorPickerService.HistoryChanged += OnHistoryChanged;
 
             UpdateState();
@@ -81,7 +99,7 @@ namespace MyDeusTools.App.ViewModels
         [RelayCommand]
         public void PickColor()
         {
-            StatusMessage = "Rê chuột đến vùng cần lấy màu và click để chọn...";
+            StatusMessage = GetLoc("Color_StatusPicking", "Rê chuột đến vùng cần lấy màu và click để chọn...");
 
             var overlay = new ColorPickerOverlayWindow(_colorPickerService);
             overlay.ColorSelected += (r, g, b) =>
@@ -95,18 +113,20 @@ namespace MyDeusTools.App.ViewModels
                     try
                     {
                         Clipboard.SetText(item.Hex);
-                        StatusMessage = $"Đã bắt màu {item.Hex} và sao chép vào khay nhớ tạm!";
+                        string fmt = GetLoc("Color_StatusPickedCopied", "Đã bắt màu {0} và sao chép vào khay nhớ tạm!");
+                        StatusMessage = string.Format(fmt, item.Hex);
                     }
                     catch
                     {
-                        StatusMessage = $"Đã bắt màu {item.Hex}!";
+                        string fmt = GetLoc("Color_StatusPicked", "Đã bắt màu {0}!");
+                        StatusMessage = string.Format(fmt, item.Hex);
                     }
                 });
             };
 
             overlay.PickingCanceled += () =>
             {
-                StatusMessage = "Đã hủy thao tác bắt màu.";
+                StatusMessage = GetLoc("Color_StatusCanceled", "Đã hủy thao tác bắt màu.");
             };
 
             overlay.ShowDialog();
@@ -117,7 +137,8 @@ namespace MyDeusTools.App.ViewModels
         {
             if (item == null) return;
             SelectedColor = item;
-            StatusMessage = $"Đang xem chi tiết màu {item.Hex}";
+            string fmt = GetLoc("Color_StatusViewing", "Đang xem chi tiết màu {0}");
+            StatusMessage = string.Format(fmt, item.Hex);
         }
 
         [RelayCommand]
@@ -128,11 +149,13 @@ namespace MyDeusTools.App.ViewModels
             try
             {
                 Clipboard.SetText(text);
-                StatusMessage = $"Đã sao chép: {text}";
+                string fmt = GetLoc("Color_StatusCopied", "Đã sao chép: {0}");
+                StatusMessage = string.Format(fmt, text);
             }
             catch (Exception ex)
             {
-                StatusMessage = $"Lỗi sao chép: {ex.Message}";
+                string fmt = GetLoc("Color_StatusCopyError", "Lỗi sao chép: {0}");
+                StatusMessage = string.Format(fmt, ex.Message);
             }
         }
 
@@ -141,7 +164,10 @@ namespace MyDeusTools.App.ViewModels
         {
             if (item == null) return;
             _colorPickerService.TogglePin(item);
-            StatusMessage = item.IsPinned ? $"Đã ghim màu {item.Hex}" : $"Đã bỏ ghim màu {item.Hex}";
+            string fmt = item.IsPinned 
+                ? GetLoc("Color_StatusPinned", "Đã ghim màu {0}") 
+                : GetLoc("Color_StatusUnpinned", "Đã bỏ ghim màu {0}");
+            StatusMessage = string.Format(fmt, item.Hex);
         }
 
         [RelayCommand]
@@ -154,7 +180,8 @@ namespace MyDeusTools.App.ViewModels
             {
                 SelectedColor = History.FirstOrDefault();
             }
-            StatusMessage = $"Đã xóa màu {item.Hex} khỏi lịch sử.";
+            string fmt = GetLoc("Color_StatusDeleted", "Đã xóa màu {0} khỏi lịch sử.");
+            StatusMessage = string.Format(fmt, item.Hex);
         }
 
         [RelayCommand]
@@ -162,7 +189,7 @@ namespace MyDeusTools.App.ViewModels
         {
             _colorPickerService.ClearHistory(keepPinned: true);
             SelectedColor = History.FirstOrDefault();
-            StatusMessage = "Đã xóa toàn bộ lịch sử (giữ lại các màu đã ghim).";
+            StatusMessage = GetLoc("Color_StatusCleared", "Đã xóa toàn bộ lịch sử (giữ lại các màu đã ghim).");
         }
     }
 }

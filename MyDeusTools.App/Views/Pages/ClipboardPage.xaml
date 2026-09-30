@@ -37,13 +37,14 @@
                         Padding="12,6" 
                         Margin="0,0,12,0">
                     <TextBlock FontSize="13" Foreground="{DynamicResource TextFillColorSecondaryBrush}">
-                        <Run Text="Đang lưu:" />
+                        <Run Text="{DynamicResource Clipboard_SavedPrefix}" />
                         <Run Text="{Binding TotalCount, Mode=OneWay}" FontWeight="SemiBold" Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}" />
-                        <Run Text="mục" />
+                        <Run Text=" " />
+                        <Run Text="{DynamicResource Clipboard_ItemsUnit}" />
                     </TextBlock>
                 </Border>
 
-                <ui:Button Content="Xóa lịch sử" 
+                <ui:Button Content="{DynamicResource Clipboard_Clear}" 
                            Icon="{ui:SymbolIcon Symbol=Delete24}"
                            Command="{Binding ClearHistoryCommand}"
                            Appearance="Secondary"
@@ -74,7 +75,7 @@
                          Padding="4,2"/>
 
                 <ui:Button Grid.Column="2" 
-                           Content="Xóa tìm" 
+                           Content="{DynamicResource Clipboard_ClearSearch}" 
                            Command="{Binding ClearSearchCommand}"
                            Appearance="Transparent"
                            Padding="10,4"
@@ -105,12 +106,12 @@
                                    HorizontalAlignment="Center" 
                                    Foreground="{DynamicResource TextFillColorTertiaryBrush}"
                                    Margin="0,0,0,15"/>
-                    <TextBlock Text="Chưa có nội dung sao chép" 
+                    <TextBlock Text="{DynamicResource Clipboard_Empty}" 
                                FontSize="18" 
                                FontWeight="SemiBold" 
                                HorizontalAlignment="Center"
                                Margin="0,0,0,6"/>
-                    <TextBlock Text="Khi bạn sao chép bất kỳ văn bản nào, nó sẽ tự động được lưu và hiển thị tại đây để bạn sử dụng lại nhanh chóng." 
+                    <TextBlock Text="{DynamicResource Clipboard_EmptyDescription}" 
                                TextWrapping="Wrap" 
                                TextAlignment="Center"
                                Foreground="{DynamicResource TextFillColorSecondaryBrush}"
@@ -169,7 +170,7 @@
                                                 </Border.Style>
                                                 <StackPanel Orientation="Horizontal">
                                                     <ui:SymbolIcon Symbol="Pin24" FontSize="11" Foreground="{DynamicResource TextOnAccentFillColorPrimaryBrush}" Margin="0,0,4,0"/>
-                                                    <TextBlock Text="ĐÃ GHIM" 
+                                                    <TextBlock Text="{DynamicResource Clipboard_PinnedBadge}" 
                                                                FontSize="10" 
                                                                FontWeight="Bold" 
                                                                Foreground="{DynamicResource TextOnAccentFillColorPrimaryBrush}"/>
@@ -189,13 +190,14 @@
                                                        VerticalAlignment="Center">
                                                 <Run Text="(" />
                                                 <Run Text="{Binding CharCount, Mode=OneWay}" />
-                                                <Run Text="ký tự)" />
+                                                <Run Text=" " />
+                                                <Run Text="{DynamicResource Clipboard_CharsSuffix}" />
                                             </TextBlock>
                                         </StackPanel>
 
                                         <!-- Actions -->
                                         <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
-                                            <ui:Button Content="Sao chép lại" 
+                                            <ui:Button Content="{DynamicResource Clipboard_CopyAgain}" 
                                                        Icon="{ui:SymbolIcon Symbol=Copy24}"
                                                        Appearance="Primary"
                                                        Padding="12,5"
@@ -206,7 +208,7 @@
                                             <ui:Button Padding="6"
                                                        Margin="0,0,4,0"
                                                        Appearance="Transparent"
-                                                       ToolTip="Ghim / Bỏ ghim"
+                                                       ToolTip="{DynamicResource Clipboard_TooltipPin}"
                                                        Command="{Binding DataContext.TogglePinCommand, RelativeSource={RelativeSource AncestorType=Page}}"
                                                        CommandParameter="{Binding}">
                                                 <ui:SymbolIcon Symbol="Pin24" FontSize="16"/>
@@ -214,7 +216,7 @@
 
                                             <ui:Button Padding="6"
                                                        Appearance="Transparent"
-                                                       ToolTip="Xóa mục này"
+                                                       ToolTip="{DynamicResource Clipboard_TooltipDelete}"
                                                        Command="{Binding DataContext.DeleteItemCommand, RelativeSource={RelativeSource AncestorType=Page}}"
                                                        CommandParameter="{Binding}">
                                                 <ui:SymbolIcon Symbol="Delete24" FontSize="16" Foreground="{DynamicResource SystemFillColorCriticalBrush}"/>

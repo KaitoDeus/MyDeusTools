@@ -3,7 +3,7 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
       xmlns:impl="clr-namespace:MyDeusTools.App.Services.Impl"
-      Title="Image Studio"
+      Title="{DynamicResource Image_Title}"
       Foreground="{DynamicResource TextFillColorPrimaryBrush}"
       Background="Transparent">
 
@@ -37,8 +37,10 @@
                         Margin="0,0,10,0">
                     <StackPanel Orientation="Horizontal">
                         <ui:SymbolIcon Symbol="ImageMultiple24" Margin="0,0,6,0" FontSize="14"/>
-                        <TextBlock Text="{Binding TotalSavedDisplay, StringFormat='{}Tiết kiệm: {0}'}" 
-                                   FontSize="12" FontWeight="SemiBold"/>
+                        <TextBlock FontSize="12" FontWeight="SemiBold">
+                            <Run Text="{DynamicResource Image_TotalSavedPrefix}"/>
+                            <Run Text="{Binding TotalSavedDisplay, Mode=OneWay}"/>
+                        </TextBlock>
                     </StackPanel>
                 </Border>
 
@@ -225,9 +227,34 @@
                                                 Margin="0,0,8,0" 
                                                 VerticalAlignment="Center"
                                                 Background="{DynamicResource CardBackgroundFillColorDefaultBrush}">
-                                            <TextBlock Text="{Binding StatusDisplay}" 
-                                                       FontSize="10" 
-                                                       FontWeight="SemiBold"/>
+                                            <TextBlock FontSize="10" FontWeight="SemiBold">
+                                                <TextBlock.Style>
+                                                    <Style TargetType="TextBlock">
+                                                        <Setter Property="Text" Value="{DynamicResource Image_StatusPending}"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding Status}" Value="{x:Static impl:ImageItemStatus.Pending}">
+                                                                <Setter Property="Text" Value="{DynamicResource Image_StatusPending}"/>
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding Status}" Value="{x:Static impl:ImageItemStatus.Processing}">
+                                                                <Setter Property="Text" Value="{DynamicResource Image_StatusProcessing}"/>
+                                                                <Setter Property="Foreground" Value="{DynamicResource AccentTextFillColorPrimaryBrush}"/>
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding Status}" Value="{x:Static impl:ImageItemStatus.Completed}">
+                                                                <Setter Property="Text" Value="{DynamicResource Image_StatusDone}"/>
+                                                                <Setter Property="Foreground" Value="#10B981"/>
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding Status}" Value="{x:Static impl:ImageItemStatus.Failed}">
+                                                                <Setter Property="Text" Value="{DynamicResource Image_StatusError}"/>
+                                                                <Setter Property="Foreground" Value="{DynamicResource SystemFillColorCriticalBrush}"/>
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding Status}" Value="{x:Static impl:ImageItemStatus.Canceled}">
+                                                                <Setter Property="Text" Value="{DynamicResource Image_StatusCanceled}"/>
+                                                                <Setter Property="Foreground" Value="{DynamicResource TextFillColorTertiaryBrush}"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </TextBlock.Style>
+                                            </TextBlock>
                                         </Border>
 
                                         <!-- Action Buttons -->

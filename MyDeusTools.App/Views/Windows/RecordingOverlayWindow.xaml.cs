@@ -55,7 +55,9 @@ namespace MyDeusTools.App.Views.Windows
             // Vẽ điểm Marker tròn đánh số thứ tự trên Canvas
             DrawPointMarker(pos.X, pos.Y, _recordedCount);
 
-            InstructionText.Text = $"Đã ghi {_recordedCount} điểm. Click tiếp để ghi thêm. Nhấn ENTER/ESC để hoàn tất.";
+            string fmt = Application.Current.TryFindResource("AutoClick_OverlayRecorded") as string 
+                ?? "Đã ghi {0} điểm. Click tiếp để ghi thêm. Nhấn ENTER/ESC để hoàn tất.";
+            InstructionText.Text = string.Format(fmt, _recordedCount);
         }
 
         private void DrawPointMarker(double x, double y, int number)

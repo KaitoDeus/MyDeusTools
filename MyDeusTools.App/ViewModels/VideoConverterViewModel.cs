@@ -207,8 +207,8 @@ namespace MyDeusTools.App.ViewModels
         public bool IsEngineAvailable => _videoConverterService.IsEngineAvailable;
 
         public string EngineStatusText => _videoConverterService.IsEngineAvailable
-            ? $"Sẵn sàng ({_videoConverterService.EngineVersion})"
-            : "Chưa cài đặt bộ máy FFmpeg";
+            ? string.Format(GetLoc("Video_EngineReady", "Sẵn sàng ({0})"), _videoConverterService.EngineVersion)
+            : GetLoc("Video_EngineNotInstalled", "Chưa cài đặt bộ máy FFmpeg");
 
         private bool _isConverting = false;
         public bool IsConverting
@@ -311,12 +311,29 @@ namespace MyDeusTools.App.ViewModels
 
         #endregion
 
+        private string GetLoc(string key, string fallback) =>
+            _languageService?.GetString(key, fallback) ?? fallback;
+
         public VideoConverterViewModel(IVideoConverterService videoConverterService, ILanguageService? languageService = null)
         {
             _videoConverterService = videoConverterService;
             _languageService = languageService;
 
             _videoConverterService.EngineStatusChanged += OnEngineStatusChanged;
+
+            if (_languageService != null)
+            {
+                _languageService.LanguageChanged += _ =>
+                {
+                    OnPropertyChanged(nameof(EngineStatusText));
+                    if (StatusMessage == "Sẵn sàng chuyển đổi video" || StatusMessage == "Ready to convert video")
+                    {
+                        StatusMessage = GetLoc("Video_StatusReady", "Sẵn sàng chuyển đổi video");
+                    }
+                };
+            }
+
+            _statusMessage = GetLoc("Video_StatusReady", "Sẵn sàng chuyển đổi video");
 
             // Đặt thư mục đầu ra mặc định là thư mục Videos hoặc desktop
             string myVideos = Environment.GetFolderPath(Environment.SpecialFolder.MyVideos);
@@ -344,7 +361,7 @@ namespace MyDeusTools.App.ViewModels
             InputFileName = Path.GetFileName(filePath);
             IsCompleted = false;
             ProgressPercentage = 0;
-            StatusMessage = "Đang phân tích thông tin video...";
+            StatusMessage = GetLoc("Video_StatusAnalyzing", "Đang phân tích thông tin video...");
 
             var info = await _videoConverterService.ProbeMediaInfoAsync(filePath);
             if (info != null)
@@ -355,11 +372,11 @@ namespace MyDeusTools.App.ViewModels
                 VideoCodecFormatted = info.VideoCodec;
                 AudioCodecFormatted = info.AudioCodec;
                 EndTimeText = info.DurationFormatted;
-                StatusMessage = $"Đã tải tệp: {info.FileName} ({info.FileSizeFormatted})";
+                StatusMessage = string.Format(GetLoc("Video_StatusLoaded", "Đã tải tệp: {0} ({1})"), info.FileName, info.FileSizeFormatted);
             }
             else
             {
-                StatusMessage = "Đã chọn tệp. Nhấn Bắt đầu để chuyển đổi.";
+                StatusMessage = GetLoc("Video_StatusLoadedSimple", "Đã chọn tệp. Nhấn Bắt đầu để chuyển đổi.");
             }
 
             OnPropertyChanged(nameof(CanStartConversion));
@@ -407,8 +424,8 @@ namespace MyDeusTools.App.ViewModels
         {
             var dialog = new OpenFileDialog
             {
-                Title = "Chọn tệp video nguồn",
-                Filter = "Tất cả tệp video/âm thanh|*.mp4;*.mkv;*.avi;*.mov;*.wmv;*.webm;*.flv;*.ts;*.m4v;*.3gp;*.mp3;*.wav;*.aac|Video Files (*.mp4;*.mkv;*.avi;*.mov)|*.mp4;*.mkv;*.avi;*.mov|All Files (*.*)|*.*"
+                Title = GetLoc("Video_DialogSourceTitle", "Chọn tệp video nguồn"),
+                Filter = GetLoc("Video_DialogSourceFilter", "Tất cả tệp video/âm thanh|*.mp4;*.mkv;*.avi;*.mov;*.wmv;*.webm;*.flv;*.ts;*.m4v;*.3gp;*.mp3;*.wav;*.aac|Video Files (*.mp4;*.mkv;*.avi;*.mov)|*.mp4;*.mkv;*.avi;*.mov|All Files (*.*)|*.*")
             };
 
             if (dialog.ShowDialog() == true)
@@ -430,7 +447,7 @@ namespace MyDeusTools.App.ViewModels
             OutputFileName = string.Empty;
             IsCompleted = false;
             ProgressPercentage = 0;
-            StatusMessage = "Sẵn sàng chuyển đổi video";
+            StatusMessage = GetLoc("Video_StatusReady", "Sẵn sàng chuyển đổi video");
             OnPropertyChanged(nameof(CanStartConversion));
         }
 
@@ -439,7 +456,7 @@ namespace MyDeusTools.App.ViewModels
         {
             var dialog = new OpenFolderDialog
             {
-                Title = "Chọn thư mục lưu tệp đầu ra",
+                Title = GetLoc("Video_DialogOutputTitle", "Chọn thư mục lưu tệp đầu ra"),
                 InitialDirectory = Directory.Exists(OutputDirectory) ? OutputDirectory : Environment.GetFolderPath(Environment.SpecialFolder.MyVideos)
             };
 
@@ -463,13 +480,13 @@ namespace MyDeusTools.App.ViewModels
         {
             if (!HasInputFile)
             {
-                StatusMessage = "Vui lòng chọn tệp video nguồn!";
+                StatusMessage = GetLoc("Video_StatusSelectSourcePrompt", "Vui lòng chọn tệp video nguồn!");
                 return;
             }
 
             if (!IsEngineAvailable)
             {
-                StatusMessage = "Chưa phát hiện bộ máy FFmpeg! Vui lòng cài đặt trước.";
+                StatusMessage = GetLoc("Video_StatusEngineMissingPrompt", "Chưa phát hiện bộ máy FFmpeg! Vui lòng cài đặt trước.");
                 return;
             }
 
@@ -505,7 +522,7 @@ namespace MyDeusTools.App.ViewModels
             IsCompleted = false;
             ProgressPercentage = 0;
             LogText = string.Empty;
-            StatusMessage = "Đang chuyển đổi video...";
+            StatusMessage = GetLoc("Video_StatusConverting", "Đang chuyển đổi video...");
 
             _conversionCts = new CancellationTokenSource();
 
@@ -538,21 +555,21 @@ namespace MyDeusTools.App.ViewModels
                 {
                     IsCompleted = true;
                     ProgressPercentage = 100;
-                    StatusMessage = $"Chuyển đổi thành công: {Path.GetFileName(OutputFilePath)}";
+                    StatusMessage = string.Format(GetLoc("Video_StatusSuccess", "Chuyển đổi thành công: {0}"), Path.GetFileName(OutputFilePath));
                 }
                 else
                 {
-                    StatusMessage = "Quá trình chuyển đổi gặp lỗi! Xem nhật ký (Logs) để biết chi tiết.";
+                    StatusMessage = GetLoc("Video_StatusFailed", "Quá trình chuyển đổi gặp lỗi! Xem nhật ký (Logs) để biết chi tiết.");
                 }
             }
             catch (OperationCanceledException)
             {
-                StatusMessage = "Đã hủy bỏ chuyển đổi.";
+                StatusMessage = GetLoc("Video_StatusCanceled", "Đã hủy bỏ chuyển đổi.");
                 ProgressPercentage = 0;
             }
             catch (Exception ex)
             {
-                StatusMessage = $"Lỗi: {ex.Message}";
+                StatusMessage = string.Format(GetLoc("Video_StatusError", "Lỗi: {0}"), ex.Message);
             }
             finally
             {
@@ -568,7 +585,7 @@ namespace MyDeusTools.App.ViewModels
             if (IsConverting && _conversionCts != null)
             {
                 _conversionCts.Cancel();
-                StatusMessage = "Đang dừng tiến trình chuyển đổi...";
+                StatusMessage = GetLoc("Video_StatusStopping", "Đang dừng tiến trình chuyển đổi...");
             }
         }
 
@@ -579,13 +596,13 @@ namespace MyDeusTools.App.ViewModels
 
             IsDownloadingEngine = true;
             DownloadProgress = 0;
-            StatusMessage = "Đang tải bộ máy FFmpeg Portable...";
+            StatusMessage = GetLoc("Video_StatusDownloadingEngine", "Đang tải bộ máy FFmpeg Portable...");
 
             _downloadCts = new CancellationTokenSource();
             var progress = new Progress<double>(p =>
             {
                 DownloadProgress = p;
-                StatusMessage = $"Đang tải FFmpeg: {p:0.0}%";
+                StatusMessage = string.Format(GetLoc("Video_StatusDownloadingProgress", "Đang tải FFmpeg: {0:0.0}%"), p);
             });
 
             try
@@ -593,17 +610,17 @@ namespace MyDeusTools.App.ViewModels
                 bool success = await _videoConverterService.DownloadEngineAsync(progress, _downloadCts.Token);
                 if (success)
                 {
-                    StatusMessage = "Cài đặt bộ máy FFmpeg thành công! Đã sẵn sàng chuyển đổi.";
+                    StatusMessage = GetLoc("Video_StatusDownloadSuccess", "Cài đặt bộ máy FFmpeg thành công! Đã sẵn sàng chuyển đổi.");
                     OnEngineStatusChanged();
                 }
                 else
                 {
-                    StatusMessage = "Tải thất bại. Vui lòng kiểm tra kết nối mạng hoặc chọn tệp ffmpeg.exe sẵn có.";
+                    StatusMessage = GetLoc("Video_StatusDownloadFailed", "Tải thất bại. Vui lòng kiểm tra kết nối mạng hoặc chọn tệp ffmpeg.exe sẵn có.");
                 }
             }
             catch (Exception ex)
             {
-                StatusMessage = $"Lỗi tải: {ex.Message}";
+                StatusMessage = string.Format(GetLoc("Video_StatusDownloadError", "Lỗi tải: {0}"), ex.Message);
             }
             finally
             {
@@ -618,14 +635,14 @@ namespace MyDeusTools.App.ViewModels
         {
             var dialog = new OpenFileDialog
             {
-                Title = "Chọn tệp thực thi ffmpeg.exe",
+                Title = GetLoc("Video_DialogFfmpegTitle", "Chọn tệp thực thi ffmpeg.exe"),
                 Filter = "FFmpeg Executable (ffmpeg.exe)|ffmpeg.exe|All Executables (*.exe)|*.exe"
             };
 
             if (dialog.ShowDialog() == true)
             {
                 _videoConverterService.SetCustomFfmpegPath(dialog.FileName);
-                StatusMessage = $"Đã liên kết bộ máy: {dialog.FileName}";
+                StatusMessage = string.Format(GetLoc("Video_StatusLinkedEngine", "Đã liên kết bộ máy: {0}"), dialog.FileName);
             }
         }
 
@@ -657,7 +674,7 @@ namespace MyDeusTools.App.ViewModels
                 }
                 catch (Exception ex)
                 {
-                    StatusMessage = $"Không thể mở tệp: {ex.Message}";
+                    StatusMessage = string.Format(GetLoc("Video_StatusCannotOpenFile", "Không thể mở tệp: {0}"), ex.Message);
                 }
             }
         }

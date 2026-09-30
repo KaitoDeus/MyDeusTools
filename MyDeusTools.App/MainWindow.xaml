@@ -111,7 +111,7 @@
                 <ui:NavigationView.FooterMenuItems>
                     <ui:NavigationViewItem x:Name="LanguageMenuItem"
                                            Content="{DynamicResource App_Language_Display}" 
-                                           ToolTip="Chuyển đổi ngôn ngữ / Switch Language"
+                                           ToolTip="{DynamicResource App_Language_SwitchTooltip}"
                                            Click="OnLanguageClick">
                         <ui:NavigationViewItem.Icon>
                             <ui:SymbolIcon Symbol="Globe24" />
@@ -119,7 +119,7 @@
                     </ui:NavigationViewItem>
 
                     <ui:NavigationViewItem x:Name="AutoStartMenuItem"
-                                           Content="Khởi động cùng Win: OFF" 
+                                           Content="{DynamicResource App_AutoStart_Off}" 
                                            Click="OnAutoStartClick">
                         <ui:NavigationViewItem.Icon>
                             <ui:SymbolIcon x:Name="AutoStartIcon" Symbol="CheckboxUnchecked24" />
@@ -127,7 +127,7 @@
                     </ui:NavigationViewItem>
                     
                     <ui:NavigationViewItem x:Name="ThemeToggleButton"
-                                           Content="Dark Mode" 
+                                           Content="{DynamicResource App_Theme_Dark}" 
                                            Tag="theme_toggle"
                                            Click="OnThemeToggleClick">
                         <ui:NavigationViewItem.Icon>

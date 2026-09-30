@@ -125,7 +125,11 @@ namespace MyDeusTools.App.ViewModels
     {
         private readonly IImageStudioService _imageService;
         private readonly IVideoConverterService? _videoService;
+        private readonly ILanguageService? _languageService;
         private CancellationTokenSource? _cts;
+
+        private string GetLoc(string key, string fallback) =>
+            _languageService?.GetString(key, fallback) ?? fallback;
 
         public ObservableCollection<ImageItemViewModel> Files { get; } = new();
 
@@ -190,10 +194,25 @@ namespace MyDeusTools.App.ViewModels
 
         public ImageStudioViewModel(
             IImageStudioService imageService,
-            IVideoConverterService? videoService = null)
+            IVideoConverterService? videoService = null,
+            ILanguageService? languageService = null)
         {
             _imageService = imageService;
             _videoService = videoService;
+            _languageService = languageService;
+
+            if (_languageService != null)
+            {
+                _languageService.LanguageChanged += _ =>
+                {
+                    if (StatusMessage == "Sẵn sàng thêm ảnh vào hàng đợi." || StatusMessage == "Ready to add images to queue.")
+                    {
+                        StatusMessage = GetLoc("Image_StatusReady", "Sẵn sàng thêm ảnh vào hàng đợi.");
+                    }
+                };
+            }
+
+            _statusMessage = GetLoc("Image_StatusReady", "Sẵn sàng thêm ảnh vào hàng đợi.");
         }
 
         [RelayCommand]
@@ -201,9 +220,9 @@ namespace MyDeusTools.App.ViewModels
         {
             var dialog = new OpenFileDialog
             {
-                Title = "Chọn hình ảnh để nén hoặc chuyển đổi",
+                Title = GetLoc("Image_DialogTitleFiles", "Chọn hình ảnh để nén hoặc chuyển đổi"),
                 Multiselect = true,
-                Filter = "Tất cả hình ảnh|*.jpg;*.jpeg;*.png;*.webp;*.bmp;*.tif;*.tiff;*.gif;*.ico|PNG Files (*.png)|*.png|JPEG Files (*.jpg;*.jpeg)|*.jpg;*.jpeg|WebP Files (*.webp)|*.webp|Icon Files (*.ico)|*.ico|Tất cả tệp (*.*)|*.*"
+                Filter = GetLoc("Image_DialogFilterFiles", "Tất cả hình ảnh|*.jpg;*.jpeg;*.png;*.webp;*.bmp;*.tif;*.tiff;*.gif;*.ico|PNG Files (*.png)|*.png|JPEG Files (*.jpg;*.jpeg)|*.jpg;*.jpeg|WebP Files (*.webp)|*.webp|Icon Files (*.ico)|*.ico|Tất cả tệp (*.*)|*.*")
             };
 
             if (dialog.ShowDialog() == true)
@@ -217,7 +236,7 @@ namespace MyDeusTools.App.ViewModels
         {
             var dialog = new OpenFolderDialog
             {
-                Title = "Chọn thư mục chứa hình ảnh"
+                Title = GetLoc("Image_DialogTitleFolder", "Chọn thư mục chứa hình ảnh")
             };
 
             if (dialog.ShowDialog() == true && Directory.Exists(dialog.FolderName))
@@ -259,7 +278,7 @@ namespace MyDeusTools.App.ViewModels
             UpdateStats();
             if (added > 0)
             {
-                StatusMessage = $"Đã nạp {added} ảnh mới vào hàng đợi.";
+                StatusMessage = string.Format(GetLoc("Image_StatusLoaded", "Đã nạp {0} ảnh mới vào hàng đợi."), added);
             }
         }
 
@@ -279,7 +298,7 @@ namespace MyDeusTools.App.ViewModels
             Files.Clear();
             UpdateStats();
             OverallProgressPercent = 0;
-            StatusMessage = "Đã dọn sạch danh sách ảnh.";
+            StatusMessage = GetLoc("Image_StatusCleared", "Đã dọn sạch danh sách ảnh.");
         }
 
         [RelayCommand]
@@ -287,7 +306,7 @@ namespace MyDeusTools.App.ViewModels
         {
             var dialog = new OpenFolderDialog
             {
-                Title = "Chọn thư mục lưu ảnh xuất ra"
+                Title = GetLoc("Image_DialogTitleOutput", "Chọn thư mục lưu ảnh xuất ra")
             };
 
             if (dialog.ShowDialog() == true)
@@ -371,20 +390,20 @@ namespace MyDeusTools.App.ViewModels
         {
             if (Files.Count == 0)
             {
-                StatusMessage = "Vui lòng thêm ít nhất một ảnh vào hàng đợi.";
+                StatusMessage = GetLoc("Image_StatusEmptyQueue", "Vui lòng thêm ít nhất một ảnh vào hàng đợi.");
                 return;
             }
 
             if (TargetFormat == ImageTargetFormat.WebP && !IsWebPAvailable)
             {
-                StatusMessage = "Định dạng WebP yêu cầu công cụ FFmpeg. Vui lòng tải FFmpeg hoặc đổi sang PNG/JPEG/ICO.";
+                StatusMessage = GetLoc("Image_StatusWebPFFmpeg", "Định dạng WebP yêu cầu công cụ FFmpeg. Vui lòng tải FFmpeg hoặc đổi sang PNG/JPEG/ICO.");
                 return;
             }
 
             IsProcessing = true;
             OverallProgressPercent = 0;
             CompletedFilesCount = 0;
-            StatusMessage = "Đang bắt đầu xử lý hàng loạt...";
+            StatusMessage = GetLoc("Image_StatusBatchStarting", "Đang bắt đầu xử lý hàng loạt...");
 
             _cts = new CancellationTokenSource();
 
@@ -410,7 +429,7 @@ namespace MyDeusTools.App.ViewModels
             {
                 OverallProgressPercent = p.Percent;
                 CompletedFilesCount = p.CurrentIndex;
-                StatusMessage = $"Đang xử lý ({p.CurrentIndex}/{p.TotalCount}): {p.CurrentFileName}";
+                StatusMessage = string.Format(GetLoc("Image_StatusProcessingItem", "Đang xử lý ({0}/{1}): {2}"), p.CurrentIndex, p.TotalCount, p.CurrentFileName);
             });
 
             try
@@ -429,15 +448,15 @@ namespace MyDeusTools.App.ViewModels
                     _cts.Token);
 
                 UpdateStats();
-                StatusMessage = $"Hoàn tất xử lý {Files.Count} ảnh!";
+                StatusMessage = string.Format(GetLoc("Image_StatusCompleted", "Hoàn tất xử lý {0} ảnh!"), Files.Count);
             }
             catch (OperationCanceledException)
             {
-                StatusMessage = "Đã hủy tiến trình xử lý ảnh.";
+                StatusMessage = GetLoc("Image_StatusCanceledMsg", "Đã hủy tiến trình xử lý ảnh.");
             }
             catch (Exception ex)
             {
-                StatusMessage = $"Lỗi: {ex.Message}";
+                StatusMessage = string.Format(GetLoc("Image_StatusErrorMsg", "Lỗi: {0}"), ex.Message);
             }
             finally
             {
@@ -451,7 +470,7 @@ namespace MyDeusTools.App.ViewModels
         public void CancelConversion()
         {
             _cts?.Cancel();
-            StatusMessage = "Đang gửi yêu cầu hủy...";
+            StatusMessage = GetLoc("Image_StatusCanceling", "Đang gửi yêu cầu hủy...");
         }
 
         [RelayCommand]
@@ -477,7 +496,7 @@ namespace MyDeusTools.App.ViewModels
             }
             else
             {
-                StatusMessage = "Chưa có thư mục đầu ra hợp lệ.";
+                StatusMessage = GetLoc("Image_StatusInvalidDir", "Chưa có thư mục đầu ra hợp lệ.");
             }
         }
 

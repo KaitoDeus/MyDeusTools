@@ -2,7 +2,8 @@
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
-      Title="Schedule Shutdown"
+      xmlns:models="clr-namespace:MyDeusTools.App.Services.Impl"
+      Title="{DynamicResource Shutdown_Title}"
       Foreground="{DynamicResource TextFillColorPrimaryBrush}">
 
     <Grid Margin="40">
@@ -17,7 +18,30 @@
                     <TextBlock Text="{DynamicResource Shutdown_Action}" Margin="0,0,0,8" FontWeight="SemiBold"/>
                     <ComboBox ItemsSource="{Binding ShutdownModes}" 
                               SelectedItem="{Binding SelectedMode, Mode=TwoWay}"
-                              HorizontalAlignment="Stretch"/>
+                              HorizontalAlignment="Stretch">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock>
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="Text" Value="{Binding}"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding}" Value="{x:Static models:ShutdownMode.Shutdown}">
+                                                    <Setter Property="Text" Value="{DynamicResource Shutdown_Action_Shutdown}"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding}" Value="{x:Static models:ShutdownMode.Restart}">
+                                                    <Setter Property="Text" Value="{DynamicResource Shutdown_Action_Restart}"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding}" Value="{x:Static models:ShutdownMode.Hibernate}">
+                                                    <Setter Property="Text" Value="{DynamicResource Shutdown_Action_Hibernate}"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
                 </StackPanel>
             </ui:Card>
 
