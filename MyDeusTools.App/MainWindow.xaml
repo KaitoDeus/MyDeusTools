@@ -106,6 +106,13 @@
                             <ui:SymbolIcon Symbol="ImageMultiple24" />
                         </ui:NavigationViewItem.Icon>
                     </ui:NavigationViewItem>
+
+                    <ui:NavigationViewItem Content="{DynamicResource Nav_PdfToolkit}" 
+                                           TargetPageType="{x:Type pages:PdfToolkitPage}">
+                        <ui:NavigationViewItem.Icon>
+                            <ui:SymbolIcon Symbol="DocumentPdf24" />
+                        </ui:NavigationViewItem.Icon>
+                    </ui:NavigationViewItem>
                 </ui:NavigationView.MenuItems>
 
                 <ui:NavigationView.FooterMenuItems>

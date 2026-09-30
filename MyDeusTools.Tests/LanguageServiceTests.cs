@@ -191,6 +191,12 @@ namespace MyDeusTools.Tests
         [InlineData("Shutdown_Mode_Shutdown")]
         [InlineData("Shutdown_Mode_Restart")]
         [InlineData("Shutdown_Mode_Hibernate")]
+        [InlineData("Nav_PdfToolkit")]
+        [InlineData("Pdf_Title")]
+        [InlineData("Pdf_Tab_Merge")]
+        [InlineData("Pdf_Tab_Split")]
+        [InlineData("Pdf_Tab_ImagesToPdf")]
+        [InlineData("Pdf_Tab_Protect")]
         public void CriticalKeys_ShouldExistInBothDictionaries(string key)
         {
             string dir = AppContext.BaseDirectory;
