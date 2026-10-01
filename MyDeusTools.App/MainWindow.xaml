@@ -113,6 +113,13 @@
                             <ui:SymbolIcon Symbol="DocumentPdf24" />
                         </ui:NavigationViewItem.Icon>
                     </ui:NavigationViewItem>
+
+                    <ui:NavigationViewItem Content="{DynamicResource Nav_BulkRenamer}" 
+                                           TargetPageType="{x:Type pages:BulkRenamerPage}">
+                        <ui:NavigationViewItem.Icon>
+                            <ui:SymbolIcon Symbol="Rename24" />
+                        </ui:NavigationViewItem.Icon>
+                    </ui:NavigationViewItem>
                 </ui:NavigationView.MenuItems>
 
                 <ui:NavigationView.FooterMenuItems>

@@ -197,6 +197,10 @@ namespace MyDeusTools.Tests
         [InlineData("Pdf_Tab_Split")]
         [InlineData("Pdf_Tab_ImagesToPdf")]
         [InlineData("Pdf_Tab_Protect")]
+        [InlineData("Nav_BulkRenamer")]
+        [InlineData("Renamer_Title")]
+        [InlineData("Renamer_Btn_Apply")]
+        [InlineData("Renamer_Btn_Undo")]
         public void CriticalKeys_ShouldExistInBothDictionaries(string key)
         {
             string dir = AppContext.BaseDirectory;
