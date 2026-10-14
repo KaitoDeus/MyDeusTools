@@ -58,17 +58,26 @@
                         
                         <StackPanel Margin="0,0,10,0">
                             <TextBlock Text="{DynamicResource Shutdown_Hours}" Margin="0,0,0,5" FontSize="12"/>
-                            <ui:NumberBox Value="{Binding Hours, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Minimum="0" Maximum="23" />
+                            <ui:NumberBox Value="{Binding Hours, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                          Minimum="0" Maximum="999" 
+                                          LostFocus="OnTimeInputLostFocus" 
+                                          KeyDown="OnTimeInputKeyDown" />
                         </StackPanel>
 
                         <StackPanel Grid.Column="1" Margin="0,0,10,0">
                             <TextBlock Text="{DynamicResource Shutdown_Minutes}" Margin="0,0,0,5" FontSize="12"/>
-                            <ui:NumberBox Value="{Binding Minutes, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Minimum="0" Maximum="59" />
+                            <ui:NumberBox Value="{Binding Minutes, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                          Minimum="0" Maximum="9999" 
+                                          LostFocus="OnTimeInputLostFocus" 
+                                          KeyDown="OnTimeInputKeyDown" />
                         </StackPanel>
 
                         <StackPanel Grid.Column="2">
                             <TextBlock Text="{DynamicResource Shutdown_Seconds}" Margin="0,0,0,5" FontSize="12"/>
-                            <ui:NumberBox Value="{Binding Seconds, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Minimum="0" Maximum="59" />
+                            <ui:NumberBox Value="{Binding Seconds, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                          Minimum="0" Maximum="9999" 
+                                          LostFocus="OnTimeInputLostFocus" 
+                                          KeyDown="OnTimeInputKeyDown" />
                         </StackPanel>
                     </Grid>
                 </StackPanel>

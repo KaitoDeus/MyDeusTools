@@ -73,8 +73,29 @@ namespace MyDeusTools.App.ViewModels
         }
 
         [RelayCommand]
+        public void NormalizeTime()
+        {
+            if (Hours < 0) Hours = 0;
+            if (Minutes < 0) Minutes = 0;
+            if (Seconds < 0) Seconds = 0;
+
+            long totalSecs = ((long)Hours * 3600) + ((long)Minutes * 60) + Seconds;
+            if (totalSecs > int.MaxValue)
+            {
+                totalSecs = int.MaxValue;
+            }
+
+            Hours = (int)(totalSecs / 3600);
+            int rem = (int)(totalSecs % 3600);
+            Minutes = rem / 60;
+            Seconds = rem % 60;
+        }
+
+        [RelayCommand]
         private void Schedule()
         {
+            NormalizeTime();
+
             int totalSeconds = (Hours * 3600) + (Minutes * 60) + Seconds;
             
             if (totalSeconds <= 0)
