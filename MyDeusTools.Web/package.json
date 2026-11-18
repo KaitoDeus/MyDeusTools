@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "agent:dev": "dotnet run --project ../MyDeusTools.Agent",
+    "agent:publish": "dotnet publish ../MyDeusTools.Agent -c Release -o ../publish/agent"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.3.5",
