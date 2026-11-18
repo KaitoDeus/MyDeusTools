@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Launch &amp; Download — MyDeusTools</title>
-  <meta name="description" content="Launch MyDeusTools Web (React 19 + Vite), start the Windows Local Companion Agent (127.0.0.1:41950), or package/download standalone executables for Windows x64." />
+  <title>Download &amp; Launch — MyDeusTools</title>
+  <meta name="description" content="Run MyDeusTools Web locally, launch the optional .NET 8 Local Companion Agent, or build/download standalone Windows x64 binaries." />
   <link rel="icon" type="image/x-icon" href="avatar.ico" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -56,29 +56,27 @@
       <a href="index.html" class="block py-1 text-[var(--tui-text-muted)]" data-i18n="nav_home">Home</a>
       <a href="features.html" class="block py-1 text-[var(--tui-text-muted)]" data-i18n="nav_features">Features</a>
       <a href="architecture.html" class="block py-1 text-[var(--tui-text-muted)]" data-i18n="nav_architecture">Architecture</a>
-      <a href="download.html" class="block py-1 text-[var(--tui-primary)] font-bold" data-i18n="nav_download">Launch &amp; Download</a>
+      <a href="download.html" class="block py-1 text-[var(--tui-primary)] font-bold" data-i18n="nav_download">Download</a>
       <a href="faq.html" class="block py-1 text-[var(--tui-text-muted)]" data-i18n="nav_faq">FAQ</a>
     </div>
   </header>
 
-  <section class="py-12 border-b border-dashed border-[var(--tui-border-medium)]">
+  <section class="py-10 border-b border-dashed border-[var(--tui-border-medium)]">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-2">
-      <div class="text-[11px] uppercase tracking-[0.08em] text-[var(--tui-primary)] font-bold">// ./LAUNCH_AND_DISTRIBUTIONS</div>
-      <h1 class="text-3xl sm:text-4xl font-bold" data-i18n="dl_title">&gt; Run Locally or Package Binaries</h1>
-      <p class="text-[13px] sm:text-[14px] text-[var(--tui-text-muted)] max-w-3xl" data-i18n="dl_subtitle">Choose how to run MyDeusTools: launch the TerminalUI Web App in seconds, connect the optional .NET 8 Local Companion Agent for Win32 OS features, or package/download the standalone WPF Desktop EXE.</p>
+      <div class="text-[11px] uppercase tracking-[0.08em] text-[var(--tui-primary)] font-bold">// ./DISTRIBUTIONS</div>
+      <h1 class="text-3xl font-bold" data-i18n="dl_title">&gt; Run or Download</h1>
+      <p class="text-[13px] text-[var(--tui-text-muted)]" data-i18n="dl_subtitle">Start the TerminalUI Web App, optional .NET 8 Local Companion Agent, or portable WPF EXE.</p>
     </div>
   </section>
 
-  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-8 flex-1">
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 pb-16 space-y-6 flex-1">
 
-    <!-- 3 DEPLOYMENT CARDS -->
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-      <!-- Option 1: Web App -->
-      <div class="tui-surface-elevated p-6 flex flex-col justify-between space-y-5 border border-[var(--tui-primary)]">
-        <div class="space-y-3">
-          <div class="text-[11px] font-bold text-[var(--tui-primary)]">OPTION_01 // WEB_APP (RECOMMENDED)</div>
-          <h2 class="text-xl font-bold" data-i18n="opt1_t">MyDeusTools.Web</h2>
-          <p class="text-[12px] text-[var(--tui-text-muted)]" data-i18n="opt1_d">Runs 100% locally in your browser using React 19 + Vite 8 + IndexedDB. Zero server uploads.</p>
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+      <div class="tui-surface-elevated p-5 flex flex-col justify-between space-y-4 border border-[var(--tui-primary)]">
+        <div class="space-y-2">
+          <div class="text-[11px] font-bold text-[var(--tui-primary)]">01 // WEB_APP</div>
+          <h2 class="text-lg font-bold" data-i18n="opt1_t">MyDeusTools.Web</h2>
+          <p class="text-[12px] text-[var(--tui-text-muted)]" data-i18n="opt1_d">Client-side React 19 + Vite 8 + IndexedDB.</p>
           <div class="tui-code-box p-3 text-[11px] space-y-1">
             <div><span class="text-[var(--tui-primary)]">$</span> npm --prefix MyDeusTools.Web install</div>
             <div><span class="text-[var(--tui-primary)]">$</span> npm run web:dev</div>
@@ -87,12 +85,11 @@
         <button type="button" onclick="copyCommand(this, 'npm --prefix MyDeusTools.Web install && npm run web:dev')" class="w-full py-2 text-[11px] font-bold tui-btn-primary cursor-pointer">[COPY_WEB_CMD]</button>
       </div>
 
-      <!-- Option 2: Companion Agent -->
-      <div class="tui-surface p-6 flex flex-col justify-between space-y-5 border border-[var(--tui-secondary)]">
-        <div class="space-y-3">
-          <div class="text-[11px] font-bold text-[var(--tui-secondary)]">OPTION_02 // WIN32_AGENT (OPTIONAL)</div>
-          <h2 class="text-xl font-bold" data-i18n="opt2_t">MyDeusTools.Agent</h2>
-          <p class="text-[12px] text-[var(--tui-text-muted)]" data-i18n="opt2_d">Unlocks OS Shutdown/Restart/Hibernate tab, global F6/F7 Auto-Click, and desktop Window Pinner via http://127.0.0.1:41950/.</p>
+      <div class="tui-surface p-5 flex flex-col justify-between space-y-4 border border-[var(--tui-secondary)]">
+        <div class="space-y-2">
+          <div class="text-[11px] font-bold text-[var(--tui-secondary)]">02 // WIN32_AGENT</div>
+          <h2 class="text-lg font-bold" data-i18n="opt2_t">MyDeusTools.Agent</h2>
+          <p class="text-[12px] text-[var(--tui-text-muted)]" data-i18n="opt2_d">OS Shutdown, F6/F7 Auto-Click &amp; Window Pinner (127.0.0.1:41950).</p>
           <div class="tui-code-box p-3 text-[11px] space-y-1">
             <div><span class="text-[var(--tui-secondary)]">$</span> npm run agent:dev</div>
             <div><span class="text-[var(--tui-secondary)]">$</span> npm run agent:publish</div>
@@ -101,41 +98,27 @@
         <button type="button" onclick="copyCommand(this, 'npm run agent:dev')" class="w-full py-2 text-[11px] font-bold tui-btn-amber cursor-pointer">[COPY_AGENT_CMD]</button>
       </div>
 
-      <!-- Option 3: Native WPF Executable -->
-      <div class="tui-surface p-6 flex flex-col justify-between space-y-5 border border-[var(--tui-tertiary)]">
-        <div class="space-y-3">
-          <div class="text-[11px] font-bold text-[var(--tui-tertiary)]">OPTION_03 // DESKTOP_WPF</div>
-          <h2 class="text-xl font-bold" data-i18n="opt3_t">MyDeusTools.App.exe</h2>
-          <p class="text-[12px] text-[var(--tui-text-muted)]" data-i18n="opt3_d">Standalone single-file Windows x64 executable with WPF-UI 3.0 Mica, FFmpeg CLI, PDFsharp, and GDI eyedropper.</p>
+      <div class="tui-surface p-5 flex flex-col justify-between space-y-4 border border-[var(--tui-tertiary)]">
+        <div class="space-y-2">
+          <div class="text-[11px] font-bold text-[var(--tui-tertiary)]">03 // DESKTOP_WPF</div>
+          <h2 class="text-lg font-bold" data-i18n="opt3_t">MyDeusTools.App.exe</h2>
+          <p class="text-[12px] text-[var(--tui-text-muted)]" data-i18n="opt3_d">Portable single-file EXE (WPF-UI 3.0 + FFmpeg + PDFsharp).</p>
         </div>
-        <a href="https://github.com/KaitoDeus/MyDeusTools/releases" target="_blank" rel="noopener noreferrer" class="w-full py-2 text-[11px] font-bold tui-btn-secondary text-center block" data-i18n="dl_btn_main">[OPEN_GITHUB_RELEASES]</a>
+        <a href="https://github.com/KaitoDeus/MyDeusTools/releases" target="_blank" rel="noopener noreferrer" class="w-full py-2 text-[11px] font-bold tui-btn-secondary text-center block" data-i18n="dl_btn_main">[GITHUB_RELEASES]</a>
       </div>
     </div>
 
-    <!-- SYSTEM REQUIREMENTS & VERIFY -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <div class="tui-surface p-6 space-y-3 text-[12px]">
-        <h3 class="font-bold text-[14px] text-[var(--tui-primary)] border-b border-dashed border-[var(--tui-border-medium)] pb-2" data-i18n="sys_req_title">&gt; Prerequisites &amp; Environment</h3>
-        <div class="flex justify-between border-b border-dashed border-[var(--tui-border-subtle)] py-1.5">
-          <span class="text-[var(--tui-text-muted)]" data-i18n="req_web">Web Client</span>
-          <span>Node.js v20+ / Chrome or Edge</span>
-        </div>
-        <div class="flex justify-between border-b border-dashed border-[var(--tui-border-subtle)] py-1.5">
-          <span class="text-[var(--tui-text-muted)]" data-i18n="req_os">Windows OS (Agent / WPF)</span>
-          <span>Windows 10 (1809+) / Windows 11 x64</span>
-        </div>
-        <div class="flex justify-between border-b border-dashed border-[var(--tui-border-subtle)] py-1.5">
-          <span class="text-[var(--tui-text-muted)]" data-i18n="req_sdk">Build From Source</span>
-          <span>.NET 8.0 SDK (8.0.300+)</span>
-        </div>
-        <div class="flex justify-between py-1.5">
-          <span class="text-[var(--tui-text-muted)]" data-i18n="req_ports">Agent Port</span>
-          <span class="text-[var(--tui-primary)]">127.0.0.1:41950 (Loopback Only)</span>
-        </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+      <div class="tui-surface p-5 space-y-2.5 text-[12px]">
+        <h3 class="font-bold text-[13px] text-[var(--tui-primary)] border-b border-dashed border-[var(--tui-border-medium)] pb-2" data-i18n="sys_req_title">&gt; Requirements</h3>
+        <div class="flex justify-between border-b border-dashed border-[var(--tui-border-subtle)] py-1"><span class="text-[var(--tui-text-muted)]" data-i18n="req_web">Web</span><span>Node.js v20+ / Chromium</span></div>
+        <div class="flex justify-between border-b border-dashed border-[var(--tui-border-subtle)] py-1"><span class="text-[var(--tui-text-muted)]" data-i18n="req_os">Windows (Agent / WPF)</span><span>Windows 10/11 x64</span></div>
+        <div class="flex justify-between border-b border-dashed border-[var(--tui-border-subtle)] py-1"><span class="text-[var(--tui-text-muted)]" data-i18n="req_sdk">Source Build</span><span>.NET 8.0 SDK</span></div>
+        <div class="flex justify-between py-1"><span class="text-[var(--tui-text-muted)]" data-i18n="req_ports">Agent Port</span><span class="text-[var(--tui-primary)]">127.0.0.1:41950</span></div>
       </div>
 
-      <div class="tui-surface p-6 space-y-3 text-[12px]">
-        <h3 class="font-bold text-[14px] text-[var(--tui-tertiary)] border-b border-dashed border-[var(--tui-border-medium)] pb-2" data-i18n="verify_title">&gt; Verify Test Suite &amp; Hash</h3>
+      <div class="tui-surface p-5 space-y-3 text-[12px]">
+        <h3 class="font-bold text-[13px] text-[var(--tui-tertiary)] border-b border-dashed border-[var(--tui-border-medium)] pb-2" data-i18n="verify_title">&gt; Verify &amp; Build</h3>
         <div class="tui-code-box px-3 py-2 flex justify-between items-center gap-2 overflow-x-auto">
           <span class="whitespace-nowrap"><span class="text-[var(--tui-primary)]">$</span> npm run web:build &amp;&amp; dotnet test</span>
           <button type="button" onclick="copyCommand(this, 'npm run web:build && dotnet test')" class="px-2 py-0.5 text-[10px] border border-[var(--tui-border-medium)] cursor-pointer shrink-0">[COPY]</button>
@@ -144,79 +127,47 @@
           <span class="whitespace-nowrap"><span class="text-[var(--tui-tertiary)]">PS&gt;</span> Get-FileHash .\MyDeusTools.App.exe -Algorithm SHA256</span>
           <button type="button" onclick="copyCommand(this, 'Get-FileHash .\\MyDeusTools.App.exe -Algorithm SHA256')" class="px-2 py-0.5 text-[10px] border border-[var(--tui-border-medium)] cursor-pointer shrink-0">[COPY]</button>
         </div>
-        <p class="text-[11px] text-[var(--tui-text-dim)]" data-i18n="verify_note">Compare hashes against official GitHub Release notes, or compile standalone EXE directly via dotnet publish.</p>
-      </div>
-    </div>
-
-    <!-- BUILD FROM SOURCE -->
-    <div class="tui-surface p-6 space-y-4 text-[12px]">
-      <h2 class="text-lg font-bold" data-i18n="src_title">&gt; Complete Build &amp; Publish Reference</h2>
-      <div class="space-y-3">
-        <div class="tui-code-box p-3 flex items-center justify-between gap-2 overflow-x-auto">
-          <span class="whitespace-nowrap">git clone https://github.com/KaitoDeus/MyDeusTools.git &amp;&amp; cd MyDeusTools</span>
-          <button type="button" onclick="copyCommand(this, 'git clone https://github.com/KaitoDeus/MyDeusTools.git && cd MyDeusTools')" class="px-2 py-0.5 text-[10px] border border-[var(--tui-border-medium)] cursor-pointer shrink-0">[COPY]</button>
-        </div>
-        <div class="tui-code-box p-3 flex items-center justify-between gap-2 overflow-x-auto">
-          <span class="whitespace-nowrap">dotnet publish MyDeusTools.App/MyDeusTools.App.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:EnableCompressionInSingleFile=true</span>
-          <button type="button" onclick="copyCommand(this, 'dotnet publish MyDeusTools.App/MyDeusTools.App.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:EnableCompressionInSingleFile=true')" class="px-2 py-0.5 text-[10px] border border-[var(--tui-border-medium)] cursor-pointer shrink-0">[COPY]</button>
-        </div>
       </div>
     </div>
 
   </main>
 
-  <footer class="mt-auto border-t border-[var(--tui-border-subtle)] bg-[var(--tui-surface)] py-8 text-[12px] text-[var(--tui-text-muted)]">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4">
-      <div><span class="text-[var(--tui-primary)] font-bold">MYDEUSTOOLS</span> <span data-i18n="footer_developed">-- Built by</span> <a href="https://github.com/KaitoDeus" target="_blank" rel="noopener noreferrer" class="text-[var(--tui-tertiary)] hover:underline">KaitoDeus</a> &amp; Claude.</div>
-      <div class="flex flex-wrap gap-4">
-        <a href="index.html" class="hover:text-[var(--tui-primary)]" data-i18n="nav_home">Home</a>
-        <a href="features.html" class="hover:text-[var(--tui-primary)]" data-i18n="nav_features">Features</a>
-        <a href="architecture.html" class="hover:text-[var(--tui-primary)]" data-i18n="nav_architecture">Architecture</a>
-        <a href="faq.html" class="hover:text-[var(--tui-primary)]" data-i18n="nav_faq">FAQ</a>
-      </div>
-    </div>
-  </footer>
-
   <script src="assets/site.js"></script>
   <script>
     registerTranslations({
       en: {
-        dl_title: '&gt; Run Locally or Package Binaries',
-        dl_subtitle: 'Choose how to run MyDeusTools: launch the TerminalUI Web App in seconds, connect the optional .NET 8 Local Companion Agent for Win32 OS features, or package/download the standalone WPF Desktop EXE.',
+        dl_title: '&gt; Run or Download',
+        dl_subtitle: 'Start the TerminalUI Web App, optional .NET 8 Local Companion Agent, or portable WPF EXE.',
         opt1_t: 'MyDeusTools.Web',
-        opt1_d: 'Runs 100% locally in your browser using React 19 + Vite 8 + IndexedDB. Zero server uploads.',
+        opt1_d: 'Client-side React 19 + Vite 8 + IndexedDB.',
         opt2_t: 'MyDeusTools.Agent',
-        opt2_d: 'Unlocks OS Shutdown/Restart/Hibernate tab, global F6/F7 Auto-Click, and desktop Window Pinner via http://127.0.0.1:41950/.',
+        opt2_d: 'OS Shutdown, F6/F7 Auto-Click &amp; Window Pinner (127.0.0.1:41950).',
         opt3_t: 'MyDeusTools.App.exe',
-        opt3_d: 'Standalone single-file Windows x64 executable with WPF-UI 3.0 Mica, FFmpeg CLI, PDFsharp, and GDI eyedropper.',
-        dl_btn_main: '[OPEN_GITHUB_RELEASES]',
-        sys_req_title: '&gt; Prerequisites &amp; Environment',
-        req_web: 'Web Client',
-        req_os: 'Windows OS (Agent / WPF)',
-        req_sdk: 'Build From Source',
+        opt3_d: 'Portable single-file EXE (WPF-UI 3.0 + FFmpeg + PDFsharp).',
+        dl_btn_main: '[GITHUB_RELEASES]',
+        sys_req_title: '&gt; Requirements',
+        req_web: 'Web',
+        req_os: 'Windows (Agent / WPF)',
+        req_sdk: 'Source Build',
         req_ports: 'Agent Port',
-        verify_title: '&gt; Verify Test Suite &amp; Hash',
-        verify_note: 'Compare hashes against official GitHub Release notes, or compile standalone EXE directly via dotnet publish.',
-        src_title: '&gt; Complete Build &amp; Publish Reference',
+        verify_title: '&gt; Verify &amp; Build',
       },
       vi: {
-        dl_title: '&gt; Khởi chạy tại máy hoặc Đóng gói EXE',
-        dl_subtitle: 'Tuỳ chọn cách chạy phù hợp: khởi chạy Web TerminalUI tức thì, kết nối Local Companion Agent (.NET 8) để mở khoá Win32 OS, hoặc tải/đóng gói bản WPF Desktop EXE.',
-        opt1_t: 'MyDeusTools.Web (Trình duyệt)',
-        opt1_d: 'Chạy 100% cục bộ bằng React 19 + Vite 8 + IndexedDB. Không upload dữ liệu lên máy chủ ngoài.',
-        opt2_t: 'MyDeusTools.Agent (Cầu nối Win32)',
-        opt2_d: 'Mở khoá tab Hẹn tắt máy/Khởi động lại/Ngủ đông, Auto-Click phím tắt F6/F7 và Ghim cửa sổ OS qua http://127.0.0.1:41950/.',
-        opt3_t: 'MyDeusTools.App.exe (WPF Gốc)',
-        opt3_d: 'Tệp thực thi đơn Windows x64 độc lập với WPF-UI 3.0 Mica, FFmpeg CLI, PDFsharp và bắt màu GDI.',
-        dl_btn_main: '[MỞ_TRANG_PHÁT_HÀNH_GITHUB]',
+        dl_title: '&gt; Khởi chạy &amp; Tải về',
+        dl_subtitle: 'Chạy Web TerminalUI tại máy, bật Local Companion Agent (.NET 8) hoặc tải bản WPF EXE.',
+        opt1_t: 'MyDeusTools.Web',
+        opt1_d: 'Thuần trình duyệt React 19 + Vite 8 + IndexedDB.',
+        opt2_t: 'MyDeusTools.Agent',
+        opt2_d: 'Hẹn tắt máy OS, Auto-Click F6/F7 &amp; Ghim cửa sổ (127.0.0.1:41950).',
+        opt3_t: 'MyDeusTools.App.exe',
+        opt3_d: 'Tệp thực thi đơn WPF-UI 3.0 + FFmpeg + PDFsharp.',
+        dl_btn_main: '[TRANG_PHÁT_HÀNH_GITHUB]',
         sys_req_title: '&gt; Yêu cầu môi trường',
-        req_web: 'Trình duyệt Web',
+        req_web: 'Web',
         req_os: 'Windows (Agent / WPF)',
-        req_sdk: 'Biên dịch mã nguồn',
+        req_sdk: 'Biên dịch nguồn',
         req_ports: 'Cổng Agent',
-        verify_title: '&gt; Chạy kiểm thử &amp; Kiểm tra SHA-256',
-        verify_note: 'Đối chiếu mã SHA-256 với trang GitHub Releases hoặc tự biên dịch bằng lệnh dotnet publish bên dưới.',
-        src_title: '&gt; Bộ lệnh Clone &amp; Publish đầy đủ',
+        verify_title: '&gt; Kiểm thử &amp; SHA-256',
       },
     });
   </script>

@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>FAQ &amp; Security — MyDeusTools</title>
-  <meta name="description" content="Answers on MyDeusTools hybrid architecture: why Shutdown locks when Agent is offline, loopback security on 127.0.0.1:41950, SmartScreen warnings, IndexedDB privacy, F6/F7 hotkeys, and 282 unit tests." />
+  <meta name="description" content="Quick answers on MyDeusTools Agent Shutdown locking, 127.0.0.1:41950 loopback, F6/F7 hotkeys, IndexedDB privacy, SmartScreen, and 282 tests." />
   <link rel="icon" type="image/x-icon" href="avatar.ico" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -56,164 +56,135 @@
       <a href="index.html" class="block py-1 text-[var(--tui-text-muted)]" data-i18n="nav_home">Home</a>
       <a href="features.html" class="block py-1 text-[var(--tui-text-muted)]" data-i18n="nav_features">Features</a>
       <a href="architecture.html" class="block py-1 text-[var(--tui-text-muted)]" data-i18n="nav_architecture">Architecture</a>
-      <a href="download.html" class="block py-1 text-[var(--tui-text-muted)]" data-i18n="nav_download">Launch &amp; Download</a>
+      <a href="download.html" class="block py-1 text-[var(--tui-text-muted)]" data-i18n="nav_download">Download</a>
       <a href="faq.html" class="block py-1 text-[var(--tui-primary)] font-bold" data-i18n="nav_faq">FAQ</a>
     </div>
   </header>
 
-  <section class="py-12 border-b border-dashed border-[var(--tui-border-medium)]">
+  <section class="py-10 border-b border-dashed border-[var(--tui-border-medium)]">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-2">
-      <div class="text-[11px] uppercase tracking-[0.08em] text-[var(--tui-primary)] font-bold">// ./FAQ_AND_SECURITY</div>
-      <h1 class="text-3xl sm:text-4xl font-bold" data-i18n="faq_hero_title">&gt; Frequently Asked Questions</h1>
-      <p class="text-[13px] sm:text-[14px] text-[var(--tui-text-muted)]" data-i18n="faq_hero_sub">Clear answers on Web vs Local Companion Agent safety, loopback port binding, Windows SmartScreen, and privacy.</p>
+      <div class="text-[11px] uppercase tracking-[0.08em] text-[var(--tui-primary)] font-bold">// ./FAQ</div>
+      <h1 class="text-3xl font-bold" data-i18n="faq_hero_title">&gt; Frequently Asked Questions</h1>
+      <p class="text-[13px] text-[var(--tui-text-muted)]" data-i18n="faq_hero_sub">Quick answers on Agent gating, loopback security, SmartScreen, and privacy.</p>
     </div>
   </section>
 
-  <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-8 flex-1">
+  <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 pb-16 space-y-6 flex-1">
 
-    <!-- Category 1: Hybrid Web & Agent -->
     <div class="space-y-3">
-      <h2 class="text-sm font-bold uppercase tracking-[0.08em] text-[var(--tui-secondary)]" data-i18n="cat_hybrid">// 01. HYBRID WEB &amp; LOCAL COMPANION AGENT</h2>
+      <h2 class="text-xs font-bold uppercase tracking-[0.08em] text-[var(--tui-secondary)]" data-i18n="cat_hybrid">// 01. HYBRID AGENT &amp; OS CONTROL</h2>
 
-      <details class="tui-surface p-5 cursor-pointer" open>
+      <details class="tui-surface p-4 cursor-pointer" open>
         <summary class="font-bold text-[13px] flex items-center justify-between gap-2 select-none">
-          <span data-i18n="faq_q1">Why split Pomodoro and Scheduled Shutdown, and lock Shutdown when Agent is offline?</span>
+          <span data-i18n="faq_q1">Why separate Pomodoro and Scheduled Shutdown, and lock Shutdown when offline?</span>
           <span class="faq-arrow text-[var(--tui-text-muted)]">&gt;</span>
         </summary>
-        <p class="text-[12px] text-[var(--tui-text-muted)] mt-3 leading-[1.6]" data-i18n="faq_a1">
-          Pomodoro runs 100% inside the browser (countdown + Screen Wake Lock + audio alarm) so it always works everywhere. By contrast, web browsers strictly forbid closing Windows or executing shutdown.exe. Isolating Scheduled Shutdown into Tab 2 and gating every button/input with disabled={!isOnline} prevents misleading clicks until MyDeusTools.Agent is running.
-        </p>
+        <p class="text-[12px] text-[var(--tui-text-muted)] mt-2.5 leading-[1.6]" data-i18n="faq_a1">Pomodoro runs purely inside the browser (countdown + Wake Lock). Windows shutdown.exe requires native OS access, so Tab 2 remains disabled={!isOnline} until MyDeusTools.Agent connects.</p>
       </details>
 
-      <details class="tui-surface p-5 cursor-pointer">
+      <details class="tui-surface p-4 cursor-pointer">
         <summary class="font-bold text-[13px] flex items-center justify-between gap-2 select-none">
-          <span data-i18n="faq_q2">Is http://127.0.0.1:41950 exposed to my network or the Internet?</span>
+          <span data-i18n="faq_q2">Is http://127.0.0.1:41950 exposed to the LAN or Internet?</span>
           <span class="faq-arrow text-[var(--tui-text-muted)]">&gt;</span>
         </summary>
-        <p class="text-[12px] text-[var(--tui-text-muted)] mt-3 leading-[1.6]" data-i18n="faq_a2">
-          No. LocalHttpBridgeServer binds its HttpListener prefix strictly to 127.0.0.1:41950 (loopback adapter only). External devices on LAN or the Internet cannot connect to it.
-        </p>
+        <p class="text-[12px] text-[var(--tui-text-muted)] mt-2.5 leading-[1.6]" data-i18n="faq_a2">No. LocalHttpBridgeServer binds strictly to loopback 127.0.0.1:41950 so external devices cannot reach it.</p>
       </details>
 
-      <details class="tui-surface p-5 cursor-pointer">
+      <details class="tui-surface p-4 cursor-pointer">
         <summary class="font-bold text-[13px] flex items-center justify-between gap-2 select-none">
-          <span data-i18n="faq_q3">How does Auto-Clicker work inside games or desktop apps outside the browser?</span>
+          <span data-i18n="faq_q3">How does Auto-Clicker work outside the browser (F6 / F7)?</span>
           <span class="faq-arrow text-[var(--tui-text-muted)]">&gt;</span>
         </summary>
-        <p class="text-[12px] text-[var(--tui-text-muted)] mt-3 leading-[1.6]" data-i18n="faq_a3">
-          When MyDeusTools.Agent is active, Tab 2 (OS_NATIVE_AGENT) delegates mouse clicks to Win32 mouse_event and SetCursorPos (with a 10ms hardware safety clamp). GlobalHotkeyService polls VK_F6 (Start/Stop anywhere) and VK_F7 (Capture screen cursor X, Y anywhere) every 40ms via GetAsyncKeyState.
-        </p>
+        <p class="text-[12px] text-[var(--tui-text-muted)] mt-2.5 leading-[1.6]" data-i18n="faq_a3">Tab 2 invokes Win32 mouse_event / SetCursorPos via the Agent (&gt;= 10ms clamp) with 40ms global hotkeys F6 (Start/Stop) and F7 (Capture screen X, Y).</p>
       </details>
     </div>
 
-    <!-- Category 2: Privacy & Security -->
     <div class="space-y-3">
-      <h2 class="text-sm font-bold uppercase tracking-[0.08em] text-[var(--tui-primary)]" data-i18n="cat_sec">// 02. PRIVACY, DATA &amp; SMARTSCREEN</h2>
+      <h2 class="text-xs font-bold uppercase tracking-[0.08em] text-[var(--tui-primary)]" data-i18n="cat_sec">// 02. PRIVACY &amp; SMARTSCREEN</h2>
 
-      <details class="tui-surface p-5 cursor-pointer">
+      <details class="tui-surface p-4 cursor-pointer">
         <summary class="font-bold text-[13px] flex items-center justify-between gap-2 select-none">
-          <span data-i18n="faq_q4">Where are my Sticky Notes, Clipboard Snippets, and Color Palettes stored?</span>
+          <span data-i18n="faq_q4">Where is my data stored?</span>
           <span class="faq-arrow text-[var(--tui-text-muted)]">&gt;</span>
         </summary>
-        <p class="text-[12px] text-[var(--tui-text-muted)] mt-3 leading-[1.6]" data-i18n="faq_a4">
-          In the Web app, everything (notes, snippets, colors, PDFs, images, SHA hashes) stays in your browser's local IndexedDB (MyDeusToolsWebDB) and memory &mdash; zero bytes ever upload to any external server. In Native WPF Desktop, data is stored locally under BaseDirectory\Data\*.json.
-        </p>
+        <p class="text-[12px] text-[var(--tui-text-muted)] mt-2.5 leading-[1.6]" data-i18n="faq_a4">In Web, notes/snippets/colors stay in browser IndexedDB (MyDeusToolsWebDB) with zero uploads. In WPF Desktop, settings and notes live in BaseDirectory\Data\*.json.</p>
       </details>
 
-      <details class="tui-surface p-5 cursor-pointer">
+      <details class="tui-surface p-4 cursor-pointer">
         <summary class="font-bold text-[13px] flex items-center justify-between gap-2 select-none">
-          <span data-i18n="faq_q5">Why does Windows SmartScreen sometimes warn on standalone open-source .exe binaries?</span>
+          <span data-i18n="faq_q5">Why does Windows SmartScreen warn on standalone .exe builds?</span>
           <span class="faq-arrow text-[var(--tui-text-muted)]">&gt;</span>
         </summary>
-        <p class="text-[12px] text-[var(--tui-text-muted)] mt-3 leading-[1.6]" data-i18n="faq_a5">
-          Unsigned open-source executables without expensive commercial EV certificates trigger standard SmartScreen reputation warnings, and Win32 APIs like mouse_event / SetWindowPos can trigger heuristic notices. You can inspect all C#/TS source on GitHub, run dotnet test (282/282), and compile binaries yourself directly.
-        </p>
+        <p class="text-[12px] text-[var(--tui-text-muted)] mt-2.5 leading-[1.6]" data-i18n="faq_a5">Unsigned open-source executables invoking Win32 APIs (mouse_event, SetWindowPos) trigger standard SmartScreen reputation alerts. Full MIT source is inspectable and verifiable via dotnet test (282/282).</p>
       </details>
     </div>
 
-    <!-- Category 3: UI, I18n & Quality -->
     <div class="space-y-3">
-      <h2 class="text-sm font-bold uppercase tracking-[0.08em] text-[var(--tui-tertiary)]" data-i18n="cat_ui">// 03. UI, LOCALIZATION &amp; TESTING</h2>
+      <h2 class="text-xs font-bold uppercase tracking-[0.08em] text-[var(--tui-tertiary)]" data-i18n="cat_ui">// 03. UI, I18N &amp; TESTING</h2>
 
-      <details class="tui-surface p-5 cursor-pointer">
+      <details class="tui-surface p-4 cursor-pointer">
         <summary class="font-bold text-[13px] flex items-center justify-between gap-2 select-none">
-          <span data-i18n="faq_q6">How do Dark/Light mode, CRT scanlines, and EN/VI language switching work?</span>
+          <span data-i18n="faq_q6">How do Light/Dark, CRT, and EN/VI switching work?</span>
           <span class="faq-arrow text-[var(--tui-text-muted)]">&gt;</span>
         </summary>
-        <p class="text-[12px] text-[var(--tui-text-muted)] mt-3 leading-[1.6]" data-i18n="faq_a6">
-          Every header button switches immediately with zero page reload: [THEME:DARK]/[THEME:LIGHT] toggles between #0D0D0D Phosphor Green and #F4F4EE TTY Paper, [CRT:ON]/[CRT:OFF] toggles scanlines, and [LANG:EN]/[NGÔN NGỮ:VI] switches 100% translated strings verified at build time by _viSymmetryCheck.
-        </p>
+        <p class="text-[12px] text-[var(--tui-text-muted)] mt-2.5 leading-[1.6]" data-i18n="faq_a6">All header switches apply instantaneously without reload and persist in localStorage; TypeScript _viSymmetryCheck enforces 100% VI/EN key parity at build time.</p>
       </details>
 
-      <details class="tui-surface p-5 cursor-pointer">
+      <details class="tui-surface p-4 cursor-pointer">
         <summary class="font-bold text-[13px] flex items-center justify-between gap-2 select-none">
-          <span data-i18n="faq_q7">Who builds and verifies MyDeusTools?</span>
+          <span data-i18n="faq_q7">How is the codebase verified?</span>
           <span class="faq-arrow text-[var(--tui-text-muted)]">&gt;</span>
         </summary>
-        <p class="text-[12px] text-[var(--tui-text-muted)] mt-3 leading-[1.6]" data-i18n="faq_a7">
-          Maintained under the MIT License by KaitoDeus and Claude through Human-AI Pair Programming, backed by 282 automated xUnit tests across 20 test classes and TypeScript build verification.
-        </p>
+        <p class="text-[12px] text-[var(--tui-text-muted)] mt-2.5 leading-[1.6]" data-i18n="faq_a7">Open-sourced under MIT by KaitoDeus &amp; Claude, verified continuously via 282 xUnit tests and Vite + TypeScript production builds.</p>
       </details>
     </div>
 
   </main>
-
-  <footer class="mt-auto border-t border-[var(--tui-border-subtle)] bg-[var(--tui-surface)] py-8 text-[12px] text-[var(--tui-text-muted)]">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4">
-      <div><span class="text-[var(--tui-primary)] font-bold">MYDEUSTOOLS</span> <span data-i18n="footer_developed">-- Built by</span> <a href="https://github.com/KaitoDeus" target="_blank" rel="noopener noreferrer" class="text-[var(--tui-tertiary)] hover:underline">KaitoDeus</a> &amp; Claude.</div>
-      <div class="flex flex-wrap gap-4">
-        <a href="index.html" class="hover:text-[var(--tui-primary)]" data-i18n="nav_home">Home</a>
-        <a href="features.html" class="hover:text-[var(--tui-primary)]" data-i18n="nav_features">Features</a>
-        <a href="architecture.html" class="hover:text-[var(--tui-primary)]" data-i18n="nav_architecture">Architecture</a>
-        <a href="download.html" class="hover:text-[var(--tui-primary)]" data-i18n="nav_download">Launch &amp; Download</a>
-      </div>
-    </div>
-  </footer>
 
   <script src="assets/site.js"></script>
   <script>
     registerTranslations({
       en: {
         faq_hero_title: '&gt; Frequently Asked Questions',
-        faq_hero_sub: 'Clear answers on Web vs Local Companion Agent safety, loopback port binding, Windows SmartScreen, and privacy.',
-        cat_hybrid: '// 01. HYBRID WEB &amp; LOCAL COMPANION AGENT',
-        faq_q1: 'Why split Pomodoro and Scheduled Shutdown, and lock Shutdown when Agent is offline?',
-        faq_a1: 'Pomodoro runs 100% inside the browser (countdown + Screen Wake Lock + audio alarm) so it always works everywhere. By contrast, web browsers strictly forbid closing Windows or executing shutdown.exe. Isolating Scheduled Shutdown into Tab 2 and gating every button/input with disabled={!isOnline} prevents misleading clicks until MyDeusTools.Agent is running.',
-        faq_q2: 'Is http://127.0.0.1:41950 exposed to my network or the Internet?',
-        faq_a2: 'No. LocalHttpBridgeServer binds its HttpListener prefix strictly to 127.0.0.1:41950 (loopback adapter only). External devices on LAN or the Internet cannot connect to it.',
-        faq_q3: 'How does Auto-Clicker work inside games or desktop apps outside the browser?',
-        faq_a3: 'When MyDeusTools.Agent is active, Tab 2 (OS_NATIVE_AGENT) delegates mouse clicks to Win32 mouse_event and SetCursorPos (with a 10ms hardware safety clamp). GlobalHotkeyService polls VK_F6 (Start/Stop anywhere) and VK_F7 (Capture screen cursor X, Y anywhere) every 40ms via GetAsyncKeyState.',
-        cat_sec: '// 02. PRIVACY, DATA &amp; SMARTSCREEN',
-        faq_q4: 'Where are my Sticky Notes, Clipboard Snippets, and Color Palettes stored?',
-        faq_a4: 'In the Web app, everything (notes, snippets, colors, PDFs, images, SHA hashes) stays in your browser\'s local IndexedDB (MyDeusToolsWebDB) and memory &mdash; zero bytes ever upload to any external server. In Native WPF Desktop, data is stored locally under BaseDirectory\\Data\\*.json.',
-        faq_q5: 'Why does Windows SmartScreen sometimes warn on standalone open-source .exe binaries?',
-        faq_a5: 'Unsigned open-source executables without expensive commercial EV certificates trigger standard SmartScreen reputation warnings, and Win32 APIs like mouse_event / SetWindowPos can trigger heuristic notices. You can inspect all C#/TS source on GitHub, run dotnet test (282/282), and compile binaries yourself directly.',
-        cat_ui: '// 03. UI, LOCALIZATION &amp; TESTING',
-        faq_q6: 'How do Dark/Light mode, CRT scanlines, and EN/VI language switching work?',
-        faq_a6: 'Every header button switches immediately with zero page reload: [THEME:DARK]/[THEME:LIGHT] toggles between #0D0D0D Phosphor Green and #F4F4EE TTY Paper, [CRT:ON]/[CRT:OFF] toggles scanlines, and [LANG:EN]/[NGÔN NGỮ:VI] switches 100% translated strings verified at build time by _viSymmetryCheck.',
-        faq_q7: 'Who builds and verifies MyDeusTools?',
-        faq_a7: 'Maintained under the MIT License by KaitoDeus and Claude through Human-AI Pair Programming, backed by 282 automated xUnit tests across 20 test classes and TypeScript build verification.',
+        faq_hero_sub: 'Quick answers on Agent gating, loopback security, SmartScreen, and privacy.',
+        cat_hybrid: '// 01. HYBRID AGENT &amp; OS CONTROL',
+        faq_q1: 'Why separate Pomodoro and Scheduled Shutdown, and lock Shutdown when offline?',
+        faq_a1: 'Pomodoro runs purely inside the browser (countdown + Wake Lock). Windows shutdown.exe requires native OS access, so Tab 2 remains disabled={!isOnline} until MyDeusTools.Agent connects.',
+        faq_q2: 'Is http://127.0.0.1:41950 exposed to the LAN or Internet?',
+        faq_a2: 'No. LocalHttpBridgeServer binds strictly to loopback 127.0.0.1:41950 so external devices cannot reach it.',
+        faq_q3: 'How does Auto-Clicker work outside the browser (F6 / F7)?',
+        faq_a3: 'Tab 2 invokes Win32 mouse_event / SetCursorPos via the Agent (&gt;= 10ms clamp) with 40ms global hotkeys F6 (Start/Stop) and F7 (Capture screen X, Y).',
+        cat_sec: '// 02. PRIVACY &amp; SMARTSCREEN',
+        faq_q4: 'Where is my data stored?',
+        faq_a4: 'In Web, notes/snippets/colors stay in browser IndexedDB (MyDeusToolsWebDB) with zero uploads. In WPF Desktop, settings and notes live in BaseDirectory\\Data\\*.json.',
+        faq_q5: 'Why does Windows SmartScreen warn on standalone .exe builds?',
+        faq_a5: 'Unsigned open-source executables invoking Win32 APIs (mouse_event, SetWindowPos) trigger standard SmartScreen reputation alerts. Full MIT source is inspectable and verifiable via dotnet test (282/282).',
+        cat_ui: '// 03. UI, I18N &amp; TESTING',
+        faq_q6: 'How do Light/Dark, CRT, and EN/VI switching work?',
+        faq_a6: 'All header switches apply instantaneously without reload and persist in localStorage; TypeScript _viSymmetryCheck enforces 100% VI/EN key parity at build time.',
+        faq_q7: 'How is the codebase verified?',
+        faq_a7: 'Open-sourced under MIT by KaitoDeus &amp; Claude, verified continuously via 282 xUnit tests and Vite + TypeScript production builds.',
       },
       vi: {
-        faq_hero_title: '&gt; Giải đáp thắc mắc &amp; Bảo mật',
-        faq_hero_sub: 'Giải thích rõ cơ chế Web + Local Companion Agent, cổng loopback 127.0.0.1:41950, SmartScreen và quyền riêng tư dữ liệu.',
-        cat_hybrid: '// 01. MÔ HÌNH LAI WEB &amp; LOCAL COMPANION AGENT',
-        faq_q1: 'Tại sao phải tách Pomodoro với Hẹn giờ tắt máy và khoá Hẹn tắt máy khi Agent offline?',
-        faq_a1: 'Pomodoro chạy 100% thuần trình duyệt (đếm ngược + Screen Wake Lock + chuông Web Audio) nên luôn dùng được mọi nơi. Ngược lại, trình duyệt web bị sandbox không được phép gọi shutdown.exe của Windows. Tách Hẹn giờ tắt máy sang Tab 2 và gắn disabled={!isOnline} giúp người dùng không bấm nhầm khi chưa bật MyDeusTools.Agent.',
-        faq_q2: 'Cổng http://127.0.0.1:41950 có bị lộ ra mạng LAN hay Internet không?',
-        faq_a2: 'Không. LocalHttpBridgeServer chỉ lắng nghe duy nhất trên giao diện loopback 127.0.0.1:41950. Thiết bị bên ngoài trong mạng LAN hay Internet đều không thể truy cập.',
-        faq_q3: 'Làm thế nào Auto-Clicker bấm được bên ngoài trình duyệt và trong game?',
-        faq_a3: 'Khi bật MyDeusTools.Agent, Tab 2 (OS_NATIVE_AGENT) gọi Win32 mouse_event và SetCursorPos (với chốt an toàn >= 10ms). GlobalHotkeyService lắng nghe GetAsyncKeyState mỗi 40ms cho phím F6 (Bật/Tắt toàn cục) và F7 (Ghi toạ độ chuột X, Y toàn màn hình).',
-        cat_sec: '// 02. QUYỀN RIÊNG TƯ, DỮ LIỆU &amp; SMARTSCREEN',
-        faq_q4: 'Ghi chú, snippet Clipboard và bảng màu được lưu ở đâu?',
-        faq_a4: 'Trên Web, toàn bộ ghi chú, snippet, màu sắc, xử lý PDF/Ảnh/Hash đều nằm trong IndexedDB (MyDeusToolsWebDB) và RAM trình duyệt tại máy bạn &mdash; không tải lên máy chủ ngoài. Trên bản WPF Desktop, dữ liệu lưu tại BaseDirectory\\Data\\*.json.',
-        faq_q5: 'Tại sao Windows SmartScreen đôi khi cảnh báo tệp .exe mã nguồn mở?',
-        faq_a5: 'Các tệp .exe tự đóng gói chưa mua chứng chỉ EV thương mại hoặc có sử dụng Win32 API điều khiển chuột/cửa sổ (mouse_event, SetWindowPos) thường gặp cảnh báo SmartScreen. Bạn luôn có thể xem toàn bộ mã nguồn trên GitHub, chạy dotnet test (282/282) và tự biên dịch trực tiếp.',
+        faq_hero_title: '&gt; Giải đáp thắc mắc',
+        faq_hero_sub: 'Các câu hỏi chính về khoá Agent, bảo mật loopback, SmartScreen &amp; riêng tư.',
+        cat_hybrid: '// 01. AGENT &amp; ĐIỀU KHIỂN OS',
+        faq_q1: 'Tại sao tách Pomodoro &amp; Hẹn tắt máy và khoá Hẹn tắt máy khi offline?',
+        faq_a1: 'Pomodoro chạy thuần trình duyệt (Wake Lock + đếm ngược). Gọi shutdown.exe của Windows cần Local Agent nên Tab 2 bị khoá (disabled={!isOnline}) tới khi Agent bật.',
+        faq_q2: 'Cổng http://127.0.0.1:41950 có mở ra mạng LAN hay Internet không?',
+        faq_a2: 'Không. LocalHttpBridgeServer chỉ lắng nghe nội bộ loopback 127.0.0.1:41950.',
+        faq_q3: 'Làm thế nào Auto-Clicker bấm ngoài trình duyệt bằng F6 / F7?',
+        faq_a3: 'Tab 2 gọi Win32 mouse_event / SetCursorPos qua Agent (&gt;= 10ms) kèm phím tắt toàn cục 40ms F6 (Bật/Tắt) và F7 (Ghi toạ độ chuột X, Y).',
+        cat_sec: '// 02. RIÊNG TƯ &amp; SMARTSCREEN',
+        faq_q4: 'Dữ liệu của tôi được lưu ở đâu?',
+        faq_a4: 'Trên Web, ghi chú/snippet/màu lưu trong IndexedDB (MyDeusToolsWebDB) hoàn toàn tại máy; trên WPF Desktop lưu trong BaseDirectory\\Data\\*.json.',
+        faq_q5: 'Tại sao Windows SmartScreen cảnh báo file .exe mã nguồn mở?',
+        faq_a5: 'Tệp .exe chưa ký chứng chỉ số EV hoặc có Win32 API (mouse_event, SetWindowPos) thường hiện cảnh báo SmartScreen. Toàn bộ mã MIT đều mở để tự kiểm thử 282/282 test và tự build.',
         cat_ui: '// 03. GIAO DIỆN, SONG NGỮ &amp; KIỂM THỬ',
-        faq_q6: 'Chuyển giao diện Tối/Sáng, sọc CRT và song ngữ VI/EN hoạt động ra sao?',
-        faq_a6: 'Mọi nút trên thanh tiêu đề chuyển đổi tức thì không cần tải lại trang: [THEME:DARK]/[THEME:LIGHT] đổi giữa nền đen #0D0D0D và giấy TTY #F4F4EE, [CRT:ON]/[CRT:OFF] bật tắt sọc scanline, còn nút ngôn ngữ đồng bộ 100% chuỗi EN/VI được kiểm tra lúc biên dịch bằng _viSymmetryCheck.',
-        faq_q7: 'Ai phát triển và kiểm chứng chất lượng dự án?',
-        faq_a7: 'Dự án mã nguồn mở giấy phép MIT được phát triển bởi KaitoDeus cùng Claude theo mô hình Human-AI Pair Programming, kiểm thử bằng 282 test tự động xUnit và TypeScript check.',
+        faq_q6: 'Chuyển Sáng/Tối, CRT và VI/EN hoạt động ra sao?',
+        faq_a6: 'Chuyển đổi tức thì không reload, lưu trong localStorage; _viSymmetryCheck kiểm tra đối xứng 100% key VI/EN lúc build TypeScript.',
+        faq_q7: 'Chất lượng dự án được kiểm chứng thế nào?',
+        faq_a7: 'Phát hành giấy phép MIT bởi KaitoDeus &amp; Claude, kiểm chứng liên tục qua 282 xUnit test và bản build Vite + TypeScript.',
       },
     });
   </script>

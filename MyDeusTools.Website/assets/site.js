@@ -12,14 +12,6 @@ const commonI18n = {
     nav_faq: 'FAQ',
     nav_btn_download: '[LAUNCH_SETUP]',
     nav_badge_v: 'TTY // v1.0.0',
-
-    footer_developed: '-- Built by',
-    footer_github: '[GITHUB_REPO]',
-    footer_docs: '[DOCS]',
-    footer_contributors: '[CONTRIBUTORS]',
-    footer_license: '[MIT_LICENSE]',
-    footer_tagline:
-      'Hybrid TerminalUI Web App + Windows Local Companion Agent + Native WPF Suite.',
   },
   vi: {
     nav_home: 'Trang chủ',
@@ -29,14 +21,6 @@ const commonI18n = {
     nav_faq: 'Hỏi đáp',
     nav_btn_download: '[CÀI ĐẶT_NHANH]',
     nav_badge_v: 'TTY // v1.0.0',
-
-    footer_developed: '-- Phát triển bởi',
-    footer_github: '[KHO_GITHUB]',
-    footer_docs: '[TÀI_LIỆU]',
-    footer_contributors: '[ĐÓNG_GÓP]',
-    footer_license: '[GIẤY_PHÉP_MIT]',
-    footer_tagline:
-      'Bộ công cụ lai TerminalUI Web App + Windows Local Companion Agent + Native WPF.',
   },
 };
 

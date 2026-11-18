@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Architecture &amp; Agent API — MyDeusTools</title>
-  <meta name="description" content="Hybrid architecture of MyDeusTools: React 19 + Vite TerminalUI Web, .NET 8 Loopback HTTP Bridge (127.0.0.1:41950), Win32 P/Invoke, Native WPF MVVM, and 282 unit tests." />
+  <meta name="description" content="Hybrid architecture of MyDeusTools: React 19 + Vite TerminalUI Web, .NET 8 Loopback Bridge (127.0.0.1:41950), Win32 P/Invoke, Native WPF MVVM, and 282 unit tests." />
   <link rel="icon" type="image/x-icon" href="avatar.ico" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -56,67 +56,65 @@
       <a href="index.html" class="block py-1 text-[var(--tui-text-muted)]" data-i18n="nav_home">Home</a>
       <a href="features.html" class="block py-1 text-[var(--tui-text-muted)]" data-i18n="nav_features">Features</a>
       <a href="architecture.html" class="block py-1 text-[var(--tui-primary)] font-bold" data-i18n="nav_architecture">Architecture</a>
-      <a href="download.html" class="block py-1 text-[var(--tui-text-muted)]" data-i18n="nav_download">Launch &amp; Download</a>
+      <a href="download.html" class="block py-1 text-[var(--tui-text-muted)]" data-i18n="nav_download">Download</a>
       <a href="faq.html" class="block py-1 text-[var(--tui-text-muted)]" data-i18n="nav_faq">FAQ</a>
     </div>
   </header>
 
-  <section class="py-12 border-b border-dashed border-[var(--tui-border-medium)]">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-2 max-w-4xl">
-      <div class="text-[11px] uppercase tracking-[0.08em] text-[var(--tui-tertiary)] font-bold">// ./ARCHITECTURE_SPECIFICATION</div>
-      <h1 class="text-3xl sm:text-4xl font-bold" data-i18n="arch_hero_title">&gt; Three-Tier Hybrid Architecture</h1>
-      <p class="text-[13px] sm:text-[14px] text-[var(--tui-text-muted)]" data-i18n="arch_hero_sub">Built on a clean separation between a client-side React 19 TerminalUI Web app, a zero-dependency .NET 8 loopback Win32 Companion Agent, and the native WPF Desktop edition &mdash; verified by 282 unit tests.</p>
+  <section class="py-10 border-b border-dashed border-[var(--tui-border-medium)]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-2 max-w-3xl">
+      <div class="text-[11px] uppercase tracking-[0.08em] text-[var(--tui-tertiary)] font-bold">// ./ARCHITECTURE</div>
+      <h1 class="text-3xl font-bold" data-i18n="arch_hero_title">&gt; Three-Tier Hybrid Design</h1>
+      <p class="text-[13px] text-[var(--tui-text-muted)]" data-i18n="arch_hero_sub">React 19 TerminalUI Web + .NET 8 Loopback Win32 Agent + Native WPF Desktop (282 xUnit tests).</p>
     </div>
   </section>
 
-  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-12 flex-1">
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 pb-16 space-y-8 flex-1">
 
-    <!-- 6 PILLARS -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-      <div class="tui-surface p-6 space-y-3">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div class="tui-surface p-5 space-y-2">
         <div class="text-[11px] font-bold text-[var(--tui-primary)]">LAYER_01 // WEB_CLIENT</div>
-        <h2 class="text-lg font-bold" data-i18n="arch_p1_t">React 19 + Vite 8 + TerminalUI</h2>
-        <p class="text-[12px] text-[var(--tui-text-muted)]" data-i18n="arch_p1_d">Lazy-loaded 13-view shell styled via CSS semantic tokens (--tui-*), zero border-radius, JetBrains Mono, CRT scanline toggle, and Tailwind CSS v4.</p>
+        <h2 class="text-base font-bold" data-i18n="arch_p1_t">React 19 + Vite 8 + TerminalUI</h2>
+        <p class="text-[12px] text-[var(--tui-text-muted)]" data-i18n="arch_p1_d">13 lazy-loaded views, --tui-* Light/Dark tokens, CRT toggle &amp; Tailwind v4.</p>
       </div>
 
-      <div class="tui-surface p-6 space-y-3">
+      <div class="tui-surface p-5 space-y-2">
         <div class="text-[11px] font-bold text-[var(--tui-secondary)]">LAYER_02 // LOOPBACK_AGENT</div>
-        <h2 class="text-lg font-bold" data-i18n="arch_p2_t">.NET 8 Local Companion Agent</h2>
-        <p class="text-[12px] text-[var(--tui-text-muted)]" data-i18n="arch_p2_d">Zero external NuGet dependencies. Uses System.Net.HttpListener bound exclusively to 127.0.0.1:41950 with CORS + Access-Control-Allow-Private-Network.</p>
+        <h2 class="text-base font-bold" data-i18n="arch_p2_t">.NET 8 Local Companion Agent</h2>
+        <p class="text-[12px] text-[var(--tui-text-muted)]" data-i18n="arch_p2_d">Zero NuGet deps. Loopback-only HttpListener on 127.0.0.1:41950 + PNA headers.</p>
       </div>
 
-      <div class="tui-surface p-6 space-y-3">
+      <div class="tui-surface p-5 space-y-2">
         <div class="text-[11px] font-bold text-[var(--tui-tertiary)]">LAYER_03 // WIN32_INTEROP</div>
-        <h2 class="text-lg font-bold" data-i18n="arch_p3_t">User32 &amp; Mockable IMouseInterop</h2>
-        <p class="text-[12px] text-[var(--tui-text-muted)]" data-i18n="arch_p3_d">Abstracts mouse_event, SetCursorPos, GetAsyncKeyState (40ms F6/F7 edge hotkeys), EnumWindows, HWND_TOPMOST, and WS_EX_LAYERED opacity behind clean interfaces.</p>
+        <h2 class="text-base font-bold" data-i18n="arch_p3_t">User32 &amp; Mockable IMouseInterop</h2>
+        <p class="text-[12px] text-[var(--tui-text-muted)]" data-i18n="arch_p3_d">mouse_event, SetCursorPos, F6/F7 40ms edge hotkeys, HWND_TOPMOST &amp; WS_EX_LAYERED.</p>
       </div>
 
-      <div class="tui-surface p-6 space-y-3">
+      <div class="tui-surface p-5 space-y-2">
         <div class="text-[11px] font-bold text-[var(--tui-primary)]">LAYER_04 // STORAGE</div>
-        <h2 class="text-lg font-bold" data-i18n="arch_p4_t">Dexie IndexedDB &amp; JSON Disk</h2>
-        <p class="text-[12px] text-[var(--tui-text-muted)]" data-i18n="arch_p4_d">Browser state lives locally in MyDeusToolsWebDB (notes, snippets, colors) + localStorage preferences. Desktop WPF stores thread-safe JSON in Data/*.json.</p>
+        <h2 class="text-base font-bold" data-i18n="arch_p4_t">Dexie IndexedDB &amp; JSON Disk</h2>
+        <p class="text-[12px] text-[var(--tui-text-muted)]" data-i18n="arch_p4_d">MyDeusToolsWebDB (notes, snippets, colors) on Web; Data/*.json on WPF.</p>
       </div>
 
-      <div class="tui-surface p-6 space-y-3">
+      <div class="tui-surface p-5 space-y-2">
         <div class="text-[11px] font-bold text-[var(--tui-secondary)]">LAYER_05 // I18N_SAFETY</div>
-        <h2 class="text-lg font-bold" data-i18n="arch_p5_t">Compile-Time Symmetry (_viSymmetryCheck)</h2>
-        <p class="text-[12px] text-[var(--tui-text-muted)]" data-i18n="arch_p5_d">Missing keys in translations.ts immediately fail TypeScript compilation during npm run web:build. WPF enforces symmetry across Strings.*.xaml via 57 xUnit tests.</p>
+        <h2 class="text-base font-bold" data-i18n="arch_p5_t">Compile-Time Symmetry</h2>
+        <p class="text-[12px] text-[var(--tui-text-muted)]" data-i18n="arch_p5_d">_viSymmetryCheck enforces TypeScript vi/en parity; 57 tests verify WPF XAML.</p>
       </div>
 
-      <div class="tui-surface p-6 space-y-3">
+      <div class="tui-surface p-5 space-y-2">
         <div class="text-[11px] font-bold text-[var(--tui-tertiary)]">LAYER_06 // VERIFICATION</div>
-        <h2 class="text-lg font-bold" data-i18n="arch_p6_t">282 Automated xUnit Tests</h2>
-        <p class="text-[12px] text-[var(--tui-text-muted)]" data-i18n="arch_p6_d">100% pass rate across 20 test classes using xUnit 2.9.2, Moq 4.20.72, and Xunit.StaFact &mdash; covering WPF MVVM/Services plus OsAutoClickEngine in Agent.</p>
+        <h2 class="text-base font-bold" data-i18n="arch_p6_t">282 Automated xUnit Tests</h2>
+        <p class="text-[12px] text-[var(--tui-text-muted)]" data-i18n="arch_p6_d">100% pass rate across 20 classes (WPF Services/VMs + Agent OsAutoClickEngine).</p>
       </div>
     </div>
 
-    <!-- SYSTEM FLOW & AGENT ENDPOINTS -->
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-      <div class="lg:col-span-6 tui-surface p-6 space-y-4">
-        <h2 class="text-lg font-bold text-[var(--tui-primary)] border-b border-dashed border-[var(--tui-border-medium)] pb-2" data-i18n="arch_diag_title">&gt; Hybrid Data &amp; Control Flow</h2>
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
+      <div class="lg:col-span-6 tui-surface p-5 space-y-3">
+        <h2 class="text-base font-bold text-[var(--tui-primary)] border-b border-dashed border-[var(--tui-border-medium)] pb-2" data-i18n="arch_diag_title">&gt; Hybrid Control Flow</h2>
         <pre class="tui-code-box p-4 text-[11px] sm:text-[12px] text-[var(--tui-text)] overflow-x-auto leading-[1.5]">
 [ Browser: MyDeusTools.Web ]
-  |-- Client Tools (PDF, Img, JSON, Dexie) ---> Executed 100% in RAM
+  |-- Client Tools (PDF/Img/JSON/Dexie) ---> RAM Only
   '-- OS Controls (Click / Power / TopMost)
         |  fetch('http://127.0.0.1:41950/api/...')
         v
@@ -125,54 +123,48 @@
   |-- GlobalHotkeyService (F6 Toggle, F7 Capture)
   |-- OsAutoClickEngine (mouse_event, >= 10ms)
   |-- OsSystemPowerService (shutdown /s /r /h /a)
-  '-- OsWindowPinnerService (HWND_TOPMOST / Alpha)
-        </pre>
+  '-- OsWindowPinnerService (TopMost / Alpha)</pre>
       </div>
 
-      <div class="lg:col-span-6 tui-surface p-6 space-y-4">
-        <h2 class="text-lg font-bold text-[var(--tui-secondary)] border-b border-dashed border-[var(--tui-border-medium)] pb-2" data-i18n="arch_api_title">&gt; Agent REST API (127.0.0.1:41950)</h2>
+      <div class="lg:col-span-6 tui-surface p-5 space-y-3">
+        <h2 class="text-base font-bold text-[var(--tui-secondary)] border-b border-dashed border-[var(--tui-border-medium)] pb-2" data-i18n="arch_api_title">&gt; Agent REST API (127.0.0.1:41950)</h2>
         <div class="space-y-2 text-[11px] sm:text-[12px]">
-          <div class="tui-code-box px-3 py-2 flex justify-between gap-2"><span class="text-[var(--tui-primary)] font-bold">GET  /api/health</span><span class="text-[var(--tui-text-muted)]">5s heartbeat + capabilities</span></div>
-          <div class="tui-code-box px-3 py-2 flex justify-between gap-2"><span class="text-[var(--tui-primary)] font-bold">GET  /api/autoclick/status</span><span class="text-[var(--tui-text-muted)]">Live cursor + click count</span></div>
-          <div class="tui-code-box px-3 py-2 flex justify-between gap-2"><span class="text-[var(--tui-secondary)] font-bold">POST /api/autoclick/{start|stop|capture}</span><span class="text-[var(--tui-text-muted)]">Win32 mouse macro</span></div>
-          <div class="tui-code-box px-3 py-2 flex justify-between gap-2"><span class="text-[var(--tui-secondary)] font-bold">POST /api/system/{schedule|cancel}</span><span class="text-[var(--tui-text-muted)]">Shutdown/Restart/Hibernate</span></div>
-          <div class="tui-code-box px-3 py-2 flex justify-between gap-2"><span class="text-[var(--tui-tertiary)] font-bold">GET  /api/windows</span><span class="text-[var(--tui-text-muted)]">Enumerate desktop windows</span></div>
-          <div class="tui-code-box px-3 py-2 flex justify-between gap-2"><span class="text-[var(--tui-tertiary)] font-bold">POST /api/windows/{pin|opacity|focus}</span><span class="text-[var(--tui-text-muted)]">TopMost &amp; 20-100% alpha</span></div>
+          <div class="tui-code-box px-3 py-2 flex justify-between gap-2"><span class="text-[var(--tui-primary)] font-bold">GET  /api/health</span><span class="text-[var(--tui-text-muted)]">5s heartbeat</span></div>
+          <div class="tui-code-box px-3 py-2 flex justify-between gap-2"><span class="text-[var(--tui-primary)] font-bold">GET  /api/autoclick/status</span><span class="text-[var(--tui-text-muted)]">Live cursor + clicks</span></div>
+          <div class="tui-code-box px-3 py-2 flex justify-between gap-2"><span class="text-[var(--tui-secondary)] font-bold">POST /api/autoclick/{start|stop|capture}</span><span class="text-[var(--tui-text-muted)]">Win32 click loop</span></div>
+          <div class="tui-code-box px-3 py-2 flex justify-between gap-2"><span class="text-[var(--tui-secondary)] font-bold">POST /api/system/{schedule|cancel}</span><span class="text-[var(--tui-text-muted)]">OS Power control</span></div>
+          <div class="tui-code-box px-3 py-2 flex justify-between gap-2"><span class="text-[var(--tui-tertiary)] font-bold">GET  /api/windows</span><span class="text-[var(--tui-text-muted)]">Open window list</span></div>
+          <div class="tui-code-box px-3 py-2 flex justify-between gap-2"><span class="text-[var(--tui-tertiary)] font-bold">POST /api/windows/{pin|opacity|focus}</span><span class="text-[var(--tui-text-muted)]">TopMost &amp; 20-100%</span></div>
         </div>
       </div>
     </div>
 
-    <!-- MODE COMPARISON -->
-    <div class="tui-surface p-6 space-y-4">
-      <h2 class="text-lg font-bold text-[var(--tui-text)]" data-i18n="arch_modes_title">&gt; Deployment Modes Comparison</h2>
+    <div class="tui-surface p-5 space-y-3">
+      <h2 class="text-base font-bold" data-i18n="arch_modes_title">&gt; Runtime Modes</h2>
       <div class="overflow-x-auto">
         <table class="w-full text-left text-[12px]">
           <thead>
             <tr class="border-b border-[var(--tui-border-medium)] bg-[var(--tui-surface-elevated)]">
               <th class="p-3" data-i18n="m_col1">Mode</th>
               <th class="p-3" data-i18n="m_col2">Stack / Binary</th>
-              <th class="p-3" data-i18n="m_col3">OS Access Level</th>
-              <th class="p-3" data-i18n="m_col4">Ideal For</th>
+              <th class="p-3" data-i18n="m_col3">Capabilities</th>
             </tr>
           </thead>
           <tbody class="divide-y divide-[var(--tui-border-subtle)]">
             <tr>
               <td class="p-3 font-bold text-[var(--tui-tertiary)]">01: Web Only</td>
               <td class="p-3">React 19 + Vite 8 + IndexedDB</td>
-              <td class="p-3 text-[var(--tui-text-muted)]" data-i18n="m_r1_os">Browser Sandbox (Pomodoro, PDF, Image, DevTools, DOM Clicker, PiP)</td>
-              <td class="p-3 text-[var(--tui-text-muted)]" data-i18n="m_r1_for">Cross-platform zero-install daily use</td>
+              <td class="p-3 text-[var(--tui-text-muted)]" data-i18n="m_r1_os">Browser-only tools (Pomodoro, PDF, Image, DevTools, DOM Clicker, PiP)</td>
             </tr>
             <tr>
-              <td class="p-3 font-bold text-[var(--tui-primary)]">02: Web + Agent (Hybrid)</td>
+              <td class="p-3 font-bold text-[var(--tui-primary)]">02: Web + Agent</td>
               <td class="p-3">Web + MyDeusTools.Agent (.NET 8)</td>
-              <td class="p-3 text-[var(--tui-primary)]" data-i18n="m_r2_os">Unlocks OS Shutdown tab, Win32 Auto-Click + F6/F7, OS Window Pinner</td>
-              <td class="p-3 text-[var(--tui-text-muted)]" data-i18n="m_r2_for">Windows power users wanting Web UI + Win32 control</td>
+              <td class="p-3 text-[var(--tui-primary)]" data-i18n="m_r2_os">Unlocks OS Shutdown, Win32 Auto-Click + F6/F7, OS Window Pinner</td>
             </tr>
             <tr>
               <td class="p-3 font-bold text-[var(--tui-secondary)]">03: Native WPF .EXE</td>
               <td class="p-3">MyDeusTools.App.exe (WPF-UI 3.0)</td>
-              <td class="p-3 text-[var(--tui-secondary)]" data-i18n="m_r3_os">Full Win32 + GDI 11x11 Eyedropper + FFmpeg CLI + PDFsharp + System Tray</td>
-              <td class="p-3 text-[var(--tui-text-muted)]" data-i18n="m_r3_for">Single-file portable offline desktop EXE</td>
+              <td class="p-3 text-[var(--tui-secondary)]" data-i18n="m_r3_os">Full Win32 + GDI Eyedropper + FFmpeg CLI + PDFsharp + System Tray</td>
             </tr>
           </tbody>
         </table>
@@ -181,79 +173,58 @@
 
   </main>
 
-  <footer class="mt-auto border-t border-[var(--tui-border-subtle)] bg-[var(--tui-surface)] py-8 text-[12px] text-[var(--tui-text-muted)]">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4">
-      <div><span class="text-[var(--tui-primary)] font-bold">MYDEUSTOOLS</span> <span data-i18n="footer_developed">-- Built by</span> <a href="https://github.com/KaitoDeus" target="_blank" rel="noopener noreferrer" class="text-[var(--tui-tertiary)] hover:underline">KaitoDeus</a> &amp; Claude.</div>
-      <div class="flex flex-wrap gap-4">
-        <a href="index.html" class="hover:text-[var(--tui-primary)]" data-i18n="nav_home">Home</a>
-        <a href="features.html" class="hover:text-[var(--tui-primary)]" data-i18n="nav_features">Features</a>
-        <a href="download.html" class="hover:text-[var(--tui-primary)]" data-i18n="nav_download">Launch &amp; Download</a>
-        <a href="faq.html" class="hover:text-[var(--tui-primary)]" data-i18n="nav_faq">FAQ</a>
-      </div>
-    </div>
-  </footer>
-
   <script src="assets/site.js"></script>
   <script>
     registerTranslations({
       en: {
-        arch_hero_title: '&gt; Three-Tier Hybrid Architecture',
-        arch_hero_sub: 'Built on a clean separation between a client-side React 19 TerminalUI Web app, a zero-dependency .NET 8 loopback Win32 Companion Agent, and the native WPF Desktop edition &mdash; verified by 282 unit tests.',
+        arch_hero_title: '&gt; Three-Tier Hybrid Design',
+        arch_hero_sub: 'React 19 TerminalUI Web + .NET 8 Loopback Win32 Agent + Native WPF Desktop (282 xUnit tests).',
         arch_p1_t: 'React 19 + Vite 8 + TerminalUI',
-        arch_p1_d: 'Lazy-loaded 13-view shell styled via CSS semantic tokens (--tui-*), zero border-radius, JetBrains Mono, CRT scanline toggle, and Tailwind CSS v4.',
+        arch_p1_d: '13 lazy-loaded views, --tui-* Light/Dark tokens, CRT toggle &amp; Tailwind v4.',
         arch_p2_t: '.NET 8 Local Companion Agent',
-        arch_p2_d: 'Zero external NuGet dependencies. Uses System.Net.HttpListener bound exclusively to 127.0.0.1:41950 with CORS + Access-Control-Allow-Private-Network.',
+        arch_p2_d: 'Zero NuGet deps. Loopback-only HttpListener on 127.0.0.1:41950 + PNA headers.',
         arch_p3_t: 'User32 &amp; Mockable IMouseInterop',
-        arch_p3_d: 'Abstracts mouse_event, SetCursorPos, GetAsyncKeyState (40ms F6/F7 edge hotkeys), EnumWindows, HWND_TOPMOST, and WS_EX_LAYERED opacity behind clean interfaces.',
+        arch_p3_d: 'mouse_event, SetCursorPos, F6/F7 40ms edge hotkeys, HWND_TOPMOST &amp; WS_EX_LAYERED.',
         arch_p4_t: 'Dexie IndexedDB &amp; JSON Disk',
-        arch_p4_d: 'Browser state lives locally in MyDeusToolsWebDB (notes, snippets, colors) + localStorage preferences. Desktop WPF stores thread-safe JSON in Data/*.json.',
-        arch_p5_t: 'Compile-Time Symmetry (_viSymmetryCheck)',
-        arch_p5_d: 'Missing keys in translations.ts immediately fail TypeScript compilation during npm run web:build. WPF enforces symmetry across Strings.*.xaml via 57 xUnit tests.',
+        arch_p4_d: 'MyDeusToolsWebDB (notes, snippets, colors) on Web; Data/*.json on WPF.',
+        arch_p5_t: 'Compile-Time Symmetry',
+        arch_p5_d: '_viSymmetryCheck enforces TypeScript vi/en parity; 57 tests verify WPF XAML.',
         arch_p6_t: '282 Automated xUnit Tests',
-        arch_p6_d: '100% pass rate across 20 test classes using xUnit 2.9.2, Moq 4.20.72, and Xunit.StaFact &mdash; covering WPF MVVM/Services plus OsAutoClickEngine in Agent.',
-        arch_diag_title: '&gt; Hybrid Data &amp; Control Flow',
+        arch_p6_d: '100% pass rate across 20 classes (WPF Services/VMs + Agent OsAutoClickEngine).',
+        arch_diag_title: '&gt; Hybrid Control Flow',
         arch_api_title: '&gt; Agent REST API (127.0.0.1:41950)',
-        arch_modes_title: '&gt; Deployment Modes Comparison',
+        arch_modes_title: '&gt; Runtime Modes',
         m_col1: 'Mode',
         m_col2: 'Stack / Binary',
-        m_col3: 'OS Access Level',
-        m_col4: 'Ideal For',
-        m_r1_os: 'Browser Sandbox (Pomodoro, PDF, Image, DevTools, DOM Clicker, PiP)',
-        m_r1_for: 'Cross-platform zero-install daily use',
-        m_r2_os: 'Unlocks OS Shutdown tab, Win32 Auto-Click + F6/F7, OS Window Pinner',
-        m_r2_for: 'Windows power users wanting Web UI + Win32 control',
-        m_r3_os: 'Full Win32 + GDI 11x11 Eyedropper + FFmpeg CLI + PDFsharp + System Tray',
-        m_r3_for: 'Single-file portable offline desktop EXE',
+        m_col3: 'Capabilities',
+        m_r1_os: 'Browser-only tools (Pomodoro, PDF, Image, DevTools, DOM Clicker, PiP)',
+        m_r2_os: 'Unlocks OS Shutdown, Win32 Auto-Click + F6/F7, OS Window Pinner',
+        m_r3_os: 'Full Win32 + GDI Eyedropper + FFmpeg CLI + PDFsharp + System Tray',
       },
       vi: {
-        arch_hero_title: '&gt; Kiến trúc lai 3 tầng (Hybrid Architecture)',
-        arch_hero_sub: 'Tách bạch rõ ràng giữa Web TerminalUI (React 19), cầu nối Win32 Local Companion Agent (.NET 8) và bản Native WPF Desktop &mdash; xác thực bởi 282 bài test tự động.',
+        arch_hero_title: '&gt; Kiến trúc lai 3 tầng',
+        arch_hero_sub: 'Web TerminalUI React 19 + Win32 Loopback Agent (.NET 8) + Native WPF Desktop (282 xUnit test).',
         arch_p1_t: 'React 19 + Vite 8 + TerminalUI',
-        arch_p1_d: '13 view tải lười (lazy-load), giao diện tuân thủ biến CSS (--tui-*), bo góc 0px, phông JetBrains Mono, hiệu ứng CRT tuỳ chọn và Tailwind CSS v4.',
+        arch_p1_d: '13 view tải lười, bộ token --tui-* Sáng/Tối, CRT &amp; Tailwind CSS v4.',
         arch_p2_t: '.NET 8 Local Companion Agent',
-        arch_p2_d: 'Không cần thư viện NuGet ngoài. Dùng System.Net.HttpListener lắng nghe độc quyền tại 127.0.0.1:41950 kèm CORS + Private-Network header.',
-        arch_p3_t: 'User32 &amp; Giao diện kiểm thử IMouseInterop',
-        arch_p3_d: 'Trừu tượng hoá mouse_event, SetCursorPos, GetAsyncKeyState (F6/F7 40ms), EnumWindows, HWND_TOPMOST và WS_EX_LAYERED sạch sẽ.',
-        arch_p4_t: 'Dexie IndexedDB &amp; Lưu trữ JSON',
-        s_dummy: '',
-        arch_p4_d: 'Dữ liệu Web lưu cục bộ trong MyDeusToolsWebDB (notes, snippets, colors) + localStorage. Bản WPF lưu tệp JSON an toàn luồng tại Data/*.json.',
-        arch_p5_t: 'Đối xứng ngôn ngữ lúc biên dịch (_viSymmetryCheck)',
-        arch_p5_d: 'Mọi key thiếu trong translations.ts bị TypeScript chặn ngay khi build; bản WPF kiểm tra đối xứng Strings.*.xaml qua 57 test LanguageServiceTests.',
+        arch_p2_d: 'Không thư viện ngoài. HttpListener loopback 127.0.0.1:41950 + PNA header.',
+        arch_p3_t: 'User32 &amp; IMouseInterop',
+        arch_p3_d: 'mouse_event, SetCursorPos, phím tắt F6/F7 40ms, HWND_TOPMOST &amp; WS_EX_LAYERED.',
+        arch_p4_t: 'Dexie IndexedDB &amp; JSON nội bộ',
+        arch_p4_d: 'MyDeusToolsWebDB (notes, snippets, colors) trên Web; Data/*.json trên WPF.',
+        arch_p5_t: 'Đối xứng ngôn ngữ lúc biên dịch',
+        arch_p5_d: '_viSymmetryCheck kiểm tra TypeScript vi/en; 57 test xác thực XAML WPF.',
         arch_p6_t: '282 Kiểm thử tự động xUnit',
-        arch_p6_d: 'Đạt 100% trên 20 test class với xUnit 2.9.2, Moq 4.20.72 và Xunit.StaFact &mdash; bao phủ cả WPF MVVM/Services lẫn OsAutoClickEngine của Agent.',
-        arch_diag_title: '&gt; Luồng dữ liệu &amp; Điều khiển Hybrid',
+        arch_p6_d: 'Đạt 100% trên 20 test class (WPF Services/VMs + Agent OsAutoClickEngine).',
+        arch_diag_title: '&gt; Luồng điều khiển Hybrid',
         arch_api_title: '&gt; Agent REST API (127.0.0.1:41950)',
-        arch_modes_title: '&gt; So sánh 3 chế độ vận hành',
+        arch_modes_title: '&gt; Chế độ vận hành',
         m_col1: 'Chế độ',
-        m_col2: 'Công nghệ / Tệp chạy',
-        m_col3: 'Quyền truy cập OS',
-        m_col4: 'Phù hợp cho',
-        m_r1_os: 'Sandbox trình duyệt (Pomodoro, PDF, Ảnh, DevTools, DOM Clicker, PiP)',
-        m_r1_for: 'Sử dụng đa nền tảng không cần cài đặt',
-        m_r2_os: 'Mở khoá tab Hẹn tắt máy, Win32 Auto-Click + F6/F7, Ghim cửa sổ OS',
-        m_r2_for: 'Người dùng Windows thích giao diện Web + sức mạnh Win32',
-        m_r3_os: 'Đầy đủ Win32 + Kính lúp GDI 11x11 + FFmpeg CLI + PDFsharp + System Tray',
-        m_r3_for: 'Chạy file đơn .EXE hoàn toàn offline',
+        m_col2: 'Nền tảng',
+        m_col3: 'Phạm vi tính năng',
+        m_r1_os: 'Công cụ thuần trình duyệt (Pomodoro, PDF, Ảnh, DevTools, DOM Clicker, PiP)',
+        m_r2_os: 'Mở khoá Hẹn tắt máy OS, Win32 Auto-Click F6/F7, Ghim cửa sổ OS',
+        m_r3_os: 'Đầy đủ Win32 + Kính lúp GDI + FFmpeg CLI + PDFsharp + System Tray',
       },
     });
   </script>

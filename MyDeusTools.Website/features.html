@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>12 Modules &amp; Features — MyDeusTools</title>
-  <meta name="description" content="Exhaustive breakdown of all 12 utilities across MyDeusTools Web (TerminalUI), Local Companion Agent (127.0.0.1:41950), and Native WPF Desktop." />
+  <meta name="description" content="Concise specification for all 12 utilities across MyDeusTools Web (TerminalUI), Local Companion Agent (127.0.0.1:41950), and Native WPF." />
   <link rel="icon" type="image/x-icon" href="avatar.ico" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -22,7 +22,6 @@
 </head>
 <body class="min-h-screen flex flex-col bg-[var(--tui-bg)] text-[var(--tui-text)] antialiased">
 
-  <!-- HEADER -->
   <header class="sticky top-0 z-50 tui-nav">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between gap-4">
       <a href="index.html" class="flex items-center gap-2.5 shrink-0">
@@ -57,304 +56,242 @@
       <a href="index.html" class="block py-1 text-[var(--tui-text-muted)]" data-i18n="nav_home">Home</a>
       <a href="features.html" class="block py-1 text-[var(--tui-primary)] font-bold" data-i18n="nav_features">Features</a>
       <a href="architecture.html" class="block py-1 text-[var(--tui-text-muted)]" data-i18n="nav_architecture">Architecture</a>
-      <a href="download.html" class="block py-1 text-[var(--tui-text-muted)]" data-i18n="nav_download">Launch &amp; Download</a>
+      <a href="download.html" class="block py-1 text-[var(--tui-text-muted)]" data-i18n="nav_download">Download</a>
       <a href="faq.html" class="block py-1 text-[var(--tui-text-muted)]" data-i18n="nav_faq">FAQ</a>
     </div>
   </header>
 
-  <!-- HERO & ANCHOR INDEX -->
-  <section class="py-12 border-b border-dashed border-[var(--tui-border-medium)]">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
-      <div class="space-y-2 max-w-4xl">
-        <div class="text-[11px] uppercase tracking-[0.08em] text-[var(--tui-primary)] font-bold">// ./FEATURES_SPECIFICATION</div>
-        <h1 class="text-3xl sm:text-4xl font-bold" data-i18n="feat_page_title">&gt; Every Module, Zero Bloat.</h1>
-        <p class="text-[13px] sm:text-[14px] text-[var(--tui-text-muted)]" data-i18n="feat_page_sub">Detailed technical specifications for all 12 tools across TerminalUI Web, Local Companion Agent (127.0.0.1:41950), and Native WPF Desktop.</p>
+  <section class="py-10 border-b border-dashed border-[var(--tui-border-medium)]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-5">
+      <div class="space-y-2 max-w-3xl">
+        <div class="text-[11px] uppercase tracking-[0.08em] text-[var(--tui-primary)] font-bold">// ./FEATURES_SPEC (01..12)</div>
+        <h1 class="text-3xl font-bold" data-i18n="feat_page_title">&gt; 12 Focused Modules.</h1>
+        <p class="text-[13px] text-[var(--tui-text-muted)]" data-i18n="feat_page_sub">Browser-native capabilities paired with Local Companion Agent (127.0.0.1:41950) and WPF Desktop.</p>
       </div>
 
       <div class="flex flex-wrap gap-2 text-[11px]">
-        <a href="#stickynotes" class="px-2.5 py-1 border border-[var(--tui-border-medium)] hover:border-[var(--tui-primary)]">01:sticky-notes</a>
-        <a href="#clipboard" class="px-2.5 py-1 border border-[var(--tui-border-medium)] hover:border-[var(--tui-primary)]">02:clip-vault</a>
-        <a href="#shutdown" class="px-2.5 py-1 border border-[var(--tui-secondary)] text-[var(--tui-secondary)]">03:smart-timer</a>
-        <a href="#textdev" class="px-2.5 py-1 border border-[var(--tui-border-medium)] hover:border-[var(--tui-primary)]">04:text-devtools</a>
-        <a href="#qrcode" class="px-2.5 py-1 border border-[var(--tui-border-medium)] hover:border-[var(--tui-primary)]">05:qr-studio</a>
-        <a href="#color" class="px-2.5 py-1 border border-[var(--tui-border-medium)] hover:border-[var(--tui-primary)]">06:color-picker</a>
-        <a href="#pdftoolkit" class="px-2.5 py-1 border border-[var(--tui-border-medium)] hover:border-[var(--tui-primary)]">07:pdf-toolkit</a>
-        <a href="#imagestudio" class="px-2.5 py-1 border border-[var(--tui-border-medium)] hover:border-[var(--tui-primary)]">08:img-studio</a>
-        <a href="#videoconverter" class="px-2.5 py-1 border border-[var(--tui-border-medium)] hover:border-[var(--tui-primary)]">09:video-wasm</a>
-        <a href="#bulkrenamer" class="px-2.5 py-1 border border-[var(--tui-border-medium)] hover:border-[var(--tui-primary)]">10:bulk-rename</a>
-        <a href="#autoclicker" class="px-2.5 py-1 border border-[var(--tui-primary)] text-[var(--tui-primary)]">11:auto-click</a>
-        <a href="#pinner" class="px-2.5 py-1 border border-[var(--tui-tertiary)] text-[var(--tui-tertiary)]">12:pip-float</a>
+        <a href="#stickynotes" class="px-2 py-1 border border-[var(--tui-border-medium)] hover:border-[var(--tui-primary)]">01:sticky-notes</a>
+        <a href="#clipboard" class="px-2 py-1 border border-[var(--tui-border-medium)] hover:border-[var(--tui-primary)]">02:clip-vault</a>
+        <a href="#shutdown" class="px-2 py-1 border border-[var(--tui-secondary)] text-[var(--tui-secondary)]">03:smart-timer</a>
+        <a href="#textdev" class="px-2 py-1 border border-[var(--tui-border-medium)] hover:border-[var(--tui-primary)]">04:text-devtools</a>
+        <a href="#qrcode" class="px-2 py-1 border border-[var(--tui-border-medium)] hover:border-[var(--tui-primary)]">05:qr-studio</a>
+        <a href="#color" class="px-2 py-1 border border-[var(--tui-border-medium)] hover:border-[var(--tui-primary)]">06:color-picker</a>
+        <a href="#pdftoolkit" class="px-2 py-1 border border-[var(--tui-border-medium)] hover:border-[var(--tui-primary)]">07:pdf-toolkit</a>
+        <a href="#imagestudio" class="px-2 py-1 border border-[var(--tui-border-medium)] hover:border-[var(--tui-primary)]">08:img-studio</a>
+        <a href="#videoconverter" class="px-2 py-1 border border-[var(--tui-border-medium)] hover:border-[var(--tui-primary)]">09:video-wasm</a>
+        <a href="#bulkrenamer" class="px-2 py-1 border border-[var(--tui-border-medium)] hover:border-[var(--tui-primary)]">10:bulk-rename</a>
+        <a href="#autoclicker" class="px-2 py-1 border border-[var(--tui-primary)] text-[var(--tui-primary)]">11:auto-click</a>
+        <a href="#pinner" class="px-2 py-1 border border-[var(--tui-tertiary)] text-[var(--tui-tertiary)]">12:pip-float</a>
       </div>
     </div>
   </section>
 
-  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-12 flex-1">
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 pb-16 space-y-6 flex-1">
 
-    <!-- 01: STICKY NOTES -->
-    <section id="stickynotes" class="scroll-mt-20 tui-surface p-6 md:p-8 grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-      <div class="lg:col-span-7 space-y-4">
+    <section id="stickynotes" class="scroll-mt-20 tui-surface p-6 grid grid-cols-1 lg:grid-cols-12 gap-5 items-center">
+      <div class="lg:col-span-7 space-y-2">
         <div class="text-[11px] font-bold text-[var(--tui-secondary)]">01 // ./sticky-notes [INDEXEDDB + PiP]</div>
-        <h2 class="text-2xl font-bold" data-i18n="s1_t">Sticky Notes</h2>
-        <p class="text-[13px] text-[var(--tui-text-muted)]" data-i18n="s1_d">Fast note capture stored automatically inside Dexie IndexedDB (MyDeusToolsWebDB.notes) on Web, or borderless topmost StickyNoteWindow overlays in WPF Desktop.</p>
-        <ul class="space-y-2 text-[12px] text-[var(--tui-text-muted)]">
-          <li><span class="text-[var(--tui-primary)] font-bold">[WEB]</span> <span data-i18n="s1_b1">Semantic accents (GREEN, AMBER, CYAN, RED), search filter, pin sorting, and Document PiP pop-out windows.</span></li>
-          <li><span class="text-[var(--tui-tertiary)] font-bold">[WPF]</span> <span data-i18n="s1_b2">Real-time auto-saving draggable desktop windows pinned above other apps + Data/notes.json persistence.</span></li>
-        </ul>
+        <h2 class="text-xl font-bold" data-i18n="s1_t">Sticky Notes</h2>
+        <p class="text-[12px] text-[var(--tui-text-muted)]" data-i18n="s1_d">Color tags, pin sort, IndexedDB auto-save, Document PiP pop-out (Web) &amp; floating desktop pins (WPF).</p>
       </div>
-      <div class="lg:col-span-5 tui-code-box p-4 text-[12px] space-y-2">
-        <div class="text-[var(--tui-secondary)] font-bold border-b border-dashed border-[var(--tui-border-subtle)] pb-1">[PINNED] // RELEASE_NOTES</div>
-        <div class="text-[var(--tui-text-muted)]">- Sync IndexedDB buffer<br />- Pop out via [PiP] on top of VS Code<br />- Status: AUTO_SAVED</div>
+      <div class="lg:col-span-5 tui-code-box p-3 text-[12px]">
+        <div class="text-[var(--tui-secondary)] font-bold">[PINNED] RELEASE_NOTES</div>
+        <div class="text-[var(--tui-text-muted)]">IndexedDB auto-saved + [PiP] floating buffer</div>
       </div>
     </section>
 
-    <!-- 02: CLIPBOARD VAULT -->
-    <section id="clipboard" class="scroll-mt-20 tui-surface p-6 md:p-8 grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-      <div class="lg:col-span-7 space-y-4">
+    <section id="clipboard" class="scroll-mt-20 tui-surface p-6 grid grid-cols-1 lg:grid-cols-12 gap-5 items-center">
+      <div class="lg:col-span-7 space-y-2">
         <div class="text-[11px] font-bold text-[var(--tui-tertiary)]">02 // ./clip-vault [CLIPBOARD_API]</div>
-        <h2 class="text-2xl font-bold" data-i18n="s2_t">Clipboard &amp; Snippet Vault</h2>
-        <p class="text-[13px] text-[var(--tui-text-muted)]" data-i18n="s2_d">Store reusable SQL queries, CLI commands, and tokens in IndexedDB with tags and usage counts, or capture OS clipboard history seamlessly on Windows WPF.</p>
-        <ul class="space-y-2 text-[12px] text-[var(--tui-text-muted)]">
-          <li><span class="text-[var(--tui-primary)] font-bold">[WEB]</span> <span data-i18n="s2_b1">Instant tag search, 1-click copy with USES counter, and direct OS Clipboard paste button.</span></li>
-          <li><span class="text-[var(--tui-tertiary)] font-bold">[WPF]</span> <span data-i18n="s2_b2">Event-driven Win32 AddClipboardFormatListener (WM_CLIPBOARDUPDATE) with 0% idle polling.</span></li>
-        </ul>
+        <h2 class="text-xl font-bold" data-i18n="s2_t">Clipboard Snippets</h2>
+        <p class="text-[12px] text-[var(--tui-text-muted)]" data-i18n="s2_d">Tag search, usage counters &amp; OS Clipboard paste on Web; Win32 AddClipboardFormatListener on WPF.</p>
       </div>
-      <div class="lg:col-span-5 tui-code-box p-4 text-[12px] space-y-2">
-        <div class="flex justify-between text-[var(--tui-tertiary)] font-bold border-b border-dashed border-[var(--tui-border-subtle)] pb-1"><span>#DOCKER_CLEAN</span><span>USES: 42</span></div>
+      <div class="lg:col-span-5 tui-code-box p-3 text-[12px]">
+        <div class="text-[var(--tui-tertiary)] font-bold">#DOCKER_CLEAN | USES: 42</div>
         <div class="text-[var(--tui-text-muted)]">docker system prune -af --volumes</div>
       </div>
     </section>
 
-    <!-- 03: SMART TIMER & AGENT-GATED SHUTDOWN -->
-    <section id="shutdown" class="scroll-mt-20 tui-surface-elevated p-6 md:p-8 grid grid-cols-1 lg:grid-cols-12 gap-6 items-start border border-[var(--tui-secondary)]">
-      <div class="lg:col-span-7 space-y-4">
+    <section id="shutdown" class="scroll-mt-20 tui-surface-elevated p-6 grid grid-cols-1 lg:grid-cols-12 gap-5 items-center border border-[var(--tui-secondary)]">
+      <div class="lg:col-span-7 space-y-2">
         <div class="text-[11px] font-bold text-[var(--tui-secondary)]">03 // ./smart-timer [2_TABS // AGENT_GATE]</div>
-        <h2 class="text-2xl font-bold" data-i18n="s3_t">Smart Timer &amp; Scheduled Windows Shutdown</h2>
-        <p class="text-[13px] text-[var(--tui-text-muted)]" data-i18n="s3_d">Strictly split into 2 independent tabs: browser Pomodoro countdown works offline anytime, while Windows Shutdown controls enable ONLY when Local Companion Agent is ONLINE.</p>
-        <ul class="space-y-2 text-[12px] text-[var(--tui-text-muted)]">
-          <li><span class="text-[var(--tui-primary)] font-bold">[TAB_01:POMODORO]</span> <span data-i18n="s3_b1">Screen Wake Lock API prevents display sleep, plus Web Audio chime, optional Webhook, and 70m -&gt; 1h 10m normalization.</span></li>
-          <li><span class="text-[var(--tui-secondary)] font-bold">[TAB_02:SHUTDOWN]</span> <span data-i18n="s3_b2">Locks every control (`disabled={!isOnline}` + `[STATUS:LOCKED]`) when offline; unlocks Shutdown, Restart, Hibernate &amp; Cancel when Agent runs.</span></li>
-        </ul>
+        <h2 class="text-xl font-bold" data-i18n="s3_t">Smart Timer &amp; Scheduled Shutdown</h2>
+        <p class="text-[12px] text-[var(--tui-text-muted)]" data-i18n="s3_d">Tab 1 Pomodoro (Wake Lock, Webhook, 70m normalization) runs anytime; Tab 2 Windows Shutdown enables ONLY when Agent is online.</p>
       </div>
-      <div class="lg:col-span-5 tui-code-box p-4 text-[12px] space-y-2">
-        <div class="flex gap-2 border-b border-dashed border-[var(--tui-border-subtle)] pb-2 text-[11px]">
-          <span class="px-2 py-0.5 border border-[var(--tui-border-medium)]">01:POMODORO</span>
-          <span class="px-2 py-0.5 bg-[var(--tui-secondary)] text-[var(--tui-primary-fg)] font-bold">02:SHUTDOWN [LOCKED]</span>
-        </div>
-        <div class="text-[var(--tui-secondary)] text-[11px]">[WARN] Enable by running: npm run agent:dev</div>
-        <div class="text-center text-2xl font-bold text-[var(--tui-text-muted)] py-1">00:30:00</div>
+      <div class="lg:col-span-5 tui-code-box p-3 text-[12px] space-y-1">
+        <div class="text-[var(--tui-secondary)] font-bold">01:POMODORO | 02:SHUTDOWN [LOCKED]</div>
+        <div class="text-[var(--tui-text-muted)]">70m -&gt; 01:10:00 | Shutdown / Restart / Hibernate</div>
       </div>
     </section>
 
-    <!-- 04: TEXT & DEV TOOLS -->
-    <section id="textdev" class="scroll-mt-20 tui-surface p-6 md:p-8 grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-      <div class="lg:col-span-7 space-y-4">
-        <div class="text-[11px] font-bold text-[var(--tui-primary)]">04 // ./text-devtools [5_TABS // WEB_CRYPTO]</div>
-        <h2 class="text-2xl font-bold" data-i18n="s4_t">Text &amp; Developer Utilities</h2>
-        <p class="text-[13px] text-[var(--tui-text-muted)]" data-i18n="s4_d">All-in-one developer workbench supporting JSON formatting/validation, UTF-8 Base64 encoding, SHA hashing via Web Crypto API, case transforms, and URL escaping.</p>
+    <section id="textdev" class="scroll-mt-20 tui-surface p-6 grid grid-cols-1 lg:grid-cols-12 gap-5 items-center">
+      <div class="lg:col-span-7 space-y-2">
+        <div class="text-[11px] font-bold text-[var(--tui-primary)]">04 // ./text-devtools [5_TABS]</div>
+        <h2 class="text-xl font-bold" data-i18n="s4_t">Text &amp; Dev Tools</h2>
+        <p class="text-[12px] text-[var(--tui-text-muted)]" data-i18n="s4_d">JSON Studio, Base64 text &amp; files, Web Crypto SHA-1/256/512 (+ MD5 on WPF), 7 case modes &amp; URL encoder.</p>
       </div>
-      <div class="lg:col-span-5 tui-code-box p-4 text-[12px] space-y-1">
-        <div class="text-[var(--tui-primary)] font-bold">CRYPTO_SHA256:</div>
-        <div class="text-[var(--tui-text-muted)] break-all">8f4e2a...b91d0c (100% browser memory)</div>
+      <div class="lg:col-span-5 tui-code-box p-3 text-[12px]">
+        <div class="text-[var(--tui-primary)] font-bold">FORMAT | MINIFY | HASH</div>
+        <div class="text-[var(--tui-text-muted)]">100% browser memory &amp; Web Crypto</div>
       </div>
     </section>
 
-    <!-- 05: QR CODE STUDIO -->
-    <section id="qrcode" class="scroll-mt-20 tui-surface p-6 md:p-8 grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-      <div class="lg:col-span-7 space-y-4">
-        <div class="text-[11px] font-bold text-[var(--tui-tertiary)]">05 // ./qr-studio [QRCODE + PNG]</div>
-        <h2 class="text-2xl font-bold" data-i18n="s5_t">QR Code Studio</h2>
-        <p class="text-[13px] text-[var(--tui-text-muted)]" data-i18n="s5_d">Customize foreground/background hex colors, quick presets (HACKER, CLASSIC, CYAN, AMBER), error correction levels (L/M/Q/H), PNG export, and clipboard image copy (plus screen snip decoding in WPF).</p>
+    <section id="qrcode" class="scroll-mt-20 tui-surface p-6 grid grid-cols-1 lg:grid-cols-12 gap-5 items-center">
+      <div class="lg:col-span-7 space-y-2">
+        <div class="text-[11px] font-bold text-[var(--tui-tertiary)]">05 // ./qr-studio [PNG]</div>
+        <h2 class="text-xl font-bold" data-i18n="s5_t">QR Code Studio</h2>
+        <p class="text-[12px] text-[var(--tui-text-muted)]" data-i18n="s5_d">Custom hex colors, presets (HACKER/CLASSIC/CYAN/AMBER), L/M/Q/H ECC, PNG export &amp; WPF screen snipping.</p>
       </div>
-      <div class="lg:col-span-5 tui-code-box p-4 text-[12px] space-y-1">
+      <div class="lg:col-span-5 tui-code-box p-3 text-[12px]">
         <div class="text-[var(--tui-tertiary)] font-bold">PRESET: HACKER (#00FF41 / #0D0D0D)</div>
-        <div class="text-[var(--tui-text-muted)]">ECC: MEDIUM (15%) | EXPORT: PNG + CLIPBOARD</div>
+        <div class="text-[var(--tui-text-muted)]">Export PNG or copy bitmap</div>
       </div>
     </section>
 
-    <!-- 06: COLOR EYEDROPPER -->
-    <section id="color" class="scroll-mt-20 tui-surface p-6 md:p-8 grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-      <div class="lg:col-span-7 space-y-4">
+    <section id="color" class="scroll-mt-20 tui-surface p-6 grid grid-cols-1 lg:grid-cols-12 gap-5 items-center">
+      <div class="lg:col-span-7 space-y-2">
         <div class="text-[11px] font-bold text-[var(--tui-primary)]">06 // ./color-picker [EYEDROPPER_API]</div>
-        <h2 class="text-2xl font-bold" data-i18n="s6_t">Color Eyedropper &amp; Palette History</h2>
-        <p class="text-[13px] text-[var(--tui-text-muted)]" data-i18n="s6_d">Pick any screen pixel across displays using browser EyeDropper API (or 11x11 GDI magnifier HUD in WPF), convert HEX/RGB/HSL cleanly, and store palettes in IndexedDB.</p>
+        <h2 class="text-xl font-bold" data-i18n="s6_t">Color Eyedropper</h2>
+        <p class="text-[12px] text-[var(--tui-text-muted)]" data-i18n="s6_d">Screen EyeDropper API sampler (11x11 GDI HUD on WPF), HEX/RGB/HSL conversion &amp; IndexedDB palette history.</p>
       </div>
-      <div class="lg:col-span-5 tui-code-box p-4 text-[12px] space-y-1">
-        <div class="text-[var(--tui-primary)] font-bold">SELECTED: #00FF41</div>
-        <div class="text-[var(--tui-text-muted)]">RGB(0, 255, 65) | HSL(135, 100%, 50%)</div>
-      </div>
-    </section>
-
-    <!-- 07: PDF TOOLKIT -->
-    <section id="pdftoolkit" class="scroll-mt-20 tui-surface p-6 md:p-8 grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-      <div class="lg:col-span-7 space-y-4">
-        <div class="text-[11px] font-bold text-[var(--tui-secondary)]">07 // ./pdf-toolkit [PDF_LIB + PDFSHARP]</div>
-        <h2 class="text-2xl font-bold" data-i18n="s7_t">100% Offline PDF Toolkit</h2>
-        <p class="text-[13px] text-[var(--tui-text-muted)]" data-i18n="s7_d">Merge PDFs with custom reordering and split exact page ranges (e.g. 1-3, 5) strictly inside browser RAM via pdf-lib &mdash; plus Images-to-PDF and password encryption via PDFsharp 6.1 in WPF.</p>
-      </div>
-      <div class="lg:col-span-5 tui-code-box p-4 text-[12px] space-y-1">
-        <div class="text-[var(--tui-secondary)] font-bold">QUEUE: report.pdf (12p) + appendix.pdf (4p)</div>
-        <div class="text-[var(--tui-text-muted)]">RANGE: 1-3, 5 | ZERO SERVER UPLOAD</div>
+      <div class="lg:col-span-5 tui-code-box p-3 text-[12px]">
+        <div class="text-[var(--tui-primary)] font-bold">#00FF41 | RGB(0, 255, 65)</div>
+        <div class="text-[var(--tui-text-muted)]">Saved to MyDeusToolsWebDB.colors</div>
       </div>
     </section>
 
-    <!-- 08: IMAGE STUDIO -->
-    <section id="imagestudio" class="scroll-mt-20 tui-surface p-6 md:p-8 grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-      <div class="lg:col-span-7 space-y-4">
+    <section id="pdftoolkit" class="scroll-mt-20 tui-surface p-6 grid grid-cols-1 lg:grid-cols-12 gap-5 items-center">
+      <div class="lg:col-span-7 space-y-2">
+        <div class="text-[11px] font-bold text-[var(--tui-secondary)]">07 // ./pdf-toolkit [OFFLINE]</div>
+        <h2 class="text-xl font-bold" data-i18n="s7_t">PDF Toolkit</h2>
+        <p class="text-[12px] text-[var(--tui-text-muted)]" data-i18n="s7_d">Zero-upload Merge &amp; range Split (1-3, 5) via pdf-lib on Web; adds Images-to-PDF &amp; encryption on WPF.</p>
+      </div>
+      <div class="lg:col-span-5 tui-code-box p-3 text-[12px]">
+        <div class="text-[var(--tui-secondary)] font-bold">MERGE_QUEUE | SPLIT_RANGE: 1-3, 5</div>
+        <div class="text-[var(--tui-text-muted)]">Zero bytes sent to external servers</div>
+      </div>
+    </section>
+
+    <section id="imagestudio" class="scroll-mt-20 tui-surface p-6 grid grid-cols-1 lg:grid-cols-12 gap-5 items-center">
+      <div class="lg:col-span-7 space-y-2">
         <div class="text-[11px] font-bold text-[var(--tui-tertiary)]">08 // ./img-studio [CANVAS_ENGINE]</div>
-        <h2 class="text-2xl font-bold" data-i18n="s8_t">Image Studio &amp; EXIF Stripper</h2>
-        <p class="text-[13px] text-[var(--tui-text-muted)]" data-i18n="s8_d">Re-encode images via HTML5 Canvas into WebP, JPEG, or PNG with quality/scale controls and automatic EXIF/GPS metadata removal (plus multi-layer .ico 16-256px in WPF).</p>
+        <h2 class="text-xl font-bold" data-i18n="s8_t">Image Studio</h2>
+        <p class="text-[12px] text-[var(--tui-text-muted)]" data-i18n="s8_d">Canvas batch compress (WebP/JPEG/PNG), scale &amp; auto-strip EXIF/GPS (plus multi-layer .ico in WPF).</p>
       </div>
-      <div class="lg:col-span-5 tui-code-box p-4 text-[12px] space-y-1">
-        <div class="text-[var(--tui-tertiary)] font-bold">FORMAT: WEBP | QUALITY: 80% | SCALE: 100%</div>
-        <div class="text-[var(--tui-text-muted)]">EXIF / GPS PRIVACY STRIPPED: YES</div>
-      </div>
-    </section>
-
-    <!-- 09: VIDEO CONVERTER -->
-    <section id="videoconverter" class="scroll-mt-20 tui-surface p-6 md:p-8 grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-      <div class="lg:col-span-7 space-y-4">
-        <div class="text-[11px] font-bold text-[var(--tui-primary)]">09 // ./video-wasm [VIDEO + FFMPEG]</div>
-        <h2 class="text-2xl font-bold" data-i18n="s9_t">Video Converter &amp; Transcoder</h2>
-        <p class="text-[13px] text-[var(--tui-text-muted)]" data-i18n="s9_d">Provides container (MP4, WebM, MP3, GIF), resolution, and CRF quality configuration workflows in Web, paired with full native FFmpeg CLI + GPU hardware transcoding in WPF Desktop.</p>
-      </div>
-      <div class="lg:col-span-5 tui-code-box p-4 text-[12px] space-y-1">
-        <div class="text-[var(--tui-primary)] font-bold">TARGET: MP4 (H.264 / AAC) | CRF 23</div>
-        <div class="text-[var(--tui-text-muted)]">WPF ENGINE: NVENC / QSV / AMF + STREAM COPY</div>
+      <div class="lg:col-span-5 tui-code-box p-3 text-[12px]">
+        <div class="text-[var(--tui-tertiary)] font-bold">WEBP | QUALITY: 80% | SCALE: 100%</div>
+        <div class="text-[var(--tui-text-muted)]">EXIF / GPS stripped automatically</div>
       </div>
     </section>
 
-    <!-- 10: BULK FILE RENAMER -->
-    <section id="bulkrenamer" class="scroll-mt-20 tui-surface p-6 md:p-8 grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-      <div class="lg:col-span-7 space-y-4">
-        <div class="text-[11px] font-bold text-[var(--tui-secondary)]">10 // ./bulk-rename [FS_ACCESS_API + JSZIP]</div>
-        <h2 class="text-2xl font-bold" data-i18n="s10_t">Bulk File &amp; Folder Renamer</h2>
-        <p class="text-[13px] text-[var(--tui-text-muted)]" data-i18n="s10_d">Mount a local disk folder directly via Chromium File System Access API (showDirectoryPicker) or export renamed batches inside a ZIP archive, backed by Regex, prefixes, case transforms, and WPF 1-click Undo.</p>
+    <section id="videoconverter" class="scroll-mt-20 tui-surface p-6 grid grid-cols-1 lg:grid-cols-12 gap-5 items-center">
+      <div class="lg:col-span-7 space-y-2">
+        <div class="text-[11px] font-bold text-[var(--tui-primary)]">09 // ./video-wasm [VIDEO]</div>
+        <h2 class="text-xl font-bold" data-i18n="s9_t">Video Converter</h2>
+        <p class="text-[12px] text-[var(--tui-text-muted)]" data-i18n="s9_d">MP4/WebM/MP3/GIF &amp; CRF workflow UI on Web; full native FFmpeg + GPU NVENC/QSV/AMF transcoding on WPF.</p>
       </div>
-      <div class="lg:col-span-5 tui-code-box p-4 text-[12px] space-y-1">
-        <div class="text-[var(--tui-secondary)] font-bold">IMG_2026.png -&gt; 2026_Photo_2026.png [MODIFIED]</div>
-        <div class="text-[var(--tui-text-muted)]">DRY_RUN VALIDATED BEFORE WRITE</div>
+      <div class="lg:col-span-5 tui-code-box p-3 text-[12px]">
+        <div class="text-[var(--tui-primary)] font-bold">MP4 / WEBM / MP3 / GIF</div>
+        <div class="text-[var(--tui-text-muted)]">WPF: Native FFmpeg + GPU Acceleration</div>
       </div>
     </section>
 
-    <!-- 11: AUTO CLICKER PRO -->
-    <section id="autoclicker" class="scroll-mt-20 tui-surface-elevated p-6 md:p-8 grid grid-cols-1 lg:grid-cols-12 gap-6 items-start border border-[var(--tui-primary)]">
-      <div class="lg:col-span-7 space-y-4">
-        <div class="text-[11px] font-bold text-[var(--tui-primary)]">11 // ./auto-click [DOM_SANDBOX + WIN32_AGENT]</div>
-        <h2 class="text-2xl font-bold" data-i18n="s11_t">Auto Clicker Pro (Web DOM &amp; System Win32)</h2>
-        <p class="text-[13px] text-[var(--tui-text-muted)]" data-i18n="s11_d">Dual-mode click automation: safe in-browser DOM interval runner + injectable page Bookmarklet when offline, or full Windows OS &amp; Game clicking when Local Companion Agent runs.</p>
-        <ul class="space-y-2 text-[12px] text-[var(--tui-text-muted)]">
-          <li><span class="text-[var(--tui-primary)] font-bold">[F6]</span> <span data-i18n="s11_b1">Global system hotkey starts/stops Win32 clicking anywhere without leaving full-screen apps or games.</span></li>
-          <li><span class="text-[var(--tui-secondary)] font-bold">[F7]</span> <span data-i18n="s11_b2">Global hotkey captures live screen cursor coordinates (X, Y) sequentially into multi-point waypoint replay loops (&gt;= 10ms safety clamp).</span></li>
-        </ul>
+    <section id="bulkrenamer" class="scroll-mt-20 tui-surface p-6 grid grid-cols-1 lg:grid-cols-12 gap-5 items-center">
+      <div class="lg:col-span-7 space-y-2">
+        <div class="text-[11px] font-bold text-[var(--tui-secondary)]">10 // ./bulk-rename [FS_ACCESS_API]</div>
+        <h2 class="text-xl font-bold" data-i18n="s10_t">Bulk File Renamer</h2>
+        <p class="text-[12px] text-[var(--tui-text-muted)]" data-i18n="s10_d">Rename disk directories via showDirectoryPicker or export batches as ZIP via JSZip (Regex, prefix &amp; case rules).</p>
       </div>
-      <div class="lg:col-span-5 tui-code-box p-4 text-[12px] space-y-1">
+      <div class="lg:col-span-5 tui-code-box p-3 text-[12px]">
+        <div class="text-[var(--tui-secondary)] font-bold">IMG_2026.png -&gt; 2026_Photo_2026.png</div>
+        <div class="text-[var(--tui-text-muted)]">Live dry-run preview before apply</div>
+      </div>
+    </section>
+
+    <section id="autoclicker" class="scroll-mt-20 tui-surface-elevated p-6 grid grid-cols-1 lg:grid-cols-12 gap-5 items-center border border-[var(--tui-primary)]">
+      <div class="lg:col-span-7 space-y-2">
+        <div class="text-[11px] font-bold text-[var(--tui-primary)]">11 // ./auto-click [DOM + WIN32_AGENT]</div>
+        <h2 class="text-xl font-bold" data-i18n="s11_t">Auto Clicker Pro</h2>
+        <p class="text-[12px] text-[var(--tui-text-muted)]" data-i18n="s11_d">Web DOM loop + Bookmarklet offline; global OS/Game clicking (&gt;= 10ms) with F6 Toggle &amp; F7 Waypoint capture via Agent.</p>
+      </div>
+      <div class="lg:col-span-5 tui-code-box p-3 text-[12px]">
         <div class="text-[var(--tui-primary)] font-bold">POST /api/autoclick/start</div>
-        <div class="text-[var(--tui-text-muted)]">INTERVAL: 50ms | BUTTON: LEFT | HOTKEYS: F6 / F7</div>
+        <div class="text-[var(--tui-text-muted)]">Hotkeys: F6 (Toggle) | F7 (Capture XY)</div>
       </div>
     </section>
 
-    <!-- 12: WINDOW PINNER & PIP -->
-    <section id="pinner" class="scroll-mt-20 tui-surface p-6 md:p-8 grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-      <div class="lg:col-span-7 space-y-4">
-        <div class="text-[11px] font-bold text-[var(--tui-tertiary)]">12 // ./pip-float [DOCUMENT_PiP + HWND_TOPMOST]</div>
-        <h2 class="text-2xl font-bold" data-i18n="s12_t">Window Pinner &amp; Always-on-Top PiP</h2>
-        <p class="text-[13px] text-[var(--tui-text-muted)]" data-i18n="s12_d">Spawn Always-on-Top Digital Clock and Scratchpad widgets using Document Picture-in-Picture API, or enumerate real Windows desktop apps to toggle HWND_TOPMOST, focus, and WS_EX_LAYERED opacity via Agent.</p>
+    <section id="pinner" class="scroll-mt-20 tui-surface p-6 grid grid-cols-1 lg:grid-cols-12 gap-5 items-center">
+      <div class="lg:col-span-7 space-y-2">
+        <div class="text-[11px] font-bold text-[var(--tui-tertiary)]">12 // ./pip-float [PiP + TOPMOST]</div>
+        <h2 class="text-xl font-bold" data-i18n="s12_t">Window Pinner &amp; PiP</h2>
+        <p class="text-[12px] text-[var(--tui-text-muted)]" data-i18n="s12_d">Document PiP Clock/Scratchpad widgets, plus OS window listing, HWND_TOPMOST &amp; 40-100% opacity via Agent.</p>
       </div>
-      <div class="lg:col-span-5 tui-code-box p-4 text-[12px] space-y-1">
-        <div class="text-[var(--tui-tertiary)] font-bold">GET /api/windows | POST /api/windows/pin</div>
-        <div class="text-[var(--tui-text-muted)]">OPACITY PRESETS: 100% | 80% | 60% | 40%</div>
+      <div class="lg:col-span-5 tui-code-box p-3 text-[12px]">
+        <div class="text-[var(--tui-tertiary)] font-bold">GET /api/windows | POST /pin &amp; /opacity</div>
+        <div class="text-[var(--tui-text-muted)]">Always-on-Top + 100/80/60/40% presets</div>
       </div>
     </section>
 
   </main>
 
-  <!-- FOOTER -->
-  <footer class="mt-auto border-t border-[var(--tui-border-subtle)] bg-[var(--tui-surface)] py-8 text-[12px] text-[var(--tui-text-muted)]">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4">
-      <div><span class="text-[var(--tui-primary)] font-bold">MYDEUSTOOLS</span> <span data-i18n="footer_developed">-- Built by</span> <a href="https://github.com/KaitoDeus" target="_blank" rel="noopener noreferrer" class="text-[var(--tui-tertiary)] hover:underline">KaitoDeus</a> &amp; Claude.</div>
-      <div class="flex flex-wrap gap-4">
-        <a href="index.html" class="hover:text-[var(--tui-primary)]" data-i18n="nav_home">Home</a>
-        <a href="architecture.html" class="hover:text-[var(--tui-primary)]" data-i18n="nav_architecture">Architecture</a>
-        <a href="download.html" class="hover:text-[var(--tui-primary)]" data-i18n="nav_download">Launch &amp; Download</a>
-        <a href="faq.html" class="hover:text-[var(--tui-primary)]" data-i18n="nav_faq">FAQ</a>
-      </div>
-    </div>
-  </footer>
-
   <script src="assets/site.js"></script>
   <script>
     registerTranslations({
       en: {
-        feat_page_title: '&gt; Every Module, Zero Bloat.',
-        feat_page_sub: 'Detailed technical specifications for all 12 tools across TerminalUI Web, Local Companion Agent (127.0.0.1:41950), and Native WPF Desktop.',
+        feat_page_title: '&gt; 12 Focused Modules.',
+        feat_page_sub: 'Browser-native capabilities paired with Local Companion Agent (127.0.0.1:41950) and WPF Desktop.',
         s1_t: 'Sticky Notes',
-        s1_d: 'Fast note capture stored automatically inside Dexie IndexedDB (MyDeusToolsWebDB.notes) on Web, or borderless topmost StickyNoteWindow overlays in WPF Desktop.',
-        s1_b1: 'Semantic accents (GREEN, AMBER, CYAN, RED), search filter, pin sorting, and Document PiP pop-out windows.',
-        s1_b2: 'Real-time auto-saving draggable desktop windows pinned above other apps + Data/notes.json persistence.',
-        s2_t: 'Clipboard &amp; Snippet Vault',
-        s2_d: 'Store reusable SQL queries, CLI commands, and tokens in IndexedDB with tags and usage counts, or capture OS clipboard history seamlessly on Windows WPF.',
-        s2_b1: 'Instant tag search, 1-click copy with USES counter, and direct OS Clipboard paste button.',
-        s2_b2: 'Event-driven Win32 AddClipboardFormatListener (WM_CLIPBOARDUPDATE) with 0% idle polling.',
-        s3_t: 'Smart Timer &amp; Scheduled Windows Shutdown',
-        s3_d: 'Strictly split into 2 independent tabs: browser Pomodoro countdown works offline anytime, while Windows Shutdown controls enable ONLY when Local Companion Agent is ONLINE.',
-        s3_b1: 'Screen Wake Lock API prevents display sleep, plus Web Audio chime, optional Webhook, and 70m -&gt; 1h 10m normalization.',
-        s3_b2: 'Locks every control (disabled={!isOnline} + [STATUS:LOCKED]) when offline; unlocks Shutdown, Restart, Hibernate &amp; Cancel when Agent runs.',
-        s4_t: 'Text &amp; Developer Utilities',
-        s4_d: 'All-in-one developer workbench supporting JSON formatting/validation, UTF-8 Base64 encoding, SHA hashing via Web Crypto API, case transforms, and URL escaping.',
+        s1_d: 'Color tags, pin sort, IndexedDB auto-save, Document PiP pop-out (Web) &amp; floating desktop pins (WPF).',
+        s2_t: 'Clipboard Snippets',
+        s2_d: 'Tag search, usage counters &amp; OS Clipboard paste on Web; Win32 AddClipboardFormatListener on WPF.',
+        s3_t: 'Smart Timer &amp; Scheduled Shutdown',
+        s3_d: 'Tab 1 Pomodoro (Wake Lock, Webhook, 70m normalization) runs anytime; Tab 2 Windows Shutdown enables ONLY when Agent is online.',
+        s4_t: 'Text &amp; Dev Tools',
+        s4_d: 'JSON Studio, Base64 text &amp; files, Web Crypto SHA-1/256/512 (+ MD5 on WPF), 7 case modes &amp; URL encoder.',
         s5_t: 'QR Code Studio',
-        s5_d: 'Customize foreground/background hex colors, quick presets (HACKER, CLASSIC, CYAN, AMBER), error correction levels (L/M/Q/H), PNG export, and clipboard image copy (plus screen snip decoding in WPF).',
-        s6_t: 'Color Eyedropper &amp; Palette History',
-        s6_d: 'Pick any screen pixel across displays using browser EyeDropper API (or 11x11 GDI magnifier HUD in WPF), convert HEX/RGB/HSL cleanly, and store palettes in IndexedDB.',
-        s7_t: '100% Offline PDF Toolkit',
-        s7_d: 'Merge PDFs with custom reordering and split exact page ranges (e.g. 1-3, 5) strictly inside browser RAM via pdf-lib &mdash; plus Images-to-PDF and password encryption via PDFsharp 6.1 in WPF.',
-        s8_t: 'Image Studio &amp; EXIF Stripper',
-        s8_d: 'Re-encode images via HTML5 Canvas into WebP, JPEG, or PNG with quality/scale controls and automatic EXIF/GPS metadata removal (plus multi-layer .ico 16-256px in WPF).',
-        s9_t: 'Video Converter &amp; Transcoder',
-        s9_d: 'Provides container (MP4, WebM, MP3, GIF), resolution, and CRF quality configuration workflows in Web, paired with full native FFmpeg CLI + GPU hardware transcoding in WPF Desktop.',
-        s10_t: 'Bulk File &amp; Folder Renamer',
-        s10_d: 'Mount a local disk folder directly via Chromium File System Access API (showDirectoryPicker) or export renamed batches inside a ZIP archive, backed by Regex, prefixes, case transforms, and WPF 1-click Undo.',
-        s11_t: 'Auto Clicker Pro (Web DOM &amp; System Win32)',
-        s11_d: 'Dual-mode click automation: safe in-browser DOM interval runner + injectable page Bookmarklet when offline, or full Windows OS &amp; Game clicking when Local Companion Agent runs.',
-        s11_b1: 'Global system hotkey starts/stops Win32 clicking anywhere without leaving full-screen apps or games.',
-        s11_b2: 'Global hotkey captures live screen cursor coordinates (X, Y) sequentially into multi-point waypoint replay loops (&gt;= 10ms safety clamp).',
-        s12_t: 'Window Pinner &amp; Always-on-Top PiP',
-        s12_d: 'Spawn Always-on-Top Digital Clock and Scratchpad widgets using Document Picture-in-Picture API, or enumerate real Windows desktop apps to toggle HWND_TOPMOST, focus, and WS_EX_LAYERED opacity via Agent.',
+        s5_d: 'Custom hex colors, presets (HACKER/CLASSIC/CYAN/AMBER), L/M/Q/H ECC, PNG export &amp; WPF screen snipping.',
+        s6_t: 'Color Eyedropper',
+        s6_d: 'Screen EyeDropper API sampler (11x11 GDI HUD on WPF), HEX/RGB/HSL conversion &amp; IndexedDB palette history.',
+        s7_t: 'PDF Toolkit',
+        s7_d: 'Zero-upload Merge &amp; range Split (1-3, 5) via pdf-lib on Web; adds Images-to-PDF &amp; encryption on WPF.',
+        s8_t: 'Image Studio',
+        s8_d: 'Canvas batch compress (WebP/JPEG/PNG), scale &amp; auto-strip EXIF/GPS (plus multi-layer .ico in WPF).',
+        s9_t: 'Video Converter',
+        s9_d: 'MP4/WebM/MP3/GIF &amp; CRF workflow UI on Web; full native FFmpeg + GPU NVENC/QSV/AMF transcoding on WPF.',
+        s10_t: 'Bulk File Renamer',
+        s10_d: 'Rename disk directories via showDirectoryPicker or export batches as ZIP via JSZip (Regex, prefix &amp; case rules).',
+        s11_t: 'Auto Clicker Pro',
+        s11_d: 'Web DOM loop + Bookmarklet offline; global OS/Game clicking (&gt;= 10ms) with F6 Toggle &amp; F7 Waypoint capture via Agent.',
+        s12_t: 'Window Pinner &amp; PiP',
+        s12_d: 'Document PiP Clock/Scratchpad widgets, plus OS window listing, HWND_TOPMOST &amp; 40-100% opacity via Agent.',
       },
       vi: {
-        feat_page_title: '&gt; Từng Công Cụ Được Chăm Chút Tỉ Mỉ.',
-        feat_page_sub: 'Đặc tả kỹ thuật đầy đủ cho 12 tiện ích trên Web TerminalUI, Local Companion Agent (127.0.0.1:41950) và WPF Desktop.',
+        feat_page_title: '&gt; 12 Module Gọn Nhẹ.',
+        feat_page_sub: 'Chạy thuần trình duyệt, kết hợp Local Companion Agent (127.0.0.1:41950) &amp; bản WPF Desktop.',
         s1_t: 'Ghi chú nổi (Sticky Notes)',
-        s1_d: 'Lưu ghi chú tức thì vào Dexie IndexedDB (MyDeusToolsWebDB.notes) trên Web, hoặc tách thành cửa sổ không viền StickyNoteWindow trên WPF Desktop.',
-        s1_b1: '4 nhãn màu ngữ nghĩa (GREEN, AMBER, CYAN, RED), tìm kiếm nhanh, ghim đầu danh sách và pop-out Document PiP.',
-        s1_b2: 'Cửa sổ nổi tự lưu thời gian thực khi gõ phím, kéo thả mượt mà và lưu Data/notes.json.',
-        s2_t: 'Kho Clipboard &amp; Snippet',
-        s2_d: 'Lưu câu lệnh SQL, CLI và token tái sử dụng trong IndexedDB theo thẻ tag và lượt dùng, hoặc tự bắt lịch sử clipboard Windows bằng Win32.',
-        s2_b1: 'Tìm kiếm theo tag/nội dung, sao chép 1 chạm kèm bộ đếm USES và dán trực tiếp từ OS Clipboard.',
-        s2_b2: 'Lắng nghe trực tiếp AddClipboardFormatListener (WM_CLIPBOARDUPDATE) tiêu thụ 0% CPU khi chờ.',
-        s3_t: 'Hẹn giờ Tập trung &amp; Hẹn tắt máy Windows',
-        s3_d: 'Tách biệt hoàn toàn thành 2 tab độc lập: Pomodoro chạy thuần trình duyệt bất kỳ lúc nào, còn Hẹn giờ tắt máy Windows chỉ mở khoá khi Local Companion Agent đang ONLINE.',
-        s3_b1: 'Hỗ trợ Screen Wake Lock giữ màn hình sáng, chuông Web Audio, Webhook tuỳ chọn và tự chuẩn hoá 70 phút thành 01g 10p.',
-        s3_b2: 'Khoá cứng mọi điều khiển (disabled={!isOnline} + [TRẠNG_THÁI:ĐANG_KHOÁ]) khi Agent offline; mở khoá Tắt máy, Khởi động lại, Ngủ đông khi Agent bật.',
-        s4_t: 'Văn bản &amp; Công cụ Lập trình viên',
-        s4_d: 'Bàn làm việc 5 tab gồm JSON Studio, mã hoá Base64 văn bản/tệp, băm SHA-1/256/512 qua Web Crypto API, 7 chế độ đổi chữ và URL Encoder.',
+        s1_d: 'Thẻ phân màu, ghim đầu, tự lưu IndexedDB, nổi Document PiP (Web) &amp; cửa sổ desktop (WPF).',
+        s2_t: 'Lưu trữ Clipboard &amp; Snippet',
+        s2_d: 'Tìm theo tag, đếm lượt dùng &amp; dán OS Clipboard trên Web; Win32 hook AddClipboardFormatListener trên WPF.',
+        s3_t: 'Hẹn giờ Tập trung &amp; Hẹn tắt máy',
+        s3_d: 'Tab 1 Pomodoro (Wake Lock, Webhook, chuẩn hoá 70m) chạy mọi lúc; Tab 2 Hẹn tắt máy chỉ mở khi Agent online.',
+        s4_t: 'Văn bản &amp; Dev Tools',
+        s4_d: 'JSON Studio, Base64 văn bản &amp; tệp, SHA-1/256/512 (+ MD5 trên WPF), 7 kiểu đổi chữ &amp; URL.',
         s5_t: 'QR Code Studio',
-        s5_d: 'Tuỳ biến màu mã QR theo preset (HACKER, CLASSIC, CYAN, AMBER), chọn mức sửa lỗi L/M/Q/H, xuất PNG / chép clipboard (kèm quét vùng màn hình trên WPF).',
-        s6_t: 'Lấy mã màu màn hình &amp; Bảng màu',
-        s6_d: 'Bắt điểm ảnh bất kỳ trên mọi màn hình qua EyeDropper API (hoặc kính lúp GDI 11x11 trên WPF), đổi sang HEX/RGB/HSL và lưu IndexedDB.',
-        s7_t: 'Bộ công cụ PDF 100% Ngoại tuyến',
-        s7_d: 'Ghép nhiều PDF theo thứ tự tuỳ ý và tách dải trang (vd: 1-3, 5) trực tiếp trong RAM trình duyệt bằng pdf-lib &mdash; kèm ghép ảnh &amp; đặt mật khẩu trên WPF.',
-        s8_t: 'Xử lý ảnh &amp; Xoá EXIF',
-        s8_d: 'Nén và chuyển đổi định dạng WebP, JPEG, PNG qua HTML5 Canvas, tuỳ chỉnh chất lượng/tỷ lệ và tự động tẩy sạch thông tin EXIF/GPS (kèm xuất .ico đa tầng trên WPF).',
+        s5_d: 'Tuỳ chỉnh màu, preset (HACKER/CLASSIC/CYAN/AMBER), sửa lỗi L/M/Q/H, xuất PNG &amp; quét vùng trên WPF.',
+        s6_t: 'Lấy mã màu màn hình',
+        s6_d: 'Bắt điểm ảnh qua EyeDropper API (hoặc kính lúp GDI 11x11 WPF), đổi HEX/RGB/HSL &amp; lưu IndexedDB.',
+        s7_t: 'Bộ công cụ PDF',
+        s7_d: 'Ghép &amp; tách trang (1-3, 5) không upload bằng pdf-lib trên Web; thêm ghép ảnh &amp; đặt mật khẩu trên WPF.',
+        s8_t: 'Xử lý &amp; Nén ảnh',
+        s8_d: 'Nén hàng loạt WebP/JPEG/PNG qua Canvas, đổi tỷ lệ &amp; xoá EXIF/GPS tự động (thêm .ico đa tầng trên WPF).',
         s9_t: 'Chuyển đổi Video',
-        s9_d: 'Giao diện chọn định dạng MP4/WebM/MP3/GIF, độ phân giải &amp; CRF trên Web, kết hợp động cơ FFmpeg CLI + tăng tốc GPU NVIDIA/Intel/AMD trên WPF.',
-        s10_t: 'Đổi tên tệp &amp; thư mục hàng loạt',
-        s10_d: 'Truy cập trực tiếp thư mục ổ đĩa bằng File System Access API (showDirectoryPicker) hoặc đóng gói tệp tải về dạng ZIP qua JSZip, hỗ trợ Regex, tiền tố, đổi kiểu chữ.',
-        s11_t: 'Tự động click chuột (Web DOM &amp; Win32 OS)',
-        s11_d: 'Hai chế độ linh hoạt: tự động click phần tử DOM/Bookmarklet an toàn khi không bật Agent, hoặc điều khiển chuột Win32 toàn màn hình/Game khi kết nối Agent.',
-        s11_b1: 'Phím tắt toàn cục F6 bật/tắt Auto-Click ngay cả trong game hoặc ứng dụng ngoài trình duyệt.',
-        s11_b2: 'Phím tắt F7 ghim chuỗi toạ độ con trỏ (X, Y) tuần tự vào vòng lặp (giới hạn an toàn >= 10ms).',
-        s12_t: 'Ghim cửa sổ nổi &amp; Document PiP',
-        s12_d: 'Mở đồng hồ số hoặc giấy nháp nổi Always-on-Top bằng Document Picture-in-Picture API, hoặc liệt kê cửa sổ desktop để ghim HWND_TOPMOST và chỉnh độ mờ qua Agent.',
+        s9_d: 'Giao diện chọn MP4/WebM/MP3/GIF &amp; CRF trên Web; động cơ FFmpeg + GPU NVENC/QSV/AMF trên WPF.',
+        s10_t: 'Đổi tên tệp hàng loạt',
+        s10_d: 'Đổi trực tiếp thư mục ổ đĩa bằng showDirectoryPicker hoặc tải tệp ZIP qua JSZip (Regex, tiền tố, đổi chữ).',
+        s11_t: 'Tự động click chuột',
+        s11_d: 'Vòng lặp DOM + Bookmarklet offline; click toàn Windows/Game (&gt;= 10ms) kèm phím F6/F7 qua Agent.',
+        s12_t: 'Ghim cửa sổ &amp; PiP',
+        s12_d: 'Widget đồng hồ/nháp nổi Document PiP, kèm liệt kê cửa sổ OS, ghim HWND_TOPMOST &amp; chỉnh độ mờ qua Agent.',
       },
     });
   </script>
