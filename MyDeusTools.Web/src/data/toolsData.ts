@@ -40,11 +40,11 @@ export const TOOLS_CONFIG: ToolItem[] = [
     id: 'smart-timer',
     index: '03',
     cmd: 'smart-timer',
-    asciiTag: '[TIME]',
+    asciiTag: '[PWR]',
     nameKey: 'scheduleShutdown',
     descKey: 'scheduleShutdown',
     category: 'productivity',
-    badge: 'FOCUS',
+    badge: 'SHUTDOWN',
     accent: 'secondary',
   },
 

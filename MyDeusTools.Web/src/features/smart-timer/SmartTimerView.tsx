@@ -7,17 +7,16 @@ import {
   TuiButton,
   TuiCard,
   TuiInput,
-  TuiSelect,
   TuiChip,
   TuiAlert,
 } from '../../components/terminal/TerminalUI';
 
-type PowerActionMode = 'webOnly' | 'shutdown' | 'restart' | 'hibernate';
+type PowerActionMode = 'shutdown' | 'restart' | 'hibernate' | 'webOnly';
 
 export const SmartTimerView: React.FC = () => {
   const { t } = useI18n();
   const tt = t.tools.timer;
-  const { isOnline } = useOsAgent();
+  const { isOnline, checking, refreshAgentStatus } = useOsAgent();
   const [hours, setHours] = useState(0);
   const [minutes, setMinutes] = useState(25);
   const [seconds, setSeconds] = useState(0);
@@ -26,10 +25,20 @@ export const SmartTimerView: React.FC = () => {
   const [isRunning, setIsRunning] = useState(false);
   const [wakeLockActive, setWakeLockActive] = useState(false);
   const [webhookUrl, setWebhookUrl] = useState('');
-  const [osPowerMode, setOsPowerMode] = useState<PowerActionMode>('webOnly');
+  const [osPowerMode, setOsPowerMode] = useState<PowerActionMode>(() =>
+    isOnline ? 'shutdown' : 'webOnly'
+  );
   const [osPowerMessage, setOsPowerMessage] = useState<string | null>(null);
+  const [osError, setOsError] = useState<string | null>(null);
 
   const wakeLockRef = useRef<any>(null);
+
+  // Switch cleanly to shutdown default when agent connects while user hasn't started
+  useEffect(() => {
+    if (isOnline && !isRunning && osPowerMode === 'webOnly') {
+      setOsPowerMode('shutdown');
+    }
+  }, [isOnline]);
 
   const normalizeTime = (h: number, m: number, s: number) => {
     let totalSec = h * 3600 + m * 60 + s;
@@ -77,14 +86,18 @@ export const SmartTimerView: React.FC = () => {
 
   const handleStart = async () => {
     normalizeTime(hours, minutes, seconds);
-    const total = hours * 3600 + minutes * 60 + seconds;
+    const total = Math.max(0, hours * 3600 + minutes * 60 + seconds);
     if (total <= 0) return;
 
-    setTotalSecondsRemaining(total);
-    setIsRunning(true);
     setOsPowerMessage(null);
+    setOsError(null);
 
-    if (isOnline && osPowerMode !== 'webOnly') {
+    if (osPowerMode !== 'webOnly') {
+      const connected = isOnline || (await refreshAgentStatus());
+      if (!connected) {
+        setOsError(tt.osPowerError);
+        return;
+      }
       try {
         await agentClient.scheduleOsPower(osPowerMode, total);
         setOsPowerMessage(
@@ -92,10 +105,14 @@ export const SmartTimerView: React.FC = () => {
             .replace('{mode}', osPowerMode.toUpperCase())
             .replace('{sec}', String(total))
         );
-      } catch {
-        // Fallback to web alarm
+      } catch (err: any) {
+        setOsError(err?.message || tt.osPowerError);
+        return;
       }
     }
+
+    setTotalSecondsRemaining(total);
+    setIsRunning(true);
 
     if ('wakeLock' in navigator) {
       try {
@@ -104,6 +121,17 @@ export const SmartTimerView: React.FC = () => {
       } catch (err) {
         console.warn('Wake Lock error:', err);
       }
+    }
+  };
+
+  const handleCancelOsOnly = async () => {
+    setOsError(null);
+    try {
+      await agentClient.cancelOsPower();
+      setIsRunning(false);
+      setOsPowerMessage(tt.osPowerCancelled);
+    } catch (err: any) {
+      setOsError(err?.message || tt.osPowerError);
     }
   };
 
@@ -158,16 +186,24 @@ export const SmartTimerView: React.FC = () => {
     return `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
   };
 
+  const actionOptions: { mode: PowerActionMode; label: string }[] = [
+    { mode: 'shutdown', label: tt.osPowerModes.shutdown },
+    { mode: 'restart', label: tt.osPowerModes.restart },
+    { mode: 'hibernate', label: tt.osPowerModes.hibernate },
+    { mode: 'webOnly', label: tt.osPowerModes.webOnly },
+  ];
+
   return (
     <div className="space-y-8">
       <TuiPageHeader
         command="smart-timer"
         title={t.nav.scheduleShutdown}
         description={t.descriptions.scheduleShutdown}
-        badge={isOnline ? '[OS_AGENT:ONLINE]' : '[WAKE_LOCK_API]'}
+        badge={isOnline ? '[OS_AGENT:ONLINE]' : '[AGENT:OFFLINE]'}
         accent="secondary"
       />
 
+      {osError && <TuiAlert type="err">{osError}</TuiAlert>}
       {osPowerMessage && <TuiAlert type="warn">{osPowerMessage}</TuiAlert>}
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
@@ -224,6 +260,12 @@ export const SmartTimerView: React.FC = () => {
             <TuiButton variant="secondary" size="lg" onClick={handleReset}>
               [{t.common.reset.toUpperCase()}]
             </TuiButton>
+
+            {isOnline && (
+              <TuiButton variant="destructive" size="lg" onClick={handleCancelOsOnly}>
+                [{tt.cancelOsBtn}]
+              </TuiButton>
+            )}
           </div>
         </TuiCard>
 
@@ -232,6 +274,54 @@ export const SmartTimerView: React.FC = () => {
           className="lg:col-span-5 p-6"
           bodyClassName="space-y-5"
         >
+          {/* Prominent Windows OS Power Action Radio Selector */}
+          <div className="space-y-2">
+            <div className="flex items-center justify-between text-[12px]">
+              <span className="text-[var(--tui-text-muted)]">// {tt.osPowerLabel}</span>
+              <TuiChip tone={isOnline ? 'primary' : 'error'}>
+                {isOnline ? 'AGENT:OK' : 'AGENT:OFF'}
+              </TuiChip>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              {actionOptions.map((opt) => {
+                const selected = osPowerMode === opt.mode;
+                return (
+                  <button
+                    key={opt.mode}
+                    type="button"
+                    disabled={isRunning}
+                    onClick={() => setOsPowerMode(opt.mode)}
+                    className={`min-w-0 px-3 py-2 text-left text-[12px] border flex items-center gap-1.5 cursor-pointer disabled:opacity-40 ${
+                      selected
+                        ? 'bg-[var(--tui-primary)] text-[var(--tui-primary-fg)] border-[var(--tui-primary)] font-bold'
+                        : 'bg-[var(--tui-bg)] text-[var(--tui-text)] border-[var(--tui-border-medium)] hover:border-[var(--tui-primary)]'
+                    }`}
+                  >
+                    <span className="shrink-0">{selected ? '(*)' : '( )'}</span>
+                    <span className="truncate">{opt.label}</span>
+                  </button>
+                );
+              })}
+            </div>
+            {!isOnline && osPowerMode !== 'webOnly' && (
+              <TuiAlert type="warn">
+                <div className="flex flex-col gap-2 w-full">
+                  <span>{tt.osAgentNeededHint}</span>
+                  <div>
+                    <TuiButton
+                      size="sm"
+                      variant="primary"
+                      onClick={() => refreshAgentStatus()}
+                      disabled={checking}
+                    >
+                      [{tt.osCheckBtn}]
+                    </TuiButton>
+                  </div>
+                </div>
+              </TuiAlert>
+            )}
+          </div>
+
           <div className="grid grid-cols-3 gap-3">
             <TuiInput
               label={tt.hoursLabel}
@@ -266,23 +356,6 @@ export const SmartTimerView: React.FC = () => {
           </div>
 
           <TuiAlert type="info">{tt.normHint}</TuiAlert>
-
-          <div className="space-y-1">
-            <TuiSelect
-              label={tt.osPowerLabel}
-              value={osPowerMode}
-              disabled={isRunning || !isOnline}
-              onChange={(e) => setOsPowerMode(e.target.value as PowerActionMode)}
-            >
-              <option value="webOnly">{tt.osPowerModes.webOnly}</option>
-              <option value="shutdown">{tt.osPowerModes.shutdown}</option>
-              <option value="restart">{tt.osPowerModes.restart}</option>
-              <option value="hibernate">{tt.osPowerModes.hibernate}</option>
-            </TuiSelect>
-            {!isOnline && (
-              <div className="text-[11px] text-[var(--tui-text-dim)]">{tt.osAgentNeededHint}</div>
-            )}
-          </div>
 
           <TuiInput
             label={tt.webhookLabel}
