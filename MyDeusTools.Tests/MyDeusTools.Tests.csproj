@@ -22,6 +22,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MyDeusTools.App\MyDeusTools.App.csproj" />
+    <ProjectReference Include="..\MyDeusTools.Agent\MyDeusTools.Agent.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, Suspense, lazy } from 'react';
 import { useI18n } from './i18n/LanguageContext';
 import { useTheme } from './contexts/ThemeContext';
+import { useOsAgent } from './contexts/AgentContext';
 import { TOOLS_CONFIG } from './data/toolsData';
 
 // Lazy-loaded Views
@@ -59,6 +60,7 @@ const ViewLoadingFallback: React.FC = () => {
 export const App: React.FC = () => {
   const { t, toggleLanguage } = useI18n();
   const { theme, toggleTheme } = useTheme();
+  const { isOnline, refreshAgentStatus } = useOsAgent();
   const [activeToolId, setActiveToolId] = useState<string>('dashboard');
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [crtEnabled, setCrtEnabled] = useState<boolean>(() => {
@@ -291,6 +293,22 @@ export const App: React.FC = () => {
 
           {/* Terminal Mode Switches */}
           <div className="flex items-center gap-2 shrink-0">
+            <button
+              type="button"
+              onClick={() => {
+                refreshAgentStatus();
+                setActiveToolId('auto-clicker');
+              }}
+              className={`hidden md:inline-flex px-2.5 py-1 text-[11px] font-semibold border cursor-pointer ${
+                isOnline
+                  ? 'border-[var(--tui-primary)] text-[var(--tui-primary)] hover:bg-[var(--tui-primary)] hover:text-[var(--tui-primary-fg)]'
+                  : 'border-[var(--tui-border-medium)] text-[var(--tui-text-muted)] hover:border-[var(--tui-primary)] hover:text-[var(--tui-primary)]'
+              }`}
+              title={t.shell.agentTooltip}
+            >
+              [{isOnline ? t.shell.agentOnline : t.shell.agentOffline}]
+            </button>
+
             <button
               type="button"
               onClick={toggleCrt}

@@ -1,12 +1,58 @@
-import React from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useI18n } from '../../i18n/LanguageContext';
 import { useTheme } from '../../contexts/ThemeContext';
-import { TuiPageHeader, TuiButton, TuiCard, TuiAlert } from '../../components/terminal/TerminalUI';
+import { useOsAgent } from '../../contexts/AgentContext';
+import { agentClient, OsWindowInfo } from '../../services/agentClient';
+import {
+  TuiPageHeader,
+  TuiButton,
+  TuiCard,
+  TuiAlert,
+  TuiChip,
+} from '../../components/terminal/TerminalUI';
 
 export const WindowPipView: React.FC = () => {
   const { t } = useI18n();
   const tt = t.tools.pip;
   const { theme } = useTheme();
+  const { isOnline } = useOsAgent();
+
+  const [tab, setTab] = useState<'web' | 'os'>(() => (isOnline ? 'os' : 'web'));
+  const [windows, setWindows] = useState<OsWindowInfo[]>([]);
+  const [loading, setLoading] = useState(false);
+
+  const loadWindows = useCallback(async () => {
+    if (!isOnline) return;
+    setLoading(true);
+    try {
+      const list = await agentClient.getOsWindows();
+      setWindows(list);
+    } catch {
+      // Ignored
+    } finally {
+      setLoading(false);
+    }
+  }, [isOnline]);
+
+  useEffect(() => {
+    if (tab === 'os' && isOnline) {
+      loadWindows();
+    }
+  }, [tab, isOnline, loadWindows]);
+
+  const handleToggleTopMost = async (win: OsWindowInfo) => {
+    await agentClient.pinOsWindow(win.handle, !win.isTopMost);
+    await loadWindows();
+  };
+
+  const handleOpacity = async (win: OsWindowInfo, pct: number) => {
+    await agentClient.setOsWindowOpacity(win.handle, pct);
+    await loadWindows();
+  };
+
+  const handleFocus = async (win: OsWindowInfo) => {
+    await agentClient.focusOsWindow(win.handle);
+  };
 
   const openClockPip = async () => {
     if (!('documentPictureInPicture' in window)) {
@@ -73,35 +119,127 @@ export const WindowPipView: React.FC = () => {
         command="pip-float"
         title={t.nav.windowPinner}
         description={t.descriptions.windowPinner}
-        badge="[DOCUMENT_PiP_API]"
+        badge={isOnline ? '[OS_AGENT:ONLINE]' : '[DOCUMENT_PiP_API]'}
         accent="tertiary"
       />
 
-      <TuiAlert type="info">{tt.infoBanner}</TuiAlert>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-        <TuiCard
-          title={tt.clockTitle}
-          rightMeta={tt.topmostTag}
-          bodyClassName="flex flex-col justify-between space-y-5"
-        >
-          <p className="text-[13px] text-[var(--tui-text-muted)] leading-[1.6]">{tt.clockDesc}</p>
-          <TuiButton variant="secondary" prefix=">" onClick={openClockPip} className="w-full">
-            {tt.spawnClock}
-          </TuiButton>
-        </TuiCard>
-
-        <TuiCard
-          title={tt.padTitle}
-          rightMeta={tt.topmostTag}
-          bodyClassName="flex flex-col justify-between space-y-5"
-        >
-          <p className="text-[13px] text-[var(--tui-text-muted)] leading-[1.6]">{tt.padDesc}</p>
-          <TuiButton variant="amber" prefix=">" onClick={openScratchpadPip} className="w-full">
-            {tt.spawnPad}
-          </TuiButton>
-        </TuiCard>
+      <div className="flex flex-wrap gap-2">
+        <TuiChip active={tab === 'web'} onClick={() => setTab('web')}>
+          {tt.tabWebPip}
+        </TuiChip>
+        <TuiChip active={tab === 'os'} onClick={() => setTab('os')}>
+          {tt.tabOsWindows}
+        </TuiChip>
       </div>
+
+      {tab === 'web' && (
+        <div className="space-y-6">
+          <TuiAlert type="info">{tt.infoBanner}</TuiAlert>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            <TuiCard
+              title={tt.clockTitle}
+              rightMeta={tt.topmostTag}
+              bodyClassName="flex flex-col justify-between space-y-5"
+            >
+              <p className="text-[13px] text-[var(--tui-text-muted)] leading-[1.6]">
+                {tt.clockDesc}
+              </p>
+              <TuiButton variant="secondary" prefix=">" onClick={openClockPip} className="w-full">
+                {tt.spawnClock}
+              </TuiButton>
+            </TuiCard>
+
+            <TuiCard
+              title={tt.padTitle}
+              rightMeta={tt.topmostTag}
+              bodyClassName="flex flex-col justify-between space-y-5"
+            >
+              <p className="text-[13px] text-[var(--tui-text-muted)] leading-[1.6]">
+                {tt.padDesc}
+              </p>
+              <TuiButton variant="amber" prefix=">" onClick={openScratchpadPip} className="w-full">
+                {tt.spawnPad}
+              </TuiButton>
+            </TuiCard>
+          </div>
+        </div>
+      )}
+
+      {tab === 'os' && (
+        <div className="space-y-4">
+          {!isOnline ? (
+            <TuiAlert type="warn">{tt.osOfflineWarn}</TuiAlert>
+          ) : (
+            <>
+              <div className="flex justify-end">
+                <TuiButton
+                  size="sm"
+                  variant="secondary"
+                  prefix=">"
+                  onClick={loadWindows}
+                  disabled={loading}
+                >
+                  {tt.osRefreshBtn}
+                </TuiButton>
+              </div>
+
+              <TuiCard title={`${tt.tabOsWindows} (${windows.length})`}>
+                <div className="max-h-[480px] overflow-y-auto">
+                  {windows.map((w, idx) => (
+                    <div
+                      key={w.handle}
+                      className="flex flex-col md:flex-row md:items-center justify-between gap-2 py-2.5 px-2 border-b border-dashed border-[var(--tui-border-subtle)] hover:bg-[var(--tui-surface-elevated)] text-[12px]"
+                    >
+                      <div className="flex items-center gap-3 min-w-0">
+                        <span className="text-[11px] text-[var(--tui-text-dim)] w-[3ch] text-right shrink-0">
+                          {idx + 1}
+                        </span>
+                        <div className="min-w-0">
+                          <div className="font-semibold text-[var(--tui-text)] truncate">
+                            {w.title}
+                          </div>
+                          <div className="text-[11px] text-[var(--tui-text-dim)]">
+                            {w.processName}.exe (PID:{w.processId}) | {w.opacityPercent}%
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="flex flex-wrap items-center gap-1.5 shrink-0">
+                        <TuiButton
+                          size="sm"
+                          variant={w.isTopMost ? 'primary' : 'ghost'}
+                          onClick={() => handleToggleTopMost(w)}
+                        >
+                          {w.isTopMost ? tt.osUnpin : tt.osPin}
+                        </TuiButton>
+                        <TuiButton size="sm" variant="secondary" onClick={() => handleFocus(w)}>
+                          {tt.osFocus}
+                        </TuiButton>
+                        {[100, 80, 60, 40].map((pct) => (
+                          <TuiButton
+                            key={pct}
+                            size="sm"
+                            variant={Math.abs(w.opacityPercent - pct) <= 4 ? 'amber' : 'ghost'}
+                            onClick={() => handleOpacity(w, pct)}
+                          >
+                            {pct}%
+                          </TuiButton>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                  {windows.length === 0 && (
+                    <div className="text-center py-8 text-[12px] text-[var(--tui-text-dim)]">
+                      {tt.osEmpty}
+                    </div>
+                  )}
+                </div>
+              </TuiCard>
+            </>
+          )}
+        </div>
+      )}
     </div>
   );
 };
