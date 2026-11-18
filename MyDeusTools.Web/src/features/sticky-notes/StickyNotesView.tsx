@@ -13,39 +13,36 @@ import {
 
 const NOTE_ACCENTS = [
   {
-    name: 'GREEN',
+    name: 'GREEN' as const,
     border: 'border-[var(--tui-primary)]',
     header: 'text-[var(--tui-primary)]',
-    tag: '[GRN]',
   },
   {
-    name: 'AMBER',
+    name: 'AMBER' as const,
     border: 'border-[var(--tui-secondary)]',
     header: 'text-[var(--tui-secondary)]',
-    tag: '[AMB]',
   },
   {
-    name: 'CYAN',
+    name: 'CYAN' as const,
     border: 'border-[var(--tui-tertiary)]',
     header: 'text-[var(--tui-tertiary)]',
-    tag: '[CYN]',
   },
   {
-    name: 'RED',
+    name: 'RED' as const,
     border: 'border-[var(--tui-error)]',
     header: 'text-[var(--tui-error)]',
-    tag: '[RED]',
   },
 ];
 
 export const StickyNotesView: React.FC = () => {
   const { t } = useI18n();
+  const tt = t.tools.notes;
   const { theme } = useTheme();
   const [notes, setNotes] = useState<StickyNote[]>([]);
   const [search, setSearch] = useState('');
   const [newTitle, setNewTitle] = useState('');
   const [newContent, setNewContent] = useState('');
-  const [selectedColor, setSelectedColor] = useState(NOTE_ACCENTS[0].name);
+  const [selectedColor, setSelectedColor] = useState<'GREEN' | 'AMBER' | 'CYAN' | 'RED'>('GREEN');
 
   const loadNotes = async () => {
     try {
@@ -94,7 +91,7 @@ export const StickyNotesView: React.FC = () => {
 
   const handlePopOutPip = async (note: StickyNote) => {
     if (!('documentPictureInPicture' in window)) {
-      alert('Document Picture-in-Picture is supported in modern Chrome/Edge browsers.');
+      alert(tt.pipUnsupported);
       return;
     }
     try {
@@ -109,7 +106,7 @@ export const StickyNotesView: React.FC = () => {
         <div style="font-family: 'JetBrains Mono', monospace; padding: 16px; background: ${isDark ? '#0d0d0d' : '#f4f4ee'}; color: ${isDark ? '#e2e2e2' : '#141414'}; border: 1px solid ${isDark ? '#00ff41' : '#007a1f'}; height: 100%; box-sizing: border-box; display: flex; flex-direction: column;">
           <div style="font-size: 14px; font-weight: bold; margin: 0 0 8px 0; color: ${isDark ? '#00ff41' : '#007a1f'}; border-bottom: 1px dashed #444444; padding-bottom: 6px;">> ${note.title}</div>
           <div style="font-size: 13px; line-height: 1.5; white-space: pre-wrap; flex: 1; overflow-y: auto;">${note.content}</div>
-          <div style="font-size: 11px; color: #8b8b8b; margin-top: 8px; border-top: 1px dashed #222222; padding-top: 6px;">[PiP] ALWAYS_ON_TOP</div>
+          <div style="font-size: 11px; color: #8b8b8b; margin-top: 8px; border-top: 1px dashed #222222; padding-top: 6px;">${tt.pipFooter}</div>
         </div>
       `;
     } catch (e) {
@@ -133,57 +130,55 @@ export const StickyNotesView: React.FC = () => {
         accent="secondary"
       />
 
-      {/* Composer Card */}
       <TuiCard
-        title="NEW_NOTE_BUFFER"
+        title={tt.composerTitle}
         rightMeta={
-          <div className="flex items-center gap-1.5">
+          <div className="flex flex-wrap items-center gap-1.5">
             {NOTE_ACCENTS.map((c) => (
               <TuiChip
                 key={c.name}
                 active={selectedColor === c.name}
                 onClick={() => setSelectedColor(c.name)}
               >
-                {c.tag}
+                {tt.colors[c.name]}
               </TuiChip>
             ))}
           </div>
         }
-        className="space-y-4"
+        className="p-5"
+        bodyClassName="space-y-4"
       >
         <TuiInput
-          label="note_title"
+          label={tt.titleLabel}
           prompt
           value={newTitle}
           onChange={(e) => setNewTitle(e.target.value)}
-          placeholder="Enter note title..."
+          placeholder={tt.titlePlaceholder}
         />
 
         <TuiTextarea
-          label="note_body"
+          label={tt.bodyLabel}
           value={newContent}
           onChange={(e) => setNewContent(e.target.value)}
-          placeholder="Write note payload here..."
+          placeholder={tt.bodyPlaceholder}
           rows={3}
         />
 
         <div className="flex justify-end">
           <TuiButton variant="primary" prefix=">" onClick={handleAddNote}>
-            {t.common.save}_NOTE
+            {tt.saveBtn}
           </TuiButton>
         </div>
       </TuiCard>
 
-      {/* Search Bar */}
       <TuiInput
-        label="grep_notes"
+        label={tt.grepLabel}
         prompt
         value={search}
         onChange={(e) => setSearch(e.target.value)}
-        placeholder="Filter sticky notes..."
+        placeholder={tt.grepPlaceholder}
       />
 
-      {/* Notes Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {filteredNotes.map((note) => {
           const accent = NOTE_ACCENTS.find((c) => c.name === note.color) || NOTE_ACCENTS[0];
@@ -203,14 +198,14 @@ export const StickyNotesView: React.FC = () => {
                       variant={note.isPinned ? 'amber' : 'ghost'}
                       onClick={() => handleTogglePin(note)}
                     >
-                      {note.isPinned ? '[*PIN]' : '[PIN]'}
+                      {note.isPinned ? tt.unpin : tt.pin}
                     </TuiButton>
                     <TuiButton
                       size="sm"
                       variant="secondary"
                       onClick={() => handlePopOutPip(note)}
                     >
-                      [PiP]
+                      {tt.pip}
                     </TuiButton>
                     <TuiButton
                       size="sm"
@@ -228,9 +223,11 @@ export const StickyNotesView: React.FC = () => {
               </div>
 
               <div className="text-[11px] text-[var(--tui-text-dim)] pt-2 border-t border-dashed border-[var(--tui-border-subtle)] flex justify-between">
-                <span>DATE: {new Date(note.updatedAt).toLocaleDateString()}</span>
+                <span>
+                  {tt.datePrefix} {new Date(note.updatedAt).toLocaleDateString()}
+                </span>
                 {note.isPinned && (
-                  <span className="text-[var(--tui-secondary)] font-bold">[PINNED]</span>
+                  <span className="text-[var(--tui-secondary)] font-bold">{tt.pinnedTag}</span>
                 )}
               </div>
             </div>
@@ -239,8 +236,8 @@ export const StickyNotesView: React.FC = () => {
       </div>
 
       {filteredNotes.length === 0 && (
-        <TuiCard className="text-center py-10 text-[12px] text-[var(--tui-text-dim)]">
-          [NO_NOTES_STORED] Create a sticky note buffer above.
+        <TuiCard bodyClassName="text-center py-8 text-[12px] text-[var(--tui-text-dim)]">
+          {tt.emptyState}
         </TuiCard>
       )}
     </div>

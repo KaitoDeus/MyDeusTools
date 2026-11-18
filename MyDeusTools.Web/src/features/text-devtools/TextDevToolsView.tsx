@@ -14,6 +14,7 @@ type Tab = 'json' | 'base64' | 'hash' | 'case' | 'url';
 
 export const TextDevToolsView: React.FC = () => {
   const { t } = useI18n();
+  const tt = t.tools.textDev;
   const [activeTab, setActiveTab] = useState<Tab>('json');
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
 
@@ -59,7 +60,7 @@ export const TextDevToolsView: React.FC = () => {
       const encoded = btoa(unescape(encodeURIComponent(base64Input)));
       setBase64Output(encoded);
     } catch (e: any) {
-      setBase64Output('Error encoding: ' + e.message);
+      setBase64Output(tt.encodeError + e.message);
     }
   };
 
@@ -68,7 +69,7 @@ export const TextDevToolsView: React.FC = () => {
       const decoded = decodeURIComponent(escape(atob(base64Input)));
       setBase64Output(decoded);
     } catch {
-      setBase64Output('Invalid Base64 string');
+      setBase64Output(tt.invalidBase64);
     }
   };
 
@@ -159,13 +160,15 @@ export const TextDevToolsView: React.FC = () => {
 
       {/* Tabs */}
       <div className="flex flex-wrap gap-2">
-        {[
-          { id: 'json', label: '01:JSON_STUDIO' },
-          { id: 'base64', label: '02:BASE64' },
-          { id: 'hash', label: '03:CRYPTO_HASH' },
-          { id: 'case', label: '04:CASE_CONVERT' },
-          { id: 'url', label: '05:URL_ENTITIES' },
-        ].map((tab) => (
+        {(
+          [
+            { id: 'json', label: tt.tabs.json },
+            { id: 'base64', label: tt.tabs.base64 },
+            { id: 'hash', label: tt.tabs.hash },
+            { id: 'case', label: tt.tabs.case },
+            { id: 'url', label: tt.tabs.url },
+          ] as const
+        ).map((tab) => (
           <TuiChip
             key={tab.id}
             active={activeTab === tab.id}
@@ -181,10 +184,10 @@ export const TextDevToolsView: React.FC = () => {
         <div className="space-y-4">
           <div className="flex flex-wrap gap-3">
             <TuiButton variant="primary" prefix=">" onClick={handleJsonFormat}>
-              FORMAT (2_SPACES)
+              {tt.formatJson}
             </TuiButton>
             <TuiButton variant="secondary" prefix="$" onClick={handleJsonMinify}>
-              MINIFY_JSON
+              {tt.minifyJson}
             </TuiButton>
             <TuiButton
               variant="destructive"
@@ -198,21 +201,25 @@ export const TextDevToolsView: React.FC = () => {
             </TuiButton>
           </div>
 
-          {jsonError && <TuiAlert type="err">SYNTAX_ERROR: {jsonError}</TuiAlert>}
+          {jsonError && (
+            <TuiAlert type="err">
+              {tt.syntaxError}: {jsonError}
+            </TuiAlert>
+          )}
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <TuiTextarea
-              label="input_json"
+              label={tt.inputJsonLabel}
               value={jsonInput}
               onChange={(e) => setJsonInput(e.target.value)}
               rows={14}
               className="text-[var(--tui-primary)]"
             />
             <TuiTextarea
-              label="formatted_output"
+              label={tt.outputJsonLabel}
               readOnly
               value={jsonOutput}
-              placeholder="Result will appear here..."
+              placeholder={tt.outputPlaceholder}
               rows={14}
               rightAction={
                 jsonOutput && (
@@ -221,7 +228,9 @@ export const TextDevToolsView: React.FC = () => {
                     variant="primary"
                     onClick={() => copyToClipboard(jsonOutput, 'json')}
                   >
-                    {copiedKey === 'json' ? `[${t.common.copied.toUpperCase()}]` : `[${t.common.copy.toUpperCase()}]`}
+                    {copiedKey === 'json'
+                      ? `[${t.common.copied.toUpperCase()}]`
+                      : `[${t.common.copy.toUpperCase()}]`}
                   </TuiButton>
                 )
               }
@@ -236,31 +245,31 @@ export const TextDevToolsView: React.FC = () => {
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div className="flex flex-wrap gap-2">
               <TuiButton variant="primary" prefix=">" onClick={handleBase64Encode}>
-                ENCODE_TEXT
+                {tt.encodeText}
               </TuiButton>
               <TuiButton variant="secondary" prefix="$" onClick={handleBase64Decode}>
-                DECODE_BASE64
+                {tt.decodeBase64}
               </TuiButton>
             </div>
 
             <label className="inline-flex h-[36px] px-4 py-2 text-[13px] font-semibold uppercase border border-[var(--tui-secondary)] text-[var(--tui-secondary)] hover:bg-[var(--tui-secondary)] hover:text-[var(--tui-primary-fg)] cursor-pointer items-center gap-2">
-              <span>$ FILE_TO_BASE64</span>
+              <span>{tt.fileToBase64}</span>
               <input type="file" onChange={handleBase64FileUpload} className="hidden" />
             </label>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <TuiTextarea
-              label="input_data"
+              label={tt.inputDataLabel}
               value={base64Input}
               onChange={(e) => setBase64Input(e.target.value)}
               rows={10}
             />
             <TuiTextarea
-              label="base64_output"
+              label={tt.outputBase64Label}
               readOnly
               value={base64Output}
-              placeholder="Encoded/Decoded result..."
+              placeholder={tt.encodedPlaceholder}
               rows={10}
               rightAction={
                 base64Output && (
@@ -269,7 +278,9 @@ export const TextDevToolsView: React.FC = () => {
                     variant="primary"
                     onClick={() => copyToClipboard(base64Output, 'b64')}
                   >
-                    {copiedKey === 'b64' ? `[${t.common.copied.toUpperCase()}]` : `[${t.common.copy.toUpperCase()}]`}
+                    {copiedKey === 'b64'
+                      ? `[${t.common.copied.toUpperCase()}]`
+                      : `[${t.common.copy.toUpperCase()}]`}
                   </TuiButton>
                 )
               }
@@ -284,7 +295,7 @@ export const TextDevToolsView: React.FC = () => {
           <div className="flex flex-col sm:flex-row gap-3 items-end">
             <div className="flex-1 w-full">
               <TuiInput
-                label="text_to_hash"
+                label={tt.textToHashLabel}
                 prompt
                 value={hashInput}
                 onChange={(e) => setHashInput(e.target.value)}
@@ -297,17 +308,17 @@ export const TextDevToolsView: React.FC = () => {
               disabled={isHashing}
               className="shrink-0"
             >
-              {isHashing ? 'COMPUTING...' : 'GENERATE_HASHES'}
+              {isHashing ? tt.computing : tt.generateHashes}
             </TuiButton>
           </div>
 
           <div className="grid grid-cols-1 gap-3 pt-2">
             {['SHA-256', 'SHA-512', 'SHA-1'].map((algo) => {
-              const val = hashes[algo] || 'Click "> GENERATE_HASHES" to compute digest';
+              const val = hashes[algo] || tt.digestEmptyHint;
               return (
                 <TuiCard
                   key={algo}
-                  title={`DIGEST :: ${algo}`}
+                  title={`${tt.digestPrefix} :: ${algo}`}
                   rightMeta={
                     hashes[algo] && (
                       <TuiButton
@@ -315,7 +326,9 @@ export const TextDevToolsView: React.FC = () => {
                         variant="ghost"
                         onClick={() => copyToClipboard(val, algo)}
                       >
-                        {copiedKey === algo ? '[COPIED]' : '[COPY]'}
+                        {copiedKey === algo
+                          ? `[${t.common.copied.toUpperCase()}]`
+                          : `[${t.common.copy.toUpperCase()}]`}
                       </TuiButton>
                     )
                   }
@@ -332,7 +345,7 @@ export const TextDevToolsView: React.FC = () => {
       {activeTab === 'case' && (
         <div className="space-y-4">
           <TuiTextarea
-            label="original_text"
+            label={tt.originalTextLabel}
             value={caseInput}
             onChange={(e) => setCaseInput(e.target.value)}
             rows={3}
@@ -345,7 +358,11 @@ export const TextDevToolsView: React.FC = () => {
                 interactive
                 onClick={() => copyToClipboard(transformed, variantName)}
                 title={variantName}
-                rightMeta={copiedKey === variantName ? '[COPIED]' : '[CLICK_TO_COPY]'}
+                rightMeta={
+                  copiedKey === variantName
+                    ? `[${t.common.copied.toUpperCase()}]`
+                    : tt.clickToCopy
+                }
               >
                 <div className="text-[13px] text-[var(--tui-text)] truncate">{transformed}</div>
               </TuiCard>
@@ -363,7 +380,7 @@ export const TextDevToolsView: React.FC = () => {
               prefix=">"
               onClick={() => setUrlOutput(encodeURIComponent(urlInput))}
             >
-              URL_ENCODE
+              {tt.urlEncode}
             </TuiButton>
             <TuiButton
               variant="secondary"
@@ -372,26 +389,26 @@ export const TextDevToolsView: React.FC = () => {
                 try {
                   setUrlOutput(decodeURIComponent(urlInput));
                 } catch {
-                  setUrlOutput('Invalid encoded URL');
+                  setUrlOutput(tt.invalidUrl);
                 }
               }}
             >
-              URL_DECODE
+              {tt.urlDecode}
             </TuiButton>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <TuiTextarea
-              label="input_string"
+              label={tt.inputStringLabel}
               value={urlInput}
               onChange={(e) => setUrlInput(e.target.value)}
               rows={8}
             />
             <TuiTextarea
-              label="result_string"
+              label={tt.resultStringLabel}
               readOnly
               value={urlOutput}
-              placeholder="Encoded/Decoded result..."
+              placeholder={tt.encodedPlaceholder}
               rows={8}
               rightAction={
                 urlOutput && (
@@ -400,7 +417,9 @@ export const TextDevToolsView: React.FC = () => {
                     variant="primary"
                     onClick={() => copyToClipboard(urlOutput, 'url')}
                   >
-                    {copiedKey === 'url' ? `[${t.common.copied.toUpperCase()}]` : `[${t.common.copy.toUpperCase()}]`}
+                    {copiedKey === 'url'
+                      ? `[${t.common.copied.toUpperCase()}]`
+                      : `[${t.common.copy.toUpperCase()}]`}
                   </TuiButton>
                 )
               }

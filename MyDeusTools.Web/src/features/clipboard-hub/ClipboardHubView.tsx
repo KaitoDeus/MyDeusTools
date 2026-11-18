@@ -12,6 +12,7 @@ import {
 
 export const ClipboardHubView: React.FC = () => {
   const { t } = useI18n();
+  const tt = t.tools.clipboard;
   const [snippets, setSnippets] = useState<ClipboardSnippet[]>([]);
   const [search, setSearch] = useState('');
   const [copiedId, setCopiedId] = useState<number | null>(null);
@@ -75,7 +76,7 @@ export const ClipboardHubView: React.FC = () => {
       });
       loadSnippets();
     } catch {
-      alert('Please allow clipboard read permission.');
+      alert(tt.permErr);
     }
   };
 
@@ -108,67 +109,64 @@ export const ClipboardHubView: React.FC = () => {
         accent="tertiary"
       />
 
-      {/* Add Snippet Form */}
-      <TuiCard title="ADD_SNIPPET_ENTRY" className="space-y-4">
+      <TuiCard title={tt.addTitle} className="p-5" bodyClassName="space-y-4">
         <div className="grid grid-cols-1 sm:grid-cols-12 gap-3">
           <div className="sm:col-span-8">
             <TuiInput
-              label="snippet_title"
+              label={tt.titleLabel}
               prompt
               value={newTitle}
               onChange={(e) => setNewTitle(e.target.value)}
-              placeholder="Snippet identifier..."
+              placeholder={tt.titlePlaceholder}
             />
           </div>
           <div className="sm:col-span-4">
             <TuiInput
-              label="tag"
+              label={tt.tagLabel}
               value={newTag}
               onChange={(e) => setNewTag(e.target.value)}
-              placeholder="CODE, SQL, AUTH..."
+              placeholder={tt.tagPlaceholder}
             />
           </div>
         </div>
 
         <TuiTextarea
-          label="payload"
+          label={tt.payloadLabel}
           value={newContent}
           onChange={(e) => setNewContent(e.target.value)}
-          placeholder="Paste or write snippet payload here..."
+          placeholder={tt.payloadPlaceholder}
           rows={3}
         />
 
         <div className="flex flex-wrap items-center justify-between gap-3">
           <TuiButton variant="secondary" prefix="$" onClick={handlePasteFromSystem}>
-            PASTE_OS_CLIPBOARD
+            {tt.pasteOsBtn}
           </TuiButton>
 
           <TuiButton variant="primary" prefix=">" onClick={handleAdd}>
-            SAVE_SNIPPET
+            {tt.saveBtn}
           </TuiButton>
         </div>
       </TuiCard>
 
-      {/* Search */}
       <TuiInput
-        label="grep_snippets"
+        label={tt.grepLabel}
         prompt
         value={search}
         onChange={(e) => setSearch(e.target.value)}
-        placeholder="Search snippets by title, content, or tag..."
+        placeholder={tt.grepPlaceholder}
       />
 
-      {/* Snippets List */}
       <div className="space-y-3">
         {filtered.map((s) => (
           <TuiCard
             key={s.id}
-            className="space-y-3"
+            bodyClassName="space-y-3"
             title={`> ${s.title}`}
             rightMeta={
               <div className="flex items-center gap-2">
                 <TuiChip tone="tertiary">#{s.tag}</TuiChip>
-                {s.isPinned && <TuiChip tone="secondary">[PINNED]</TuiChip>}
+                {s.isPinned && <TuiChip tone="secondary">{tt.pinnedTag}</TuiChip>}
               </div>
             }
           >
@@ -178,8 +176,12 @@ export const ClipboardHubView: React.FC = () => {
 
             <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-dashed border-[var(--tui-border-subtle)] text-[11px] text-[var(--tui-text-dim)]">
               <div className="flex items-center gap-4">
-                <span>USES: {s.usageCount || 0}</span>
-                <span>CREATED: {new Date(s.createdAt).toLocaleDateString()}</span>
+                <span>
+                  {tt.usesPrefix} {s.usageCount || 0}
+                </span>
+                <span>
+                  {tt.createdPrefix} {new Date(s.createdAt).toLocaleDateString()}
+                </span>
               </div>
 
               <div className="flex items-center gap-2">
@@ -193,10 +195,10 @@ export const ClipboardHubView: React.FC = () => {
                   variant={s.isPinned ? 'amber' : 'ghost'}
                   onClick={() => handleTogglePin(s)}
                 >
-                  {s.isPinned ? '[UNPIN]' : '[PIN]'}
+                  {s.isPinned ? tt.unpin : tt.pin}
                 </TuiButton>
                 <TuiButton size="sm" variant="destructive" onClick={() => handleDelete(s.id)}>
-                  [DEL]
+                  {tt.del}
                 </TuiButton>
               </div>
             </div>
@@ -204,8 +206,8 @@ export const ClipboardHubView: React.FC = () => {
         ))}
 
         {filtered.length === 0 && (
-          <TuiCard className="text-center py-12 text-[var(--tui-text-dim)] text-[12px]">
-            [EMPTY_VAULT] No snippets matched query.
+          <TuiCard bodyClassName="text-center py-8 text-[var(--tui-text-dim)] text-[12px]">
+            {tt.emptyState}
           </TuiCard>
         )}
       </div>

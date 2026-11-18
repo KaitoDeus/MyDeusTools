@@ -20,6 +20,7 @@ interface SelectedImage {
 
 export const ImageStudioView: React.FC = () => {
   const { t } = useI18n();
+  const tt = t.tools.image;
   const [images, setImages] = useState<SelectedImage[]>([]);
   const [quality, setQuality] = useState(80);
   const [format, setFormat] = useState<'image/webp' | 'image/jpeg' | 'image/png'>('image/webp');
@@ -94,7 +95,7 @@ export const ImageStudioView: React.FC = () => {
       await processAndDownload(img);
     }
     setIsProcessing(false);
-    setStatusMessage('All images processed & downloaded (EXIF stripped).');
+    setStatusMessage(tt.doneMsg);
   };
 
   return (
@@ -108,22 +109,21 @@ export const ImageStudioView: React.FC = () => {
       />
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        {/* Settings Panel (4 cols) */}
-        <TuiCard title="TRANSCODE_PARAMETERS" className="lg:col-span-4 space-y-5">
+        <TuiCard title={tt.paramsTitle} className="lg:col-span-4 p-6" bodyClassName="space-y-5">
           <TuiSelect
-            label="target_format"
+            label={tt.targetFormatLabel}
             value={format}
             onChange={(e) => setFormat(e.target.value as any)}
           >
-            <option value="image/webp">WEBP (SMALLEST_SIZE)</option>
-            <option value="image/jpeg">JPEG (PHOTO)</option>
-            <option value="image/png">PNG (LOSSLESS_ALPHA)</option>
+            <option value="image/webp">{tt.formats.webp}</option>
+            <option value="image/jpeg">{tt.formats.jpeg}</option>
+            <option value="image/png">{tt.formats.png}</option>
           </TuiSelect>
 
           {format !== 'image/png' && (
             <div className="space-y-1.5">
               <div className="flex justify-between text-[12px]">
-                <span className="text-[var(--tui-text-muted)]">// quality</span>
+                <span className="text-[var(--tui-text-muted)]">// {tt.qualityLabel}</span>
                 <span className="text-[var(--tui-primary)] font-bold">{quality}%</span>
               </div>
               <input
@@ -139,7 +139,7 @@ export const ImageStudioView: React.FC = () => {
 
           <div className="space-y-1.5">
             <div className="flex justify-between text-[12px]">
-              <span className="text-[var(--tui-text-muted)]">// scale_resolution</span>
+              <span className="text-[var(--tui-text-muted)]">// {tt.scaleLabel}</span>
               <span className="text-[var(--tui-tertiary)] font-bold">{scale}%</span>
             </div>
             <input
@@ -153,9 +153,7 @@ export const ImageStudioView: React.FC = () => {
             />
           </div>
 
-          <TuiAlert type="info">
-            Canvas re-encoding strips 100% of EXIF & GPS telemetry.
-          </TuiAlert>
+          <TuiAlert type="info">{tt.exifNotice}</TuiAlert>
 
           <TuiButton
             variant="primary"
@@ -164,15 +162,14 @@ export const ImageStudioView: React.FC = () => {
             disabled={images.length === 0 || isProcessing}
             className="w-full"
           >
-            {isProcessing ? t.common.processing : `PROCESS_ALL (${images.length})`}
+            {isProcessing ? t.common.processing : `${tt.processAll} (${images.length})`}
           </TuiButton>
         </TuiCard>
 
-        {/* Upload & Image List (8 cols) */}
         <div className="lg:col-span-8 space-y-4">
           <div className="p-6 border border-dashed border-[var(--tui-border-medium)] hover:border-[var(--tui-tertiary)] bg-[var(--tui-surface)] flex flex-col items-center justify-center text-center space-y-3">
             <div className="text-[13px] font-bold text-[var(--tui-tertiary)]">
-              [+] LOAD_IMAGES_BATCH
+              {tt.loadBatchTitle}
             </div>
             <label className="inline-flex h-[36px] px-4 py-2 text-[13px] font-semibold uppercase border border-[var(--tui-tertiary)] text-[var(--tui-tertiary)] hover:bg-[var(--tui-tertiary)] hover:text-[var(--tui-primary-fg)] cursor-pointer items-center">
               <span>$ {t.common.browse.toUpperCase()}</span>
@@ -189,7 +186,7 @@ export const ImageStudioView: React.FC = () => {
           {statusMessage && <TuiAlert type="ok">{statusMessage}</TuiAlert>}
 
           {images.length > 0 && (
-            <TuiCard title={`IMAGE_QUEUE (${images.length})`}>
+            <TuiCard title={`${tt.queueTitle} (${images.length})`}>
               <div className="max-h-[420px] overflow-y-auto">
                 {images.map((img, idx) => (
                   <div
@@ -221,7 +218,7 @@ export const ImageStudioView: React.FC = () => {
                         variant="secondary"
                         onClick={() => processAndDownload(img)}
                       >
-                        [GET]
+                        {tt.getOne}
                       </TuiButton>
                       <TuiButton
                         size="sm"

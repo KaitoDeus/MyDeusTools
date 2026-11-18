@@ -22,11 +22,11 @@ interface UploadedPdf {
 
 export const PdfToolkitView: React.FC = () => {
   const { t } = useI18n();
+  const tt = t.tools.pdf;
   const [activeTab, setActiveTab] = useState<PdfTab>('merge');
   const [isProcessing, setIsProcessing] = useState(false);
   const [statusMessage, setStatusMessage] = useState<string | null>(null);
 
-  // --- Merge State ---
   const [mergeFiles, setMergeFiles] = useState<UploadedPdf[]>([]);
 
   const handleMergeFilesUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -73,7 +73,7 @@ export const PdfToolkitView: React.FC = () => {
 
   const executeMerge = async () => {
     if (mergeFiles.length < 2) {
-      alert('Please select at least 2 PDF files to merge.');
+      alert(tt.minFilesAlert);
       return;
     }
     setIsProcessing(true);
@@ -96,15 +96,14 @@ export const PdfToolkitView: React.FC = () => {
       a.href = url;
       a.download = `merged_${Date.now()}.pdf`;
       a.click();
-      setStatusMessage('PDFs merged successfully (EXIT_CODE 0).');
+      setStatusMessage(tt.mergeSuccess);
     } catch (err: any) {
-      alert('Error merging PDFs: ' + err.message);
+      alert(tt.mergeError + err.message);
     } finally {
       setIsProcessing(false);
     }
   };
 
-  // --- Split State ---
   const [splitFile, setSplitFile] = useState<File | null>(null);
   const [splitPageCount, setSplitPageCount] = useState<number | null>(null);
   const [pageRange, setPageRange] = useState('1-2');
@@ -150,7 +149,7 @@ export const PdfToolkitView: React.FC = () => {
       }
 
       if (pageIndices.length === 0) {
-        alert('Invalid page range entered.');
+        alert(tt.invalidRangeAlert);
         setIsProcessing(false);
         return;
       }
@@ -166,9 +165,9 @@ export const PdfToolkitView: React.FC = () => {
       a.href = url;
       a.download = `split_${Date.now()}.pdf`;
       a.click();
-      setStatusMessage('Split PDF extracted and downloaded (EXIT_CODE 0).');
+      setStatusMessage(tt.splitSuccess);
     } catch (err: any) {
-      alert('Error splitting PDF: ' + err.message);
+      alert(tt.splitError + err.message);
     } finally {
       setIsProcessing(false);
     }
@@ -186,25 +185,20 @@ export const PdfToolkitView: React.FC = () => {
 
       <div className="flex flex-wrap gap-2">
         <TuiChip active={activeTab === 'merge'} onClick={() => setActiveTab('merge')}>
-          01:MERGE_PDFS
+          {tt.tabMerge}
         </TuiChip>
         <TuiChip active={activeTab === 'split'} onClick={() => setActiveTab('split')}>
-          02:SPLIT_PAGES
+          {tt.tabSplit}
         </TuiChip>
       </div>
 
       {statusMessage && <TuiAlert type="ok">{statusMessage}</TuiAlert>}
 
-      {/* Tab 1: Merge */}
       {activeTab === 'merge' && (
         <div className="space-y-5">
           <div className="p-6 border border-dashed border-[var(--tui-border-medium)] hover:border-[var(--tui-primary)] bg-[var(--tui-surface)] flex flex-col items-center justify-center text-center space-y-3">
-            <div className="text-[13px] font-bold text-[var(--tui-primary)]">
-              [+] LOAD_PDF_FILES_INTO_QUEUE
-            </div>
-            <p className="text-[12px] text-[var(--tui-text-muted)]">
-              100% client-side memory processing. Files never leave your device.
-            </p>
+            <div className="text-[13px] font-bold text-[var(--tui-primary)]">{tt.loadTitle}</div>
+            <p className="text-[12px] text-[var(--tui-text-muted)]">{tt.privacyHint}</p>
             <label className="inline-flex h-[36px] px-4 py-2 text-[13px] font-semibold uppercase border border-[var(--tui-primary)] text-[var(--tui-primary)] hover:bg-[var(--tui-primary)] hover:text-[var(--tui-primary-fg)] cursor-pointer items-center">
               <span>$ {t.common.browse.toUpperCase()}</span>
               <input
@@ -219,13 +213,13 @@ export const PdfToolkitView: React.FC = () => {
 
           {mergeFiles.length > 0 && (
             <TuiCard
-              title={`MERGE_QUEUE (${mergeFiles.length} FILES)`}
+              title={`${tt.queueTitle} (${mergeFiles.length})`}
               rightMeta={
                 <TuiButton size="sm" variant="destructive" onClick={() => setMergeFiles([])}>
                   [{t.common.clear.toUpperCase()}]
                 </TuiButton>
               }
-              className="space-y-4"
+              bodyClassName="space-y-4"
             >
               <div>
                 {mergeFiles.map((item, idx) => (
@@ -241,7 +235,7 @@ export const PdfToolkitView: React.FC = () => {
                         {item.name}
                       </span>
                       <span className="text-[11px] text-[var(--tui-text-muted)] shrink-0">
-                        [{(item.size / 1024).toFixed(1)}KB | {item.pageCount || '?'}p]
+                        [{(item.size / 1024).toFixed(1)}KB | {item.pageCount || '?'} {tt.pagesUnit}]
                       </span>
                     </div>
 
@@ -252,7 +246,7 @@ export const PdfToolkitView: React.FC = () => {
                         onClick={() => moveMergeItem(idx, 'up')}
                         disabled={idx === 0}
                       >
-                        [UP]
+                        {tt.moveUp}
                       </TuiButton>
                       <TuiButton
                         size="sm"
@@ -260,7 +254,7 @@ export const PdfToolkitView: React.FC = () => {
                         onClick={() => moveMergeItem(idx, 'down')}
                         disabled={idx === mergeFiles.length - 1}
                       >
-                        [DN]
+                        {tt.moveDown}
                       </TuiButton>
                       <TuiButton
                         size="sm"
@@ -282,19 +276,18 @@ export const PdfToolkitView: React.FC = () => {
                 disabled={isProcessing}
                 className="w-full"
               >
-                {isProcessing ? t.common.processing : 'MERGE_AND_DOWNLOAD_PDF'}
+                {isProcessing ? t.common.processing : tt.mergeAction}
               </TuiButton>
             </TuiCard>
           )}
         </div>
       )}
 
-      {/* Tab 2: Split */}
       {activeTab === 'split' && (
-        <TuiCard title="SPLIT_PDF_BY_PAGE_RANGE" className="space-y-5">
+        <TuiCard title={tt.splitCardTitle} className="p-6" bodyClassName="space-y-5">
           <div className="space-y-1">
             <label className="text-[12px] font-medium text-[var(--tui-text-muted)]">
-              // select_pdf_file
+              // {tt.selectPdfLabel}
             </label>
             <input
               type="file"
@@ -308,15 +301,16 @@ export const PdfToolkitView: React.FC = () => {
             <div className="p-4 bg-[var(--tui-bg)] border border-[var(--tui-border-medium)] space-y-4">
               <div className="flex flex-wrap items-center justify-between text-[12px] text-[var(--tui-text-muted)]">
                 <span>
-                  TARGET: <strong className="text-[var(--tui-text)]">{splitFile.name}</strong>
+                  {tt.targetLabel} <strong className="text-[var(--tui-text)]">{splitFile.name}</strong>
                 </span>
                 <span>
-                  TOTAL_PAGES: <strong className="text-[var(--tui-primary)]">{splitPageCount}</strong>
+                  {tt.totalPagesLabel}{' '}
+                  <strong className="text-[var(--tui-primary)]">{splitPageCount}</strong>
                 </span>
               </div>
 
               <TuiInput
-                label="page_range (e.g. 1-3, 5)"
+                label={tt.pageRangeLabel}
                 prompt
                 value={pageRange}
                 onChange={(e) => setPageRange(e.target.value)}
@@ -329,7 +323,7 @@ export const PdfToolkitView: React.FC = () => {
                 disabled={isProcessing}
                 className="w-full"
               >
-                {isProcessing ? t.common.processing : 'EXTRACT_PAGES_AND_DOWNLOAD'}
+                {isProcessing ? t.common.processing : tt.extractAction}
               </TuiButton>
             </div>
           )}

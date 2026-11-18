@@ -5,6 +5,7 @@ import { TuiPageHeader, TuiButton, TuiCard, TuiAlert } from '../../components/te
 
 export const ColorPickerView: React.FC = () => {
   const { t } = useI18n();
+  const tt = t.tools.color;
   const [currentColor, setCurrentColor] = useState('#00FF41');
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
   const [savedColors, setSavedColors] = useState<SavedColor[]>([]);
@@ -85,7 +86,7 @@ export const ColorPickerView: React.FC = () => {
 
   const handleOpenEyeDropper = async () => {
     if (!('EyeDropper' in window)) {
-      alert('The EyeDropper API is supported in Chromium browsers (Chrome, Edge, Opera).');
+      alert(tt.unsupported);
       return;
     }
     try {
@@ -136,10 +137,10 @@ export const ColorPickerView: React.FC = () => {
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Main Picker (7 cols) */}
-        <TuiCard title="COLOR_SAMPLER" className="lg:col-span-7 space-y-6">
+        <TuiCard title={tt.samplerTitle} className="lg:col-span-7 p-6" bodyClassName="space-y-6">
           <TuiAlert type="info">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 w-full">
-              <span>Pick any pixel on your entire screen directly via browser EyeDropper.</span>
+              <span>{tt.eyedropHint}</span>
               <TuiButton
                 variant="primary"
                 size="sm"
@@ -147,7 +148,7 @@ export const ColorPickerView: React.FC = () => {
                 onClick={handleOpenEyeDropper}
                 className="shrink-0"
               >
-                PICK_PIXEL
+                {tt.pickPixel}
               </TuiButton>
             </div>
           </TuiAlert>
@@ -162,29 +163,26 @@ export const ColorPickerView: React.FC = () => {
                 value={currentColor}
                 onChange={(e) => setCurrentColor(e.target.value)}
                 className="opacity-0 absolute inset-0 w-full h-full cursor-pointer"
-                title="Click to tune custom color"
               />
             </div>
 
             <div className="space-y-2 flex-1">
-              <div className="flex items-center justify-between">
+              <div className="flex flex-wrap items-center justify-between gap-2">
                 <span className="text-[11px] uppercase tracking-[0.08em] text-[var(--tui-text-muted)]">
-                  // SELECTED_HEX
+                  // {tt.selectedHexLabel}
                 </span>
                 <TuiButton
                   size="sm"
                   variant="secondary"
                   onClick={() => saveColorToHistory(currentColor)}
                 >
-                  [+ SAVE_PALETTE]
+                  {tt.savePalette}
                 </TuiButton>
               </div>
               <div className="text-[28px] font-bold text-[var(--tui-primary)] tracking-[0.04em] uppercase">
                 {currentColor}
               </div>
-              <p className="text-[11px] text-[var(--tui-text-dim)]">
-                Click color square to manually adjust hue/brightness.
-              </p>
+              <p className="text-[11px] text-[var(--tui-text-dim)]">{tt.tuneHint}</p>
             </div>
           </div>
 
@@ -205,7 +203,9 @@ export const ColorPickerView: React.FC = () => {
                   variant="ghost"
                   onClick={() => copyToClipboard(f.value, f.label)}
                 >
-                  {copiedKey === f.label ? `[${t.common.copied.toUpperCase()}]` : `[${t.common.copy.toUpperCase()}]`}
+                  {copiedKey === f.label
+                    ? `[${t.common.copied.toUpperCase()}]`
+                    : `[${t.common.copy.toUpperCase()}]`}
                 </TuiButton>
               </div>
             ))}
@@ -214,7 +214,7 @@ export const ColorPickerView: React.FC = () => {
 
         {/* Palette History (5 cols) */}
         <TuiCard
-          title={`PALETTE_HISTORY (${savedColors.length})`}
+          title={`${tt.historyTitle} (${savedColors.length})`}
           rightMeta={
             savedColors.length > 0 && (
               <TuiButton
@@ -229,7 +229,8 @@ export const ColorPickerView: React.FC = () => {
               </TuiButton>
             )
           }
-          className="lg:col-span-5 space-y-3"
+          className="lg:col-span-5 p-6"
+          bodyClassName="space-y-3"
         >
           <div className="max-h-[380px] overflow-y-auto">
             {savedColors.map((sc, idx) => (
@@ -257,7 +258,7 @@ export const ColorPickerView: React.FC = () => {
                     variant="ghost"
                     onClick={() => copyToClipboard(sc.hex, `hist-${sc.id}`)}
                   >
-                    {copiedKey === `hist-${sc.id}` ? '[OK]' : '[CPY]'}
+                    {copiedKey === `hist-${sc.id}` ? '[OK]' : `[${t.common.copy.toUpperCase()}]`}
                   </TuiButton>
                   <TuiButton
                     size="sm"
@@ -272,8 +273,8 @@ export const ColorPickerView: React.FC = () => {
 
             {savedColors.length === 0 && (
               <div className="text-center py-12 text-[var(--tui-text-dim)] text-[12px] space-y-1">
-                <div>[EMPTY_PALETTE]</div>
-                <div>Sample or pick a pixel color to store in IndexedDB.</div>
+                <div>{tt.emptyTitle}</div>
+                <div>{tt.emptyHint}</div>
               </div>
             )}
           </div>

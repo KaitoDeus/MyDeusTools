@@ -46,15 +46,18 @@ const WindowPipView = lazy(() =>
   import('./features/window-pip/WindowPipView').then((m) => ({ default: m.WindowPipView }))
 );
 
-const ViewLoadingFallback = () => (
-  <div className="flex flex-col items-center justify-center min-h-[50vh] space-y-2 text-[13px] text-[var(--tui-primary)]">
-    <div>[ LOADING MODULE... ]</div>
-    <div className="text-[11px] text-[var(--tui-text-muted)]">Initializing client worker...</div>
-  </div>
-);
+const ViewLoadingFallback: React.FC = () => {
+  const { t } = useI18n();
+  return (
+    <div className="flex flex-col items-center justify-center min-h-[50vh] space-y-2 text-[13px] text-[var(--tui-primary)]">
+      <div>{t.common.loadingModule}</div>
+      <div className="text-[11px] text-[var(--tui-text-muted)]">{t.common.loadingWorker}</div>
+    </div>
+  );
+};
 
 export const App: React.FC = () => {
-  const { t, language, toggleLanguage } = useI18n();
+  const { t, toggleLanguage } = useI18n();
   const { theme, toggleTheme } = useTheme();
   const [activeToolId, setActiveToolId] = useState<string>('dashboard');
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -69,7 +72,6 @@ export const App: React.FC = () => {
     localStorage.setItem('mydeustools_crt', String(next));
   };
 
-  // Keyboard shortcut Ctrl+K to jump to dashboard search
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
@@ -155,9 +157,7 @@ export const App: React.FC = () => {
                   <div className="text-[14px] font-bold text-[var(--tui-primary)] tracking-[0.04em]">
                     MYDEUSTOOLS
                   </div>
-                  <div className="text-[11px] text-[var(--tui-text-muted)]">
-                    TTY-WEB // v1.0.0
-                  </div>
+                  <div className="text-[11px] text-[var(--tui-text-muted)]">{t.shell.subtitle}</div>
                 </div>
               </div>
             </button>
@@ -166,6 +166,7 @@ export const App: React.FC = () => {
               type="button"
               onClick={() => setSidebarOpen(false)}
               className="lg:hidden px-2 py-0.5 text-[11px] border border-[var(--tui-border-medium)] text-[var(--tui-text-muted)] hover:border-[var(--tui-primary)] hover:text-[var(--tui-primary)] cursor-pointer"
+              aria-label={t.common.close}
             >
               [X]
             </button>
@@ -173,7 +174,6 @@ export const App: React.FC = () => {
 
           {/* Navigation Menu */}
           <nav className="flex-1 overflow-y-auto py-2">
-            {/* Home / Dashboard Command */}
             <button
               type="button"
               onClick={() => {
@@ -188,7 +188,7 @@ export const App: React.FC = () => {
             >
               <span className="truncate">
                 {activeToolId === 'dashboard' ? '> ' : '$ '}
-                ./dashboard
+                {t.nav.dashboard}
               </span>
               <span className="text-[11px] opacity-75">00</span>
             </button>
@@ -214,7 +214,9 @@ export const App: React.FC = () => {
                   }`}
                 >
                   <span className="flex items-center gap-1.5 truncate">
-                    <span className={isActive ? 'text-[var(--tui-primary)]' : 'text-[var(--tui-text-dim)]'}>
+                    <span
+                      className={isActive ? 'text-[var(--tui-primary)]' : 'text-[var(--tui-text-dim)]'}
+                    >
                       {isActive ? '>' : ' '}
                     </span>
                     <span className="truncate">{t.nav[tool.nameKey]}</span>
@@ -234,22 +236,22 @@ export const App: React.FC = () => {
           {/* Terminal Footer Info */}
           <div className="p-4 border-t border-[var(--tui-border-subtle)] space-y-1.5 text-[11px]">
             <div className="flex items-center justify-between">
-              <span className="text-[var(--tui-text-dim)]">PRIVACY:</span>
-              <span className="text-[var(--tui-primary)] font-semibold">100% CLIENT</span>
+              <span className="text-[var(--tui-text-dim)]">{t.shell.privacyLabel}</span>
+              <span className="text-[var(--tui-primary)] font-semibold">{t.shell.privacyValue}</span>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-[var(--tui-text-dim)]">STATUS:</span>
-              <span className="text-[var(--tui-text-muted)]">EXIT_CODE 0</span>
+              <span className="text-[var(--tui-text-dim)]">{t.shell.statusLabel}</span>
+              <span className="text-[var(--tui-text-muted)]">{t.shell.statusValue}</span>
             </div>
             <div className="pt-1 border-t border-dashed border-[var(--tui-border-subtle)] flex items-center justify-between">
-              <span className="text-[var(--tui-text-dim)]">SRC:</span>
+              <span className="text-[var(--tui-text-dim)]">{t.shell.sourceLabel}</span>
               <a
                 href="https://github.com/KaitoDeus/MyDeusTools"
                 target="_blank"
                 rel="noreferrer"
                 className="text-[var(--tui-tertiary)] hover:underline"
               >
-                [GITHUB_REPO]
+                {t.shell.sourceRepo}
               </a>
             </div>
           </div>
@@ -266,7 +268,7 @@ export const App: React.FC = () => {
               onClick={() => setSidebarOpen(true)}
               className="lg:hidden px-2.5 py-1 text-[12px] border border-[var(--tui-primary)] text-[var(--tui-primary)] hover:bg-[var(--tui-primary)] hover:text-[var(--tui-primary-fg)] cursor-pointer shrink-0"
             >
-              [MENU]
+              [{t.common.menu}]
             </button>
 
             <div className="text-[13px] truncate flex items-center">
@@ -297,18 +299,18 @@ export const App: React.FC = () => {
                   ? 'border-[var(--tui-primary)] text-[var(--tui-primary)] hover:bg-[var(--tui-primary)] hover:text-[var(--tui-primary-fg)]'
                   : 'border-[var(--tui-border-medium)] text-[var(--tui-text-muted)] hover:border-[var(--tui-text)]'
               }`}
-              title="Toggle CRT Scanline Effect"
+              title={t.shell.crtTooltip}
             >
-              [CRT:{crtEnabled ? 'ON' : 'OFF'}]
+              [{crtEnabled ? t.shell.crtOn : t.shell.crtOff}]
             </button>
 
             <button
               type="button"
               onClick={toggleLanguage}
               className="px-2.5 py-1 text-[11px] font-semibold border border-[var(--tui-tertiary)] text-[var(--tui-tertiary)] hover:bg-[var(--tui-tertiary)] hover:text-[var(--tui-primary-fg)] cursor-pointer"
-              title="Toggle Language (VI / EN)"
+              title={t.shell.langTooltip}
             >
-              [LANG:{language.toUpperCase()}]
+              [{t.shell.langLabel}]
             </button>
 
             <button
@@ -316,9 +318,9 @@ export const App: React.FC = () => {
               onClick={toggleTheme}
               aria-label="Toggle color theme"
               className="px-2.5 py-1 text-[11px] font-semibold border border-[var(--tui-secondary)] text-[var(--tui-secondary)] hover:bg-[var(--tui-secondary)] hover:text-[var(--tui-primary-fg)] cursor-pointer"
-              title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+              title={theme === 'dark' ? t.shell.themeToLight : t.shell.themeToDark}
             >
-              [THEME:{theme.toUpperCase()}]
+              [{theme === 'dark' ? t.shell.themeDark : t.shell.themeLight}]
             </button>
           </div>
         </header>

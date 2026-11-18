@@ -62,6 +62,7 @@ interface TuiCardProps {
   interactive?: boolean;
   onClick?: () => void;
   className?: string;
+  bodyClassName?: string;
   children: React.ReactNode;
 }
 
@@ -72,6 +73,7 @@ export const TuiCard: React.FC<TuiCardProps> = ({
   interactive = false,
   onClick,
   className = '',
+  bodyClassName = '',
   children,
 }) => {
   const surfaceClass = elevated
@@ -81,22 +83,21 @@ export const TuiCard: React.FC<TuiCardProps> = ({
   return (
     <div
       onClick={onClick}
-      className={`border p-4 ${surfaceClass} ${interactive ? 'cursor-pointer' : ''} ${className}`}
+      className={`border p-4 flex flex-col ${surfaceClass} ${interactive ? 'cursor-pointer' : ''} ${className}`}
     >
       {(title || rightMeta) && (
-        <div className="mb-3">
-          <div className="flex items-center justify-between gap-2 text-[13px] font-bold text-[var(--tui-primary)] tracking-[0.04em]">
-            <span>{title}</span>
+        <div className="w-full shrink-0 mb-3 pb-2 border-b border-dashed border-[var(--tui-border-medium)]">
+          <div className="flex flex-wrap items-center justify-between gap-2 text-[13px] font-bold text-[var(--tui-primary)] tracking-[0.04em]">
+            <span className="min-w-0 truncate">{title}</span>
             {rightMeta && (
-              <span className="text-[11px] font-medium text-[var(--tui-text-muted)]">{rightMeta}</span>
+              <span className="text-[11px] font-medium text-[var(--tui-text-muted)] shrink-0">
+                {rightMeta}
+              </span>
             )}
-          </div>
-          <div className="text-[11px] text-[var(--tui-border-medium)] select-none leading-none mt-1 overflow-hidden whitespace-nowrap">
-            ----------------------------------------------------------------------------------------------------
           </div>
         </div>
       )}
-      {children}
+      <div className={`w-full flex-1 min-w-0 ${bodyClassName}`}>{children}</div>
     </div>
   );
 };

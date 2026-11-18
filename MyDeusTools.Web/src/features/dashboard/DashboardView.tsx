@@ -26,12 +26,10 @@ export const DashboardView: React.FC<DashboardViewProps> = ({ onSelectTool }) =>
   return (
     <div className="space-y-8 pb-12">
       {/* Terminal Hero Banner */}
-      <TuiCard elevated className="p-6 md:p-8 space-y-4">
+      <TuiCard elevated className="p-6 md:p-8" bodyClassName="space-y-4">
         <div className="flex flex-wrap items-center justify-between gap-2 text-[11px] uppercase tracking-[0.1em]">
-          <span className="text-[var(--tui-primary)] font-bold">
-            [SYSTEM] TERMINAL_UI // PURE WEB ARCHITECTURE 2026
-          </span>
-          <span className="text-[var(--tui-text-muted)]">PID: 2026 | MEM: CLIENT_ONLY</span>
+          <span className="text-[var(--tui-primary)] font-bold">{t.dashboard.systemBanner}</span>
+          <span className="text-[var(--tui-text-muted)]">{t.dashboard.pidMeta}</span>
         </div>
 
         <pre className="text-[11px] sm:text-[13px] leading-[1.3] text-[var(--tui-primary)] overflow-x-auto select-none font-bold">
@@ -55,9 +53,9 @@ export const DashboardView: React.FC<DashboardViewProps> = ({ onSelectTool }) =>
         </div>
 
         <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-dashed border-[var(--tui-border-subtle)]">
-          <TuiChip tone="primary">[OK] 100% CLIENT-SIDE PRIVACY</TuiChip>
-          <TuiChip tone="secondary">[WASM] WEB_WORKERS ENABLED</TuiChip>
-          <TuiChip tone="tertiary">[PWA] OFFLINE READY</TuiChip>
+          <TuiChip tone="primary">{t.dashboard.chipPrivacy}</TuiChip>
+          <TuiChip tone="secondary">{t.dashboard.chipWasm}</TuiChip>
+          <TuiChip tone="tertiary">{t.dashboard.chipPwa}</TuiChip>
         </div>
       </TuiCard>
 
@@ -65,7 +63,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({ onSelectTool }) =>
       <div className="flex flex-col md:flex-row gap-4 items-start md:items-end justify-between">
         <div className="w-full md:w-96">
           <TuiInput
-            label="grep_utilities"
+            label={t.dashboard.grepLabel}
             prompt
             value={search}
             onChange={(e) => setSearch(e.target.value)}
@@ -103,8 +101,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({ onSelectTool }) =>
               className="group bg-[var(--tui-surface)] border border-[var(--tui-border-subtle)] hover:bg-[var(--tui-surface-elevated)] hover:border-[var(--tui-primary)] p-4 flex flex-col justify-between cursor-pointer"
             >
               <div>
-                {/* Card Top Header */}
-                <div className="flex items-center justify-between gap-2 text-[12px]">
+                <div className="flex items-center justify-between gap-2 text-[12px] pb-2 mb-2 border-b border-dashed border-[var(--tui-border-subtle)] group-hover:border-[var(--tui-border-medium)]">
                   <span className={`font-bold ${accentColor}`}>{tool.asciiTag}</span>
                   <div className="flex items-center gap-2">
                     {tool.badge && <TuiChip tone={tool.accent}>{tool.badge}</TuiChip>}
@@ -112,12 +109,6 @@ export const DashboardView: React.FC<DashboardViewProps> = ({ onSelectTool }) =>
                   </div>
                 </div>
 
-                {/* ASCII Divider */}
-                <div className="text-[11px] text-[var(--tui-border-subtle)] group-hover:text-[var(--tui-border-medium)] select-none my-2 overflow-hidden whitespace-nowrap">
-                  --------------------------------------------------
-                </div>
-
-                {/* Title & Description */}
                 <div className="space-y-1.5">
                   <h3 className="text-[15px] font-bold text-[var(--tui-text)] group-hover:text-[var(--tui-primary)]">
                     &gt; {t.nav[tool.nameKey]}
@@ -128,11 +119,8 @@ export const DashboardView: React.FC<DashboardViewProps> = ({ onSelectTool }) =>
                 </div>
               </div>
 
-              {/* Card Footer */}
               <div className="mt-4 pt-2 border-t border-dashed border-[var(--tui-border-subtle)] flex items-center justify-between text-[11px]">
-                <span className="text-[var(--tui-text-dim)] uppercase">
-                  ./{tool.cmd}
-                </span>
+                <span className="text-[var(--tui-text-dim)] uppercase">./{tool.cmd}</span>
                 <span className="text-[var(--tui-primary)] font-bold">
                   [{t.common.start.toUpperCase()}]
                 </span>
@@ -143,9 +131,9 @@ export const DashboardView: React.FC<DashboardViewProps> = ({ onSelectTool }) =>
       </div>
 
       {filteredTools.length === 0 && (
-        <TuiCard className="text-center py-12 space-y-4">
+        <TuiCard bodyClassName="text-center py-8 space-y-4">
           <div className="text-[14px] text-[var(--tui-error)]">
-            [ERR] 0 matches found for pattern "{search}"
+            [ERR] {t.dashboard.noMatches} &quot;{search}&quot;
           </div>
           <div>
             <TuiButton

@@ -5,11 +5,12 @@ import { TuiPageHeader, TuiButton, TuiCard, TuiAlert } from '../../components/te
 
 export const WindowPipView: React.FC = () => {
   const { t } = useI18n();
+  const tt = t.tools.pip;
   const { theme } = useTheme();
 
   const openClockPip = async () => {
     if (!('documentPictureInPicture' in window)) {
-      alert('Document Picture-in-Picture is supported in Chromium browsers (Chrome, Edge, Opera).');
+      alert(tt.unsupported);
       return;
     }
     try {
@@ -22,6 +23,7 @@ export const WindowPipView: React.FC = () => {
       const isDark = theme === 'dark';
       pip.document.body.innerHTML = `
         <div style="font-family: 'JetBrains Mono', monospace; display:flex; flex-direction:column; align-items:center; justify-content:center; height:100%; background:${isDark ? '#0d0d0d' : '#f4f4ee'}; color:${isDark ? '#00ff41' : '#007a1f'}; border: 1px solid ${isDark ? '#00ff41' : '#007a1f'}; margin:0; box-sizing:border-box;">
+          <div style="font-size:10px; color:#8b8b8b; margin-bottom:4px;">${tt.clockLabel}</div>
           <div id="time" style="font-size:32px; font-weight:bold;">00:00:00</div>
           <div id="date" style="font-size:12px; color:#8b8b8b; margin-top:4px;"></div>
         </div>
@@ -43,7 +45,7 @@ export const WindowPipView: React.FC = () => {
 
   const openScratchpadPip = async () => {
     if (!('documentPictureInPicture' in window)) {
-      alert('Document Picture-in-Picture is supported in modern Chrome/Edge browsers.');
+      alert(tt.unsupported);
       return;
     }
     try {
@@ -56,8 +58,8 @@ export const WindowPipView: React.FC = () => {
       const isDark = theme === 'dark';
       pip.document.body.innerHTML = `
         <div style="font-family: 'JetBrains Mono', monospace; display:flex; flex-direction:column; height:100%; background:${isDark ? '#0d0d0d' : '#f4f4ee'}; color:${isDark ? '#e2e2e2' : '#141414'}; border: 1px solid ${isDark ? '#ff6600' : '#cc4d00'}; margin:0; padding:12px; box-sizing:border-box;">
-          <div style="font-size:12px; font-weight:bold; color:${isDark ? '#ff6600' : '#cc4d00'}; margin-bottom:8px;">> FLOATING_SCRATCHPAD</div>
-          <textarea style="flex:1; width:100%; background:${isDark ? '#141414' : '#ffffff'}; color:${isDark ? '#e2e2e2' : '#141414'}; border:1px solid #444444; padding:8px; font-size:12px; font-family:'JetBrains Mono', monospace; resize:none; outline:none;" placeholder="Type notes here..."></textarea>
+          <div style="font-size:12px; font-weight:bold; color:${isDark ? '#ff6600' : '#cc4d00'}; margin-bottom:8px;">${tt.padLabel}</div>
+          <textarea style="flex:1; width:100%; background:${isDark ? '#141414' : '#ffffff'}; color:${isDark ? '#e2e2e2' : '#141414'}; border:1px solid #444444; padding:8px; font-size:12px; font-family:'JetBrains Mono', monospace; resize:none; outline:none;" placeholder="${tt.padPlaceholder}"></textarea>
         </div>
       `;
     } catch (e) {
@@ -75,35 +77,28 @@ export const WindowPipView: React.FC = () => {
         accent="tertiary"
       />
 
-      <TuiAlert type="info">
-        DOCUMENT_PICTURE_IN_PICTURE: Spawns an independent OS-level always-on-top terminal widget
-        above other desktop applications.
-      </TuiAlert>
+      <TuiAlert type="info">{tt.infoBanner}</TuiAlert>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
         <TuiCard
-          title="WIDGET_01 :: DIGITAL_CLOCK"
-          rightMeta="[TOPMOST]"
-          className="flex flex-col justify-between space-y-5"
+          title={tt.clockTitle}
+          rightMeta={tt.topmostTag}
+          bodyClassName="flex flex-col justify-between space-y-5"
         >
-          <p className="text-[13px] text-[var(--tui-text-muted)] leading-[1.6]">
-            Launch a compact always-on-top monospaced digital clock overlay across all windows.
-          </p>
+          <p className="text-[13px] text-[var(--tui-text-muted)] leading-[1.6]">{tt.clockDesc}</p>
           <TuiButton variant="secondary" prefix=">" onClick={openClockPip} className="w-full">
-            SPAWN_CLOCK_PiP
+            {tt.spawnClock}
           </TuiButton>
         </TuiCard>
 
         <TuiCard
-          title="WIDGET_02 :: SCRATCHPAD"
-          rightMeta="[TOPMOST]"
-          className="flex flex-col justify-between space-y-5"
+          title={tt.padTitle}
+          rightMeta={tt.topmostTag}
+          bodyClassName="flex flex-col justify-between space-y-5"
         >
-          <p className="text-[13px] text-[var(--tui-text-muted)] leading-[1.6]">
-            Spawn an always-on-top monospaced notepad buffer while reading code or documentation.
-          </p>
+          <p className="text-[13px] text-[var(--tui-text-muted)] leading-[1.6]">{tt.padDesc}</p>
           <TuiButton variant="amber" prefix=">" onClick={openScratchpadPip} className="w-full">
-            SPAWN_SCRATCHPAD_PiP
+            {tt.spawnPad}
           </TuiButton>
         </TuiCard>
       </div>

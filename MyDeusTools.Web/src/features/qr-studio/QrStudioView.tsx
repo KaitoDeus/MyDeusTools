@@ -12,6 +12,7 @@ import {
 
 export const QrStudioView: React.FC = () => {
   const { t } = useI18n();
+  const tt = t.tools.qr;
   const [text, setText] = useState('https://mydeustools.com');
   const [fgColor, setFgColor] = useState('#00FF41');
   const [bgColor, setBgColor] = useState('#0D0D0D');
@@ -19,7 +20,6 @@ export const QrStudioView: React.FC = () => {
   const [qrDataUrl, setQrDataUrl] = useState('');
   const [copied, setCopied] = useState(false);
 
-  // Scanner state
   const [scanResult, setScanResult] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -75,14 +75,16 @@ export const QrStudioView: React.FC = () => {
         }
       }
     } catch {
-      alert('Could not access clipboard image. Please grant clipboard permission.');
+      alert(tt.clipboardErr);
     }
   };
 
   const decodeImageBlob = (blob: Blob) => {
     const img = new Image();
     img.onload = () => {
-      setScanResult('Image received (' + img.width + 'x' + img.height + 'px).');
+      setScanResult(
+        tt.receivedImage.replace('{w}', String(img.width)).replace('{h}', String(img.height))
+      );
     };
     img.src = URL.createObjectURL(blob);
   };
@@ -106,19 +108,23 @@ export const QrStudioView: React.FC = () => {
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Generator Controls (7 cols) */}
-        <TuiCard title="QR_GENERATOR_CONFIG" className="lg:col-span-7 space-y-5">
+        <TuiCard
+          title={tt.configTitle}
+          className="lg:col-span-7 p-6"
+          bodyClassName="space-y-5"
+        >
           <TuiTextarea
-            label="content_or_url"
+            label={tt.contentLabel}
             value={text}
             onChange={(e) => setText(e.target.value)}
             rows={4}
-            placeholder="Enter URL, text, wifi credentials, or contact info..."
+            placeholder={tt.contentPlaceholder}
           />
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div className="space-y-1">
               <label className="text-[12px] font-medium text-[var(--tui-text-muted)]">
-                // fg_color
+                // {tt.fgColorLabel}
               </label>
               <div className="flex items-center gap-2 bg-[var(--tui-bg)] border border-[var(--tui-border-medium)] p-1.5 h-[36px]">
                 <input
@@ -133,7 +139,7 @@ export const QrStudioView: React.FC = () => {
 
             <div className="space-y-1">
               <label className="text-[12px] font-medium text-[var(--tui-text-muted)]">
-                // bg_color
+                // {tt.bgColorLabel}
               </label>
               <div className="flex items-center gap-2 bg-[var(--tui-bg)] border border-[var(--tui-border-medium)] p-1.5 h-[36px]">
                 <input
@@ -147,24 +153,26 @@ export const QrStudioView: React.FC = () => {
             </div>
 
             <TuiSelect
-              label="error_correction"
+              label={tt.errorLevelLabel}
               value={errorLevel}
               onChange={(e) => setErrorLevel(e.target.value as any)}
             >
-              <option value="L">LOW (7%)</option>
-              <option value="M">MEDIUM (15%)</option>
-              <option value="Q">QUARTILE (25%)</option>
-              <option value="H">HIGH (30%)</option>
+              <option value="L">{tt.levels.L}</option>
+              <option value="M">{tt.levels.M}</option>
+              <option value="Q">{tt.levels.Q}</option>
+              <option value="H">{tt.levels.H}</option>
             </TuiSelect>
           </div>
 
           <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-dashed border-[var(--tui-border-subtle)]">
-            <span className="text-[11px] text-[var(--tui-text-dim)] uppercase">PRESETS:</span>
+            <span className="text-[11px] text-[var(--tui-text-dim)] uppercase">
+              {tt.presetsLabel}
+            </span>
             {[
-              { name: 'HACKER', fg: '#00FF41', bg: '#0D0D0D' },
-              { name: 'CLASSIC', fg: '#000000', bg: '#ffffff' },
-              { name: 'CYAN', fg: '#00BFFF', bg: '#0D0D0D' },
-              { name: 'AMBER', fg: '#FF6600', bg: '#0D0D0D' },
+              { name: tt.presets.HACKER, fg: '#00FF41', bg: '#0D0D0D' },
+              { name: tt.presets.CLASSIC, fg: '#000000', bg: '#ffffff' },
+              { name: tt.presets.CYAN, fg: '#00BFFF', bg: '#0D0D0D' },
+              { name: tt.presets.AMBER, fg: '#FF6600', bg: '#0D0D0D' },
             ].map((p) => (
               <TuiButton
                 key={p.name}
@@ -183,16 +191,17 @@ export const QrStudioView: React.FC = () => {
 
         {/* Preview & Actions (5 cols) */}
         <TuiCard
-          title="OUTPUT_MATRIX"
+          title={tt.outputTitle}
           elevated
-          className="lg:col-span-5 flex flex-col items-center justify-center space-y-5"
+          className="lg:col-span-5 p-6"
+          bodyClassName="flex flex-col items-center justify-center py-4 space-y-5"
         >
           <div className="p-3 bg-[var(--tui-bg)] border border-[var(--tui-border-medium)] flex items-center justify-center">
             {qrDataUrl ? (
               <img src={qrDataUrl} alt="Generated QR Code" className="w-56 h-56" />
             ) : (
               <div className="w-56 h-56 border border-dashed border-[var(--tui-border-medium)] flex flex-col items-center justify-center text-[var(--tui-text-dim)] text-[12px]">
-                <span>[NO_INPUT]</span>
+                <span>{tt.noInput}</span>
               </div>
             )}
           </div>
@@ -207,21 +216,21 @@ export const QrStudioView: React.FC = () => {
               {t.common.download}
             </TuiButton>
             <TuiButton variant="secondary" onClick={handleCopyImage} disabled={!qrDataUrl}>
-              {copied ? `[${t.common.copied.toUpperCase()}]` : '[COPY_IMAGE]'}
+              {copied ? `[${t.common.copied.toUpperCase()}]` : tt.copyImage}
             </TuiButton>
           </div>
         </TuiCard>
       </div>
 
       {/* QR Scanner Section */}
-      <TuiCard title="MULTI_SOURCE_SCANNER (FILE / CLIPBOARD)" className="space-y-4">
+      <TuiCard title={tt.scannerTitle} className="p-6" bodyClassName="space-y-4">
         <div className="flex flex-wrap gap-3">
           <TuiButton
             variant="secondary"
             prefix="$"
             onClick={() => fileInputRef.current?.click()}
           >
-            SELECT_IMAGE_FILE
+            {tt.selectImage}
           </TuiButton>
           <input
             ref={fileInputRef}
@@ -232,14 +241,16 @@ export const QrStudioView: React.FC = () => {
           />
 
           <TuiButton variant="amber" prefix="$" onClick={handlePasteClipboard}>
-            PASTE_CLIPBOARD (CTRL+V)
+            {tt.pasteClipboard}
           </TuiButton>
         </div>
 
         {scanResult && (
           <TuiAlert type="info">
             <div className="flex items-center justify-between w-full gap-4">
-              <span>DETECTED: {scanResult}</span>
+              <span>
+                {tt.detectedPrefix} {scanResult}
+              </span>
               {scanResult.startsWith('http') && (
                 <a
                   href={scanResult}
@@ -247,7 +258,7 @@ export const QrStudioView: React.FC = () => {
                   rel="noreferrer"
                   className="text-[var(--tui-primary)] font-bold hover:underline"
                 >
-                  [OPEN_URL]
+                  {tt.openUrl}
                 </a>
               )}
             </div>

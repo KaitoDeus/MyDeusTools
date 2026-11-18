@@ -21,6 +21,7 @@ interface FileToRename {
 
 export const BulkRenamerView: React.FC = () => {
   const { t } = useI18n();
+  const tt = t.tools.renamer;
   const [files, setFiles] = useState<FileToRename[]>([]);
   const [findText, setFindText] = useState('');
   const [replaceText, setReplaceText] = useState('');
@@ -46,9 +47,7 @@ export const BulkRenamerView: React.FC = () => {
 
   const handleOpenDirectory = async () => {
     if (!('showDirectoryPicker' in window)) {
-      alert(
-        'Direct folder renaming is supported in Chrome/Edge via File System Access API. You can still upload files directly!'
-      );
+      alert(tt.fsUnsupported);
       return;
     }
     try {
@@ -68,7 +67,7 @@ export const BulkRenamerView: React.FC = () => {
       setFiles(list);
       computeNewNames(list, findText, replaceText, prefix, suffix, caseMode);
     } catch {
-      // User cancelled picker
+      // Cancelled
     }
   };
 
@@ -136,9 +135,9 @@ export const BulkRenamerView: React.FC = () => {
       a.href = url;
       a.download = `renamed_files_${Date.now()}.zip`;
       a.click();
-      setStatusMessage('Renamed files packaged and downloaded as ZIP (EXIT_CODE 0).');
+      setStatusMessage(tt.zipSuccess);
     } catch (err: any) {
-      alert('Error creating ZIP: ' + err.message);
+      alert(tt.zipError + err.message);
     } finally {
       setIsProcessing(false);
     }
@@ -154,58 +153,55 @@ export const BulkRenamerView: React.FC = () => {
         accent="secondary"
       />
 
-      {/* Directory & Upload Row */}
       <div className="flex flex-wrap items-center gap-3">
         <TuiButton variant="amber" prefix=">" onClick={handleOpenDirectory}>
-          MOUNT_DISK_DIRECTORY
+          {tt.mountDirBtn}
         </TuiButton>
 
         <label className="inline-flex h-[36px] px-4 py-2 text-[13px] font-semibold uppercase border border-[var(--tui-primary)] text-[var(--tui-primary)] hover:bg-[var(--tui-primary)] hover:text-[var(--tui-primary-fg)] cursor-pointer items-center">
-          <span>$ SELECT_BATCH_FILES</span>
+          <span>{tt.selectBatchBtn}</span>
           <input type="file" multiple onChange={handleFileUpload} className="hidden" />
         </label>
       </div>
 
-      {/* Rule Form */}
-      <TuiCard title="RENAMING_PIPELINE_RULES">
+      <TuiCard title={tt.rulesTitle} className="p-5">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <TuiInput
-            label="find_regex"
+            label={tt.findLabel}
             value={findText}
             onChange={(e) => applyRule(e.target.value, replaceText, prefix, suffix, caseMode)}
-            placeholder="e.g. IMG_, copy"
+            placeholder={tt.findPlaceholder}
           />
           <TuiInput
-            label="replace_with"
+            label={tt.replaceLabel}
             value={replaceText}
             onChange={(e) => applyRule(findText, e.target.value, prefix, suffix, caseMode)}
-            placeholder="e.g. Photo_"
+            placeholder={tt.replacePlaceholder}
           />
           <TuiInput
-            label="add_prefix"
+            label={tt.prefixLabel}
             value={prefix}
             onChange={(e) => applyRule(findText, replaceText, e.target.value, suffix, caseMode)}
-            placeholder="e.g. 2026_"
+            placeholder={tt.prefixPlaceholder}
           />
           <TuiSelect
-            label="case_mode"
+            label={tt.caseLabel}
             value={caseMode}
             onChange={(e) => applyRule(findText, replaceText, prefix, suffix, e.target.value)}
           >
-            <option value="none">UNCHANGED</option>
-            <option value="uppercase">UPPERCASE</option>
-            <option value="lowercase">lowercase</option>
-            <option value="titlecase">Title Case</option>
+            <option value="none">{tt.caseModes.none}</option>
+            <option value="uppercase">{tt.caseModes.uppercase}</option>
+            <option value="lowercase">{tt.caseModes.lowercase}</option>
+            <option value="titlecase">{tt.caseModes.titlecase}</option>
           </TuiSelect>
         </div>
       </TuiCard>
 
       {statusMessage && <TuiAlert type="ok">{statusMessage}</TuiAlert>}
 
-      {/* Live Preview Table */}
       {files.length > 0 && (
         <TuiCard
-          title={`LIVE_DRY_RUN (${files.length} FILES)`}
+          title={`${tt.previewTitle} (${files.length} ${tt.filesUnit})`}
           rightMeta={
             <TuiButton
               size="sm"
@@ -214,18 +210,18 @@ export const BulkRenamerView: React.FC = () => {
               onClick={handleDownloadRenamedZip}
               disabled={isProcessing}
             >
-              {isProcessing ? t.common.processing : 'EXPORT_ZIP'}
+              {isProcessing ? t.common.processing : tt.exportZip}
             </TuiButton>
           }
-          className="overflow-x-auto"
+          bodyClassName="overflow-x-auto"
         >
           <table className="w-full text-left text-[12px]">
             <thead>
               <tr className="border-b border-[var(--tui-border-medium)] text-[var(--tui-text-muted)] uppercase text-[11px]">
                 <th className="py-2 pr-3 w-[4ch]">#</th>
-                <th className="py-2 pr-3">ORIGINAL_NAME</th>
-                <th className="py-2 pr-3">TARGET_PREVIEW</th>
-                <th className="py-2 text-right">STATUS</th>
+                <th className="py-2 pr-3">{tt.colOriginal}</th>
+                <th className="py-2 pr-3">{tt.colTarget}</th>
+                <th className="py-2 text-right">{tt.colStatus}</th>
               </tr>
             </thead>
             <tbody>
@@ -247,9 +243,9 @@ export const BulkRenamerView: React.FC = () => {
                     </td>
                     <td className="py-1.5 text-right">
                       {isChanged ? (
-                        <TuiChip tone="primary">MODIFIED</TuiChip>
+                        <TuiChip tone="primary">{tt.statusModified}</TuiChip>
                       ) : (
-                        <TuiChip tone="muted">NOOP</TuiChip>
+                        <TuiChip tone="muted">{tt.statusNoop}</TuiChip>
                       )}
                     </td>
                   </tr>

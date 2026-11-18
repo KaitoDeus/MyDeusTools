@@ -11,6 +11,7 @@ import {
 
 export const SmartTimerView: React.FC = () => {
   const { t } = useI18n();
+  const tt = t.tools.timer;
   const [hours, setHours] = useState(0);
   const [minutes, setMinutes] = useState(25);
   const [seconds, setSeconds] = useState(0);
@@ -108,7 +109,7 @@ export const SmartTimerView: React.FC = () => {
             setIsRunning(false);
             playChime();
             triggerWebhook();
-            alert('Timer finished! Time to take a break or step away.');
+            alert(tt.finishedAlert);
             return 0;
           }
           return prev - 1;
@@ -116,7 +117,7 @@ export const SmartTimerView: React.FC = () => {
       }, 1000);
     }
     return () => clearInterval(interval);
-  }, [isRunning, totalSecondsRemaining]);
+  }, [isRunning, totalSecondsRemaining, tt.finishedAlert]);
 
   const formatCountdown = (total: number) => {
     const h = Math.floor(total / 3600);
@@ -138,14 +139,15 @@ export const SmartTimerView: React.FC = () => {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Countdown Display (7 cols) */}
         <TuiCard
-          title="COUNTDOWN_CLOCK"
+          title={tt.cardTitle}
           rightMeta={
             <TuiChip tone={isRunning ? 'primary' : 'muted'}>
-              {isRunning ? 'STATUS:RUNNING' : 'STATUS:IDLE'}
+              {isRunning ? tt.statusRunning : tt.statusIdle}
             </TuiChip>
           }
           elevated
-          className="lg:col-span-7 flex flex-col items-center justify-center p-8 space-y-6 text-center"
+          className="lg:col-span-7 p-6"
+          bodyClassName="flex flex-col items-center justify-center py-6 space-y-6 text-center"
         >
           <div className="text-[48px] sm:text-[64px] font-bold tracking-[0.04em] text-[var(--tui-primary)] select-all leading-none py-2">
             {formatCountdown(totalSecondsRemaining)}
@@ -153,10 +155,10 @@ export const SmartTimerView: React.FC = () => {
 
           <div className="flex flex-wrap justify-center gap-2">
             {[
-              { label: '15M_BREAK', h: 0, m: 15, s: 0 },
-              { label: '25M_FOCUS', h: 0, m: 25, s: 0 },
-              { label: '45M_DEEP', h: 0, m: 45, s: 0 },
-              { label: '70M->1H10M', h: 0, m: 70, s: 0 },
+              { label: tt.presets.break15, h: 0, m: 15, s: 0 },
+              { label: tt.presets.focus25, h: 0, m: 25, s: 0 },
+              { label: tt.presets.deep45, h: 0, m: 45, s: 0 },
+              { label: tt.presets.norm70, h: 0, m: 70, s: 0 },
             ].map((p) => (
               <TuiButton
                 key={p.label}
@@ -193,10 +195,14 @@ export const SmartTimerView: React.FC = () => {
         </TuiCard>
 
         {/* Configuration Panel (5 cols) */}
-        <TuiCard title="TIME_NORMALIZER_CONFIG" className="lg:col-span-5 space-y-5">
+        <TuiCard
+          title={tt.configTitle}
+          className="lg:col-span-5 p-6"
+          bodyClassName="space-y-5"
+        >
           <div className="grid grid-cols-3 gap-3">
             <TuiInput
-              label="hh"
+              label={tt.hoursLabel}
               type="number"
               min={0}
               value={hours}
@@ -206,7 +212,7 @@ export const SmartTimerView: React.FC = () => {
               className="text-center font-bold"
             />
             <TuiInput
-              label="mm"
+              label={tt.minutesLabel}
               type="number"
               min={0}
               value={minutes}
@@ -216,7 +222,7 @@ export const SmartTimerView: React.FC = () => {
               className="text-center font-bold"
             />
             <TuiInput
-              label="ss"
+              label={tt.secondsLabel}
               type="number"
               min={0}
               value={seconds}
@@ -227,13 +233,10 @@ export const SmartTimerView: React.FC = () => {
             />
           </div>
 
-          <TuiAlert type="info">
-            AUTO_NORMALIZATION: Entering 70 minutes automatically resolves to 01h 10m on blur or
-            start.
-          </TuiAlert>
+          <TuiAlert type="info">{tt.normHint}</TuiAlert>
 
           <TuiInput
-            label="remote_webhook (optional)"
+            label={tt.webhookLabel}
             type="url"
             prompt
             value={webhookUrl}
@@ -242,8 +245,8 @@ export const SmartTimerView: React.FC = () => {
           />
 
           <div className="p-3 bg-[var(--tui-bg)] border border-[var(--tui-border-subtle)] text-[12px] space-y-1">
-            <div className="flex items-center justify-between">
-              <span className="text-[var(--tui-text-muted)]">SCREEN_WAKE_LOCK:</span>
+            <div className="flex items-center justify-between gap-2">
+              <span className="text-[var(--tui-text-muted)]">{tt.wakeLockLabel}</span>
               <span
                 className={
                   wakeLockActive
@@ -251,12 +254,10 @@ export const SmartTimerView: React.FC = () => {
                     : 'text-[var(--tui-text-dim)]'
                 }
               >
-                {wakeLockActive ? '[ACTIVE]' : '[STANDBY]'}
+                {wakeLockActive ? tt.wakeLockActive : tt.wakeLockStandby}
               </span>
             </div>
-            <div className="text-[11px] text-[var(--tui-text-dim)]">
-              Prevents display sleep while timer is running.
-            </div>
+            <div className="text-[11px] text-[var(--tui-text-dim)]">{tt.wakeLockDesc}</div>
           </div>
         </TuiCard>
       </div>
