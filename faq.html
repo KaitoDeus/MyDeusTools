@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FAQ &amp; Security — MyDeusTools</title>
+  <meta name="description" content="Quick answers on MyDeusTools Agent Shutdown locking, 127.0.0.1:41950 loopback, F6/F7 hotkeys, IndexedDB privacy, SmartScreen, and 282 tests." />
+  <link rel="icon" type="image/x-icon" href="avatar.ico" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { darkMode: 'class' };
+    (function () {
+      var t = localStorage.getItem('mdt_theme') || 'dark';
+      if (t === 'dark') document.documentElement.classList.add('dark');
+      else document.documentElement.classList.remove('dark');
+    })();
+  </script>
+  <link rel="stylesheet" href="assets/site.css" />
+</head>
+<body class="min-h-screen flex flex-col bg-[var(--tui-bg)] text-[var(--tui-text)] antialiased">
+
+  <header class="sticky top-0 z-50 tui-nav">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between gap-4">
+      <a href="index.html" class="flex items-center gap-2.5 shrink-0">
+        <div class="w-8 h-8 border border-[var(--tui-primary)] bg-[var(--tui-bg)] flex items-center justify-center p-1">
+          <img src="avatar.ico" alt="MyDeusTools" class="w-full h-full object-contain" />
+        </div>
+        <span class="font-bold text-[14px] tracking-[0.06em] text-[var(--tui-primary)] whitespace-nowrap">MYDEUSTOOLS</span>
+      </a>
+
+      <nav class="hidden md:flex items-center gap-5 lg:gap-7 text-[12px] whitespace-nowrap">
+        <a href="index.html" class="nav-link whitespace-nowrap shrink-0" data-i18n="nav_home">Home</a>
+        <a href="features.html" class="nav-link whitespace-nowrap shrink-0" data-i18n="nav_features">Features</a>
+        <a href="architecture.html" class="nav-link whitespace-nowrap shrink-0" data-i18n="nav_architecture">Architecture</a>
+        <a href="download.html" class="nav-link whitespace-nowrap shrink-0" data-i18n="nav_download">Download</a>
+        <a href="faq.html" class="nav-link whitespace-nowrap shrink-0" data-i18n="nav_faq">FAQ</a>
+      </nav>
+
+      <div class="flex items-center gap-2 shrink-0">
+        <button id="crtToggleBtn" type="button" title="CRT Scanlines" aria-label="Toggle CRT Scanlines" class="w-8 h-8 inline-flex items-center justify-center border border-[var(--tui-primary)] text-[var(--tui-primary)] cursor-pointer">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="14"/><path d="M8 21h8M12 18v3M6 9h12M6 13h8"/></svg>
+        </button>
+        <button id="langToggleBtn" type="button" title="Switch Language" class="h-8 px-2.5 inline-flex items-center justify-center text-[11px] font-bold border border-[var(--tui-tertiary)] text-[var(--tui-tertiary)] hover:bg-[var(--tui-tertiary)] hover:text-[var(--tui-primary-fg)] cursor-pointer">EN</button>
+        <button id="themeToggleBtn" type="button" title="Toggle Theme" aria-label="Toggle Color Theme" class="w-8 h-8 inline-flex items-center justify-center border border-[var(--tui-secondary)] text-[var(--tui-secondary)] hover:bg-[var(--tui-secondary)] hover:text-[var(--tui-primary-fg)] cursor-pointer">
+          <svg id="iconSun" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+          <svg id="iconMoon" class="w-4 h-4 hidden" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+        </button>
+        <a href="https://github.com/KaitoDeus/MyDeusTools" target="_blank" rel="noopener noreferrer" title="GitHub Repository" aria-label="GitHub Repository" class="w-8 h-8 inline-flex items-center justify-center border border-[var(--tui-border-medium)] text-[var(--tui-text)] hover:border-[var(--tui-primary)] hover:text-[var(--tui-primary)]">
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+        </a>
+        <button id="mobileMenuBtn" type="button" title="Menu" aria-label="Menu" class="md:hidden w-8 h-8 inline-flex items-center justify-center border border-[var(--tui-primary)] text-[var(--tui-primary)] cursor-pointer">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <div id="mobileMenu" class="hidden md:hidden tui-nav border-t border-[var(--tui-border-subtle)] px-4 py-3 space-y-2 text-[12px]">
+      <a href="index.html" class="block py-1 text-[var(--tui-text-muted)]" data-i18n="nav_home">Home</a>
+      <a href="features.html" class="block py-1 text-[var(--tui-text-muted)]" data-i18n="nav_features">Features</a>
+      <a href="architecture.html" class="block py-1 text-[var(--tui-text-muted)]" data-i18n="nav_architecture">Architecture</a>
+      <a href="download.html" class="block py-1 text-[var(--tui-text-muted)]" data-i18n="nav_download">Download</a>
+      <a href="faq.html" class="block py-1 text-[var(--tui-primary)] font-bold" data-i18n="nav_faq">FAQ</a>
+    </div>
+  </header>
+
+  <section class="py-10 border-b border-dashed border-[var(--tui-border-medium)]">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-2">
+      <div class="text-[11px] uppercase tracking-[0.08em] text-[var(--tui-primary)] font-bold">// ./FAQ</div>
+      <h1 class="text-3xl font-bold" data-i18n="faq_hero_title">&gt; Frequently Asked Questions</h1>
+      <p class="text-[13px] text-[var(--tui-text-muted)]" data-i18n="faq_hero_sub">Quick answers on Agent gating, loopback security, SmartScreen, and privacy.</p>
+    </div>
+  </section>
+
+  <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 pb-16 space-y-6 flex-1">
+
+    <div class="space-y-3">
+      <h2 class="text-xs font-bold uppercase tracking-[0.08em] text-[var(--tui-secondary)]" data-i18n="cat_hybrid">// 01. HYBRID AGENT &amp; OS CONTROL</h2>
+
+      <details class="tui-surface p-4 cursor-pointer" open>
+        <summary class="font-bold text-[13px] flex items-center justify-between gap-2 select-none">
+          <span data-i18n="faq_q1">Why separate Pomodoro and Scheduled Shutdown, and lock Shutdown when offline?</span>
+          <span class="faq-arrow text-[var(--tui-text-muted)]">&gt;</span>
+        </summary>
+        <p class="text-[12px] text-[var(--tui-text-muted)] mt-2.5 leading-[1.6]" data-i18n="faq_a1">Pomodoro runs purely inside the browser (countdown + Wake Lock). Windows shutdown.exe requires native OS access, so Tab 2 remains disabled={!isOnline} until MyDeusTools.Agent connects.</p>
+      </details>
+
+      <details class="tui-surface p-4 cursor-pointer">
+        <summary class="font-bold text-[13px] flex items-center justify-between gap-2 select-none">
+          <span data-i18n="faq_q2">Is http://127.0.0.1:41950 exposed to the LAN or Internet?</span>
+          <span class="faq-arrow text-[var(--tui-text-muted)]">&gt;</span>
+        </summary>
+        <p class="text-[12px] text-[var(--tui-text-muted)] mt-2.5 leading-[1.6]" data-i18n="faq_a2">No. LocalHttpBridgeServer binds strictly to loopback 127.0.0.1:41950 so external devices cannot reach it.</p>
+      </details>
+
+      <details class="tui-surface p-4 cursor-pointer">
+        <summary class="font-bold text-[13px] flex items-center justify-between gap-2 select-none">
+          <span data-i18n="faq_q3">How does Auto-Clicker work outside the browser (F6 / F7)?</span>
+          <span class="faq-arrow text-[var(--tui-text-muted)]">&gt;</span>
+        </summary>
+        <p class="text-[12px] text-[var(--tui-text-muted)] mt-2.5 leading-[1.6]" data-i18n="faq_a3">Tab 2 invokes Win32 mouse_event / SetCursorPos via the Agent (&gt;= 10ms clamp) with 40ms global hotkeys F6 (Start/Stop) and F7 (Capture screen X, Y).</p>
+      </details>
+    </div>
+
+    <div class="space-y-3">
+      <h2 class="text-xs font-bold uppercase tracking-[0.08em] text-[var(--tui-primary)]" data-i18n="cat_sec">// 02. PRIVACY &amp; SMARTSCREEN</h2>
+
+      <details class="tui-surface p-4 cursor-pointer">
+        <summary class="font-bold text-[13px] flex items-center justify-between gap-2 select-none">
+          <span data-i18n="faq_q4">Where is my data stored?</span>
+          <span class="faq-arrow text-[var(--tui-text-muted)]">&gt;</span>
+        </summary>
+        <p class="text-[12px] text-[var(--tui-text-muted)] mt-2.5 leading-[1.6]" data-i18n="faq_a4">In Web, notes/snippets/colors stay in browser IndexedDB (MyDeusToolsWebDB) with zero uploads. In WPF Desktop, settings and notes live in BaseDirectory\Data\*.json.</p>
+      </details>
+
+      <details class="tui-surface p-4 cursor-pointer">
+        <summary class="font-bold text-[13px] flex items-center justify-between gap-2 select-none">
+          <span data-i18n="faq_q5">Why does Windows SmartScreen warn on standalone .exe builds?</span>
+          <span class="faq-arrow text-[var(--tui-text-muted)]">&gt;</span>
+        </summary>
+        <p class="text-[12px] text-[var(--tui-text-muted)] mt-2.5 leading-[1.6]" data-i18n="faq_a5">Unsigned open-source executables invoking Win32 APIs (mouse_event, SetWindowPos) trigger standard SmartScreen reputation alerts. Full MIT source is inspectable and verifiable via dotnet test (282/282).</p>
+      </details>
+    </div>
+
+    <div class="space-y-3">
+      <h2 class="text-xs font-bold uppercase tracking-[0.08em] text-[var(--tui-tertiary)]" data-i18n="cat_ui">// 03. UI, I18N &amp; TESTING</h2>
+
+      <details class="tui-surface p-4 cursor-pointer">
+        <summary class="font-bold text-[13px] flex items-center justify-between gap-2 select-none">
+          <span data-i18n="faq_q6">How do Light/Dark, CRT, and EN/VI switching work?</span>
+          <span class="faq-arrow text-[var(--tui-text-muted)]">&gt;</span>
+        </summary>
+        <p class="text-[12px] text-[var(--tui-text-muted)] mt-2.5 leading-[1.6]" data-i18n="faq_a6">All header switches apply instantaneously without reload and persist in localStorage; TypeScript _viSymmetryCheck enforces 100% VI/EN key parity at build time.</p>
+      </details>
+
+      <details class="tui-surface p-4 cursor-pointer">
+        <summary class="font-bold text-[13px] flex items-center justify-between gap-2 select-none">
+          <span data-i18n="faq_q7">How is the codebase verified?</span>
+          <span class="faq-arrow text-[var(--tui-text-muted)]">&gt;</span>
+        </summary>
+        <p class="text-[12px] text-[var(--tui-text-muted)] mt-2.5 leading-[1.6]" data-i18n="faq_a7">Open-sourced under MIT by KaitoDeus &amp; Claude, verified continuously via 282 xUnit tests and Vite + TypeScript production builds.</p>
+      </details>
+    </div>
+
+  </main>
+
+  <script src="assets/site.js"></script>
+  <script>
+    registerTranslations({
+      en: {
+        faq_hero_title: '&gt; Frequently Asked Questions',
+        faq_hero_sub: 'Quick answers on Agent gating, loopback security, SmartScreen, and privacy.',
+        cat_hybrid: '// 01. HYBRID AGENT &amp; OS CONTROL',
+        faq_q1: 'Why separate Pomodoro and Scheduled Shutdown, and lock Shutdown when offline?',
+        faq_a1: 'Pomodoro runs purely inside the browser (countdown + Wake Lock). Windows shutdown.exe requires native OS access, so Tab 2 remains disabled={!isOnline} until MyDeusTools.Agent connects.',
+        faq_q2: 'Is http://127.0.0.1:41950 exposed to the LAN or Internet?',
+        faq_a2: 'No. LocalHttpBridgeServer binds strictly to loopback 127.0.0.1:41950 so external devices cannot reach it.',
+        faq_q3: 'How does Auto-Clicker work outside the browser (F6 / F7)?',
+        faq_a3: 'Tab 2 invokes Win32 mouse_event / SetCursorPos via the Agent (&gt;= 10ms clamp) with 40ms global hotkeys F6 (Start/Stop) and F7 (Capture screen X, Y).',
+        cat_sec: '// 02. PRIVACY &amp; SMARTSCREEN',
+        faq_q4: 'Where is my data stored?',
+        faq_a4: 'In Web, notes/snippets/colors stay in browser IndexedDB (MyDeusToolsWebDB) with zero uploads. In WPF Desktop, settings and notes live in BaseDirectory\\Data\\*.json.',
+        faq_q5: 'Why does Windows SmartScreen warn on standalone .exe builds?',
+        faq_a5: 'Unsigned open-source executables invoking Win32 APIs (mouse_event, SetWindowPos) trigger standard SmartScreen reputation alerts. Full MIT source is inspectable and verifiable via dotnet test (282/282).',
+        cat_ui: '// 03. UI, I18N &amp; TESTING',
+        faq_q6: 'How do Light/Dark, CRT, and EN/VI switching work?',
+        faq_a6: 'All header switches apply instantaneously without reload and persist in localStorage; TypeScript _viSymmetryCheck enforces 100% VI/EN key parity at build time.',
+        faq_q7: 'How is the codebase verified?',
+        faq_a7: 'Open-sourced under MIT by KaitoDeus &amp; Claude, verified continuously via 282 xUnit tests and Vite + TypeScript production builds.',
+      },
+      vi: {
+        faq_hero_title: '&gt; Giải đáp thắc mắc',
+        faq_hero_sub: 'Các câu hỏi chính về khoá Agent, bảo mật loopback, SmartScreen &amp; riêng tư.',
+        cat_hybrid: '// 01. AGENT &amp; ĐIỀU KHIỂN OS',
+        faq_q1: 'Tại sao tách Pomodoro &amp; Hẹn tắt máy và khoá Hẹn tắt máy khi offline?',
+        faq_a1: 'Pomodoro chạy thuần trình duyệt (Wake Lock + đếm ngược). Gọi shutdown.exe của Windows cần Local Agent nên Tab 2 bị khoá (disabled={!isOnline}) tới khi Agent bật.',
+        faq_q2: 'Cổng http://127.0.0.1:41950 có mở ra mạng LAN hay Internet không?',
+        faq_a2: 'Không. LocalHttpBridgeServer chỉ lắng nghe nội bộ loopback 127.0.0.1:41950.',
+        faq_q3: 'Làm thế nào Auto-Clicker bấm ngoài trình duyệt bằng F6 / F7?',
+        faq_a3: 'Tab 2 gọi Win32 mouse_event / SetCursorPos qua Agent (&gt;= 10ms) kèm phím tắt toàn cục 40ms F6 (Bật/Tắt) và F7 (Ghi toạ độ chuột X, Y).',
+        cat_sec: '// 02. RIÊNG TƯ &amp; SMARTSCREEN',
+        faq_q4: 'Dữ liệu của tôi được lưu ở đâu?',
+        faq_a4: 'Trên Web, ghi chú/snippet/màu lưu trong IndexedDB (MyDeusToolsWebDB) hoàn toàn tại máy; trên WPF Desktop lưu trong BaseDirectory\\Data\\*.json.',
+        faq_q5: 'Tại sao Windows SmartScreen cảnh báo file .exe mã nguồn mở?',
+        faq_a5: 'Tệp .exe chưa ký chứng chỉ số EV hoặc có Win32 API (mouse_event, SetWindowPos) thường hiện cảnh báo SmartScreen. Toàn bộ mã MIT đều mở để tự kiểm thử 282/282 test và tự build.',
+        cat_ui: '// 03. GIAO DIỆN, SONG NGỮ &amp; KIỂM THỬ',
+        faq_q6: 'Chuyển Sáng/Tối, CRT và VI/EN hoạt động ra sao?',
+        faq_a6: 'Chuyển đổi tức thì không reload, lưu trong localStorage; _viSymmetryCheck kiểm tra đối xứng 100% key VI/EN lúc build TypeScript.',
+        faq_q7: 'Chất lượng dự án được kiểm chứng thế nào?',
+        faq_a7: 'Phát hành giấy phép MIT bởi KaitoDeus &amp; Claude, kiểm chứng liên tục qua 282 xUnit test và bản build Vite + TypeScript.',
+      },
+    });
+  </script>
+</body>
+</html>

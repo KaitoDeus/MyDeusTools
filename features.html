@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>12 Modules &amp; Features — MyDeusTools</title>
+  <meta name="description" content="Concise specification for all 12 utilities across MyDeusTools Web (TerminalUI), Local Companion Agent (127.0.0.1:41950), and Native WPF." />
+  <link rel="icon" type="image/x-icon" href="avatar.ico" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { darkMode: 'class' };
+    (function () {
+      var t = localStorage.getItem('mdt_theme') || 'dark';
+      if (t === 'dark') document.documentElement.classList.add('dark');
+      else document.documentElement.classList.remove('dark');
+    })();
+  </script>
+  <link rel="stylesheet" href="assets/site.css" />
+</head>
+<body class="min-h-screen flex flex-col bg-[var(--tui-bg)] text-[var(--tui-text)] antialiased">
+
+  <header class="sticky top-0 z-50 tui-nav">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between gap-4">
+      <a href="index.html" class="flex items-center gap-2.5 shrink-0">
+        <div class="w-8 h-8 border border-[var(--tui-primary)] bg-[var(--tui-bg)] flex items-center justify-center p-1">
+          <img src="avatar.ico" alt="MyDeusTools" class="w-full h-full object-contain" />
+        </div>
+        <span class="font-bold text-[14px] tracking-[0.06em] text-[var(--tui-primary)] whitespace-nowrap">MYDEUSTOOLS</span>
+      </a>
+
+      <nav class="hidden md:flex items-center gap-5 lg:gap-7 text-[12px] whitespace-nowrap">
+        <a href="index.html" class="nav-link whitespace-nowrap shrink-0" data-i18n="nav_home">Home</a>
+        <a href="features.html" class="nav-link whitespace-nowrap shrink-0" data-i18n="nav_features">Features</a>
+        <a href="architecture.html" class="nav-link whitespace-nowrap shrink-0" data-i18n="nav_architecture">Architecture</a>
+        <a href="download.html" class="nav-link whitespace-nowrap shrink-0" data-i18n="nav_download">Download</a>
+        <a href="faq.html" class="nav-link whitespace-nowrap shrink-0" data-i18n="nav_faq">FAQ</a>
+      </nav>
+
+      <div class="flex items-center gap-2 shrink-0">
+        <button id="crtToggleBtn" type="button" title="CRT Scanlines" aria-label="Toggle CRT Scanlines" class="w-8 h-8 inline-flex items-center justify-center border border-[var(--tui-primary)] text-[var(--tui-primary)] cursor-pointer">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="14"/><path d="M8 21h8M12 18v3M6 9h12M6 13h8"/></svg>
+        </button>
+        <button id="langToggleBtn" type="button" title="Switch Language" class="h-8 px-2.5 inline-flex items-center justify-center text-[11px] font-bold border border-[var(--tui-tertiary)] text-[var(--tui-tertiary)] hover:bg-[var(--tui-tertiary)] hover:text-[var(--tui-primary-fg)] cursor-pointer">EN</button>
+        <button id="themeToggleBtn" type="button" title="Toggle Theme" aria-label="Toggle Color Theme" class="w-8 h-8 inline-flex items-center justify-center border border-[var(--tui-secondary)] text-[var(--tui-secondary)] hover:bg-[var(--tui-secondary)] hover:text-[var(--tui-primary-fg)] cursor-pointer">
+          <svg id="iconSun" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+          <svg id="iconMoon" class="w-4 h-4 hidden" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+        </button>
+        <a href="https://github.com/KaitoDeus/MyDeusTools" target="_blank" rel="noopener noreferrer" title="GitHub Repository" aria-label="GitHub Repository" class="w-8 h-8 inline-flex items-center justify-center border border-[var(--tui-border-medium)] text-[var(--tui-text)] hover:border-[var(--tui-primary)] hover:text-[var(--tui-primary)]">
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+        </a>
+        <button id="mobileMenuBtn" type="button" title="Menu" aria-label="Menu" class="md:hidden w-8 h-8 inline-flex items-center justify-center border border-[var(--tui-primary)] text-[var(--tui-primary)] cursor-pointer">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <div id="mobileMenu" class="hidden md:hidden tui-nav border-t border-[var(--tui-border-subtle)] px-4 py-3 space-y-2 text-[12px]">
+      <a href="index.html" class="block py-1 text-[var(--tui-text-muted)]" data-i18n="nav_home">Home</a>
+      <a href="features.html" class="block py-1 text-[var(--tui-primary)] font-bold" data-i18n="nav_features">Features</a>
+      <a href="architecture.html" class="block py-1 text-[var(--tui-text-muted)]" data-i18n="nav_architecture">Architecture</a>
+      <a href="download.html" class="block py-1 text-[var(--tui-text-muted)]" data-i18n="nav_download">Download</a>
+      <a href="faq.html" class="block py-1 text-[var(--tui-text-muted)]" data-i18n="nav_faq">FAQ</a>
+    </div>
+  </header>
+
+  <section class="py-10 border-b border-dashed border-[var(--tui-border-medium)]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-5">
+      <div class="space-y-2 max-w-3xl">
+        <div class="text-[11px] uppercase tracking-[0.08em] text-[var(--tui-primary)] font-bold">// ./FEATURES_SPEC (01..12)</div>
+        <h1 class="text-3xl font-bold" data-i18n="feat_page_title">&gt; 12 Focused Modules.</h1>
+        <p class="text-[13px] text-[var(--tui-text-muted)]" data-i18n="feat_page_sub">Browser-native capabilities paired with Local Companion Agent (127.0.0.1:41950) and WPF Desktop.</p>
+      </div>
+
+      <div class="flex flex-wrap gap-2 text-[11px]">
+        <a href="#stickynotes" class="px-2 py-1 border border-[var(--tui-border-medium)] hover:border-[var(--tui-primary)]">01:sticky-notes</a>
+        <a href="#clipboard" class="px-2 py-1 border border-[var(--tui-border-medium)] hover:border-[var(--tui-primary)]">02:clip-vault</a>
+        <a href="#shutdown" class="px-2 py-1 border border-[var(--tui-secondary)] text-[var(--tui-secondary)]">03:smart-timer</a>
+        <a href="#textdev" class="px-2 py-1 border border-[var(--tui-border-medium)] hover:border-[var(--tui-primary)]">04:text-devtools</a>
+        <a href="#qrcode" class="px-2 py-1 border border-[var(--tui-border-medium)] hover:border-[var(--tui-primary)]">05:qr-studio</a>
+        <a href="#color" class="px-2 py-1 border border-[var(--tui-border-medium)] hover:border-[var(--tui-primary)]">06:color-picker</a>
+        <a href="#pdftoolkit" class="px-2 py-1 border border-[var(--tui-border-medium)] hover:border-[var(--tui-primary)]">07:pdf-toolkit</a>
+        <a href="#imagestudio" class="px-2 py-1 border border-[var(--tui-border-medium)] hover:border-[var(--tui-primary)]">08:img-studio</a>
+        <a href="#videoconverter" class="px-2 py-1 border border-[var(--tui-border-medium)] hover:border-[var(--tui-primary)]">09:video-wasm</a>
+        <a href="#bulkrenamer" class="px-2 py-1 border border-[var(--tui-border-medium)] hover:border-[var(--tui-primary)]">10:bulk-rename</a>
+        <a href="#autoclicker" class="px-2 py-1 border border-[var(--tui-primary)] text-[var(--tui-primary)]">11:auto-click</a>
+        <a href="#pinner" class="px-2 py-1 border border-[var(--tui-tertiary)] text-[var(--tui-tertiary)]">12:pip-float</a>
+      </div>
+    </div>
+  </section>
+
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 pb-16 space-y-6 flex-1">
+
+    <section id="stickynotes" class="scroll-mt-20 tui-surface p-6 grid grid-cols-1 lg:grid-cols-12 gap-5 items-center">
+      <div class="lg:col-span-7 space-y-2">
+        <div class="text-[11px] font-bold text-[var(--tui-secondary)]">01 // ./sticky-notes [INDEXEDDB + PiP]</div>
+        <h2 class="text-xl font-bold" data-i18n="s1_t">Sticky Notes</h2>
+        <p class="text-[12px] text-[var(--tui-text-muted)]" data-i18n="s1_d">Color tags, pin sort, IndexedDB auto-save, Document PiP pop-out (Web) &amp; floating desktop pins (WPF).</p>
+      </div>
+      <div class="lg:col-span-5 tui-code-box p-3 text-[12px]">
+        <div class="text-[var(--tui-secondary)] font-bold">[PINNED] RELEASE_NOTES</div>
+        <div class="text-[var(--tui-text-muted)]">IndexedDB auto-saved + [PiP] floating buffer</div>
+      </div>
+    </section>
+
+    <section id="clipboard" class="scroll-mt-20 tui-surface p-6 grid grid-cols-1 lg:grid-cols-12 gap-5 items-center">
+      <div class="lg:col-span-7 space-y-2">
+        <div class="text-[11px] font-bold text-[var(--tui-tertiary)]">02 // ./clip-vault [CLIPBOARD_API]</div>
+        <h2 class="text-xl font-bold" data-i18n="s2_t">Clipboard Snippets</h2>
+        <p class="text-[12px] text-[var(--tui-text-muted)]" data-i18n="s2_d">Tag search, usage counters &amp; OS Clipboard paste on Web; Win32 AddClipboardFormatListener on WPF.</p>
+      </div>
+      <div class="lg:col-span-5 tui-code-box p-3 text-[12px]">
+        <div class="text-[var(--tui-tertiary)] font-bold">#DOCKER_CLEAN | USES: 42</div>
+        <div class="text-[var(--tui-text-muted)]">docker system prune -af --volumes</div>
+      </div>
+    </section>
+
+    <section id="shutdown" class="scroll-mt-20 tui-surface-elevated p-6 grid grid-cols-1 lg:grid-cols-12 gap-5 items-center border border-[var(--tui-secondary)]">
+      <div class="lg:col-span-7 space-y-2">
+        <div class="text-[11px] font-bold text-[var(--tui-secondary)]">03 // ./smart-timer [2_TABS // AGENT_GATE]</div>
+        <h2 class="text-xl font-bold" data-i18n="s3_t">Smart Timer &amp; Scheduled Shutdown</h2>
+        <p class="text-[12px] text-[var(--tui-text-muted)]" data-i18n="s3_d">Tab 1 Pomodoro (Wake Lock, Webhook, 70m normalization) runs anytime; Tab 2 Windows Shutdown enables ONLY when Agent is online.</p>
+      </div>
+      <div class="lg:col-span-5 tui-code-box p-3 text-[12px] space-y-1">
+        <div class="text-[var(--tui-secondary)] font-bold">01:POMODORO | 02:SHUTDOWN [LOCKED]</div>
+        <div class="text-[var(--tui-text-muted)]">70m -&gt; 01:10:00 | Shutdown / Restart / Hibernate</div>
+      </div>
+    </section>
+
+    <section id="textdev" class="scroll-mt-20 tui-surface p-6 grid grid-cols-1 lg:grid-cols-12 gap-5 items-center">
+      <div class="lg:col-span-7 space-y-2">
+        <div class="text-[11px] font-bold text-[var(--tui-primary)]">04 // ./text-devtools [5_TABS]</div>
+        <h2 class="text-xl font-bold" data-i18n="s4_t">Text &amp; Dev Tools</h2>
+        <p class="text-[12px] text-[var(--tui-text-muted)]" data-i18n="s4_d">JSON Studio, Base64 text &amp; files, Web Crypto SHA-1/256/512 (+ MD5 on WPF), 7 case modes &amp; URL encoder.</p>
+      </div>
+      <div class="lg:col-span-5 tui-code-box p-3 text-[12px]">
+        <div class="text-[var(--tui-primary)] font-bold">FORMAT | MINIFY | HASH</div>
+        <div class="text-[var(--tui-text-muted)]">100% browser memory &amp; Web Crypto</div>
+      </div>
+    </section>
+
+    <section id="qrcode" class="scroll-mt-20 tui-surface p-6 grid grid-cols-1 lg:grid-cols-12 gap-5 items-center">
+      <div class="lg:col-span-7 space-y-2">
+        <div class="text-[11px] font-bold text-[var(--tui-tertiary)]">05 // ./qr-studio [PNG]</div>
+        <h2 class="text-xl font-bold" data-i18n="s5_t">QR Code Studio</h2>
+        <p class="text-[12px] text-[var(--tui-text-muted)]" data-i18n="s5_d">Custom hex colors, presets (HACKER/CLASSIC/CYAN/AMBER), L/M/Q/H ECC, PNG export &amp; WPF screen snipping.</p>
+      </div>
+      <div class="lg:col-span-5 tui-code-box p-3 text-[12px]">
+        <div class="text-[var(--tui-tertiary)] font-bold">PRESET: HACKER (#00FF41 / #0D0D0D)</div>
+        <div class="text-[var(--tui-text-muted)]">Export PNG or copy bitmap</div>
+      </div>
+    </section>
+
+    <section id="color" class="scroll-mt-20 tui-surface p-6 grid grid-cols-1 lg:grid-cols-12 gap-5 items-center">
+      <div class="lg:col-span-7 space-y-2">
+        <div class="text-[11px] font-bold text-[var(--tui-primary)]">06 // ./color-picker [EYEDROPPER_API]</div>
+        <h2 class="text-xl font-bold" data-i18n="s6_t">Color Eyedropper</h2>
+        <p class="text-[12px] text-[var(--tui-text-muted)]" data-i18n="s6_d">Screen EyeDropper API sampler (11x11 GDI HUD on WPF), HEX/RGB/HSL conversion &amp; IndexedDB palette history.</p>
+      </div>
+      <div class="lg:col-span-5 tui-code-box p-3 text-[12px]">
+        <div class="text-[var(--tui-primary)] font-bold">#00FF41 | RGB(0, 255, 65)</div>
+        <div class="text-[var(--tui-text-muted)]">Saved to MyDeusToolsWebDB.colors</div>
+      </div>
+    </section>
+
+    <section id="pdftoolkit" class="scroll-mt-20 tui-surface p-6 grid grid-cols-1 lg:grid-cols-12 gap-5 items-center">
+      <div class="lg:col-span-7 space-y-2">
+        <div class="text-[11px] font-bold text-[var(--tui-secondary)]">07 // ./pdf-toolkit [OFFLINE]</div>
+        <h2 class="text-xl font-bold" data-i18n="s7_t">PDF Toolkit</h2>
+        <p class="text-[12px] text-[var(--tui-text-muted)]" data-i18n="s7_d">Zero-upload Merge &amp; range Split (1-3, 5) via pdf-lib on Web; adds Images-to-PDF &amp; encryption on WPF.</p>
+      </div>
+      <div class="lg:col-span-5 tui-code-box p-3 text-[12px]">
+        <div class="text-[var(--tui-secondary)] font-bold">MERGE_QUEUE | SPLIT_RANGE: 1-3, 5</div>
+        <div class="text-[var(--tui-text-muted)]">Zero bytes sent to external servers</div>
+      </div>
+    </section>
+
+    <section id="imagestudio" class="scroll-mt-20 tui-surface p-6 grid grid-cols-1 lg:grid-cols-12 gap-5 items-center">
+      <div class="lg:col-span-7 space-y-2">
+        <div class="text-[11px] font-bold text-[var(--tui-tertiary)]">08 // ./img-studio [CANVAS_ENGINE]</div>
+        <h2 class="text-xl font-bold" data-i18n="s8_t">Image Studio</h2>
+        <p class="text-[12px] text-[var(--tui-text-muted)]" data-i18n="s8_d">Canvas batch compress (WebP/JPEG/PNG), scale &amp; auto-strip EXIF/GPS (plus multi-layer .ico in WPF).</p>
+      </div>
+      <div class="lg:col-span-5 tui-code-box p-3 text-[12px]">
+        <div class="text-[var(--tui-tertiary)] font-bold">WEBP | QUALITY: 80% | SCALE: 100%</div>
+        <div class="text-[var(--tui-text-muted)]">EXIF / GPS stripped automatically</div>
+      </div>
+    </section>
+
+    <section id="videoconverter" class="scroll-mt-20 tui-surface p-6 grid grid-cols-1 lg:grid-cols-12 gap-5 items-center">
+      <div class="lg:col-span-7 space-y-2">
+        <div class="text-[11px] font-bold text-[var(--tui-primary)]">09 // ./video-wasm [VIDEO]</div>
+        <h2 class="text-xl font-bold" data-i18n="s9_t">Video Converter</h2>
+        <p class="text-[12px] text-[var(--tui-text-muted)]" data-i18n="s9_d">MP4/WebM/MP3/GIF &amp; CRF workflow UI on Web; full native FFmpeg + GPU NVENC/QSV/AMF transcoding on WPF.</p>
+      </div>
+      <div class="lg:col-span-5 tui-code-box p-3 text-[12px]">
+        <div class="text-[var(--tui-primary)] font-bold">MP4 / WEBM / MP3 / GIF</div>
+        <div class="text-[var(--tui-text-muted)]">WPF: Native FFmpeg + GPU Acceleration</div>
+      </div>
+    </section>
+
+    <section id="bulkrenamer" class="scroll-mt-20 tui-surface p-6 grid grid-cols-1 lg:grid-cols-12 gap-5 items-center">
+      <div class="lg:col-span-7 space-y-2">
+        <div class="text-[11px] font-bold text-[var(--tui-secondary)]">10 // ./bulk-rename [FS_ACCESS_API]</div>
+        <h2 class="text-xl font-bold" data-i18n="s10_t">Bulk File Renamer</h2>
+        <p class="text-[12px] text-[var(--tui-text-muted)]" data-i18n="s10_d">Rename disk directories via showDirectoryPicker or export batches as ZIP via JSZip (Regex, prefix &amp; case rules).</p>
+      </div>
+      <div class="lg:col-span-5 tui-code-box p-3 text-[12px]">
+        <div class="text-[var(--tui-secondary)] font-bold">IMG_2026.png -&gt; 2026_Photo_2026.png</div>
+        <div class="text-[var(--tui-text-muted)]">Live dry-run preview before apply</div>
+      </div>
+    </section>
+
+    <section id="autoclicker" class="scroll-mt-20 tui-surface-elevated p-6 grid grid-cols-1 lg:grid-cols-12 gap-5 items-center border border-[var(--tui-primary)]">
+      <div class="lg:col-span-7 space-y-2">
+        <div class="text-[11px] font-bold text-[var(--tui-primary)]">11 // ./auto-click [DOM + WIN32_AGENT]</div>
+        <h2 class="text-xl font-bold" data-i18n="s11_t">Auto Clicker Pro</h2>
+        <p class="text-[12px] text-[var(--tui-text-muted)]" data-i18n="s11_d">Web DOM loop + Bookmarklet offline; global OS/Game clicking (&gt;= 10ms) with F6 Toggle &amp; F7 Waypoint capture via Agent.</p>
+      </div>
+      <div class="lg:col-span-5 tui-code-box p-3 text-[12px]">
+        <div class="text-[var(--tui-primary)] font-bold">POST /api/autoclick/start</div>
+        <div class="text-[var(--tui-text-muted)]">Hotkeys: F6 (Toggle) | F7 (Capture XY)</div>
+      </div>
+    </section>
+
+    <section id="pinner" class="scroll-mt-20 tui-surface p-6 grid grid-cols-1 lg:grid-cols-12 gap-5 items-center">
+      <div class="lg:col-span-7 space-y-2">
+        <div class="text-[11px] font-bold text-[var(--tui-tertiary)]">12 // ./pip-float [PiP + TOPMOST]</div>
+        <h2 class="text-xl font-bold" data-i18n="s12_t">Window Pinner &amp; PiP</h2>
+        <p class="text-[12px] text-[var(--tui-text-muted)]" data-i18n="s12_d">Document PiP Clock/Scratchpad widgets, plus OS window listing, HWND_TOPMOST &amp; 40-100% opacity via Agent.</p>
+      </div>
+      <div class="lg:col-span-5 tui-code-box p-3 text-[12px]">
+        <div class="text-[var(--tui-tertiary)] font-bold">GET /api/windows | POST /pin &amp; /opacity</div>
+        <div class="text-[var(--tui-text-muted)]">Always-on-Top + 100/80/60/40% presets</div>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="assets/site.js"></script>
+  <script>
+    registerTranslations({
+      en: {
+        feat_page_title: '&gt; 12 Focused Modules.',
+        feat_page_sub: 'Browser-native capabilities paired with Local Companion Agent (127.0.0.1:41950) and WPF Desktop.',
+        s1_t: 'Sticky Notes',
+        s1_d: 'Color tags, pin sort, IndexedDB auto-save, Document PiP pop-out (Web) &amp; floating desktop pins (WPF).',
+        s2_t: 'Clipboard Snippets',
+        s2_d: 'Tag search, usage counters &amp; OS Clipboard paste on Web; Win32 AddClipboardFormatListener on WPF.',
+        s3_t: 'Smart Timer &amp; Scheduled Shutdown',
+        s3_d: 'Tab 1 Pomodoro (Wake Lock, Webhook, 70m normalization) runs anytime; Tab 2 Windows Shutdown enables ONLY when Agent is online.',
+        s4_t: 'Text &amp; Dev Tools',
+        s4_d: 'JSON Studio, Base64 text &amp; files, Web Crypto SHA-1/256/512 (+ MD5 on WPF), 7 case modes &amp; URL encoder.',
+        s5_t: 'QR Code Studio',
+        s5_d: 'Custom hex colors, presets (HACKER/CLASSIC/CYAN/AMBER), L/M/Q/H ECC, PNG export &amp; WPF screen snipping.',
+        s6_t: 'Color Eyedropper',
+        s6_d: 'Screen EyeDropper API sampler (11x11 GDI HUD on WPF), HEX/RGB/HSL conversion &amp; IndexedDB palette history.',
+        s7_t: 'PDF Toolkit',
+        s7_d: 'Zero-upload Merge &amp; range Split (1-3, 5) via pdf-lib on Web; adds Images-to-PDF &amp; encryption on WPF.',
+        s8_t: 'Image Studio',
+        s8_d: 'Canvas batch compress (WebP/JPEG/PNG), scale &amp; auto-strip EXIF/GPS (plus multi-layer .ico in WPF).',
+        s9_t: 'Video Converter',
+        s9_d: 'MP4/WebM/MP3/GIF &amp; CRF workflow UI on Web; full native FFmpeg + GPU NVENC/QSV/AMF transcoding on WPF.',
+        s10_t: 'Bulk File Renamer',
+        s10_d: 'Rename disk directories via showDirectoryPicker or export batches as ZIP via JSZip (Regex, prefix &amp; case rules).',
+        s11_t: 'Auto Clicker Pro',
+        s11_d: 'Web DOM loop + Bookmarklet offline; global OS/Game clicking (&gt;= 10ms) with F6 Toggle &amp; F7 Waypoint capture via Agent.',
+        s12_t: 'Window Pinner &amp; PiP',
+        s12_d: 'Document PiP Clock/Scratchpad widgets, plus OS window listing, HWND_TOPMOST &amp; 40-100% opacity via Agent.',
+      },
+      vi: {
+        feat_page_title: '&gt; 12 Module Gọn Nhẹ.',
+        feat_page_sub: 'Chạy thuần trình duyệt, kết hợp Local Companion Agent (127.0.0.1:41950) &amp; bản WPF Desktop.',
+        s1_t: 'Ghi chú nổi (Sticky Notes)',
+        s1_d: 'Thẻ phân màu, ghim đầu, tự lưu IndexedDB, nổi Document PiP (Web) &amp; cửa sổ desktop (WPF).',
+        s2_t: 'Lưu trữ Clipboard &amp; Snippet',
+        s2_d: 'Tìm theo tag, đếm lượt dùng &amp; dán OS Clipboard trên Web; Win32 hook AddClipboardFormatListener trên WPF.',
+        s3_t: 'Hẹn giờ Tập trung &amp; Hẹn tắt máy',
+        s3_d: 'Tab 1 Pomodoro (Wake Lock, Webhook, chuẩn hoá 70m) chạy mọi lúc; Tab 2 Hẹn tắt máy chỉ mở khi Agent online.',
+        s4_t: 'Văn bản &amp; Dev Tools',
+        s4_d: 'JSON Studio, Base64 văn bản &amp; tệp, SHA-1/256/512 (+ MD5 trên WPF), 7 kiểu đổi chữ &amp; URL.',
+        s5_t: 'QR Code Studio',
+        s5_d: 'Tuỳ chỉnh màu, preset (HACKER/CLASSIC/CYAN/AMBER), sửa lỗi L/M/Q/H, xuất PNG &amp; quét vùng trên WPF.',
+        s6_t: 'Lấy mã màu màn hình',
+        s6_d: 'Bắt điểm ảnh qua EyeDropper API (hoặc kính lúp GDI 11x11 WPF), đổi HEX/RGB/HSL &amp; lưu IndexedDB.',
+        s7_t: 'Bộ công cụ PDF',
+        s7_d: 'Ghép &amp; tách trang (1-3, 5) không upload bằng pdf-lib trên Web; thêm ghép ảnh &amp; đặt mật khẩu trên WPF.',
+        s8_t: 'Xử lý &amp; Nén ảnh',
+        s8_d: 'Nén hàng loạt WebP/JPEG/PNG qua Canvas, đổi tỷ lệ &amp; xoá EXIF/GPS tự động (thêm .ico đa tầng trên WPF).',
+        s9_t: 'Chuyển đổi Video',
+        s9_d: 'Giao diện chọn MP4/WebM/MP3/GIF &amp; CRF trên Web; động cơ FFmpeg + GPU NVENC/QSV/AMF trên WPF.',
+        s10_t: 'Đổi tên tệp hàng loạt',
+        s10_d: 'Đổi trực tiếp thư mục ổ đĩa bằng showDirectoryPicker hoặc tải tệp ZIP qua JSZip (Regex, tiền tố, đổi chữ).',
+        s11_t: 'Tự động click chuột',
+        s11_d: 'Vòng lặp DOM + Bookmarklet offline; click toàn Windows/Game (&gt;= 10ms) kèm phím F6/F7 qua Agent.',
+        s12_t: 'Ghim cửa sổ &amp; PiP',
+        s12_d: 'Widget đồng hồ/nháp nổi Document PiP, kèm liệt kê cửa sổ OS, ghim HWND_TOPMOST &amp; chỉnh độ mờ qua Agent.',
+      },
+    });
+  </script>
+</body>
+</html>

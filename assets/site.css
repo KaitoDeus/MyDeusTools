@@ -1,0 +1,203 @@
+/* MyDeusTools — Shared TerminalUI Stylesheet */
+
+:root {
+  /* TerminalUI Light Mode (TTY Paper) */
+  --tui-bg: #f4f4ee;
+  --tui-surface: #ffffff;
+  --tui-surface-elevated: #eaeae2;
+  --tui-primary: #007a1f;
+  --tui-primary-fg: #ffffff;
+  --tui-secondary: #cc4d00;
+  --tui-tertiary: #0077aa;
+  --tui-error: #cc0033;
+  --tui-text: #141414;
+  --tui-text-muted: #555555;
+  --tui-text-dim: #777777;
+  --tui-border-subtle: #d2d2ca;
+  --tui-border-medium: #8c8c84;
+  --tui-border-hover: #555550;
+  --tui-scanline: rgba(0, 122, 31, 0.025);
+}
+
+.dark {
+  /* TerminalUI Dark Spec (Exact Tokens) */
+  --tui-bg: #0d0d0d;
+  --tui-surface: #141414;
+  --tui-surface-elevated: #1a1a1a;
+  --tui-primary: #00ff41;
+  --tui-primary-fg: #0d0d0d;
+  --tui-secondary: #ff6600;
+  --tui-tertiary: #00bfff;
+  --tui-error: #ff0040;
+  --tui-text: #e2e2e2;
+  --tui-text-muted: #8b8b8b;
+  --tui-text-dim: #555555;
+  --tui-border-subtle: #222222;
+  --tui-border-medium: #444444;
+  --tui-border-hover: #666666;
+  --tui-scanline: rgba(0, 255, 65, 0.03);
+}
+
+*,
+*::before,
+*::after {
+  font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
+  border-radius: 0px !important;
+  box-shadow: none !important;
+  transition-timing-function: steps(1, end) !important;
+}
+
+html,
+body {
+  background-color: var(--tui-bg);
+  color: var(--tui-text);
+  font-size: 14px;
+  line-height: 1.6;
+  letter-spacing: 0.02em;
+  overflow-x: hidden;
+}
+
+::selection {
+  background-color: var(--tui-primary);
+  color: var(--tui-primary-fg);
+}
+
+/* Sharp Terminal Surfaces */
+.tui-surface {
+  background-color: var(--tui-surface);
+  border: 1px solid var(--tui-border-subtle);
+}
+
+.tui-surface:hover {
+  border-color: var(--tui-border-medium);
+}
+
+.tui-surface-elevated {
+  background-color: var(--tui-surface-elevated);
+  border: 1px solid var(--tui-border-medium);
+}
+
+.tui-nav {
+  background-color: var(--tui-surface);
+  border-bottom: 1px solid var(--tui-border-subtle);
+}
+
+.tui-code-box {
+  background-color: var(--tui-bg);
+  border: 1px solid var(--tui-border-medium);
+}
+
+/* Optional CRT Scanlines */
+.tui-scanlines {
+  background-image: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 1px,
+    var(--tui-scanline) 1px,
+    var(--tui-scanline) 2px
+  );
+  pointer-events: none;
+}
+
+/* Stepped Blinking Block Cursor */
+@keyframes tui-blink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
+.tui-cursor {
+  display: inline-block;
+  width: 8px;
+  height: 1.1em;
+  background-color: var(--tui-primary);
+  vertical-align: text-bottom;
+  animation: tui-blink 1s steps(1, end) infinite;
+}
+
+/* Sharp 6px Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--tui-bg);
+  border-left: 1px solid var(--tui-border-subtle);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--tui-border-medium);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--tui-primary);
+}
+
+/* Nav Link Active Indicator */
+.nav-link {
+  color: var(--tui-text-muted);
+  border-bottom: 2px solid transparent;
+  padding: 4px 2px;
+}
+
+.nav-link:hover {
+  color: var(--tui-text);
+}
+
+.nav-link.active {
+  color: var(--tui-primary);
+  font-weight: 700;
+  border-bottom-color: var(--tui-primary);
+}
+
+/* Details Accordion Clean Styling */
+details summary::-webkit-details-marker {
+  display: none;
+}
+
+details[open] .faq-arrow {
+  transform: rotate(90deg);
+  color: var(--tui-primary);
+}
+
+/* Interactive Buttons */
+.tui-btn-primary {
+  background: transparent;
+  color: var(--tui-primary);
+  border: 1px solid var(--tui-primary);
+}
+.tui-btn-primary:hover:not(:disabled) {
+  background: var(--tui-primary);
+  color: var(--tui-primary-fg);
+}
+
+.tui-btn-secondary {
+  background: transparent;
+  color: var(--tui-tertiary);
+  border: 1px solid var(--tui-tertiary);
+}
+.tui-btn-secondary:hover:not(:disabled) {
+  background: var(--tui-tertiary);
+  color: var(--tui-primary-fg);
+}
+
+.tui-btn-amber {
+  background: transparent;
+  color: var(--tui-secondary);
+  border: 1px solid var(--tui-secondary);
+}
+.tui-btn-amber:hover:not(:disabled) {
+  background: var(--tui-secondary);
+  color: var(--tui-primary-fg);
+}
+
+button:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}

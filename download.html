@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Download &amp; Launch — MyDeusTools</title>
+  <meta name="description" content="Run MyDeusTools Web locally, launch the optional .NET 8 Local Companion Agent, or build/download standalone Windows x64 binaries." />
+  <link rel="icon" type="image/x-icon" href="avatar.ico" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { darkMode: 'class' };
+    (function () {
+      var t = localStorage.getItem('mdt_theme') || 'dark';
+      if (t === 'dark') document.documentElement.classList.add('dark');
+      else document.documentElement.classList.remove('dark');
+    })();
+  </script>
+  <link rel="stylesheet" href="assets/site.css" />
+</head>
+<body class="min-h-screen flex flex-col bg-[var(--tui-bg)] text-[var(--tui-text)] antialiased">
+
+  <header class="sticky top-0 z-50 tui-nav">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between gap-4">
+      <a href="index.html" class="flex items-center gap-2.5 shrink-0">
+        <div class="w-8 h-8 border border-[var(--tui-primary)] bg-[var(--tui-bg)] flex items-center justify-center p-1">
+          <img src="avatar.ico" alt="MyDeusTools" class="w-full h-full object-contain" />
+        </div>
+        <span class="font-bold text-[14px] tracking-[0.06em] text-[var(--tui-primary)] whitespace-nowrap">MYDEUSTOOLS</span>
+      </a>
+
+      <nav class="hidden md:flex items-center gap-5 lg:gap-7 text-[12px] whitespace-nowrap">
+        <a href="index.html" class="nav-link whitespace-nowrap shrink-0" data-i18n="nav_home">Home</a>
+        <a href="features.html" class="nav-link whitespace-nowrap shrink-0" data-i18n="nav_features">Features</a>
+        <a href="architecture.html" class="nav-link whitespace-nowrap shrink-0" data-i18n="nav_architecture">Architecture</a>
+        <a href="download.html" class="nav-link whitespace-nowrap shrink-0" data-i18n="nav_download">Download</a>
+        <a href="faq.html" class="nav-link whitespace-nowrap shrink-0" data-i18n="nav_faq">FAQ</a>
+      </nav>
+
+      <div class="flex items-center gap-2 shrink-0">
+        <button id="crtToggleBtn" type="button" title="CRT Scanlines" aria-label="Toggle CRT Scanlines" class="w-8 h-8 inline-flex items-center justify-center border border-[var(--tui-primary)] text-[var(--tui-primary)] cursor-pointer">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="14"/><path d="M8 21h8M12 18v3M6 9h12M6 13h8"/></svg>
+        </button>
+        <button id="langToggleBtn" type="button" title="Switch Language" class="h-8 px-2.5 inline-flex items-center justify-center text-[11px] font-bold border border-[var(--tui-tertiary)] text-[var(--tui-tertiary)] hover:bg-[var(--tui-tertiary)] hover:text-[var(--tui-primary-fg)] cursor-pointer">EN</button>
+        <button id="themeToggleBtn" type="button" title="Toggle Theme" aria-label="Toggle Color Theme" class="w-8 h-8 inline-flex items-center justify-center border border-[var(--tui-secondary)] text-[var(--tui-secondary)] hover:bg-[var(--tui-secondary)] hover:text-[var(--tui-primary-fg)] cursor-pointer">
+          <svg id="iconSun" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+          <svg id="iconMoon" class="w-4 h-4 hidden" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+        </button>
+        <a href="https://github.com/KaitoDeus/MyDeusTools" target="_blank" rel="noopener noreferrer" title="GitHub Repository" aria-label="GitHub Repository" class="w-8 h-8 inline-flex items-center justify-center border border-[var(--tui-border-medium)] text-[var(--tui-text)] hover:border-[var(--tui-primary)] hover:text-[var(--tui-primary)]">
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+        </a>
+        <button id="mobileMenuBtn" type="button" title="Menu" aria-label="Menu" class="md:hidden w-8 h-8 inline-flex items-center justify-center border border-[var(--tui-primary)] text-[var(--tui-primary)] cursor-pointer">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <div id="mobileMenu" class="hidden md:hidden tui-nav border-t border-[var(--tui-border-subtle)] px-4 py-3 space-y-2 text-[12px]">
+      <a href="index.html" class="block py-1 text-[var(--tui-text-muted)]" data-i18n="nav_home">Home</a>
+      <a href="features.html" class="block py-1 text-[var(--tui-text-muted)]" data-i18n="nav_features">Features</a>
+      <a href="architecture.html" class="block py-1 text-[var(--tui-text-muted)]" data-i18n="nav_architecture">Architecture</a>
+      <a href="download.html" class="block py-1 text-[var(--tui-primary)] font-bold" data-i18n="nav_download">Download</a>
+      <a href="faq.html" class="block py-1 text-[var(--tui-text-muted)]" data-i18n="nav_faq">FAQ</a>
+    </div>
+  </header>
+
+  <section class="py-10 border-b border-dashed border-[var(--tui-border-medium)]">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-2">
+      <div class="text-[11px] uppercase tracking-[0.08em] text-[var(--tui-primary)] font-bold">// ./DISTRIBUTIONS</div>
+      <h1 class="text-3xl font-bold" data-i18n="dl_title">&gt; Run or Download</h1>
+      <p class="text-[13px] text-[var(--tui-text-muted)]" data-i18n="dl_subtitle">Start the TerminalUI Web App, optional .NET 8 Local Companion Agent, or portable WPF EXE.</p>
+    </div>
+  </section>
+
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 pb-16 space-y-6 flex-1">
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+      <div class="tui-surface-elevated p-5 flex flex-col justify-between space-y-4 border border-[var(--tui-primary)]">
+        <div class="space-y-2">
+          <div class="text-[11px] font-bold text-[var(--tui-primary)]">01 // WEB_APP</div>
+          <h2 class="text-lg font-bold" data-i18n="opt1_t">MyDeusTools.Web</h2>
+          <p class="text-[12px] text-[var(--tui-text-muted)]" data-i18n="opt1_d">Client-side React 19 + Vite 8 + IndexedDB.</p>
+          <div class="tui-code-box p-3 text-[11px] space-y-1">
+            <div><span class="text-[var(--tui-primary)]">$</span> npm --prefix MyDeusTools.Web install</div>
+            <div><span class="text-[var(--tui-primary)]">$</span> npm run web:dev</div>
+          </div>
+        </div>
+        <button type="button" onclick="copyCommand(this, 'npm --prefix MyDeusTools.Web install && npm run web:dev')" class="w-full py-2 text-[11px] font-bold tui-btn-primary cursor-pointer">[COPY_WEB_CMD]</button>
+      </div>
+
+      <div class="tui-surface p-5 flex flex-col justify-between space-y-4 border border-[var(--tui-secondary)]">
+        <div class="space-y-2">
+          <div class="text-[11px] font-bold text-[var(--tui-secondary)]">02 // WIN32_AGENT</div>
+          <h2 class="text-lg font-bold" data-i18n="opt2_t">MyDeusTools.Agent</h2>
+          <p class="text-[12px] text-[var(--tui-text-muted)]" data-i18n="opt2_d">OS Shutdown, F6/F7 Auto-Click &amp; Window Pinner (127.0.0.1:41950).</p>
+          <div class="tui-code-box p-3 text-[11px] space-y-1">
+            <div><span class="text-[var(--tui-secondary)]">$</span> npm run agent:dev</div>
+            <div><span class="text-[var(--tui-secondary)]">$</span> npm run agent:publish</div>
+          </div>
+        </div>
+        <button type="button" onclick="copyCommand(this, 'npm run agent:dev')" class="w-full py-2 text-[11px] font-bold tui-btn-amber cursor-pointer">[COPY_AGENT_CMD]</button>
+      </div>
+
+      <div class="tui-surface p-5 flex flex-col justify-between space-y-4 border border-[var(--tui-tertiary)]">
+        <div class="space-y-2">
+          <div class="text-[11px] font-bold text-[var(--tui-tertiary)]">03 // DESKTOP_WPF</div>
+          <h2 class="text-lg font-bold" data-i18n="opt3_t">MyDeusTools.App.exe</h2>
+          <p class="text-[12px] text-[var(--tui-text-muted)]" data-i18n="opt3_d">Portable single-file EXE (WPF-UI 3.0 + FFmpeg + PDFsharp).</p>
+        </div>
+        <a href="https://github.com/KaitoDeus/MyDeusTools/releases" target="_blank" rel="noopener noreferrer" class="w-full py-2 text-[11px] font-bold tui-btn-secondary text-center block" data-i18n="dl_btn_main">[GITHUB_RELEASES]</a>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+      <div class="tui-surface p-5 space-y-2.5 text-[12px]">
+        <h3 class="font-bold text-[13px] text-[var(--tui-primary)] border-b border-dashed border-[var(--tui-border-medium)] pb-2" data-i18n="sys_req_title">&gt; Requirements</h3>
+        <div class="flex justify-between border-b border-dashed border-[var(--tui-border-subtle)] py-1"><span class="text-[var(--tui-text-muted)]" data-i18n="req_web">Web</span><span>Node.js v20+ / Chromium</span></div>
+        <div class="flex justify-between border-b border-dashed border-[var(--tui-border-subtle)] py-1"><span class="text-[var(--tui-text-muted)]" data-i18n="req_os">Windows (Agent / WPF)</span><span>Windows 10/11 x64</span></div>
+        <div class="flex justify-between border-b border-dashed border-[var(--tui-border-subtle)] py-1"><span class="text-[var(--tui-text-muted)]" data-i18n="req_sdk">Source Build</span><span>.NET 8.0 SDK</span></div>
+        <div class="flex justify-between py-1"><span class="text-[var(--tui-text-muted)]" data-i18n="req_ports">Agent Port</span><span class="text-[var(--tui-primary)]">127.0.0.1:41950</span></div>
+      </div>
+
+      <div class="tui-surface p-5 space-y-3 text-[12px]">
+        <h3 class="font-bold text-[13px] text-[var(--tui-tertiary)] border-b border-dashed border-[var(--tui-border-medium)] pb-2" data-i18n="verify_title">&gt; Verify &amp; Build</h3>
+        <div class="tui-code-box px-3 py-2 flex justify-between items-center gap-2 overflow-x-auto">
+          <span class="whitespace-nowrap"><span class="text-[var(--tui-primary)]">$</span> npm run web:build &amp;&amp; dotnet test</span>
+          <button type="button" onclick="copyCommand(this, 'npm run web:build && dotnet test')" class="px-2 py-0.5 text-[10px] border border-[var(--tui-border-medium)] cursor-pointer shrink-0">[COPY]</button>
+        </div>
+        <div class="tui-code-box px-3 py-2 flex justify-between items-center gap-2 overflow-x-auto">
+          <span class="whitespace-nowrap"><span class="text-[var(--tui-tertiary)]">PS&gt;</span> Get-FileHash .\MyDeusTools.App.exe -Algorithm SHA256</span>
+          <button type="button" onclick="copyCommand(this, 'Get-FileHash .\\MyDeusTools.App.exe -Algorithm SHA256')" class="px-2 py-0.5 text-[10px] border border-[var(--tui-border-medium)] cursor-pointer shrink-0">[COPY]</button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <script src="assets/site.js"></script>
+  <script>
+    registerTranslations({
+      en: {
+        dl_title: '&gt; Run or Download',
+        dl_subtitle: 'Start the TerminalUI Web App, optional .NET 8 Local Companion Agent, or portable WPF EXE.',
+        opt1_t: 'MyDeusTools.Web',
+        opt1_d: 'Client-side React 19 + Vite 8 + IndexedDB.',
+        opt2_t: 'MyDeusTools.Agent',
+        opt2_d: 'OS Shutdown, F6/F7 Auto-Click &amp; Window Pinner (127.0.0.1:41950).',
+        opt3_t: 'MyDeusTools.App.exe',
+        opt3_d: 'Portable single-file EXE (WPF-UI 3.0 + FFmpeg + PDFsharp).',
+        dl_btn_main: '[GITHUB_RELEASES]',
+        sys_req_title: '&gt; Requirements',
+        req_web: 'Web',
+        req_os: 'Windows (Agent / WPF)',
+        req_sdk: 'Source Build',
+        req_ports: 'Agent Port',
+        verify_title: '&gt; Verify &amp; Build',
+      },
+      vi: {
+        dl_title: '&gt; Khởi chạy &amp; Tải về',
+        dl_subtitle: 'Chạy Web TerminalUI tại máy, bật Local Companion Agent (.NET 8) hoặc tải bản WPF EXE.',
+        opt1_t: 'MyDeusTools.Web',
+        opt1_d: 'Thuần trình duyệt React 19 + Vite 8 + IndexedDB.',
+        opt2_t: 'MyDeusTools.Agent',
+        opt2_d: 'Hẹn tắt máy OS, Auto-Click F6/F7 &amp; Ghim cửa sổ (127.0.0.1:41950).',
+        opt3_t: 'MyDeusTools.App.exe',
+        opt3_d: 'Tệp thực thi đơn WPF-UI 3.0 + FFmpeg + PDFsharp.',
+        dl_btn_main: '[TRANG_PHÁT_HÀNH_GITHUB]',
+        sys_req_title: '&gt; Yêu cầu môi trường',
+        req_web: 'Web',
+        req_os: 'Windows (Agent / WPF)',
+        req_sdk: 'Biên dịch nguồn',
+        req_ports: 'Cổng Agent',
+        verify_title: '&gt; Kiểm thử &amp; SHA-256',
+      },
+    });
+  </script>
+</body>
+</html>

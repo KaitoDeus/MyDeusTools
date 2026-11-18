@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MyDeusTools — TerminalUI Web Suite, Win32 Agent &amp; Desktop Tools</title>
+  <meta
+    name="description"
+    content="12 privacy-first utilities in TerminalUI Web (React 19, Vite, IndexedDB), optional .NET 8 Win32 Companion Agent (127.0.0.1:41950), and Native WPF Desktop EXE."
+  />
+  <link rel="icon" type="image/x-icon" href="avatar.ico" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { darkMode: 'class' };
+    (function () {
+      var t = localStorage.getItem('mdt_theme') || 'dark';
+      if (t === 'dark') document.documentElement.classList.add('dark');
+      else document.documentElement.classList.remove('dark');
+    })();
+  </script>
+  <link rel="stylesheet" href="assets/site.css" />
+</head>
+<body class="min-h-screen flex flex-col bg-[var(--tui-bg)] text-[var(--tui-text)] antialiased pb-12">
+
+  <!-- ==================== HEADER / NAVBAR ==================== -->
+  <header class="sticky top-0 z-50 tui-nav">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between gap-4">
+      <a href="index.html" class="flex items-center gap-2.5 shrink-0">
+        <div class="w-8 h-8 border border-[var(--tui-primary)] bg-[var(--tui-bg)] flex items-center justify-center p-1">
+          <img src="avatar.ico" alt="MyDeusTools" class="w-full h-full object-contain" />
+        </div>
+        <span class="font-bold text-[14px] tracking-[0.06em] text-[var(--tui-primary)] whitespace-nowrap">MYDEUSTOOLS</span>
+      </a>
+
+      <nav class="hidden md:flex items-center gap-5 lg:gap-7 text-[12px] whitespace-nowrap">
+        <a href="index.html" class="nav-link whitespace-nowrap shrink-0" data-i18n="nav_home">Home</a>
+        <a href="features.html" class="nav-link whitespace-nowrap shrink-0" data-i18n="nav_features">Features</a>
+        <a href="architecture.html" class="nav-link whitespace-nowrap shrink-0" data-i18n="nav_architecture">Architecture</a>
+        <a href="download.html" class="nav-link whitespace-nowrap shrink-0" data-i18n="nav_download">Download</a>
+        <a href="faq.html" class="nav-link whitespace-nowrap shrink-0" data-i18n="nav_faq">FAQ</a>
+      </nav>
+
+      <div class="flex items-center gap-2 shrink-0">
+        <button id="crtToggleBtn" type="button" title="CRT Scanlines" aria-label="Toggle CRT Scanlines" class="w-8 h-8 inline-flex items-center justify-center border border-[var(--tui-primary)] text-[var(--tui-primary)] cursor-pointer">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="14"/><path d="M8 21h8M12 18v3M6 9h12M6 13h8"/></svg>
+        </button>
+        <button id="langToggleBtn" type="button" title="Switch Language" class="h-8 px-2.5 inline-flex items-center justify-center text-[11px] font-bold border border-[var(--tui-tertiary)] text-[var(--tui-tertiary)] hover:bg-[var(--tui-tertiary)] hover:text-[var(--tui-primary-fg)] cursor-pointer">EN</button>
+        <button id="themeToggleBtn" type="button" title="Toggle Theme" aria-label="Toggle Color Theme" class="w-8 h-8 inline-flex items-center justify-center border border-[var(--tui-secondary)] text-[var(--tui-secondary)] hover:bg-[var(--tui-secondary)] hover:text-[var(--tui-primary-fg)] cursor-pointer">
+          <svg id="iconSun" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+          <svg id="iconMoon" class="w-4 h-4 hidden" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+        </button>
+        <a href="https://github.com/KaitoDeus/MyDeusTools" target="_blank" rel="noopener noreferrer" title="GitHub Repository" aria-label="GitHub Repository" class="w-8 h-8 inline-flex items-center justify-center border border-[var(--tui-border-medium)] text-[var(--tui-text)] hover:border-[var(--tui-primary)] hover:text-[var(--tui-primary)]">
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+        </a>
+        <button id="mobileMenuBtn" type="button" title="Menu" aria-label="Menu" class="md:hidden w-8 h-8 inline-flex items-center justify-center border border-[var(--tui-primary)] text-[var(--tui-primary)] cursor-pointer">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <div id="mobileMenu" class="hidden md:hidden tui-nav border-t border-[var(--tui-border-subtle)] px-4 py-3 space-y-2 text-[12px]">
+      <a href="index.html" class="block py-1 text-[var(--tui-primary)] font-bold" data-i18n="nav_home">Home</a>
+      <a href="features.html" class="block py-1 text-[var(--tui-text-muted)]" data-i18n="nav_features">Features</a>
+      <a href="architecture.html" class="block py-1 text-[var(--tui-text-muted)]" data-i18n="nav_architecture">Architecture</a>
+      <a href="download.html" class="block py-1 text-[var(--tui-text-muted)]" data-i18n="nav_download">Download</a>
+      <a href="faq.html" class="block py-1 text-[var(--tui-text-muted)]" data-i18n="nav_faq">FAQ</a>
+    </div>
+  </header>
+
+  <!-- ==================== HERO SECTION ==================== -->
+  <section class="py-10 md:py-14 border-b border-dashed border-[var(--tui-border-medium)]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+      <div class="tui-surface-elevated p-6 md:p-8 space-y-5">
+        <div class="flex flex-wrap items-center justify-between gap-2 text-[11px] uppercase tracking-[0.08em] border-b border-dashed border-[var(--tui-border-medium)] pb-3">
+          <span class="text-[var(--tui-primary)] font-bold" data-i18n="hero_badge">[SYSTEM] TERMINAL_UI WEB + WIN32 AGENT + WPF</span>
+          <span class="text-[var(--tui-text-muted)]">STATUS: ONLINE | EXIT_CODE 0</span>
+        </div>
+
+        <pre class="text-[10px] sm:text-[12px] md:text-[13px] leading-[1.3] text-[var(--tui-primary)] overflow-x-auto select-none font-bold">
++================================================================================+
+|  __  __       ____                 _____           _                           |
+| |  \/  |_   _|  _ \  ___ _   _ ___|_   _|__   ___ | |___   WEB TERMINAL        |
+| | |\/| | | | | | | |/ _ \ | | / __| | |/ _ \ / _ \| / __|  + WIN32 AGENT       |
+| | |  | | |_| | |_| |  __/ |_| \__ \ | | (_) | (_) | \__ \  + NATIVE WPF .EXE   |
+| |_|  |_|\__, |____/ \___|\__,_|___/ |_|\___/ \___/|_|___/                      |
+|         |___/                                                                  |
++================================================================================+
+        </pre>
+
+        <div class="space-y-2 max-w-3xl">
+          <h1 class="text-2xl sm:text-4xl font-bold leading-[1.2] text-[var(--tui-text)]">
+            <span data-i18n="hero_title_1">&gt; 12 developer &amp; power-user tools.</span>
+            <span class="block text-[var(--tui-primary)] mt-1" data-i18n="hero_title_2">Client-side first. Optional Win32 unlock.</span>
+          </h1>
+          <p class="text-[13px] text-[var(--tui-text-muted)]" data-i18n="hero_subtitle">
+            Notes, PDF, Image, DevTools &amp; Pomodoro run purely in-browser; pair MyDeusTools.Agent (.NET 8) for global F6/F7 Auto-Click, OS Shutdown &amp; Window Pinning.
+          </p>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-3">
+          <a href="download.html" class="px-5 py-2 text-[12px] font-bold tui-btn-primary inline-flex items-center gap-2">
+            <span>&gt;</span>
+            <span data-i18n="hero_btn_download">Run / Download</span>
+          </a>
+          <a href="features.html" class="px-5 py-2 text-[12px] font-bold tui-btn-secondary inline-flex items-center gap-2">
+            <span>$</span>
+            <span data-i18n="hero_btn_features">All 12 Modules</span>
+          </a>
+          <a href="#demo" class="px-5 py-2 text-[12px] font-bold tui-btn-amber inline-flex items-center gap-2">
+            <span>[?]</span>
+            <span data-i18n="hero_btn_demo">Live Simulator</span>
+          </a>
+        </div>
+
+        <div class="tui-code-box px-4 py-2.5 flex flex-wrap items-center justify-between gap-3 text-[12px]">
+          <div class="overflow-x-auto whitespace-nowrap">
+            <span class="text-[var(--tui-primary)] font-bold">$</span>
+            <span class="select-all"> npm --prefix MyDeusTools.Web install &amp;&amp; npm run web:dev &amp;&amp; npm run agent:dev</span>
+          </div>
+          <button
+            type="button"
+            onclick="copyCommand(this, 'npm --prefix MyDeusTools.Web install && npm run web:dev')"
+            class="px-2.5 py-0.5 text-[11px] font-bold border border-[var(--tui-border-medium)] text-[var(--tui-primary)] hover:border-[var(--tui-primary)] cursor-pointer shrink-0"
+          >
+            [COPY]
+          </button>
+        </div>
+
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 pt-2 border-t border-dashed border-[var(--tui-border-subtle)]">
+          <div class="tui-surface p-3.5">
+            <div class="text-lg font-bold text-[var(--tui-primary)]">12_TOOLS</div>
+            <div class="text-[11px] text-[var(--tui-text-muted)]" data-i18n="metric_tools">Web + Win32 Agent + WPF</div>
+          </div>
+          <div class="tui-surface p-3.5">
+            <div class="text-lg font-bold text-[var(--tui-tertiary)]">100%_LOCAL</div>
+            <div class="text-[11px] text-[var(--tui-text-muted)]" data-i18n="metric_offline">IndexedDB &amp; Client RAM</div>
+          </div>
+          <div class="tui-surface p-3.5">
+            <div class="text-lg font-bold text-[var(--tui-secondary)]">127.0.0.1:41950</div>
+            <div class="text-[11px] text-[var(--tui-text-muted)]" data-i18n="metric_agent">Loopback Win32 Bridge</div>
+          </div>
+          <div class="tui-surface p-3.5">
+            <div class="text-lg font-bold text-[var(--tui-primary)]">282 / 282</div>
+            <div class="text-[11px] text-[var(--tui-text-muted)]" data-i18n="metric_tests">xUnit Automated Tests</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==================== INTERACTIVE TERMINALUI SIMULATOR ==================== -->
+  <section id="demo" class="py-12 border-b border-dashed border-[var(--tui-border-medium)]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-5">
+      <div class="flex flex-wrap items-end justify-between gap-2">
+        <div>
+          <div class="text-[11px] uppercase tracking-[0.1em] text-[var(--tui-secondary)] font-bold" data-i18n="demo_badge">[LIVE_SIMULATOR]</div>
+          <h2 class="text-2xl font-bold text-[var(--tui-text)]" data-i18n="demo_title">&gt; Interactive Sandbox</h2>
+        </div>
+        <p class="text-[12px] text-[var(--tui-text-muted)]" data-i18n="demo_sub">Test 2-tab Agent lock, opacity, auto-clicker &amp; SHA-256 live.</p>
+      </div>
+
+      <div class="tui-surface border border-[var(--tui-border-medium)] flex flex-col min-h-[500px]">
+        <div class="h-10 px-4 border-b border-[var(--tui-border-subtle)] bg-[var(--tui-surface-elevated)] flex items-center justify-between gap-2 text-[12px]">
+          <div class="truncate">
+            <span class="text-[var(--tui-primary)] font-bold">root@mydeustools</span>:<span class="text-[var(--tui-tertiary)]">~</span>/bin/<span id="simPathSlug">smart-timer</span> <span class="text-[var(--tui-primary)] font-bold">$</span> <span class="tui-cursor" aria-hidden="true"></span>
+          </div>
+          <button
+            id="simAgentToggle"
+            type="button"
+            onclick="toggleSimAgent()"
+            class="px-2 py-0.5 text-[11px] font-bold border border-[var(--tui-secondary)] text-[var(--tui-secondary)] cursor-pointer shrink-0"
+          >
+            [AGENT:OFFLINE]
+          </button>
+        </div>
+
+        <div class="flex-1 grid grid-cols-1 md:grid-cols-12">
+          <div class="md:col-span-3 border-b md:border-b-0 md:border-r border-[var(--tui-border-subtle)] bg-[var(--tui-surface)] flex flex-col justify-between">
+            <div>
+              <div class="px-3 py-2 text-[10px] uppercase tracking-[0.08em] text-[var(--tui-text-dim)] border-b border-dashed border-[var(--tui-border-subtle)]">// MODULES</div>
+              <button onclick="switchSimTab('timer')" id="tab-timer" class="sim-tab w-full px-3 py-2.5 text-left text-[12px] border-b border-dashed border-[var(--tui-border-subtle)] flex items-center justify-between cursor-pointer text-[var(--tui-primary)] font-bold bg-[var(--tui-surface-elevated)]">
+                <span>&gt; [PWR] <span data-i18n="tab_timer">Timer &amp; Shutdown</span></span><span>03</span>
+              </button>
+              <button onclick="switchSimTab('pinner')" id="tab-pinner" class="sim-tab w-full px-3 py-2.5 text-left text-[12px] border-b border-dashed border-[var(--tui-border-subtle)] flex items-center justify-between cursor-pointer text-[var(--tui-text-muted)]">
+                <span>&nbsp; [PiP] <span data-i18n="tab_pinner">Window Pinner</span></span><span>12</span>
+              </button>
+              <button onclick="switchSimTab('autoclick')" id="tab-autoclick" class="sim-tab w-full px-3 py-2.5 text-left text-[12px] border-b border-dashed border-[var(--tui-border-subtle)] flex items-center justify-between cursor-pointer text-[var(--tui-text-muted)]">
+                <span>&nbsp; [CLK] <span data-i18n="tab_autoclick">Auto Clicker</span></span><span>11</span>
+              </button>
+              <button onclick="switchSimTab('textdev')" id="tab-textdev" class="sim-tab w-full px-3 py-2.5 text-left text-[12px] border-b border-dashed border-[var(--tui-border-subtle)] flex items-center justify-between cursor-pointer text-[var(--tui-text-muted)]">
+                <span>&nbsp; [DEV] <span data-i18n="tab_textdev">JSON &amp; SHA-256</span></span><span>04</span>
+              </button>
+              <button onclick="switchSimTab('color')" id="tab-color" class="sim-tab w-full px-3 py-2.5 text-left text-[12px] border-b border-dashed border-[var(--tui-border-subtle)] flex items-center justify-between cursor-pointer text-[var(--tui-text-muted)]">
+                <span>&nbsp; [HEX] <span data-i18n="tab_color">Colors</span></span><span>06</span>
+              </button>
+              <button onclick="switchSimTab('sticky')" id="tab-sticky" class="sim-tab w-full px-3 py-2.5 text-left text-[12px] border-b border-dashed border-[var(--tui-border-subtle)] flex items-center justify-between cursor-pointer text-[var(--tui-text-muted)]">
+                <span>&nbsp; [NOTE] <span data-i18n="tab_sticky">Sticky Notes</span></span><span>01</span>
+              </button>
+            </div>
+
+            <div class="p-3 border-t border-[var(--tui-border-subtle)] text-[11px] text-[var(--tui-text-dim)] space-y-1">
+              <div class="flex justify-between"><span>MODE:</span><span class="text-[var(--tui-primary)]">SANDBOX</span></div>
+              <div class="flex justify-between"><span>AGENT:</span><span>127.0.0.1:41950</span></div>
+            </div>
+          </div>
+
+          <div class="md:col-span-9 p-5 bg-[var(--tui-bg)]">
+
+            <!-- SIM 1: 2-TAB SMART TIMER & AGENT-GATED SHUTDOWN -->
+            <div id="sim-panel-timer" class="sim-panel space-y-4">
+              <div class="flex flex-wrap gap-2">
+                <button id="simTimerTabPomo" type="button" onclick="switchTimerSubTab('pomodoro')" class="px-3 py-1 text-[11px] font-bold border border-[var(--tui-primary)] bg-[var(--tui-primary)] text-[var(--tui-primary-fg)] cursor-pointer">01:POMODORO_TIMER</button>
+                <button id="simTimerTabShut" type="button" onclick="switchTimerSubTab('shutdown')" class="px-3 py-1 text-[11px] font-bold border border-[var(--tui-border-medium)] text-[var(--tui-text-muted)] cursor-pointer">02:SCHEDULE_SHUTDOWN [LOCKED]</button>
+              </div>
+
+              <div id="simTimerPomoBox" class="tui-surface p-5 space-y-4">
+                <div class="flex justify-between border-b border-dashed border-[var(--tui-border-medium)] pb-2 text-[12px]">
+                  <span class="font-bold text-[var(--tui-primary)]">POMODORO_CLOCK</span>
+                  <span class="text-[var(--tui-text-muted)]">BROWSER_NATIVE</span>
+                </div>
+                <div class="text-center py-2">
+                  <div id="simPomoClock" class="text-4xl font-bold text-[var(--tui-primary)] tracking-[0.06em]">00:25:00</div>
+                  <div class="flex flex-wrap justify-center gap-2 mt-4">
+                    <button type="button" onclick="setSimPomoMins(15)" class="px-2 py-1 text-[11px] border border-[var(--tui-border-medium)] text-[var(--tui-text-muted)] hover:border-[var(--tui-primary)] cursor-pointer">[15M_BREAK]</button>
+                    <button type="button" onclick="setSimPomoMins(25)" class="px-2 py-1 text-[11px] border border-[var(--tui-border-medium)] text-[var(--tui-text-muted)] hover:border-[var(--tui-primary)] cursor-pointer">[25M_FOCUS]</button>
+                    <button type="button" onclick="setSimPomoMins(70)" class="px-2 py-1 text-[11px] border border-[var(--tui-secondary)] text-[var(--tui-secondary)] cursor-pointer">[70M-&gt;1H10M]</button>
+                  </div>
+                </div>
+              </div>
+
+              <div id="simTimerShutBox" class="hidden tui-surface p-5 space-y-4">
+                <div class="flex justify-between border-b border-dashed border-[var(--tui-border-medium)] pb-2 text-[12px]">
+                  <span class="font-bold text-[var(--tui-secondary)]">OS_SHUTDOWN_COUNTDOWN</span>
+                  <span id="simShutStatusChip" class="text-[var(--tui-error)] font-bold">[STATUS:LOCKED]</span>
+                </div>
+                <div id="simShutWarnBanner" class="border border-[var(--tui-secondary)] px-3 py-2 text-[12px] text-[var(--tui-secondary)] flex flex-wrap items-center justify-between gap-2">
+                  <span>[WARN] Enabled ONLY when Local Companion Agent is ONLINE.</span>
+                  <button type="button" onclick="toggleSimAgent()" class="px-2 py-0.5 text-[11px] font-bold border border-[var(--tui-primary)] text-[var(--tui-primary)] cursor-pointer">[SIMULATE_AGENT_ON]</button>
+                </div>
+                <div class="text-center text-4xl font-bold text-[var(--tui-text)]" id="simShutClock">00:30:00</div>
+                <div class="grid grid-cols-3 gap-2">
+                  <button type="button" class="sim-shut-ctrl px-3 py-2 text-[11px] border border-[var(--tui-secondary)] text-[var(--tui-secondary)] font-bold" disabled>(*) SHUTDOWN PC</button>
+                  <button type="button" class="sim-shut-ctrl px-3 py-2 text-[11px] border border-[var(--tui-border-medium)] text-[var(--tui-text-muted)]" disabled>( ) RESTART PC</button>
+                  <button type="button" class="sim-shut-ctrl px-3 py-2 text-[11px] border border-[var(--tui-border-medium)] text-[var(--tui-text-muted)]" disabled>( ) HIBERNATE PC</button>
+                </div>
+                <div class="flex justify-center gap-3">
+                  <button type="button" id="simShutStartBtn" onclick="alert('Agent call: POST /api/system/schedule')" class="sim-shut-ctrl px-4 py-2 text-[12px] font-bold tui-btn-primary" disabled>&gt; SCHEDULE_SHUTDOWN</button>
+                  <button type="button" class="sim-shut-ctrl px-4 py-2 text-[12px] font-bold tui-btn-secondary" disabled>[CANCEL_OS_SHUTDOWN]</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- SIM 2: WINDOW PINNER -->
+            <div id="sim-panel-pinner" class="sim-panel hidden space-y-4">
+              <div class="flex flex-wrap items-center justify-between gap-2 border-b border-dashed border-[var(--tui-border-medium)] pb-2">
+                <h3 class="text-[13px] font-bold text-[var(--tui-tertiary)]">&gt; OS_WINDOWS_MANAGER (HWND_TOPMOST)</h3>
+                <span id="pinnedCountBadge" class="text-[11px] px-2 py-0.5 border border-[var(--tui-primary)] text-[var(--tui-primary)]">PINNED: 1</span>
+              </div>
+              <div class="tui-surface p-4 space-y-4">
+                <div class="flex flex-wrap items-center justify-between gap-2">
+                  <div>
+                    <div class="flex items-center gap-2">
+                      <span id="pinBadge" class="text-[10px] px-1.5 py-0.5 border border-[var(--tui-primary)] text-[var(--tui-primary)] font-bold">[TOPMOST]</span>
+                      <span class="font-bold text-[13px]">Visual Studio Code &mdash; MyDeusTools.sln</span>
+                    </div>
+                    <div class="text-[11px] text-[var(--tui-text-dim)]">Code.exe (PID: 14820)</div>
+                  </div>
+                  <button onclick="toggleMockPin()" id="btnMockPin" type="button" class="px-3 py-1 text-[11px] font-bold tui-btn-primary cursor-pointer">[UNPIN]</button>
+                </div>
+
+                <div class="flex flex-wrap items-center gap-3 pt-2 border-t border-dashed border-[var(--tui-border-subtle)] text-[12px]">
+                  <span>OPACITY: <strong id="opacityLabel" class="text-[var(--tui-secondary)]">100%</strong></span>
+                  <input type="range" min="40" max="100" value="100" class="flex-1" oninput="changeMockOpacity(this.value)" />
+                  <button type="button" onclick="changeMockOpacity(100)" class="px-2 py-0.5 text-[11px] border border-[var(--tui-border-medium)] cursor-pointer">100%</button>
+                  <button type="button" onclick="changeMockOpacity(70)" class="px-2 py-0.5 text-[11px] border border-[var(--tui-border-medium)] cursor-pointer">70%</button>
+                  <button type="button" onclick="changeMockOpacity(40)" class="px-2 py-0.5 text-[11px] border border-[var(--tui-border-medium)] cursor-pointer">40%</button>
+                </div>
+
+                <div id="simulatedWindowBox" class="tui-code-box p-3 text-[12px] text-[var(--tui-primary)]">
+                  <div>SetWindowPos(hwnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- SIM 3: AUTO CLICKER -->
+            <div id="sim-panel-autoclick" class="sim-panel hidden space-y-4">
+              <div class="flex items-center justify-between border-b border-dashed border-[var(--tui-border-medium)] pb-2">
+                <h3 class="text-[13px] font-bold text-[var(--tui-primary)]">&gt; AUTO_CLICKER_SANDBOX</h3>
+                <span class="text-[11px] border border-[var(--tui-secondary)] text-[var(--tui-secondary)] px-2 py-0.5">HOTKEYS: F6 / F7</span>
+              </div>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div class="tui-surface p-4 space-y-2">
+                  <label class="text-[11px] text-[var(--tui-text-muted)] block">// interval_ms (&gt;= 10ms)</label>
+                  <input type="number" id="mockInterval" value="50" min="10" class="w-full px-3 py-1.5 tui-code-box text-[13px] text-[var(--tui-text)]" />
+                  <div class="text-[11px] text-[var(--tui-text-dim)]">Safety clamp: min 10ms (100 CPS)</div>
+                </div>
+                <div class="tui-surface p-4 flex flex-col items-center justify-center gap-3">
+                  <div class="text-2xl font-bold text-[var(--tui-primary)]" id="clickCounter">0 CLICKS</div>
+                  <div class="flex gap-2">
+                    <button onclick="toggleMockClicker()" id="btnMockClicker" type="button" class="px-3 py-1.5 text-[11px] font-bold tui-btn-primary cursor-pointer">&gt; START_LOOP</button>
+                    <button onclick="resetMockClicker()" type="button" class="px-3 py-1.5 text-[11px] font-bold tui-btn-secondary cursor-pointer">[RESET]</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- SIM 4: TEXT & DEV TOOLS -->
+            <div id="sim-panel-textdev" class="sim-panel hidden space-y-4">
+              <div class="flex flex-wrap items-center justify-between gap-2 border-b border-dashed border-[var(--tui-border-medium)] pb-2">
+                <h3 class="text-[13px] font-bold text-[var(--tui-primary)]">&gt; JSON &amp; SHA-256</h3>
+                <div class="flex gap-2">
+                  <button onclick="formatMockJson()" type="button" class="px-2.5 py-1 text-[11px] font-bold tui-btn-primary cursor-pointer">FORMAT</button>
+                  <button onclick="minifyMockJson()" type="button" class="px-2.5 py-1 text-[11px] font-bold tui-btn-secondary cursor-pointer">MINIFY</button>
+                </div>
+              </div>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label class="text-[11px] text-[var(--tui-text-muted)] block mb-1">// input_json</label>
+                  <textarea id="mockJsonInput" rows="5" class="w-full p-2.5 tui-code-box text-[12px] text-[var(--tui-text)]">{"suite":"MyDeusTools","web":"TerminalUI","agentPort":41950,"tests":282}</textarea>
+                </div>
+                <div>
+                  <label class="text-[11px] text-[var(--tui-text-muted)] block mb-1">// output</label>
+                  <textarea id="mockJsonOutput" readonly rows="5" class="w-full p-2.5 tui-code-box text-[12px] text-[var(--tui-tertiary)]"></textarea>
+                </div>
+              </div>
+              <div class="tui-surface p-3 text-[12px]">
+                <span class="text-[var(--tui-text-muted)]">// sha256: </span>
+                <span id="mockHashResult" class="text-[var(--tui-primary)] font-bold break-all select-all">Calculating...</span>
+              </div>
+            </div>
+
+            <!-- SIM 5: COLOR SWATCHES -->
+            <div id="sim-panel-color" class="sim-panel hidden space-y-4">
+              <div class="flex items-center justify-between border-b border-dashed border-[var(--tui-border-medium)] pb-2">
+                <h3 class="text-[13px] font-bold text-[var(--tui-primary)]">&gt; TERMINAL_PALETTE</h3>
+                <span class="text-[11px] text-[var(--tui-text-muted)]">CLICK_TO_COPY</span>
+              </div>
+              <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
+                <button type="button" onclick="copySimColor(this, '#00FF41')" class="p-4 border border-[#00FF41] bg-[#0D0D0D] text-[#00FF41] cursor-pointer"><div class="font-bold">#00FF41</div></button>
+                <button type="button" onclick="copySimColor(this, '#FF6600')" class="p-4 border border-[#FF6600] bg-[#0D0D0D] text-[#FF6600] cursor-pointer"><div class="font-bold">#FF6600</div></button>
+                <button type="button" onclick="copySimColor(this, '#00BFFF')" class="p-4 border border-[#00BFFF] bg-[#0D0D0D] text-[#00BFFF] cursor-pointer"><div class="font-bold">#00BFFF</div></button>
+                <button type="button" onclick="copySimColor(this, '#FF0040')" class="p-4 border border-[#FF0040] bg-[#0D0D0D] text-[#FF0040] cursor-pointer"><div class="font-bold">#FF0040</div></button>
+              </div>
+              <div id="simColorStatus" class="text-[12px] text-[var(--tui-text-muted)]">// Click a swatch to copy HEX.</div>
+            </div>
+
+            <!-- SIM 6: STICKY NOTES -->
+            <div id="sim-panel-sticky" class="sim-panel hidden space-y-4">
+              <div class="flex items-center justify-between border-b border-dashed border-[var(--tui-border-medium)] pb-2">
+                <h3 class="text-[13px] font-bold text-[var(--tui-secondary)]">&gt; KANBAN_STICKY_NOTES</h3>
+                <span class="text-[11px] text-[var(--tui-text-muted)]">IndexedDB</span>
+              </div>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-[12px]">
+                <div class="tui-surface border border-[var(--tui-primary)] p-4 space-y-1.5">
+                  <div class="flex justify-between font-bold text-[var(--tui-primary)]"><span>[PINNED] CHECKLIST</span><span>[GRN]</span></div>
+                  <p class="text-[var(--tui-text-muted)]">- Web Build: PASS<br />- Agent: 127.0.0.1:41950<br />- xUnit: 282 / 282 PASSED</p>
+                </div>
+                <div class="tui-surface border border-[var(--tui-secondary)] p-4 space-y-1.5">
+                  <div class="flex justify-between font-bold text-[var(--tui-secondary)]"><span>SHORTCUTS</span><span>[AMB]</span></div>
+                  <p class="text-[var(--tui-text-muted)]">F6: Toggle OS Auto-Click<br />F7: Capture Screen Point<br />Ctrl+K: Dashboard Search</p>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== 12 UTILITIES GRID ==================== -->
+  <section class="pt-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+      <div class="flex flex-wrap items-end justify-between gap-2">
+        <div>
+          <div class="text-[11px] uppercase tracking-[0.1em] text-[var(--tui-primary)] font-bold" data-i18n="feat_badge">// ./MODULES_CATALOG (01..12)</div>
+          <h2 class="text-2xl font-bold text-[var(--tui-text)]" data-i18n="feat_title">&gt; 12 Unified Utilities</h2>
+        </div>
+        <p class="text-[12px] text-[var(--tui-text-muted)]" data-i18n="feat_desc">Client-side privacy + optional Win32 Agent.</p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        <a href="features.html#stickynotes" class="tui-surface p-4 flex flex-col justify-between hover:border-[var(--tui-secondary)]">
+          <div>
+            <div class="flex justify-between text-[11px] text-[var(--tui-secondary)] font-bold mb-1.5"><span>01 // [NOTE]</span><span>./sticky-notes</span></div>
+            <h3 class="font-bold text-[14px] mb-1" data-i18n="f1_title">Sticky Notes</h3>
+            <p class="text-[12px] text-[var(--tui-text-muted)]" data-i18n="f1_desc">Colored cards, pins, IndexedDB &amp; PiP pop-out.</p>
+          </div>
+          <div class="mt-3 pt-2 border-t border-dashed border-[var(--tui-border-subtle)] text-[11px] text-[var(--tui-secondary)]">[SPEC -&gt;]</div>
+        </a>
+
+        <a href="features.html#clipboard" class="tui-surface p-4 flex flex-col justify-between hover:border-[var(--tui-tertiary)]">
+          <div>
+            <div class="flex justify-between text-[11px] text-[var(--tui-tertiary)] font-bold mb-1.5"><span>02 // [CLIP]</span><span>./clip-vault</span></div>
+            <h3 class="font-bold text-[14px] mb-1" data-i18n="f2_title">Clipboard Snippets</h3>
+            <p class="text-[12px] text-[var(--tui-text-muted)]" data-i18n="f2_desc">Tag vault, OS paste &amp; Win32 listener (WPF).</p>
+          </div>
+          <div class="mt-3 pt-2 border-t border-dashed border-[var(--tui-border-subtle)] text-[11px] text-[var(--tui-tertiary)]">[SPEC -&gt;]</div>
+        </a>
+
+        <a href="features.html#shutdown" class="tui-surface p-4 flex flex-col justify-between hover:border-[var(--tui-secondary)]">
+          <div>
+            <div class="flex justify-between text-[11px] text-[var(--tui-secondary)] font-bold mb-1.5"><span>03 // [PWR]</span><span>./smart-timer</span></div>
+            <h3 class="font-bold text-[14px] mb-1" data-i18n="f3_title">Smart Timer &amp; Shutdown</h3>
+            <p class="text-[12px] text-[var(--tui-text-muted)]" data-i18n="f3_desc">Pomodoro tab &amp; Agent-gated OS Shutdown tab.</p>
+          </div>
+          <div class="mt-3 pt-2 border-t border-dashed border-[var(--tui-border-subtle)] text-[11px] text-[var(--tui-secondary)]">[SPEC -&gt;]</div>
+        </a>
+
+        <a href="features.html#textdev" class="tui-surface p-4 flex flex-col justify-between hover:border-[var(--tui-primary)]">
+          <div>
+            <div class="flex justify-between text-[11px] text-[var(--tui-primary)] font-bold mb-1.5"><span>04 // [DEV]</span><span>./text-devtools</span></div>
+            <h3 class="font-bold text-[14px] mb-1" data-i18n="f4_title">Text &amp; Dev Tools</h3>
+            <p class="text-[12px] text-[var(--tui-text-muted)]" data-i18n="f4_desc">JSON, Base64, SHA hashes, Case &amp; URL tools.</p>
+          </div>
+          <div class="mt-3 pt-2 border-t border-dashed border-[var(--tui-border-subtle)] text-[11px] text-[var(--tui-primary)]">[SPEC -&gt;]</div>
+        </a>
+
+        <a href="features.html#qrcode" class="tui-surface p-4 flex flex-col justify-between hover:border-[var(--tui-tertiary)]">
+          <div>
+            <div class="flex justify-between text-[11px] text-[var(--tui-tertiary)] font-bold mb-1.5"><span>05 // [QR]</span><span>./qr-studio</span></div>
+            <h3 class="font-bold text-[14px] mb-1" data-i18n="f5_title">QR Code Studio</h3>
+            <p class="text-[12px] text-[var(--tui-text-muted)]" data-i18n="f5_desc">Custom QR presets, PNG export &amp; WPF snip decode.</p>
+          </div>
+          <div class="mt-3 pt-2 border-t border-dashed border-[var(--tui-border-subtle)] text-[11px] text-[var(--tui-tertiary)]">[SPEC -&gt;]</div>
+        </a>
+
+        <a href="features.html#color" class="tui-surface p-4 flex flex-col justify-between hover:border-[var(--tui-primary)]">
+          <div>
+            <div class="flex justify-between text-[11px] text-[var(--tui-primary)] font-bold mb-1.5"><span>06 // [HEX]</span><span>./color-picker</span></div>
+            <h3 class="font-bold text-[14px] mb-1" data-i18n="f6_title">Color Eyedropper</h3>
+            <p class="text-[12px] text-[var(--tui-text-muted)]" data-i18n="f6_desc">Screen EyeDropper API, HEX/RGB/HSL &amp; palette.</p>
+          </div>
+          <div class="mt-3 pt-2 border-t border-dashed border-[var(--tui-border-subtle)] text-[11px] text-[var(--tui-primary)]">[SPEC -&gt;]</div>
+        </a>
+
+        <a href="features.html#pdftoolkit" class="tui-surface p-4 flex flex-col justify-between hover:border-[var(--tui-secondary)]">
+          <div>
+            <div class="flex justify-between text-[11px] text-[var(--tui-secondary)] font-bold mb-1.5"><span>07 // [PDF]</span><span>./pdf-toolkit</span></div>
+            <h3 class="font-bold text-[14px] mb-1" data-i18n="f7_title">PDF Toolkit</h3>
+            <p class="text-[12px] text-[var(--tui-text-muted)]" data-i18n="f7_desc">Offline Merge &amp; Split (pdf-lib / PDFsharp).</p>
+          </div>
+          <div class="mt-3 pt-2 border-t border-dashed border-[var(--tui-border-subtle)] text-[11px] text-[var(--tui-secondary)]">[SPEC -&gt;]</div>
+        </a>
+
+        <a href="features.html#imagestudio" class="tui-surface p-4 flex flex-col justify-between hover:border-[var(--tui-tertiary)]">
+          <div>
+            <div class="flex justify-between text-[11px] text-[var(--tui-tertiary)] font-bold mb-1.5"><span>08 // [IMG]</span><span>./img-studio</span></div>
+            <h3 class="font-bold text-[14px] mb-1" data-i18n="f8_title">Image Studio</h3>
+            <p class="text-[12px] text-[var(--tui-text-muted)]" data-i18n="f8_desc">Batch WebP/JPEG/PNG, scale &amp; EXIF strip.</p>
+          </div>
+          <div class="mt-3 pt-2 border-t border-dashed border-[var(--tui-border-subtle)] text-[11px] text-[var(--tui-tertiary)]">[SPEC -&gt;]</div>
+        </a>
+
+        <a href="features.html#videoconverter" class="tui-surface p-4 flex flex-col justify-between hover:border-[var(--tui-primary)]">
+          <div>
+            <div class="flex justify-between text-[11px] text-[var(--tui-primary)] font-bold mb-1.5"><span>09 // [VID]</span><span>./video-wasm</span></div>
+            <h3 class="font-bold text-[14px] mb-1" data-i18n="f9_title">Video Converter</h3>
+            <p class="text-[12px] text-[var(--tui-text-muted)]" data-i18n="f9_desc">Container/CRF UI + full FFmpeg GPU in WPF.</p>
+          </div>
+          <div class="mt-3 pt-2 border-t border-dashed border-[var(--tui-border-subtle)] text-[11px] text-[var(--tui-primary)]">[SPEC -&gt;]</div>
+        </a>
+
+        <a href="features.html#bulkrenamer" class="tui-surface p-4 flex flex-col justify-between hover:border-[var(--tui-secondary)]">
+          <div>
+            <div class="flex justify-between text-[11px] text-[var(--tui-secondary)] font-bold mb-1.5"><span>10 // [REN]</span><span>./bulk-rename</span></div>
+            <h3 class="font-bold text-[14px] mb-1" data-i18n="f10_title">Bulk File Renamer</h3>
+            <p class="text-[12px] text-[var(--tui-text-muted)]" data-i18n="f10_desc">Disk File System Access API &amp; ZIP batch export.</p>
+          </div>
+          <div class="mt-3 pt-2 border-t border-dashed border-[var(--tui-border-subtle)] text-[11px] text-[var(--tui-secondary)]">[SPEC -&gt;]</div>
+        </a>
+
+        <a href="features.html#autoclicker" class="tui-surface p-4 flex flex-col justify-between hover:border-[var(--tui-primary)]">
+          <div>
+            <div class="flex justify-between text-[11px] text-[var(--tui-primary)] font-bold mb-1.5"><span>11 // [CLK]</span><span>./auto-click</span></div>
+            <h3 class="font-bold text-[14px] mb-1" data-i18n="f11_title">Auto Clicker Pro</h3>
+            <p class="text-[12px] text-[var(--tui-text-muted)]" data-i18n="f11_desc">Web DOM loop &amp; OS Win32 clicking (F6 / F7).</p>
+          </div>
+          <div class="mt-3 pt-2 border-t border-dashed border-[var(--tui-border-subtle)] text-[11px] text-[var(--tui-primary)]">[SPEC -&gt;]</div>
+        </a>
+
+        <a href="features.html#pinner" class="tui-surface p-4 flex flex-col justify-between hover:border-[var(--tui-tertiary)]">
+          <div>
+            <div class="flex justify-between text-[11px] text-[var(--tui-tertiary)] font-bold mb-1.5"><span>12 // [PiP]</span><span>./pip-float</span></div>
+            <h3 class="font-bold text-[14px] mb-1" data-i18n="f12_title">Window Pinner &amp; PiP</h3>
+            <p class="text-[12px] text-[var(--tui-text-muted)]" data-i18n="f12_desc">Document PiP widgets &amp; OS TopMost / Opacity.</p>
+          </div>
+          <div class="mt-3 pt-2 border-t border-dashed border-[var(--tui-border-subtle)] text-[11px] text-[var(--tui-tertiary)]">[SPEC -&gt;]</div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <script src="assets/site.js"></script>
+  <script>
+    registerTranslations({
+      en: {
+        hero_badge: '[SYSTEM] TERMINAL_UI WEB + WIN32 AGENT + WPF',
+        hero_title_1: '&gt; 12 developer &amp; power-user tools.',
+        hero_title_2: 'Client-side first. Optional Win32 unlock.',
+        hero_subtitle:
+          'Notes, PDF, Image, DevTools &amp; Pomodoro run purely in-browser; pair MyDeusTools.Agent (.NET 8) for global F6/F7 Auto-Click, OS Shutdown &amp; Window Pinning.',
+        hero_btn_download: 'Run / Download',
+        hero_btn_features: 'All 12 Modules',
+        hero_btn_demo: 'Live Simulator',
+        metric_tools: 'Web + Win32 Agent + WPF',
+        metric_offline: 'IndexedDB &amp; Client RAM',
+        metric_agent: 'Loopback Win32 Bridge',
+        metric_tests: 'xUnit Automated Tests',
+        demo_badge: '[LIVE_SIMULATOR]',
+        demo_title: '&gt; Interactive Sandbox',
+        demo_sub: 'Test 2-tab Agent lock, opacity, auto-clicker &amp; SHA-256 live.',
+        tab_timer: 'Timer &amp; Shutdown',
+        tab_pinner: 'Window Pinner',
+        tab_autoclick: 'Auto Clicker',
+        tab_textdev: 'JSON &amp; SHA-256',
+        tab_color: 'Colors',
+        tab_sticky: 'Sticky Notes',
+        feat_badge: '// ./MODULES_CATALOG (01..12)',
+        feat_title: '&gt; 12 Unified Utilities',
+        feat_desc: 'Client-side privacy + optional Win32 Agent.',
+        f1_title: 'Sticky Notes',
+        f1_desc: 'Colored cards, pins, IndexedDB &amp; PiP pop-out.',
+        f2_title: 'Clipboard Snippets',
+        f2_desc: 'Tag vault, OS paste &amp; Win32 listener (WPF).',
+        f3_title: 'Smart Timer &amp; Shutdown',
+        f3_desc: 'Pomodoro tab &amp; Agent-gated OS Shutdown tab.',
+        f4_title: 'Text &amp; Dev Tools',
+        f4_desc: 'JSON, Base64, SHA hashes, Case &amp; URL tools.',
+        f5_title: 'QR Code Studio',
+        f5_desc: 'Custom QR presets, PNG export &amp; WPF snip decode.',
+        f6_title: 'Color Eyedropper',
+        f6_desc: 'Screen EyeDropper API, HEX/RGB/HSL &amp; palette.',
+        f7_title: 'PDF Toolkit',
+        f7_desc: 'Offline Merge &amp; Split (pdf-lib / PDFsharp).',
+        f8_title: 'Image Studio',
+        f8_desc: 'Batch WebP/JPEG/PNG, scale &amp; EXIF strip.',
+        f9_title: 'Video Converter',
+        f9_desc: 'Container/CRF UI + full FFmpeg GPU in WPF.',
+        f10_title: 'Bulk File Renamer',
+        f10_desc: 'Disk File System Access API &amp; ZIP batch export.',
+        f11_title: 'Auto Clicker Pro',
+        f11_desc: 'Web DOM loop &amp; OS Win32 clicking (F6 / F7).',
+        f12_title: 'Window Pinner &amp; PiP',
+        f12_desc: 'Document PiP widgets &amp; OS TopMost / Opacity.',
+      },
+      vi: {
+        hero_badge: '[HỆ THỐNG] TERMINAL_UI WEB + WIN32 AGENT + WPF',
+        hero_title_1: '&gt; 12 công cụ thiết yếu cho dev &amp; người dùng Windows.',
+        hero_title_2: 'Chạy tại trình duyệt. Mở khoá Win32 tuỳ chọn.',
+        hero_subtitle:
+          'Ghi chú, PDF, Ảnh, DevTools &amp; Pomodoro chạy thuần client; bật MyDeusTools.Agent (.NET 8) để mở Auto-Click F6/F7, Hẹn tắt máy &amp; Ghim cửa sổ OS.',
+        hero_btn_download: 'Chạy / Tải về',
+        hero_btn_features: '12 Công cụ',
+        hero_btn_demo: 'Mô phỏng TTY',
+        metric_tools: 'Web + Win32 Agent + WPF',
+        metric_offline: 'IndexedDB &amp; RAM tại máy',
+        metric_agent: 'Cầu nối Win32 Loopback',
+        metric_tests: 'Kiểm thử tự động xUnit',
+        demo_badge: '[MÔ_PHỎNG_TRỰC_TIẾP]',
+        demo_title: '&gt; Sandbox Tương Tác',
+        demo_sub: 'Thử khoá 2 tab Agent, độ mờ cửa sổ, auto-click &amp; SHA-256.',
+        tab_timer: 'Hẹn giờ &amp; Tắt máy',
+        tab_pinner: 'Ghim cửa sổ nổi',
+        tab_autoclick: 'Auto Clicker',
+        tab_textdev: 'JSON &amp; SHA-256',
+        tab_color: 'Bảng màu',
+        tab_sticky: 'Ghi chú nổi',
+        feat_badge: '// ./DANH_MỤC_CÔNG_CỤ (01..12)',
+        feat_title: '&gt; 12 Tiện ích tích hợp',
+        feat_desc: 'Riêng tư tại máy + Win32 Agent tuỳ chọn.',
+        f1_title: 'Ghi chú nổi',
+        f1_desc: 'Thẻ màu, ghim đầu, IndexedDB &amp; nổi PiP.',
+        f2_title: 'Lưu trữ Clipboard',
+        f2_desc: 'Kho snippet theo tag, dán OS &amp; Win32 hook (WPF).',
+        f3_title: 'Hẹn giờ &amp; Tắt máy',
+        f3_desc: 'Tab Pomodoro riêng &amp; Tab tắt máy bật theo Agent.',
+        f4_title: 'Văn bản &amp; Dev Tools',
+        f4_desc: 'JSON, Base64, băm SHA, đổi chữ &amp; URL.',
+        f5_title: 'QR Code Studio',
+        f5_desc: 'Tạo QR theo preset, tải PNG &amp; quét vùng (WPF).',
+        f6_title: 'Lấy mã màu',
+        f6_desc: 'Bắt màu EyeDropper API, HEX/RGB/HSL &amp; bảng màu.',
+        f7_title: 'Bộ công cụ PDF',
+        f7_desc: 'Ghép &amp; tách trang PDF offline (pdf-lib / PDFsharp).',
+        f8_title: 'Xử lý &amp; Nén ảnh',
+        f8_desc: 'Nén WebP/JPEG/PNG, scale &amp; xoá EXIF.',
+        f9_title: 'Chuyển đổi Video',
+        f9_desc: 'UI chọn CRF/định dạng + FFmpeg GPU trên WPF.',
+        f10_title: 'Đổi tên tệp hàng loạt',
+        f10_desc: 'Đổi trực tiếp thư mục FS API &amp; xuất ZIP.',
+        f11_title: 'Tự động click chuột',
+        f11_desc: 'Click Web DOM &amp; toàn Windows/Game (F6 / F7).',
+        f12_title: 'Ghim cửa sổ &amp; PiP',
+        f12_desc: 'Widget nổi PiP &amp; ghim TopMost / làm mờ OS.',
+      },
+    });
+
+    // Simulator State & Handlers
+    let simAgentOnline = false;
+    function toggleSimAgent() {
+      simAgentOnline = !simAgentOnline;
+      const topBtn = document.getElementById('simAgentToggle');
+      const shutChip = document.getElementById('simShutStatusChip');
+      const shutTab = document.getElementById('simTimerTabShut');
+      const warnBanner = document.getElementById('simShutWarnBanner');
+      const ctrls = document.querySelectorAll('.sim-shut-ctrl');
+
+      if (simAgentOnline) {
+        topBtn.textContent = '[AGENT:ONLINE]';
+        topBtn.style.borderColor = 'var(--tui-primary)';
+        topBtn.style.color = 'var(--tui-primary)';
+        shutTab.textContent = '02:SCHEDULE_SHUTDOWN [ONLINE]';
+        shutChip.textContent = '[STATUS:READY]';
+        shutChip.style.color = 'var(--tui-primary)';
+        warnBanner.classList.add('hidden');
+        ctrls.forEach((b) => (b.disabled = false));
+      } else {
+        topBtn.textContent = '[AGENT:OFFLINE]';
+        topBtn.style.borderColor = 'var(--tui-secondary)';
+        topBtn.style.color = 'var(--tui-secondary)';
+        shutTab.textContent = '02:SCHEDULE_SHUTDOWN [LOCKED]';
+        shutChip.textContent = '[STATUS:LOCKED]';
+        shutChip.style.color = 'var(--tui-error)';
+        warnBanner.classList.remove('hidden');
+        ctrls.forEach((b) => (b.disabled = true));
+      }
+    }
+
+    function switchTimerSubTab(sub) {
+      const btnP = document.getElementById('simTimerTabPomo');
+      const btnS = document.getElementById('simTimerTabShut');
+      const boxP = document.getElementById('simTimerPomoBox');
+      const boxS = document.getElementById('simTimerShutBox');
+      if (sub === 'pomodoro') {
+        boxP.classList.remove('hidden');
+        boxS.classList.add('hidden');
+        btnP.className = 'px-3 py-1 text-[11px] font-bold border border-[var(--tui-primary)] bg-[var(--tui-primary)] text-[var(--tui-primary-fg)] cursor-pointer';
+        btnS.className = 'px-3 py-1 text-[11px] font-bold border border-[var(--tui-border-medium)] text-[var(--tui-text-muted)] cursor-pointer';
+      } else {
+        boxP.classList.add('hidden');
+        boxS.classList.remove('hidden');
+        btnS.className = 'px-3 py-1 text-[11px] font-bold border border-[var(--tui-secondary)] bg-[var(--tui-secondary)] text-[var(--tui-primary-fg)] cursor-pointer';
+        btnP.className = 'px-3 py-1 text-[11px] font-bold border border-[var(--tui-border-medium)] text-[var(--tui-text-muted)] cursor-pointer';
+      }
+    }
+
+    function setSimPomoMins(mins) {
+      const h = Math.floor(mins / 60);
+      const m = mins % 60;
+      const pad = (n) => String(n).padStart(2, '0');
+      document.getElementById('simPomoClock').textContent = `${pad(h)}:${pad(m)}:00`;
+    }
+
+    const SLUG_MAP = {
+      timer: 'smart-timer',
+      pinner: 'pip-float',
+      autoclick: 'auto-click',
+      textdev: 'text-devtools',
+      color: 'color-picker',
+      sticky: 'sticky-notes',
+    };
+
+    function switchSimTab(tabId) {
+      document.getElementById('simPathSlug').textContent = SLUG_MAP[tabId] || tabId;
+      document.querySelectorAll('.sim-tab').forEach((btn) => {
+        btn.classList.remove('text-[var(--tui-primary)]', 'font-bold', 'bg-[var(--tui-surface-elevated)]');
+        btn.classList.add('text-[var(--tui-text-muted)]');
+      });
+      const activeBtn = document.getElementById('tab-' + tabId);
+      if (activeBtn) {
+        activeBtn.classList.add('text-[var(--tui-primary)]', 'font-bold', 'bg-[var(--tui-surface-elevated)]');
+        activeBtn.classList.remove('text-[var(--tui-text-muted)]');
+      }
+      document.querySelectorAll('.sim-panel').forEach((p) => p.classList.add('hidden'));
+      const panel = document.getElementById('sim-panel-' + tabId);
+      if (panel) panel.classList.remove('hidden');
+    }
+
+    let isMockPinned = true;
+    function toggleMockPin() {
+      isMockPinned = !isMockPinned;
+      document.getElementById('btnMockPin').textContent = isMockPinned ? '[UNPIN]' : '[PIN_TOPMOST]';
+      document.getElementById('pinBadge').classList.toggle('hidden', !isMockPinned);
+      document.getElementById('pinnedCountBadge').textContent = isMockPinned ? 'PINNED: 1' : 'PINNED: 0';
+    }
+
+    function changeMockOpacity(val) {
+      document.getElementById('opacityLabel').textContent = val + '%';
+      document.getElementById('simulatedWindowBox').style.opacity = String(val / 100);
+    }
+
+    let clickCount = 0;
+    let clickerInterval = null;
+    function toggleMockClicker() {
+      const btn = document.getElementById('btnMockClicker');
+      if (clickerInterval) {
+        clearInterval(clickerInterval);
+        clickerInterval = null;
+        btn.textContent = '> START_LOOP';
+      } else {
+        const ms = Math.max(10, parseInt(document.getElementById('mockInterval').value, 10) || 50);
+        btn.textContent = '! ABORT_LOOP';
+        clickerInterval = setInterval(() => {
+          clickCount += 1;
+          document.getElementById('clickCounter').textContent = clickCount + ' CLICKS';
+        }, ms);
+      }
+    }
+
+    function resetMockClicker() {
+      if (clickerInterval) toggleMockClicker();
+      clickCount = 0;
+      document.getElementById('clickCounter').textContent = '0 CLICKS';
+    }
+
+    function formatMockJson() {
+      try {
+        const input = document.getElementById('mockJsonInput').value;
+        document.getElementById('mockJsonOutput').value = JSON.stringify(JSON.parse(input), null, 2);
+        calcMockHash(input);
+      } catch (e) {
+        document.getElementById('mockJsonOutput').value = '[ERR] ' + e.message;
+      }
+    }
+
+    function minifyMockJson() {
+      try {
+        const input = document.getElementById('mockJsonInput').value;
+        document.getElementById('mockJsonOutput').value = JSON.stringify(JSON.parse(input));
+        calcMockHash(input);
+      } catch (e) {
+        document.getElementById('mockJsonOutput').value = '[ERR] ' + e.message;
+      }
+    }
+
+    async function calcMockHash(str) {
+      try {
+        const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+        const hex = Array.from(new Uint8Array(buf))
+          .map((b) => b.toString(16).padStart(2, '0'))
+          .join('');
+        document.getElementById('mockHashResult').textContent = hex;
+      } catch {
+        document.getElementById('mockHashResult').textContent = '[ERR] Crypto unavailable';
+      }
+    }
+
+    document.getElementById('mockJsonInput').addEventListener('input', (e) => calcMockHash(e.target.value));
+
+    function copySimColor(btn, hex) {
+      navigator.clipboard.writeText(hex);
+      document.getElementById('simColorStatus').textContent = `[OK] Copied ${hex} to clipboard!`;
+    }
+
+    formatMockJson();
+  </script>
+</body>
+</html>
