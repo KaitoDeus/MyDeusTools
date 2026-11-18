@@ -36,7 +36,7 @@ export const translations = {
       close: 'ĐÓNG',
     },
     shell: {
-      subtitle: 'TTY-WEB // v1.0.0',
+      subtitle: 'TTY-WEB // LOCAL',
       dashboardCmd: './tong-quan',
       privacyLabel: 'RIÊNG TƯ:',
       privacyValue: '100% TẠI MÁY',
@@ -493,7 +493,7 @@ export const translations = {
       close: 'CLOSE',
     },
     shell: {
-      subtitle: 'TTY-WEB // v1.0.0',
+      subtitle: 'TTY-WEB // LOCAL',
       dashboardCmd: './dashboard',
       privacyLabel: 'PRIVACY:',
       privacyValue: '100% CLIENT',

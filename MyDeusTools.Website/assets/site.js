@@ -10,8 +10,6 @@ const commonI18n = {
     nav_architecture: 'Architecture',
     nav_download: 'Download',
     nav_faq: 'FAQ',
-    nav_btn_download: '[LAUNCH_SETUP]',
-    nav_badge_v: 'TTY // v1.0.0',
   },
   vi: {
     nav_home: 'Trang chủ',
@@ -19,8 +17,6 @@ const commonI18n = {
     nav_architecture: 'Kiến trúc',
     nav_download: 'Tải về',
     nav_faq: 'Hỏi đáp',
-    nav_btn_download: '[CÀI ĐẶT_NHANH]',
-    nav_badge_v: 'TTY // v1.0.0',
   },
 };
 
@@ -61,7 +57,8 @@ function applyTranslations(lang) {
 
   const langBtn = document.getElementById('langToggleBtn');
   if (langBtn) {
-    langBtn.textContent = lang === 'en' ? '[LANG:EN]' : '[NGÔN NGỮ:VI]';
+    langBtn.textContent = lang === 'en' ? 'EN' : 'VI';
+    langBtn.title = lang === 'en' ? 'Switch to Vietnamese (VI)' : 'Chuyển sang Tiếng Anh (EN)';
   }
 }
 
@@ -84,9 +81,21 @@ function applyTheme(theme) {
   }
   root.style.colorScheme = theme;
 
+  const sunIcon = document.getElementById('iconSun');
+  const moonIcon = document.getElementById('iconMoon');
   const themeBtn = document.getElementById('themeToggleBtn');
+  if (sunIcon && moonIcon) {
+    if (theme === 'dark') {
+      sunIcon.classList.remove('hidden');
+      moonIcon.classList.add('hidden');
+    } else {
+      sunIcon.classList.add('hidden');
+      moonIcon.classList.remove('hidden');
+    }
+  }
   if (themeBtn) {
-    themeBtn.textContent = theme === 'dark' ? '[THEME:DARK]' : '[THEME:LIGHT]';
+    themeBtn.title = theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode';
+    themeBtn.setAttribute('aria-label', themeBtn.title);
   }
 }
 
@@ -112,7 +121,8 @@ function applyCrt(enabled) {
 
   const crtBtn = document.getElementById('crtToggleBtn');
   if (crtBtn) {
-    crtBtn.textContent = enabled ? '[CRT:ON]' : '[CRT:OFF]';
+    crtBtn.title = enabled ? 'CRT Scanlines: ON' : 'CRT Scanlines: OFF';
+    crtBtn.setAttribute('aria-pressed', String(enabled));
     if (enabled) {
       crtBtn.style.borderColor = 'var(--tui-primary)';
       crtBtn.style.color = 'var(--tui-primary)';
