@@ -1,43 +1,32 @@
 # Project Brief - MyDeusTools
 
-## 1. Executive Summary
-**MyDeusTools** is an all-in-one lightweight Windows utility desktop application ("Super-App") built in **C# .NET 8** with **WPF** and **WPF-UI 3.0**. It is engineered to combine essential power-user automation and productivity tools into a single, cohesive, modern Fluent Design application with minimal resource footprint and Single-File zero-dependency distribution.
+## Vision & Purpose
+**MyDeusTools** is a modern, lightweight, high-performance desktop Super-App for Windows 10 & 11 designed to replace dozens of disjointed, ad-heavy, or legacy utilities with a unified, elegant, and native application.
 
-## 2. Core Missions & Problems Solved
-- **Productivity Acceleration**: Provide instant access to daily desktop tools (auto-click automation, system power schedules, floating scratchpad notes) without requiring heavy third-party software.
-- **Modern User Experience**: Deliver Windows 11 Fluent aesthetic (Mica backdrop, rounded corners, Dark/Light modes) via `WPF-UI`.
-- **System Integration**: Run in the system tray, toggle startup on boot via Windows Registry, and register low-latency global keyboard hotkeys.
+Built with **C# .NET 8 (WPF)** and **WPF-UI 3.0**, it combines Windows 11 Fluent Design, Mica material, clean MVVM architecture, and zero-dependency standalone single-file packaging.
 
-## 3. Product Features & Modules
+---
 
-### 3.1. Auto Clicker Pro (`AutoClickPage` / `AutoClickViewModel` / `AutoClickService`)
-- **Configurable Mouse Actions**: Left / Right / Middle buttons, Single or Double click.
-- **High-Precision Timing**: Configurable delay (Hours, Minutes, Seconds, Milliseconds; minimum 10ms clamp).
-- **Execution Limits**: Infinite repeat or fixed repeat count.
-- **Global Hotkey Manager**: Dynamic keybind remapping via `NHotkey.Wpf` (default `F6`), supports key combos (e.g. `Ctrl+Alt+F6`).
-- **Waypoint / Coordinate Recording**:
-  - Full-screen transparent overlay (`RecordingOverlayWindow`) capturing coordinates across multi-monitor setups (`SystemParameters.VirtualScreen*`).
-  - Interactive numbered circular badges marking clicked positions on the canvas.
-  - Sequenced replay of recorded points during execution.
+## The 12 Core Native Tools
 
-### 3.2. Schedule Shutdown (`ShutdownPage` / `ShutdownViewModel` / `SystemService`)
-- **System Actions**: Power Off (`Shutdown`), Reboot (`Restart`), and `Hibernate`.
-- **Timer Settings**: Hour / Minute / Second countdowns.
-- **System Level Invocation**: Executes native Windows commands (`shutdown /s /f /t <sec>`, `shutdown /r /f /t <sec>`, `cmd /c timeout ... && shutdown /h`, `shutdown /a`).
-- **Real-Time Visual Countdown**: Dynamic format `hh:mm:ss` display with cancel ability.
+1. **Auto Clicker Pro**: High-frequency mouse automation (Left, Right, Middle, Single/Double), high-precision intervals (down to 10ms safety clamp), global hotkey toggle (`NHotkey`), and multi-monitor coordinate recording/replay overlay.
+2. **Schedule Shutdown**: Timed system power management supporting Shutdown, Restart, and Hibernate actions with real-time countdown, instant cancellation, and automatic input time normalization (e.g., 70 minutes automatically normalizes to 1h 10m).
+3. **Sticky Notes**: Card-based desktop note manager with automatic JSON persistence (`Data/notes.json`) and borderless floating draggable windows (`StickyNoteWindow`).
+4. **Clipboard Manager**: Real-time clipboard listener utilizing native Win32 APIs (`AddClipboardFormatListener`), instant search filtering, pin-to-top, delete, and persistent JSON history.
+5. **QR Code Studio**: High-definition QR generation (`QRCoder`) with PNG export and clipboard copy; multi-source decoding (`ZXing.Net`) supporting screen region snipping (`QrSnippingOverlayWindow`), image files, and clipboard.
+6. **Color Picker & Eyedropper**: Fullscreen precision screen eyedropper with floating 11x11 pixel magnifier HUD, one-click HEX/RGB/HSL/HSV format copying, pin-to-palette management, and persistent color history (`Data/colors.json`).
+7. **Text & Dev Tools**: Swiss Army knife for text and code: JSON Formatter and Minifier with syntax validator, Base64 encoder/decoder (Text and Files), URL and HTML entity escaping, instant multi-hash generator (MD5, SHA-1, SHA-256, SHA-512), and case conversions.
+8. **Window Pinner & Transparency**: Pin any third-party desktop window Always-on-Top (`HWND_TOPMOST`), smoothly adjust real-time opacity and transparency (Win32 `WS_EX_LAYERED`), with quick opacity presets (100%, 80%, 60%, 40%).
+9. **Video Converter & Transcoder**: Media transcoder supporting diverse video/audio containers (MP4, MKV, WebM, AVI, MOV, WMV, GIF, FLV, MP3, WAV, AAC, FLAC), resolution scaling, CRF quality controls, and video trimming.
+10. **Image Studio & Optimizer**: Batch image compressor and converter supporting WebP, PNG, JPEG, ICO, BMP, and TIFF. Multi-layer Windows `.ico` generation (16px to 256px), quality tuning, scaling modes, and EXIF/metadata stripping.
+11. **PDF Toolkit**: 100% offline PDF processing powered by `PDFsharp` 6.1.1: Merge multiple PDFs, Split PDF (page range, single pages, N-page chunks), Convert images to PDF, Password encryption & document metadata editor.
+12. **Bulk File & Folder Renamer**: Industrial-grade batch file and directory renaming suite with Regex and capture groups, text insertion/removal/trimming, 8 case conversion modes, sequential numbering with zero padding, date/timestamp insertion, scope filtering, live conflict validation, and 1-click Undo.
 
-### 3.3. Sticky Notes (`StickyNotePage` / `StickyNoteViewModel` / `StickyNoteService` / `StickyNoteWindow`)
-- **Card-based Sticky Notes**: Masonry/wrap layout in main view.
-- **Floating Desktop Pin**: Pop-out individual notes into frameless, draggable, topmost desktop windows (`StickyNoteWindow`).
-- **JSON Persistence**: Auto-saves note content, timestamps, and pinned states into local storage (`Data/notes.json`).
+---
 
-### 3.4. App Shell & System Tray Integration (`MainWindow` / `AutoStartService`)
-- **System Tray Lifecycle**: Closing the window hides to tray (`_notifyIcon.TrayLeftMouseUp` to restore, Context menu for "Mở ứng dụng" and "Thoát").
-- **Windows Boot Toggle**: Registry integration at `HKCU\Software\Microsoft\Windows\CurrentVersion\Run`.
-- **Theme Switcher**: Instant switching between Dark and Light mode using `ApplicationThemeManager.Apply(...)`.
+## Foundation & Cross-Cutting Capabilities
 
-## 4. Key Constraints & Requirements
-- Target OS: Windows 10/11 x64.
-- .NET Runtime: .NET 8.0 Windows Desktop.
-- Distribution: Single-file win-x64 executable (`PublishSingleFile=true`, `PublishReadyToRun=true`, `IncludeNativeLibrariesForSelfExtract=true`, `EnableCompressionInSingleFile=true`).
-- No external bloat: Keep footprint minimal, start time instantaneous, memory footprint low.
+- **Bilingual Localization**: Instant runtime switching between English (`en-US`) and Vietnamese (`vi-VN`) via `{DynamicResource}` with 100% key symmetry and persistence in `Data/settings.json`.
+- **System Tray & Window Lifecycle**: Minimize-to-tray on close (`Hardcodet.NotifyIcon.Wpf`), instant Dark/Light theme switching, and Windows Startup registry toggle.
+- **Packaging**: Zero-dependency self-contained single-file executable (`MyDeusTools.App.exe`).
+- **Testing Standard**: 100% automated test pass rate across all suites (currently 274/274 tests passing).

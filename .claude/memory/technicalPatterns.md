@@ -1,69 +1,78 @@
 # Technical Patterns & Conventions - MyDeusTools
 
-## 1. MVVM & Code Patterns (CommunityToolkit.Mvvm)
-
-### 1.1. Observable Objects & Properties
-- ViewModels inherit from `ObservableObject` or `ObservableRecipient`.
-- Use `SetProperty(ref _field, value)` or the source generator `[ObservableProperty] private string _name;`.
-- Avoid putting UI controls directly in ViewModels; use data binding, commands, and interfaces.
-
-### 1.2. Relay Commands
-- Implement commands using `[RelayCommand]` or `new RelayCommand(...)`.
-- For asynchronous commands, return `Task` and use `[RelayCommand]` which provides `IAsyncRelayCommand` with `IsRunning` state support.
-
-### 1.3. UI Dispatching & Thread Safety
-- Any event originating from background threads, OS hooks, or timers updating UI-bound properties must be dispatched:
-```csharp
-System.Windows.Application.Current?.Dispatcher?.Invoke(() =>
-{
-    StatusText = "Updated state";
-});
-```
+This document records the design patterns, coding rules, threading conventions, XAML standards, and testing guidelines enforced across MyDeusTools.
 
 ---
 
-## 2. WPF-UI & XAML Styling Patterns
+## 1. MVVM Implementation Patterns
 
-### 2.1. Styling & Theming
-- Use dynamic resources for colors and brushes so the app adapts seamlessly to Dark and Light modes:
-  - `Foreground="{DynamicResource TextFillColorPrimaryBrush}"`
-  - `Foreground="{DynamicResource TextFillColorSecondaryBrush}"`
-  - `Background="{DynamicResource CardBackgroundFillColorSecondaryBrush}"`
-  - `Foreground="{DynamicResource SystemFillColorCriticalBrush}"`
-- Use WPF-UI controls: `<ui:Button>`, `<ui:Card>`, `<ui:NumberBox>`, `<ui:SymbolIcon>`, `<ui:InfoBar>`, `<ui:FluentWindow>`.
-
-### 2.2. Navigation Control
-- Main navigation is powered by `<ui:NavigationView x:Name="RootNavigation">` with items bound to page types:
-```xml
-<ui:NavigationViewItem Content="Auto Clicker" TargetPageType="{x:Type pages:AutoClickPage}">
-    <ui:NavigationViewItem.Icon>
-        <ui:SymbolIcon Symbol="CursorClick24" />
-    </ui:NavigationViewItem.Icon>
-</ui:NavigationViewItem>
-```
-
----
-
-## 3. Windows Interop & Low-Level API Patterns
-
-### 3.1. P/Invoke Conventions
-- Declare P/Invoke methods with standard attributes:
-```csharp
-[DllImport("user32.dll", CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall)]
-public static extern void mouse_event(uint dwFlags, uint dx, uint dy, uint cButtons, uint dwExtraInfo);
-```
-- Wrap unmanaged calls inside clean C# service interfaces to allow proper mocking in unit tests.
-
-### 3.2. Registry Access
-- Always use `try-catch` when accessing `Microsoft.Win32.Registry` to prevent crashes when running under non-elevated or restricted environments.
-- Use explicit open/close with `using var key = ...`.
-
-### 3.3. Command Execution
-- Set `CreateNoWindow = true` and `UseShellExecute = false` on `ProcessStartInfo` when invoking system utilities like `shutdown.exe`.
+1. **Toolkit Usage**: All ViewModels inherit from `ObservableObject` in `CommunityToolkit.Mvvm`.
+2. **Field-Backed Properties**:
+   ```csharp
+   [ObservableProperty]
+   private string _statusMessage = string.Empty;
+   ```
+3. **Change Notification Callbacks**:
+   ```csharp
+   partial void OnFindTextChanged(string value) => RefreshPreview();
+   ```
+4. **Command Authoring**:
+   ```csharp
+   [RelayCommand]
+   private async Task ExecuteAsync()
+   {
+       // Background execution with CancellationToken
+   }
+   ```
+5. **No UI Coupling**: ViewModels never reference WPF elements (`FrameworkElement`, `Button`, `Page`, etc.). Use bindings, commands, and `IProgress<T>`.
 
 ---
 
-## 4. Testing Standards (xUnit & Moq & Xunit.StaFact)
-- **Framework**: `xunit` 2.9.2 with `Moq` 4.20.72.
-- **WPF / UI Thread Tests**: Use `[WpfFact]` or `[WpfTheory]` from `Xunit.StaFact` when testing classes that interact with WPF Dispatcher or Dependency Objects.
-- **Service Isolation**: Ensure services have constructor dependency injection or optional parameters to enable deterministic testing without side effects on the host machine.
+## 2. Threading & Dispatcher Rules
+
+1. **Heavy Work Offloading**:
+   - Heavy tasks (PDF manipulation, batch file renaming, image encoding, video conversion, file hashing) must execute on background threads via `Task.Run`.
+2. **CancellationToken Support**:
+   - Long-running async methods must accept `CancellationToken cancellationToken = default`.
+   - ViewModel manages `CancellationTokenSource`, exposing a `CancelCommand`.
+3. **UI Marshaling**:
+   - Direct changes to `ObservableCollection` bound to the UI must occur on the UI thread or use `IProgress<T>`.
+   - When background threads need UI invocation: `Application.Current.Dispatcher.Invoke(...)` or `Dispatcher.InvokeAsync(...)`.
+4. **STA Threading for Tests**:
+   - Any unit test touching WPF UI components, dialogs, or dependency objects must use `[WpfFact]` or `[WpfTheory]` from `Xunit.StaFact`.
+
+---
+
+## 3. Bilingual ResourceDictionary Localization Pattern
+
+1. **Dynamic Binding**:
+   - Always use `{DynamicResource KeyName}` in XAML.
+   - Do not use `{StaticResource}` for localizable text.
+2. **Symmetrical Dictionaries**:
+   - `Strings.vi-VN.xaml` and `Strings.en-US.xaml` must maintain identical key names.
+   - Verified by `LanguageServiceTests.CriticalKeys_ShouldExistInBothDictionaries`.
+3. **Runtime Language Switch**:
+   - `LanguageService.SetLanguage(...)` swaps the language dictionary in `Application.Current.Resources.MergedDictionaries`.
+   - Dispatches `LanguageChanged` event to notify ViewModels if dynamic format strings need recalculation.
+
+---
+
+## 4. File I/O & Concurrency Patterns
+
+1. **Thread-Safe JSON Writing**:
+   - Use `SemaphoreSlim` or asynchronous file locks when persisting lists (`Data/notes.json`, `Data/clipboard.json`, `Data/colors.json`).
+   - Create the directory (`Directory.CreateDirectory`) before attempting file write.
+2. **Case-Only Renaming on Windows**:
+   - Windows NTFS is case-preserving but case-insensitive.
+   - When renaming a file from `sample.txt` to `SAMPLE.TXT`, rename through a temporary file (`sample.txt.tmp_guid`) before the final rename to prevent collision errors.
+3. **Directory Ordering for Renaming**:
+   - When renaming folders in batch, sort by path depth descending (`OrderByDescending(p => p.Length)`) so child directories are renamed before parent directories.
+
+---
+
+## 5. Testing & Code Quality Standards
+
+1. **Isolation**: Tests must never write into real user directories. Use `Path.GetTempPath()` and clean up in `Dispose()`.
+2. **Moq Verification**: Verify mock service invocations explicitly with expected arguments (`Times.Once`, `Times.Never`).
+3. **Coverage Baseline**: 100% test pass rate (all 274 tests must pass).
+4. **Release Quality**: Zero compiler warnings, zero errors under `dotnet build -c Release`.

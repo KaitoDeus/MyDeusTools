@@ -1,44 +1,63 @@
-# Claude Memory Bank Index
+# Claude & AI Agent Memory Bank Index
 
-Welcome to the **MyDeusTools Memory Bank**. This system preserves context, architectural patterns, decisions, operations, and status across AI interactions.
+Welcome to the **MyDeusTools Memory Bank**. This system preserves architecture, patterns, decisions, operations, milestones, and status across all AI interactions.
 
-## Memory Bank Structure
+---
+
+## Memory Bank Architecture & Reading Order
+
+For any AI assistant or developer working on MyDeusTools, consult the memory modules in the following strict order:
 
 ```
 .claude/
-├── MEMORY.md                   # This master index file
+├── MEMORY.md                   # [Step 1] Master Index & Reading Protocol (This file)
 ├── memory/
-│   ├── activeContext.md        # Current task focus, active goals, immediate steps
-│   ├── projectBrief.md         # Foundation goals, project scope, core features
-│   ├── systemArchitecture.md   # Detailed technical architecture, DI, layers, APIs
-│   ├── technicalPatterns.md    # Design patterns, MVVM rules, threading, XAML rules
-│   ├── progress.md             # Status of features, test coverage, roadmap
-│   └── history.md              # Historical log of operations, changes & milestones
-└── rules/
-    ├── wpf-standards.md        # Guidelines for WPF, WPF-UI, XAML & MVVM
-    └── windows-api.md          # Guidelines for Win32 API, P/Invoke, Registry & OS
+│   ├── projectBrief.md         # [Step 2] Foundation: Vision, Goals, 12 Core Features & Metrics
+│   ├── systemArchitecture.md   # [Step 3] Structure: High/Low Architecture, DI Matrix, Win32 & Storage
+│   ├── technicalPatterns.md    # [Step 4] Standards: MVVM, Dispatcher, Threading, XAML & Testing
+│   ├── progress.md             # [Step 5] State: Feature Completion Matrix & Test Inventory (274 Tests)
+│   ├── activeContext.md        # [Step 6] Current Focus: Active tasks, considerations & recent milestones
+│   └── history.md              # [Step 7] Chronological Log: Milestone evolution from inception to v1.0
+├── rules/
+│   ├── wpf-standards.md        # WPF-UI, XAML, FluentWindow & MVVM Guidelines
+│   ├── windows-api.md          # Win32 P/Invoke, User32, GDI & Registry Guidelines
+│   └── localization-standards.md# Bilingual Dictionary Symmetry (vi-VN & en-US)
+└── skills/                     # Reusable AI Developer Skills (Core, MVVM, Win32, Feature Workflow)
 ```
+
+---
 
 ## How AI Agents Must Use This Memory Bank
 
 1. **Read-First Protocol**:
-   - At the beginning of any task or session, read `CLAUDE.md`, `activeContext.md`, and `progress.md`.
-   - Consult `systemArchitecture.md` before making design decisions or modifying service boundaries.
-   - Consult `technicalPatterns.md` and `rules/` before authoring code.
+   - At the beginning of any session or task: Read `CLAUDE.md`, `activeContext.md`, and `progress.md`.
+   - Consult `systemArchitecture.md` before adding, modifying, or refactoring services.
+   - Consult `technicalPatterns.md` and `rules/` before writing code.
+   - Use `.agents/skills/` or `.claude/skills/` for execution runbooks.
 
 2. **Update Protocol**:
-   - When a feature is implemented or modified: update `progress.md` and `activeContext.md`.
-   - When architectural changes or new services are added: update `systemArchitecture.md` and `projectBrief.md`.
-   - When new conventions or patterns are established: update `technicalPatterns.md`.
-   - Log all meaningful operations, fixes, and refactorings in `history.md`.
+   - When a feature is implemented or modified: Update `progress.md`, `activeContext.md`, and `history.md`.
+   - When architectural changes or new services are added: Update `systemArchitecture.md`, `projectBrief.md`, and `docs/`.
+   - When new conventions or patterns are established: Update `technicalPatterns.md`.
+   - Always ensure 100% bilingual dictionary symmetry (`Strings.vi-VN.xaml` and `Strings.en-US.xaml`).
+
+---
 
 ## Core System Overview
 - **Project**: MyDeusTools (Windows WPF Utility Super-App)
-- **Target**: .NET 8 (net8.0-windows, win-x64)
+- **Target**: .NET 8 (`net8.0-windows`, `win-x64`)
 - **UI Architecture**: WPF-UI 3.0, Mica Backdrop, FluentWindow, MVVM (CommunityToolkit.Mvvm)
-- **Core Modules**:
-  1. `AutoClickService` & `AutoClickViewModel` (Mouse Automation, Waypoint Replay, Hotkey)
-  2. `SystemService` & `ShutdownViewModel` (Shutdown / Restart / Hibernate scheduler)
-  3. `StickyNoteService` & `StickyNoteViewModel` (Floating persistent desktop notes)
-  4. `AutoStartService` (Windows Run registry toggle)
-  5. `App` & `MainWindow` (Tray icon, Dark/Light theme toggle, Single instance / background run)
+- **Automated Tests**: 274 Tests (100% Pass Rate)
+- **The 12 Core Native Tools**:
+  1. Auto Clicker Pro (`AutoClickService`)
+  2. Schedule Shutdown (`SystemService` with Time Normalization)
+  3. Sticky Notes (`StickyNoteService`)
+  4. Clipboard Manager (`ClipboardService`)
+  5. QR Code Studio (`QrCodeService`)
+  6. Color Picker & Eyedropper (`ColorPickerService`)
+  7. Text & Dev Tools (`TextUtilityService`)
+  8. Window Pinner & Transparency (`WindowPinnerService`)
+  9. Video Converter & Transcoder (`VideoConverterService`)
+  10. Image Studio & Optimizer (`ImageStudioService`)
+  11. PDF Toolkit (`PdfToolkitService`)
+  12. Bulk File & Folder Renamer (`BulkRenamerService`)
