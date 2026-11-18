@@ -1,0 +1,11 @@
+{
+  "name": "mydeustools",
+  "version": "1.0.0",
+  "private": true,
+  "description": "MyDeusTools - All-in-One Utility Suite (Desktop WPF & Pure Web App)",
+  "scripts": {
+    "web:dev": "npm --prefix MyDeusTools.Web run dev",
+    "web:build": "npm --prefix MyDeusTools.Web run build",
+    "web:preview": "npm --prefix MyDeusTools.Web run preview"
+  }
+}

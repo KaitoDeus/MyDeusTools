@@ -71,6 +71,7 @@ d:\.MyDeusTools\MyDeusTools\
 │   └── Resources/                # Static Resources, Icons & Bilingual Dictionaries
 ├── MyDeusTools.Tests/            # Automated Unit & Integration Tests (274 Tests)
 ├── MyDeusTools.Website/          # Static Official Product Website (GitHub Pages)
+├── MyDeusTools.Web/              # Pure Web Application (Vite + React 19 + TypeScript + Tailwind CSS)
 ├── CLAUDE.md                     # Assistant Guidance File
 └── README.md                     # Repository Front-Page Readme
 ```
