@@ -2,21 +2,15 @@ import React, { useState } from 'react';
 import { useI18n } from '../../i18n/LanguageContext';
 import { PDFDocument } from 'pdf-lib';
 import {
-  FileText,
-  UploadCloud,
-  Download,
-  Trash2,
-  MoveUp,
-  MoveDown,
-  Layers,
-  Scissors,
-  Image as ImageIcon,
-  ShieldCheck,
-  Check,
-  AlertCircle,
-} from 'lucide-react';
+  TuiPageHeader,
+  TuiButton,
+  TuiCard,
+  TuiInput,
+  TuiChip,
+  TuiAlert,
+} from '../../components/terminal/TerminalUI';
 
-type PdfTab = 'merge' | 'split' | 'images' | 'metadata';
+type PdfTab = 'merge' | 'split';
 
 interface UploadedPdf {
   id: string;
@@ -102,7 +96,7 @@ export const PdfToolkitView: React.FC = () => {
       a.href = url;
       a.download = `merged_${Date.now()}.pdf`;
       a.click();
-      setStatusMessage('PDFs successfully merged and downloaded!');
+      setStatusMessage('PDFs merged successfully (EXIT_CODE 0).');
     } catch (err: any) {
       alert('Error merging PDFs: ' + err.message);
     } finally {
@@ -139,7 +133,6 @@ export const PdfToolkitView: React.FC = () => {
       const doc = await PDFDocument.load(bytes);
       const total = doc.getPageCount();
 
-      // Parse range: e.g. "1-3, 5"
       const pageIndices: number[] = [];
       const parts = pageRange.split(',').map((p) => p.trim());
       for (const part of parts) {
@@ -173,7 +166,7 @@ export const PdfToolkitView: React.FC = () => {
       a.href = url;
       a.download = `split_${Date.now()}.pdf`;
       a.click();
-      setStatusMessage('Split PDF successfully downloaded!');
+      setStatusMessage('Split PDF extracted and downloaded (EXIT_CODE 0).');
     } catch (err: any) {
       alert('Error splitting PDF: ' + err.message);
     } finally {
@@ -182,62 +175,38 @@ export const PdfToolkitView: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div>
-        <h2 className="text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
-          <FileText className="w-6 h-6 text-rose-600 dark:text-rose-500" />
-          <span>{t.nav.pdfToolkit}</span>
-        </h2>
-        <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">{t.descriptions.pdfToolkit}</p>
+    <div className="space-y-8">
+      <TuiPageHeader
+        command="pdf-toolkit"
+        title={t.nav.pdfToolkit}
+        description={t.descriptions.pdfToolkit}
+        badge="[OFFLINE_PDF_LIB]"
+        accent="secondary"
+      />
+
+      <div className="flex flex-wrap gap-2">
+        <TuiChip active={activeTab === 'merge'} onClick={() => setActiveTab('merge')}>
+          01:MERGE_PDFS
+        </TuiChip>
+        <TuiChip active={activeTab === 'split'} onClick={() => setActiveTab('split')}>
+          02:SPLIT_PAGES
+        </TuiChip>
       </div>
 
-      {/* Tabs */}
-      <div className="flex flex-wrap gap-2 border-b border-slate-200 dark:border-slate-800 pb-3">
-        {[
-          { id: 'merge', label: 'Merge PDFs', icon: Layers },
-          { id: 'split', label: 'Split Pages', icon: Scissors },
-        ].map((tab) => {
-          const Icon = tab.icon;
-          return (
-            <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id as PdfTab)}
-              className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
-                activeTab === tab.id
-                  ? 'bg-rose-600 text-white shadow-lg shadow-rose-600/20'
-                  : 'bg-white text-slate-600 hover:text-slate-900 hover:bg-slate-100 border border-slate-200 dark:border-transparent dark:bg-slate-900 dark:text-slate-400 dark:hover:text-slate-200 dark:hover:bg-slate-800'
-              }`}
-            >
-              <Icon className="w-4 h-4" />
-              <span>{tab.label}</span>
-            </button>
-          );
-        })}
-      </div>
-
-      {statusMessage && (
-        <div className="p-3 bg-emerald-500/10 border border-emerald-500/30 rounded-xl flex items-center gap-2 text-emerald-600 dark:text-emerald-400 text-xs">
-          <Check className="w-4 h-4 shrink-0" />
-          <span>{statusMessage}</span>
-        </div>
-      )}
+      {statusMessage && <TuiAlert type="ok">{statusMessage}</TuiAlert>}
 
       {/* Tab 1: Merge */}
       {activeTab === 'merge' && (
         <div className="space-y-5">
-          <div className="p-6 border-2 border-dashed border-slate-300 dark:border-slate-800 hover:border-rose-500/50 rounded-2xl flex flex-col items-center justify-center text-center space-y-3 glass-card transition-all">
-            <UploadCloud className="w-10 h-10 text-rose-500 dark:text-rose-400 opacity-80" />
-            <div className="space-y-1">
-              <p className="text-sm font-semibold text-slate-800 dark:text-slate-200">
-                Drag and drop PDF files here, or browse
-              </p>
-              <p className="text-xs text-slate-500">
-                100% client-side memory processing. Files never leave your browser.
-              </p>
+          <div className="p-6 border border-dashed border-[var(--tui-border-medium)] hover:border-[var(--tui-primary)] bg-[var(--tui-surface)] flex flex-col items-center justify-center text-center space-y-3">
+            <div className="text-[13px] font-bold text-[var(--tui-primary)]">
+              [+] LOAD_PDF_FILES_INTO_QUEUE
             </div>
-            <label className="px-5 py-2.5 bg-rose-600 hover:bg-rose-500 text-white rounded-xl text-xs font-semibold shadow-lg shadow-rose-600/20 transition-all cursor-pointer">
-              <span>{t.common.browse}</span>
+            <p className="text-[12px] text-[var(--tui-text-muted)]">
+              100% client-side memory processing. Files never leave your device.
+            </p>
+            <label className="inline-flex h-[36px] px-4 py-2 text-[13px] font-semibold uppercase border border-[var(--tui-primary)] text-[var(--tui-primary)] hover:bg-[var(--tui-primary)] hover:text-[var(--tui-primary-fg)] cursor-pointer items-center">
+              <span>$ {t.common.browse.toUpperCase()}</span>
               <input
                 type="file"
                 multiple
@@ -249,127 +218,122 @@ export const PdfToolkitView: React.FC = () => {
           </div>
 
           {mergeFiles.length > 0 && (
-            <div className="space-y-3">
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-semibold text-slate-600 dark:text-slate-400">
-                  Files to Merge ({mergeFiles.length})
-                </span>
-                <button
-                  onClick={() => setMergeFiles([])}
-                  className="text-xs text-slate-500 hover:text-rose-500 dark:hover:text-rose-400 cursor-pointer"
-                >
-                  {t.common.clear}
-                </button>
-              </div>
-
-              <div className="space-y-2">
+            <TuiCard
+              title={`MERGE_QUEUE (${mergeFiles.length} FILES)`}
+              rightMeta={
+                <TuiButton size="sm" variant="destructive" onClick={() => setMergeFiles([])}>
+                  [{t.common.clear.toUpperCase()}]
+                </TuiButton>
+              }
+              className="space-y-4"
+            >
+              <div>
                 {mergeFiles.map((item, idx) => (
                   <div
                     key={item.id}
-                    className="flex items-center justify-between p-3 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-xs"
+                    className="h-[40px] flex items-center justify-between px-2 border-b border-dashed border-[var(--tui-border-subtle)] hover:bg-[var(--tui-surface-elevated)] text-[13px]"
                   >
-                    <div className="flex items-center gap-3">
-                      <span className="w-6 h-6 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 font-bold flex items-center justify-center text-[10px]">
-                        {idx + 1}
+                    <div className="flex items-center gap-3 min-w-0">
+                      <span className="text-[11px] text-[var(--tui-text-dim)] w-[4ch] text-right">
+                        {String(idx + 1).padStart(2, '0')}
                       </span>
-                      <div>
-                        <div className="font-medium text-slate-900 dark:text-slate-200">{item.name}</div>
-                        <div className="text-[11px] text-slate-500">
-                          {(item.size / 1024).toFixed(1)} KB • {item.pageCount || '?'} pages
-                        </div>
-                      </div>
+                      <span className="font-semibold text-[var(--tui-text)] truncate">
+                        {item.name}
+                      </span>
+                      <span className="text-[11px] text-[var(--tui-text-muted)] shrink-0">
+                        [{(item.size / 1024).toFixed(1)}KB | {item.pageCount || '?'}p]
+                      </span>
                     </div>
 
-                    <div className="flex items-center gap-1">
-                      <button
+                    <div className="flex items-center gap-1 shrink-0">
+                      <TuiButton
+                        size="sm"
+                        variant="ghost"
                         onClick={() => moveMergeItem(idx, 'up')}
                         disabled={idx === 0}
-                        className="p-1.5 text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white disabled:opacity-30 cursor-pointer"
                       >
-                        <MoveUp className="w-3.5 h-3.5" />
-                      </button>
-                      <button
+                        [UP]
+                      </TuiButton>
+                      <TuiButton
+                        size="sm"
+                        variant="ghost"
                         onClick={() => moveMergeItem(idx, 'down')}
                         disabled={idx === mergeFiles.length - 1}
-                        className="p-1.5 text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white disabled:opacity-30 cursor-pointer"
                       >
-                        <MoveDown className="w-3.5 h-3.5" />
-                      </button>
-                      <button
+                        [DN]
+                      </TuiButton>
+                      <TuiButton
+                        size="sm"
+                        variant="destructive"
                         onClick={() => removeMergeItem(item.id)}
-                        className="p-1.5 text-slate-500 hover:text-rose-500 dark:hover:text-rose-400 cursor-pointer"
                       >
-                        <Trash2 className="w-3.5 h-3.5" />
-                      </button>
+                        [X]
+                      </TuiButton>
                     </div>
                   </div>
                 ))}
               </div>
 
-              <div className="pt-2">
-                <button
-                  onClick={executeMerge}
-                  disabled={isProcessing}
-                  className="w-full py-3 bg-gradient-to-r from-rose-600 to-pink-600 hover:from-rose-500 hover:to-pink-500 text-white rounded-xl text-xs font-bold uppercase tracking-wider shadow-lg shadow-rose-600/25 transition-all cursor-pointer flex items-center justify-center gap-2"
-                >
-                  <Download className="w-4 h-4" />
-                  <span>{isProcessing ? t.common.processing : 'Merge & Download PDF'}</span>
-                </button>
-              </div>
-            </div>
+              <TuiButton
+                variant="primary"
+                size="lg"
+                prefix=">"
+                onClick={executeMerge}
+                disabled={isProcessing}
+                className="w-full"
+              >
+                {isProcessing ? t.common.processing : 'MERGE_AND_DOWNLOAD_PDF'}
+              </TuiButton>
+            </TuiCard>
           )}
         </div>
       )}
 
       {/* Tab 2: Split */}
       {activeTab === 'split' && (
-        <div className="space-y-5 glass-card p-6 rounded-2xl">
-          <div className="space-y-2">
-            <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">
-              Select PDF File
+        <TuiCard title="SPLIT_PDF_BY_PAGE_RANGE" className="space-y-5">
+          <div className="space-y-1">
+            <label className="text-[12px] font-medium text-[var(--tui-text-muted)]">
+              // select_pdf_file
             </label>
             <input
               type="file"
               accept="application/pdf"
               onChange={handleSplitFileUpload}
-              className="w-full text-xs text-slate-600 dark:text-slate-400 file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-rose-600 file:text-white hover:file:bg-rose-500 cursor-pointer"
+              className="w-full text-[12px] text-[var(--tui-text-muted)] file:mr-4 file:py-2 file:px-4 file:border file:border-[var(--tui-primary)] file:bg-transparent file:text-[var(--tui-primary)] hover:file:bg-[var(--tui-primary)] hover:file:text-[var(--tui-primary-fg)] file:text-[12px] file:font-semibold file:uppercase cursor-pointer"
             />
           </div>
 
           {splitFile && (
-            <div className="p-4 bg-slate-50 dark:bg-slate-900 rounded-xl space-y-4 border border-slate-200 dark:border-slate-800">
-              <div className="flex items-center justify-between text-xs text-slate-600 dark:text-slate-400">
+            <div className="p-4 bg-[var(--tui-bg)] border border-[var(--tui-border-medium)] space-y-4">
+              <div className="flex flex-wrap items-center justify-between text-[12px] text-[var(--tui-text-muted)]">
                 <span>
-                  Selected: <strong className="text-slate-900 dark:text-slate-200">{splitFile.name}</strong>
+                  TARGET: <strong className="text-[var(--tui-text)]">{splitFile.name}</strong>
                 </span>
                 <span>
-                  Total Pages: <strong className="text-rose-600 dark:text-rose-400">{splitPageCount}</strong>
+                  TOTAL_PAGES: <strong className="text-[var(--tui-primary)]">{splitPageCount}</strong>
                 </span>
               </div>
 
-              <div className="space-y-1.5">
-                <label className="text-xs font-medium text-slate-700 dark:text-slate-300">
-                  Page Range (e.g. 1-3, 5)
-                </label>
-                <input
-                  type="text"
-                  value={pageRange}
-                  onChange={(e) => setPageRange(e.target.value)}
-                  className="w-full p-2.5 bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-xs font-mono text-slate-900 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-rose-500/50"
-                />
-              </div>
+              <TuiInput
+                label="page_range (e.g. 1-3, 5)"
+                prompt
+                value={pageRange}
+                onChange={(e) => setPageRange(e.target.value)}
+              />
 
-              <button
+              <TuiButton
+                variant="primary"
+                prefix=">"
                 onClick={executeSplit}
                 disabled={isProcessing}
-                className="w-full py-2.5 bg-rose-600 hover:bg-rose-500 text-white rounded-xl text-xs font-semibold transition-all cursor-pointer flex items-center justify-center gap-2"
+                className="w-full"
               >
-                <Download className="w-4 h-4" />
-                <span>{isProcessing ? t.common.processing : 'Extract Pages & Download'}</span>
-              </button>
+                {isProcessing ? t.common.processing : 'EXTRACT_PAGES_AND_DOWNLOAD'}
+              </TuiButton>
             </div>
           )}
-        </div>
+        </TuiCard>
       )}
     </div>
   );

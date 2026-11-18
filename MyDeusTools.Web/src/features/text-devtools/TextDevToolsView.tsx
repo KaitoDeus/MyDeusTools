@@ -1,18 +1,14 @@
 import React, { useState } from 'react';
 import { useI18n } from '../../i18n/LanguageContext';
 import {
-  Code,
-  FileCode,
-  Hash,
-  Type,
-  Link2,
-  Copy,
-  Check,
-  RotateCcw,
-  Sparkles,
-  AlertCircle,
-  FileUp,
-} from 'lucide-react';
+  TuiPageHeader,
+  TuiButton,
+  TuiCard,
+  TuiInput,
+  TuiTextarea,
+  TuiChip,
+  TuiAlert,
+} from '../../components/terminal/TerminalUI';
 
 type Tab = 'json' | 'base64' | 'hash' | 'case' | 'url';
 
@@ -81,8 +77,7 @@ export const TextDevToolsView: React.FC = () => {
     if (!file) return;
     const reader = new FileReader();
     reader.onload = () => {
-      const res = reader.result as string;
-      setBase64Output(res);
+      setBase64Output(reader.result as string);
     };
     reader.readAsDataURL(file);
   };
@@ -96,7 +91,6 @@ export const TextDevToolsView: React.FC = () => {
     setIsHashing(true);
     const enc = new TextEncoder();
     const data = enc.encode(hashInput);
-
     const results: Record<string, string> = {};
 
     try {
@@ -155,115 +149,83 @@ export const TextDevToolsView: React.FC = () => {
   const [urlOutput, setUrlOutput] = useState('');
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div>
-        <h2 className="text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
-          <Code className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
-          <span>{t.nav.textDevTools}</span>
-        </h2>
-        <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">{t.descriptions.textDevTools}</p>
-      </div>
+    <div className="space-y-8">
+      <TuiPageHeader
+        command="text-devtools"
+        title={t.nav.textDevTools}
+        description={t.descriptions.textDevTools}
+        badge="[DEV]"
+      />
 
       {/* Tabs */}
-      <div className="flex flex-wrap gap-2 border-b border-slate-200 dark:border-slate-800 pb-3">
+      <div className="flex flex-wrap gap-2">
         {[
-          { id: 'json', label: 'JSON Studio', icon: FileCode },
-          { id: 'base64', label: 'Base64', icon: Sparkles },
-          { id: 'hash', label: 'Crypto Hash', icon: Hash },
-          { id: 'case', label: 'Case Converter', icon: Type },
-          { id: 'url', label: 'URL & Entities', icon: Link2 },
-        ].map((tab) => {
-          const Icon = tab.icon;
-          return (
-            <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id as Tab)}
-              className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
-                activeTab === tab.id
-                  ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-600/20'
-                  : 'bg-white text-slate-600 hover:text-slate-900 hover:bg-slate-100 border border-slate-200 dark:border-transparent dark:bg-slate-900 dark:text-slate-400 dark:hover:text-slate-200 dark:hover:bg-slate-800'
-              }`}
-            >
-              <Icon className="w-4 h-4" />
-              <span>{tab.label}</span>
-            </button>
-          );
-        })}
+          { id: 'json', label: '01:JSON_STUDIO' },
+          { id: 'base64', label: '02:BASE64' },
+          { id: 'hash', label: '03:CRYPTO_HASH' },
+          { id: 'case', label: '04:CASE_CONVERT' },
+          { id: 'url', label: '05:URL_ENTITIES' },
+        ].map((tab) => (
+          <TuiChip
+            key={tab.id}
+            active={activeTab === tab.id}
+            onClick={() => setActiveTab(tab.id as Tab)}
+          >
+            {tab.label}
+          </TuiChip>
+        ))}
       </div>
 
       {/* Tab 1: JSON Studio */}
       {activeTab === 'json' && (
         <div className="space-y-4">
           <div className="flex flex-wrap gap-3">
-            <button
-              onClick={handleJsonFormat}
-              className="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-semibold transition-colors cursor-pointer flex items-center gap-2"
-            >
-              <Sparkles className="w-4 h-4" />
-              Format (2 Spaces)
-            </button>
-            <button
-              onClick={handleJsonMinify}
-              className="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-800 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-200 rounded-xl text-xs font-semibold transition-colors cursor-pointer"
-            >
-              Minify JSON
-            </button>
-            <button
+            <TuiButton variant="primary" prefix=">" onClick={handleJsonFormat}>
+              FORMAT (2_SPACES)
+            </TuiButton>
+            <TuiButton variant="secondary" prefix="$" onClick={handleJsonMinify}>
+              MINIFY_JSON
+            </TuiButton>
+            <TuiButton
+              variant="destructive"
               onClick={() => {
                 setJsonInput('');
                 setJsonOutput('');
                 setJsonError(null);
               }}
-              className="px-4 py-2 bg-white hover:bg-slate-100 text-slate-600 border border-slate-200 dark:border-transparent dark:bg-slate-900 dark:hover:bg-slate-800 dark:text-slate-400 rounded-xl text-xs font-semibold transition-colors cursor-pointer flex items-center gap-1.5"
             >
-              <RotateCcw className="w-3.5 h-3.5" />
-              {t.common.clear}
-            </button>
+              [{t.common.clear.toUpperCase()}]
+            </TuiButton>
           </div>
 
-          {jsonError && (
-            <div className="p-3 bg-rose-500/10 border border-rose-500/30 rounded-xl flex items-center gap-2 text-rose-600 dark:text-rose-400 text-xs">
-              <AlertCircle className="w-4 h-4 shrink-0" />
-              <span>Syntax Error: {jsonError}</span>
-            </div>
-          )}
+          {jsonError && <TuiAlert type="err">SYNTAX_ERROR: {jsonError}</TuiAlert>}
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <label className="text-xs font-medium text-slate-600 dark:text-slate-400">
-                Input JSON
-              </label>
-              <textarea
-                value={jsonInput}
-                onChange={(e) => setJsonInput(e.target.value)}
-                rows={14}
-                className="w-full p-4 bg-white dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 rounded-xl text-xs font-mono text-emerald-700 dark:text-emerald-300 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 resize-y"
-              />
-            </div>
-            <div className="space-y-2">
-              <div className="flex items-center justify-between">
-                <label className="text-xs font-medium text-slate-600 dark:text-slate-400">
-                  Formatted Output
-                </label>
-                {jsonOutput && (
-                  <button
+            <TuiTextarea
+              label="input_json"
+              value={jsonInput}
+              onChange={(e) => setJsonInput(e.target.value)}
+              rows={14}
+              className="text-[var(--tui-primary)]"
+            />
+            <TuiTextarea
+              label="formatted_output"
+              readOnly
+              value={jsonOutput}
+              placeholder="Result will appear here..."
+              rows={14}
+              rightAction={
+                jsonOutput && (
+                  <TuiButton
+                    size="sm"
+                    variant="primary"
                     onClick={() => copyToClipboard(jsonOutput, 'json')}
-                    className="text-xs text-emerald-600 dark:text-emerald-400 hover:underline flex items-center gap-1 cursor-pointer"
                   >
-                    {copiedKey === 'json' ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
-                    <span>{copiedKey === 'json' ? t.common.copied : t.common.copy}</span>
-                  </button>
-                )}
-              </div>
-              <textarea
-                readOnly
-                value={jsonOutput}
-                placeholder="Result will appear here..."
-                rows={14}
-                className="w-full p-4 bg-slate-100 dark:bg-slate-950 border border-slate-200 dark:border-slate-800/80 rounded-xl text-xs font-mono text-slate-800 dark:text-slate-200 focus:outline-none resize-y"
-              />
-            </div>
+                    {copiedKey === 'json' ? `[${t.common.copied.toUpperCase()}]` : `[${t.common.copy.toUpperCase()}]`}
+                  </TuiButton>
+                )
+              }
+            />
           </div>
         </div>
       )}
@@ -272,63 +234,46 @@ export const TextDevToolsView: React.FC = () => {
       {activeTab === 'base64' && (
         <div className="space-y-4">
           <div className="flex flex-wrap items-center justify-between gap-3">
-            <div className="flex gap-2">
-              <button
-                onClick={handleBase64Encode}
-                className="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-semibold transition-colors cursor-pointer"
-              >
-                Encode Text
-              </button>
-              <button
-                onClick={handleBase64Decode}
-                className="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-800 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-200 rounded-xl text-xs font-semibold transition-colors cursor-pointer"
-              >
-                Decode Base64
-              </button>
+            <div className="flex flex-wrap gap-2">
+              <TuiButton variant="primary" prefix=">" onClick={handleBase64Encode}>
+                ENCODE_TEXT
+              </TuiButton>
+              <TuiButton variant="secondary" prefix="$" onClick={handleBase64Decode}>
+                DECODE_BASE64
+              </TuiButton>
             </div>
 
-            <label className="px-4 py-2 bg-white hover:bg-slate-100 text-slate-700 border border-slate-200 dark:border-transparent dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-200 rounded-xl text-xs font-semibold transition-colors cursor-pointer flex items-center gap-2">
-              <FileUp className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-              <span>File to Base64</span>
+            <label className="inline-flex h-[36px] px-4 py-2 text-[13px] font-semibold uppercase border border-[var(--tui-secondary)] text-[var(--tui-secondary)] hover:bg-[var(--tui-secondary)] hover:text-[var(--tui-primary-fg)] cursor-pointer items-center gap-2">
+              <span>$ FILE_TO_BASE64</span>
               <input type="file" onChange={handleBase64FileUpload} className="hidden" />
             </label>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <label className="text-xs font-medium text-slate-600 dark:text-slate-400">
-                Input String / Data
-              </label>
-              <textarea
-                value={base64Input}
-                onChange={(e) => setBase64Input(e.target.value)}
-                rows={10}
-                className="w-full p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-xs font-mono text-slate-900 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 resize-y"
-              />
-            </div>
-            <div className="space-y-2">
-              <div className="flex items-center justify-between">
-                <label className="text-xs font-medium text-slate-600 dark:text-slate-400">
-                  Base64 Result
-                </label>
-                {base64Output && (
-                  <button
+            <TuiTextarea
+              label="input_data"
+              value={base64Input}
+              onChange={(e) => setBase64Input(e.target.value)}
+              rows={10}
+            />
+            <TuiTextarea
+              label="base64_output"
+              readOnly
+              value={base64Output}
+              placeholder="Encoded/Decoded result..."
+              rows={10}
+              rightAction={
+                base64Output && (
+                  <TuiButton
+                    size="sm"
+                    variant="primary"
                     onClick={() => copyToClipboard(base64Output, 'b64')}
-                    className="text-xs text-emerald-600 dark:text-emerald-400 hover:underline flex items-center gap-1 cursor-pointer"
                   >
-                    {copiedKey === 'b64' ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
-                    <span>{copiedKey === 'b64' ? t.common.copied : t.common.copy}</span>
-                  </button>
-                )}
-              </div>
-              <textarea
-                readOnly
-                value={base64Output}
-                placeholder="Encoded/Decoded result..."
-                rows={10}
-                className="w-full p-4 bg-slate-100 dark:bg-slate-950 border border-slate-200 dark:border-slate-800/80 rounded-xl text-xs font-mono text-slate-800 dark:text-slate-300 focus:outline-none resize-y"
-              />
-            </div>
+                    {copiedKey === 'b64' ? `[${t.common.copied.toUpperCase()}]` : `[${t.common.copy.toUpperCase()}]`}
+                  </TuiButton>
+                )
+              }
+            />
           </div>
         </div>
       )}
@@ -336,57 +281,47 @@ export const TextDevToolsView: React.FC = () => {
       {/* Tab 3: Crypto Hash */}
       {activeTab === 'hash' && (
         <div className="space-y-4">
-          <div className="space-y-2">
-            <label className="text-xs font-medium text-slate-600 dark:text-slate-400">
-              Text to Hash
-            </label>
-            <div className="flex gap-3">
-              <input
-                type="text"
+          <div className="flex flex-col sm:flex-row gap-3 items-end">
+            <div className="flex-1 w-full">
+              <TuiInput
+                label="text_to_hash"
+                prompt
                 value={hashInput}
                 onChange={(e) => setHashInput(e.target.value)}
-                className="flex-1 px-4 py-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-xs font-mono text-slate-900 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
               />
-              <button
-                onClick={computeHashes}
-                disabled={isHashing}
-                className="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-semibold transition-colors cursor-pointer shrink-0"
-              >
-                {isHashing ? 'Computing...' : 'Generate Hashes'}
-              </button>
             </div>
+            <TuiButton
+              variant="primary"
+              prefix=">"
+              onClick={computeHashes}
+              disabled={isHashing}
+              className="shrink-0"
+            >
+              {isHashing ? 'COMPUTING...' : 'GENERATE_HASHES'}
+            </TuiButton>
           </div>
 
           <div className="grid grid-cols-1 gap-3 pt-2">
             {['SHA-256', 'SHA-512', 'SHA-1'].map((algo) => {
-              const val = hashes[algo] || 'Click "Generate Hashes" to compute';
+              const val = hashes[algo] || 'Click "> GENERATE_HASHES" to compute digest';
               return (
-                <div
+                <TuiCard
                   key={algo}
-                  className="p-4 glass-card rounded-xl space-y-1.5"
-                >
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400">
-                      {algo}
-                    </span>
-                    {hashes[algo] && (
-                      <button
+                  title={`DIGEST :: ${algo}`}
+                  rightMeta={
+                    hashes[algo] && (
+                      <TuiButton
+                        size="sm"
+                        variant="ghost"
                         onClick={() => copyToClipboard(val, algo)}
-                        className="text-xs text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white flex items-center gap-1 cursor-pointer"
                       >
-                        {copiedKey === algo ? (
-                          <Check className="w-3 h-3 text-emerald-600 dark:text-emerald-400" />
-                        ) : (
-                          <Copy className="w-3 h-3" />
-                        )}
-                        <span>{copiedKey === algo ? t.common.copied : t.common.copy}</span>
-                      </button>
-                    )}
-                  </div>
-                  <div className="text-xs font-mono text-slate-700 dark:text-slate-300 break-all select-all">
-                    {val}
-                  </div>
-                </div>
+                        {copiedKey === algo ? '[COPIED]' : '[COPY]'}
+                      </TuiButton>
+                    )
+                  }
+                >
+                  <div className="text-[13px] text-[var(--tui-text)] break-all select-all">{val}</div>
+                </TuiCard>
               );
             })}
           </div>
@@ -396,37 +331,24 @@ export const TextDevToolsView: React.FC = () => {
       {/* Tab 4: Case Converter */}
       {activeTab === 'case' && (
         <div className="space-y-4">
-          <div className="space-y-2">
-            <label className="text-xs font-medium text-slate-600 dark:text-slate-400">
-              Original Text
-            </label>
-            <textarea
-              value={caseInput}
-              onChange={(e) => setCaseInput(e.target.value)}
-              rows={3}
-              className="w-full p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-xs font-mono text-slate-900 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
-            />
-          </div>
+          <TuiTextarea
+            label="original_text"
+            value={caseInput}
+            onChange={(e) => setCaseInput(e.target.value)}
+            rows={3}
+          />
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {Object.entries(getCaseVariants(caseInput)).map(([variantName, transformed]) => (
-              <div
+              <TuiCard
                 key={variantName}
+                interactive
                 onClick={() => copyToClipboard(transformed, variantName)}
-                className="p-3.5 glass-card hover:border-emerald-500/40 rounded-xl cursor-pointer group transition-all"
+                title={variantName}
+                rightMeta={copiedKey === variantName ? '[COPIED]' : '[CLICK_TO_COPY]'}
               >
-                <div className="flex items-center justify-between text-[11px] text-slate-500 dark:text-slate-400 mb-1">
-                  <span className="font-semibold text-slate-700 dark:text-slate-300">
-                    {variantName}
-                  </span>
-                  <span className="text-emerald-600 dark:text-emerald-400 opacity-0 group-hover:opacity-100 transition-opacity">
-                    {copiedKey === variantName ? t.common.copied : t.common.copy}
-                  </span>
-                </div>
-                <div className="text-xs font-mono text-slate-900 dark:text-slate-200 truncate">
-                  {transformed}
-                </div>
-              </div>
+                <div className="text-[13px] text-[var(--tui-text)] truncate">{transformed}</div>
+              </TuiCard>
             ))}
           </div>
         </div>
@@ -436,13 +358,16 @@ export const TextDevToolsView: React.FC = () => {
       {activeTab === 'url' && (
         <div className="space-y-4">
           <div className="flex flex-wrap gap-2">
-            <button
+            <TuiButton
+              variant="primary"
+              prefix=">"
               onClick={() => setUrlOutput(encodeURIComponent(urlInput))}
-              className="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-semibold transition-colors cursor-pointer"
             >
-              URL Encode
-            </button>
-            <button
+              URL_ENCODE
+            </TuiButton>
+            <TuiButton
+              variant="secondary"
+              prefix="$"
               onClick={() => {
                 try {
                   setUrlOutput(decodeURIComponent(urlInput));
@@ -450,47 +375,36 @@ export const TextDevToolsView: React.FC = () => {
                   setUrlOutput('Invalid encoded URL');
                 }
               }}
-              className="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-800 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-200 rounded-xl text-xs font-semibold transition-colors cursor-pointer"
             >
-              URL Decode
-            </button>
+              URL_DECODE
+            </TuiButton>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <label className="text-xs font-medium text-slate-600 dark:text-slate-400">
-                Input String
-              </label>
-              <textarea
-                value={urlInput}
-                onChange={(e) => setUrlInput(e.target.value)}
-                rows={8}
-                className="w-full p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-xs font-mono text-slate-900 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 resize-y"
-              />
-            </div>
-            <div className="space-y-2">
-              <div className="flex items-center justify-between">
-                <label className="text-xs font-medium text-slate-600 dark:text-slate-400">
-                  Result
-                </label>
-                {urlOutput && (
-                  <button
+            <TuiTextarea
+              label="input_string"
+              value={urlInput}
+              onChange={(e) => setUrlInput(e.target.value)}
+              rows={8}
+            />
+            <TuiTextarea
+              label="result_string"
+              readOnly
+              value={urlOutput}
+              placeholder="Encoded/Decoded result..."
+              rows={8}
+              rightAction={
+                urlOutput && (
+                  <TuiButton
+                    size="sm"
+                    variant="primary"
                     onClick={() => copyToClipboard(urlOutput, 'url')}
-                    className="text-xs text-emerald-600 dark:text-emerald-400 hover:underline flex items-center gap-1 cursor-pointer"
                   >
-                    {copiedKey === 'url' ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
-                    <span>{copiedKey === 'url' ? t.common.copied : t.common.copy}</span>
-                  </button>
-                )}
-              </div>
-              <textarea
-                readOnly
-                value={urlOutput}
-                placeholder="Encoded/Decoded result..."
-                rows={8}
-                className="w-full p-4 bg-slate-100 dark:bg-slate-950 border border-slate-200 dark:border-slate-800/80 rounded-xl text-xs font-mono text-slate-800 dark:text-slate-300 focus:outline-none resize-y"
-              />
-            </div>
+                    {copiedKey === 'url' ? `[${t.common.copied.toUpperCase()}]` : `[${t.common.copy.toUpperCase()}]`}
+                  </TuiButton>
+                )
+              }
+            />
           </div>
         </div>
       )}

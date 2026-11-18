@@ -2,16 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { useI18n } from '../../i18n/LanguageContext';
 import { db, ClipboardSnippet } from '../../services/db';
 import {
-  ClipboardList,
-  Copy,
-  Check,
-  Plus,
-  Trash2,
-  Pin,
-  Search,
-  Tag,
-  ClipboardPaste,
-} from 'lucide-react';
+  TuiPageHeader,
+  TuiButton,
+  TuiCard,
+  TuiInput,
+  TuiTextarea,
+  TuiChip,
+} from '../../components/terminal/TerminalUI';
 
 export const ClipboardHubView: React.FC = () => {
   const { t } = useI18n();
@@ -20,7 +17,7 @@ export const ClipboardHubView: React.FC = () => {
   const [copiedId, setCopiedId] = useState<number | null>(null);
   const [newTitle, setNewTitle] = useState('');
   const [newContent, setNewContent] = useState('');
-  const [newTag, setNewTag] = useState('Code');
+  const [newTag, setNewTag] = useState('CODE');
 
   const loadSnippets = async () => {
     try {
@@ -49,9 +46,9 @@ export const ClipboardHubView: React.FC = () => {
     if (!newContent.trim()) return;
     try {
       await db.snippets.add({
-        title: newTitle.trim() || 'Untitled Snippet',
+        title: newTitle.trim() || 'UNTITLED_SNIPPET',
         content: newContent.trim(),
-        tag: newTag.trim() || 'General',
+        tag: newTag.trim().toUpperCase() || 'GENERAL',
         isPinned: false,
         usageCount: 0,
         createdAt: Date.now(),
@@ -71,7 +68,7 @@ export const ClipboardHubView: React.FC = () => {
       await db.snippets.add({
         title: text.substring(0, 30) + '...',
         content: text,
-        tag: 'Clipboard',
+        tag: 'CLIPBOARD',
         isPinned: false,
         usageCount: 0,
         createdAt: Date.now(),
@@ -102,147 +99,114 @@ export const ClipboardHubView: React.FC = () => {
   );
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div>
-        <h2 className="text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
-          <ClipboardList className="w-6 h-6 text-blue-600 dark:text-blue-400" />
-          <span>{t.nav.clipboardManager}</span>
-        </h2>
-        <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
-          {t.descriptions.clipboardManager}
-        </p>
-      </div>
+    <div className="space-y-8">
+      <TuiPageHeader
+        command="clip-vault"
+        title={t.nav.clipboardManager}
+        description={t.descriptions.clipboardManager}
+        badge="[CLIPBOARD_API]"
+        accent="tertiary"
+      />
 
-      {/* Add New Snippet Form */}
-      <div className="glass-card p-5 rounded-2xl space-y-4">
-        <div className="flex flex-col sm:flex-row gap-3">
-          <input
-            type="text"
-            value={newTitle}
-            onChange={(e) => setNewTitle(e.target.value)}
-            placeholder="Snippet Title..."
-            className="flex-1 px-3.5 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-xs font-semibold text-slate-900 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500/50"
-          />
-          <input
-            type="text"
-            value={newTag}
-            onChange={(e) => setNewTag(e.target.value)}
-            placeholder="Tag (e.g. Code, SQL, Email)..."
-            className="w-full sm:w-48 px-3.5 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-xs text-slate-900 dark:text-slate-200 focus:outline-none"
-          />
+      {/* Add Snippet Form */}
+      <TuiCard title="ADD_SNIPPET_ENTRY" className="space-y-4">
+        <div className="grid grid-cols-1 sm:grid-cols-12 gap-3">
+          <div className="sm:col-span-8">
+            <TuiInput
+              label="snippet_title"
+              prompt
+              value={newTitle}
+              onChange={(e) => setNewTitle(e.target.value)}
+              placeholder="Snippet identifier..."
+            />
+          </div>
+          <div className="sm:col-span-4">
+            <TuiInput
+              label="tag"
+              value={newTag}
+              onChange={(e) => setNewTag(e.target.value)}
+              placeholder="CODE, SQL, AUTH..."
+            />
+          </div>
         </div>
 
-        <textarea
+        <TuiTextarea
+          label="payload"
           value={newContent}
           onChange={(e) => setNewContent(e.target.value)}
-          placeholder="Paste or write snippet text here..."
+          placeholder="Paste or write snippet payload here..."
           rows={3}
-          className="w-full p-3.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-xs font-mono text-slate-900 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500/50"
         />
 
-        <div className="flex items-center justify-between">
-          <button
-            onClick={handlePasteFromSystem}
-            className="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 dark:border-transparent dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-300 rounded-xl text-xs font-medium transition-colors cursor-pointer flex items-center gap-1.5"
-          >
-            <ClipboardPaste className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
-            <span>Paste from OS Clipboard</span>
-          </button>
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <TuiButton variant="secondary" prefix="$" onClick={handlePasteFromSystem}>
+            PASTE_OS_CLIPBOARD
+          </TuiButton>
 
-          <button
-            onClick={handleAdd}
-            className="px-5 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-semibold shadow-lg shadow-blue-600/20 cursor-pointer flex items-center gap-1.5"
-          >
-            <Plus className="w-3.5 h-3.5" />
-            <span>Save Snippet</span>
-          </button>
+          <TuiButton variant="primary" prefix=">" onClick={handleAdd}>
+            SAVE_SNIPPET
+          </TuiButton>
         </div>
-      </div>
+      </TuiCard>
 
-      {/* Search Bar */}
-      <div className="relative">
-        <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
-        <input
-          type="text"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          placeholder="Search snippets by title, content, or tag..."
-          className="w-full pl-10 pr-4 py-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-xs text-slate-900 dark:text-slate-200 focus:outline-none"
-        />
-      </div>
+      {/* Search */}
+      <TuiInput
+        label="grep_snippets"
+        prompt
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+        placeholder="Search snippets by title, content, or tag..."
+      />
 
       {/* Snippets List */}
       <div className="space-y-3">
         {filtered.map((s) => (
-          <div
+          <TuiCard
             key={s.id}
-            className="p-4 rounded-xl glass-card hover:border-slate-300 dark:hover:border-slate-700 transition-all space-y-2 group"
+            className="space-y-3"
+            title={`> ${s.title}`}
+            rightMeta={
+              <div className="flex items-center gap-2">
+                <TuiChip tone="tertiary">#{s.tag}</TuiChip>
+                {s.isPinned && <TuiChip tone="secondary">[PINNED]</TuiChip>}
+              </div>
+            }
           >
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <span className="font-semibold text-xs text-slate-900 dark:text-slate-200">
-                  {s.title}
-                </span>
-                <span className="text-[10px] px-2 py-0.5 rounded-md bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20 flex items-center gap-1">
-                  <Tag className="w-2.5 h-2.5" />
-                  <span>{s.tag}</span>
-                </span>
-                {s.isPinned && (
-                  <span className="text-[10px] text-amber-600 dark:text-amber-400 font-bold">
-                    PINNED
-                  </span>
-                )}
-              </div>
-
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={() => handleCopy(s)}
-                  className="px-3 py-1 bg-blue-500/10 hover:bg-blue-600 text-blue-600 dark:bg-blue-600/20 dark:text-blue-400 hover:text-white rounded-lg text-xs font-medium transition-colors flex items-center gap-1 cursor-pointer"
-                >
-                  {copiedId === s.id ? (
-                    <Check className="w-3.5 h-3.5 text-emerald-500 dark:text-emerald-400" />
-                  ) : (
-                    <Copy className="w-3.5 h-3.5" />
-                  )}
-                  <span>{copiedId === s.id ? t.common.copied : t.common.copy}</span>
-                </button>
-
-                <button
-                  onClick={() => handleTogglePin(s)}
-                  className={`p-1.5 rounded-lg cursor-pointer ${
-                    s.isPinned
-                      ? 'text-amber-600 dark:text-amber-400'
-                      : 'text-slate-400 hover:text-slate-700 dark:text-slate-500 dark:hover:text-slate-300'
-                  }`}
-                >
-                  <Pin className="w-3.5 h-3.5" />
-                </button>
-
-                <button
-                  onClick={() => handleDelete(s.id)}
-                  className="p-1.5 text-slate-400 hover:text-rose-500 dark:text-slate-500 dark:hover:text-rose-400 rounded-lg cursor-pointer"
-                >
-                  <Trash2 className="w-3.5 h-3.5" />
-                </button>
-              </div>
-            </div>
-
-            <div className="p-3 bg-slate-100 dark:bg-slate-950 rounded-lg border border-slate-200 dark:border-slate-800/80 font-mono text-xs text-slate-800 dark:text-slate-300 max-h-24 overflow-y-auto whitespace-pre-wrap select-all">
+            <div className="p-3 bg-[var(--tui-bg)] border border-[var(--tui-border-subtle)] text-[13px] text-[var(--tui-text)] max-h-28 overflow-y-auto whitespace-pre-wrap select-all">
               {s.content}
             </div>
 
-            <div className="text-[10px] text-slate-500 flex justify-between">
-              <span>Used {s.usageCount || 0} times</span>
-              <span>{new Date(s.createdAt).toLocaleDateString()}</span>
+            <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-dashed border-[var(--tui-border-subtle)] text-[11px] text-[var(--tui-text-dim)]">
+              <div className="flex items-center gap-4">
+                <span>USES: {s.usageCount || 0}</span>
+                <span>CREATED: {new Date(s.createdAt).toLocaleDateString()}</span>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <TuiButton size="sm" variant="primary" onClick={() => handleCopy(s)}>
+                  {copiedId === s.id
+                    ? `[${t.common.copied.toUpperCase()}]`
+                    : `[${t.common.copy.toUpperCase()}]`}
+                </TuiButton>
+                <TuiButton
+                  size="sm"
+                  variant={s.isPinned ? 'amber' : 'ghost'}
+                  onClick={() => handleTogglePin(s)}
+                >
+                  {s.isPinned ? '[UNPIN]' : '[PIN]'}
+                </TuiButton>
+                <TuiButton size="sm" variant="destructive" onClick={() => handleDelete(s.id)}>
+                  [DEL]
+                </TuiButton>
+              </div>
             </div>
-          </div>
+          </TuiCard>
         ))}
 
         {filtered.length === 0 && (
-          <div className="text-center py-12 text-slate-500 text-xs">
-            No snippets found. Add your frequently used text templates and code blocks!
-          </div>
+          <TuiCard className="text-center py-12 text-[var(--tui-text-dim)] text-[12px]">
+            [EMPTY_VAULT] No snippets matched query.
+          </TuiCard>
         )}
       </div>
     </div>

@@ -1,15 +1,12 @@
 import React, { useState } from 'react';
 import { useI18n } from '../../i18n/LanguageContext';
 import {
-  Image as ImageIcon,
-  UploadCloud,
-  Download,
-  Trash2,
-  Sliders,
-  Sparkles,
-  ShieldCheck,
-  Check,
-} from 'lucide-react';
+  TuiPageHeader,
+  TuiButton,
+  TuiCard,
+  TuiSelect,
+  TuiAlert,
+} from '../../components/terminal/TerminalUI';
 
 interface SelectedImage {
   id: string;
@@ -97,109 +94,88 @@ export const ImageStudioView: React.FC = () => {
       await processAndDownload(img);
     }
     setIsProcessing(false);
-    setStatusMessage('All images processed and downloaded!');
+    setStatusMessage('All images processed & downloaded (EXIF stripped).');
   };
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div>
-        <h2 className="text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
-          <ImageIcon className="w-6 h-6 text-sky-600 dark:text-sky-400" />
-          <span>{t.nav.imageStudio}</span>
-        </h2>
-        <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">{t.descriptions.imageStudio}</p>
-      </div>
+    <div className="space-y-8">
+      <TuiPageHeader
+        command="img-studio"
+        title={t.nav.imageStudio}
+        description={t.descriptions.imageStudio}
+        badge="[CANVAS_ENGINE]"
+        accent="tertiary"
+      />
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Settings Panel (4 cols) */}
-        <div className="lg:col-span-4 space-y-5 glass-card p-6 rounded-2xl">
-          <h3 className="text-sm font-semibold text-slate-800 dark:text-slate-200 flex items-center gap-2">
-            <Sliders className="w-4 h-4 text-sky-600 dark:text-sky-400" />
-            <span>Compression & Format</span>
-          </h3>
+        <TuiCard title="TRANSCODE_PARAMETERS" className="lg:col-span-4 space-y-5">
+          <TuiSelect
+            label="target_format"
+            value={format}
+            onChange={(e) => setFormat(e.target.value as any)}
+          >
+            <option value="image/webp">WEBP (SMALLEST_SIZE)</option>
+            <option value="image/jpeg">JPEG (PHOTO)</option>
+            <option value="image/png">PNG (LOSSLESS_ALPHA)</option>
+          </TuiSelect>
 
-          <div className="space-y-4">
-            {/* Format */}
+          {format !== 'image/png' && (
             <div className="space-y-1.5">
-              <label className="text-xs font-medium text-slate-600 dark:text-slate-400">
-                Target Format
-              </label>
-              <select
-                value={format}
-                onChange={(e) => setFormat(e.target.value as any)}
-                className="w-full p-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-xs font-medium text-slate-900 dark:text-slate-200 focus:outline-none"
-              >
-                <option value="image/webp">WebP (Modern, Smallest size)</option>
-                <option value="image/jpeg">JPEG (Universal photo)</option>
-                <option value="image/png">PNG (Lossless & Alpha)</option>
-              </select>
-            </div>
-
-            {/* Quality Slider */}
-            {format !== 'image/png' && (
-              <div className="space-y-1.5">
-                <div className="flex justify-between text-xs">
-                  <span className="text-slate-600 dark:text-slate-400">Quality</span>
-                  <span className="text-sky-600 dark:text-sky-400 font-mono font-semibold">
-                    {quality}%
-                  </span>
-                </div>
-                <input
-                  type="range"
-                  min={10}
-                  max={100}
-                  value={quality}
-                  onChange={(e) => setQuality(Number(e.target.value))}
-                  className="w-full accent-sky-500 cursor-pointer"
-                />
-              </div>
-            )}
-
-            {/* Scale Slider */}
-            <div className="space-y-1.5">
-              <div className="flex justify-between text-xs">
-                <span className="text-slate-600 dark:text-slate-400">Scale Resolution</span>
-                <span className="text-sky-600 dark:text-sky-400 font-mono font-semibold">
-                  {scale}%
-                </span>
+              <div className="flex justify-between text-[12px]">
+                <span className="text-[var(--tui-text-muted)]">// quality</span>
+                <span className="text-[var(--tui-primary)] font-bold">{quality}%</span>
               </div>
               <input
                 type="range"
-                min={20}
+                min={10}
                 max={100}
-                step={5}
-                value={scale}
-                onChange={(e) => setScale(Number(e.target.value))}
-                className="w-full accent-sky-500 cursor-pointer"
+                value={quality}
+                onChange={(e) => setQuality(Number(e.target.value))}
+                className="w-full cursor-pointer"
               />
             </div>
+          )}
 
-            <div className="p-3 bg-slate-50 dark:bg-slate-900/60 rounded-xl border border-slate-200 dark:border-slate-800 text-[11px] text-slate-600 dark:text-slate-400 flex items-center gap-2">
-              <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
-              <span>Canvas re-encoding automatically strips 100% EXIF and GPS metadata.</span>
+          <div className="space-y-1.5">
+            <div className="flex justify-between text-[12px]">
+              <span className="text-[var(--tui-text-muted)]">// scale_resolution</span>
+              <span className="text-[var(--tui-tertiary)] font-bold">{scale}%</span>
             </div>
-
-            <button
-              onClick={handleProcessAll}
-              disabled={images.length === 0 || isProcessing}
-              className="w-full py-3 bg-sky-600 hover:bg-sky-500 disabled:opacity-40 text-white rounded-xl text-xs font-bold uppercase tracking-wider shadow-lg shadow-sky-600/20 transition-all cursor-pointer flex items-center justify-center gap-2"
-            >
-              <Download className="w-4 h-4" />
-              <span>{isProcessing ? t.common.processing : `Process All (${images.length})`}</span>
-            </button>
+            <input
+              type="range"
+              min={20}
+              max={100}
+              step={5}
+              value={scale}
+              onChange={(e) => setScale(Number(e.target.value))}
+              className="w-full cursor-pointer"
+            />
           </div>
-        </div>
+
+          <TuiAlert type="info">
+            Canvas re-encoding strips 100% of EXIF & GPS telemetry.
+          </TuiAlert>
+
+          <TuiButton
+            variant="primary"
+            prefix=">"
+            onClick={handleProcessAll}
+            disabled={images.length === 0 || isProcessing}
+            className="w-full"
+          >
+            {isProcessing ? t.common.processing : `PROCESS_ALL (${images.length})`}
+          </TuiButton>
+        </TuiCard>
 
         {/* Upload & Image List (8 cols) */}
         <div className="lg:col-span-8 space-y-4">
-          <div className="p-6 border-2 border-dashed border-slate-300 dark:border-slate-800 hover:border-sky-500/50 rounded-2xl flex flex-col items-center justify-center text-center space-y-2 glass-card transition-all">
-            <UploadCloud className="w-8 h-8 text-sky-600 dark:text-sky-400 opacity-80" />
-            <p className="text-xs font-semibold text-slate-700 dark:text-slate-300">
-              Drag & drop images here, or browse from computer
-            </p>
-            <label className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-200 dark:border-transparent dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-200 rounded-xl text-xs font-semibold transition-all cursor-pointer">
-              <span>{t.common.browse}</span>
+          <div className="p-6 border border-dashed border-[var(--tui-border-medium)] hover:border-[var(--tui-tertiary)] bg-[var(--tui-surface)] flex flex-col items-center justify-center text-center space-y-3">
+            <div className="text-[13px] font-bold text-[var(--tui-tertiary)]">
+              [+] LOAD_IMAGES_BATCH
+            </div>
+            <label className="inline-flex h-[36px] px-4 py-2 text-[13px] font-semibold uppercase border border-[var(--tui-tertiary)] text-[var(--tui-tertiary)] hover:bg-[var(--tui-tertiary)] hover:text-[var(--tui-primary-fg)] cursor-pointer items-center">
+              <span>$ {t.common.browse.toUpperCase()}</span>
               <input
                 type="file"
                 multiple
@@ -210,53 +186,55 @@ export const ImageStudioView: React.FC = () => {
             </label>
           </div>
 
-          {statusMessage && (
-            <div className="p-3 bg-emerald-500/10 border border-emerald-500/30 rounded-xl flex items-center gap-2 text-emerald-600 dark:text-emerald-400 text-xs">
-              <Check className="w-4 h-4 shrink-0" />
-              <span>{statusMessage}</span>
-            </div>
-          )}
+          {statusMessage && <TuiAlert type="ok">{statusMessage}</TuiAlert>}
 
           {images.length > 0 && (
-            <div className="space-y-2 max-h-[420px] overflow-y-auto pr-1">
-              {images.map((img) => (
-                <div
-                  key={img.id}
-                  className="flex items-center justify-between p-3 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-xs"
-                >
-                  <div className="flex items-center gap-3">
-                    <img
-                      src={img.previewUrl}
-                      alt={img.name}
-                      className="w-10 h-10 object-cover rounded-lg border border-slate-200 dark:border-slate-700"
-                    />
-                    <div>
-                      <div className="font-medium text-slate-900 dark:text-slate-200 truncate max-w-[200px] sm:max-w-xs">
-                        {img.name}
-                      </div>
-                      <div className="text-[11px] text-slate-500">
-                        {img.width}x{img.height}px • {(img.originalSize / 1024).toFixed(1)} KB
+            <TuiCard title={`IMAGE_QUEUE (${images.length})`}>
+              <div className="max-h-[420px] overflow-y-auto">
+                {images.map((img, idx) => (
+                  <div
+                    key={img.id}
+                    className="flex items-center justify-between py-2 px-2 border-b border-dashed border-[var(--tui-border-subtle)] hover:bg-[var(--tui-surface-elevated)] text-[12px]"
+                  >
+                    <div className="flex items-center gap-3 min-w-0">
+                      <span className="text-[11px] text-[var(--tui-text-dim)] w-[3ch] text-right">
+                        {idx + 1}
+                      </span>
+                      <img
+                        src={img.previewUrl}
+                        alt={img.name}
+                        className="w-10 h-10 object-cover border border-[var(--tui-border-medium)] shrink-0"
+                      />
+                      <div className="min-w-0">
+                        <div className="font-semibold text-[var(--tui-text)] truncate">
+                          {img.name}
+                        </div>
+                        <div className="text-[11px] text-[var(--tui-text-muted)]">
+                          {img.width}x{img.height}px | {(img.originalSize / 1024).toFixed(1)} KB
+                        </div>
                       </div>
                     </div>
-                  </div>
 
-                  <div className="flex items-center gap-2">
-                    <button
-                      onClick={() => processAndDownload(img)}
-                      className="px-2.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-sky-600 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-sky-400 rounded-lg text-xs font-medium cursor-pointer"
-                    >
-                      Download
-                    </button>
-                    <button
-                      onClick={() => removeImage(img.id)}
-                      className="p-1.5 text-slate-500 hover:text-rose-500 dark:hover:text-rose-400 cursor-pointer"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </button>
+                    <div className="flex items-center gap-2 shrink-0">
+                      <TuiButton
+                        size="sm"
+                        variant="secondary"
+                        onClick={() => processAndDownload(img)}
+                      >
+                        [GET]
+                      </TuiButton>
+                      <TuiButton
+                        size="sm"
+                        variant="destructive"
+                        onClick={() => removeImage(img.id)}
+                      >
+                        [X]
+                      </TuiButton>
+                    </div>
                   </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            </TuiCard>
           )}
         </div>
       </div>

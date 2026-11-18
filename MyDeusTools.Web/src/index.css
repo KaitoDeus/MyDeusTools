@@ -1,74 +1,142 @@
 @import "tailwindcss";
 @custom-variant dark (&:where(.dark, .dark *));
 
+:root {
+  /* TerminalUI Light Mode (TTY Paper) */
+  --tui-bg: #f4f4ee;
+  --tui-surface: #ffffff;
+  --tui-surface-elevated: #eaeae2;
+  --tui-primary: #007a1f;
+  --tui-primary-fg: #ffffff;
+  --tui-secondary: #cc4d00;
+  --tui-tertiary: #0077aa;
+  --tui-error: #cc0033;
+  --tui-text: #141414;
+  --tui-text-muted: #555555;
+  --tui-text-dim: #777777;
+  --tui-border-subtle: #d2d2ca;
+  --tui-border-medium: #8c8c84;
+  --tui-border-hover: #555550;
+  --tui-overlay: rgba(244, 244, 238, 0.85);
+  --tui-scanline: rgba(0, 122, 31, 0.025);
+  --tui-disabled-border: #cccccc;
+}
+
+.dark {
+  /* TerminalUI Dark Spec (Exact Tokens) */
+  --tui-bg: #0d0d0d;
+  --tui-surface: #141414;
+  --tui-surface-elevated: #1a1a1a;
+  --tui-primary: #00ff41;
+  --tui-primary-fg: #0d0d0d;
+  --tui-secondary: #ff6600;
+  --tui-tertiary: #00bfff;
+  --tui-error: #ff0040;
+  --tui-text: #e2e2e2;
+  --tui-text-muted: #8b8b8b;
+  --tui-text-dim: #555555;
+  --tui-border-subtle: #222222;
+  --tui-border-medium: #444444;
+  --tui-border-hover: #666666;
+  --tui-overlay: rgba(0, 0, 0, 0.8);
+  --tui-scanline: rgba(0, 255, 65, 0.03);
+  --tui-disabled-border: #333333;
+}
+
 @layer base {
-  :root {
-    --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-    --font-mono: 'JetBrains Mono', monospace;
+  *,
+  *::before,
+  *::after {
+    font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
+    border-radius: 0px !important;
+    box-shadow: none !important;
+    transition-timing-function: steps(1, end) !important;
   }
 
+  html,
   body {
-    font-family: var(--font-sans);
+    background-color: var(--tui-bg);
+    color: var(--tui-text);
+    font-size: 14px;
+    line-height: 1.6;
+    letter-spacing: 0.02em;
     overflow-x: hidden;
+  }
+
+  ::selection {
+    background-color: var(--tui-primary);
+    color: var(--tui-primary-fg);
   }
 }
 
-/* Custom scrollbars */
+/* Terminal Scrollbar (0px sharp edges) */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: transparent;
+  background: var(--tui-bg);
+  border-left: 1px solid var(--tui-border-subtle);
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(100, 116, 139, 0.25);
-  border-radius: 9999px;
+  background: var(--tui-border-medium);
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(100, 116, 139, 0.45);
+  background: var(--tui-primary);
 }
 
-/* Glassmorphism accents - Light Mode default + Dark Mode override */
-.glass-panel {
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border-color: rgba(15, 23, 42, 0.08);
+/* TerminalUI Surfaces */
+.tui-surface {
+  background-color: var(--tui-surface);
+  border: 1px solid var(--tui-border-subtle);
+}
+.tui-surface:hover {
+  border-color: var(--tui-border-medium);
 }
 
-.dark .glass-panel {
-  background: rgba(15, 23, 42, 0.75);
-  border-color: rgba(255, 255, 255, 0.08);
+.tui-surface-elevated {
+  background-color: var(--tui-surface-elevated);
+  border: 1px solid var(--tui-border-medium);
+}
+.tui-surface-elevated:hover {
+  border-color: var(--tui-primary);
 }
 
-.glass-card {
-  background: rgba(255, 255, 255, 0.92);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(15, 23, 42, 0.08);
-  box-shadow: 0 1px 3px 0 rgba(15, 23, 42, 0.05), 0 1px 2px -1px rgba(15, 23, 42, 0.05);
+/* CRT Scanline Overlay */
+.tui-scanlines {
+  background-image: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 1px,
+    var(--tui-scanline) 1px,
+    var(--tui-scanline) 2px
+  );
+  pointer-events: none;
 }
 
-.dark .glass-card {
-  background: rgba(30, 41, 59, 0.6);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  box-shadow: none;
+/* Blinking Block Cursor (stepped) */
+@keyframes tui-blink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
 }
 
-.glass-card-hover {
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+.tui-cursor {
+  display: inline-block;
+  width: 8px;
+  height: 1.1em;
+  background-color: var(--tui-primary);
+  vertical-align: text-bottom;
+  animation: tui-blink 1s steps(1, end) infinite;
 }
 
-.glass-card-hover:hover {
-  background: rgba(255, 255, 255, 1);
-  border-color: rgba(99, 102, 241, 0.35);
-  transform: translateY(-1px);
-  box-shadow: 0 10px 25px -5px rgba(99, 102, 241, 0.12), 0 8px 10px -6px rgba(15, 23, 42, 0.05);
-}
-
-.dark .glass-card-hover:hover {
-  background: rgba(30, 41, 59, 0.85);
-  border-color: rgba(99, 102, 241, 0.3);
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.2);
+/* Range Input Terminal Style */
+input[type='range'] {
+  accent-color: var(--tui-primary);
+  background: transparent;
 }

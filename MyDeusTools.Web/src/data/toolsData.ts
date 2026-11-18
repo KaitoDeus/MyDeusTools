@@ -1,142 +1,152 @@
-import {
-  MousePointerClick,
-  Timer,
-  StickyNote as StickyNoteIcon,
-  ClipboardList,
-  QrCode,
-  Pipette,
-  Binary,
-  PictureInPicture2,
-  Video,
-  Image as ImageIcon,
-  FileText,
-  FolderSync,
-  LucideIcon,
-} from 'lucide-react';
 import { Translations } from '../i18n/translations';
 
 export type ToolCategory = 'productivity' | 'developer' | 'media' | 'system';
 
 export interface ToolItem {
   id: string;
+  index: string;
+  cmd: string;
+  asciiTag: string;
   nameKey: keyof Translations['nav'];
   descKey: keyof Translations['descriptions'];
-  icon: LucideIcon;
   category: ToolCategory;
   badge?: string;
-  gradient: string;
-  isNew?: boolean;
+  accent: 'primary' | 'secondary' | 'tertiary';
 }
 
 export const TOOLS_CONFIG: ToolItem[] = [
   // Productivity
   {
     id: 'sticky-notes',
+    index: '01',
+    cmd: 'sticky-notes',
+    asciiTag: '[NOTE]',
     nameKey: 'stickyNotes',
     descKey: 'stickyNotes',
-    icon: StickyNoteIcon,
     category: 'productivity',
-    gradient: 'from-amber-500 to-orange-500',
+    accent: 'secondary',
   },
   {
     id: 'clipboard-manager',
+    index: '02',
+    cmd: 'clip-vault',
+    asciiTag: '[CLIP]',
     nameKey: 'clipboardManager',
     descKey: 'clipboardManager',
-    icon: ClipboardList,
     category: 'productivity',
-    gradient: 'from-blue-500 to-cyan-500',
+    accent: 'tertiary',
   },
   {
     id: 'smart-timer',
+    index: '03',
+    cmd: 'smart-timer',
+    asciiTag: '[TIME]',
     nameKey: 'scheduleShutdown',
     descKey: 'scheduleShutdown',
-    icon: Timer,
     category: 'productivity',
-    badge: 'Smart Focus',
-    gradient: 'from-rose-500 to-pink-500',
+    badge: 'FOCUS',
+    accent: 'secondary',
   },
 
   // Developer
   {
     id: 'text-devtools',
+    index: '04',
+    cmd: 'text-devtools',
+    asciiTag: '[DEV]',
     nameKey: 'textDevTools',
     descKey: 'textDevTools',
-    icon: Binary,
     category: 'developer',
-    gradient: 'from-emerald-500 to-teal-500',
+    accent: 'primary',
   },
   {
     id: 'qr-studio',
+    index: '05',
+    cmd: 'qr-studio',
+    asciiTag: '[QR]',
     nameKey: 'qrStudio',
     descKey: 'qrStudio',
-    icon: QrCode,
     category: 'developer',
-    gradient: 'from-violet-500 to-purple-500',
+    accent: 'tertiary',
   },
   {
     id: 'color-picker',
+    index: '06',
+    cmd: 'color-picker',
+    asciiTag: '[HEX]',
     nameKey: 'colorPicker',
     descKey: 'colorPicker',
-    icon: Pipette,
     category: 'developer',
-    badge: 'EyeDropper API',
-    gradient: 'from-fuchsia-500 to-pink-500',
+    badge: 'EYEDROP',
+    accent: 'primary',
   },
 
   // Media
   {
     id: 'pdf-toolkit',
+    index: '07',
+    cmd: 'pdf-toolkit',
+    asciiTag: '[PDF]',
     nameKey: 'pdfToolkit',
     descKey: 'pdfToolkit',
-    icon: FileText,
     category: 'media',
-    badge: '100% Offline',
-    gradient: 'from-red-500 to-rose-600',
+    badge: 'OFFLINE',
+    accent: 'secondary',
   },
   {
     id: 'image-studio',
+    index: '08',
+    cmd: 'img-studio',
+    asciiTag: '[IMG]',
     nameKey: 'imageStudio',
     descKey: 'imageStudio',
-    icon: ImageIcon,
     category: 'media',
-    gradient: 'from-sky-500 to-indigo-500',
+    accent: 'tertiary',
   },
   {
     id: 'video-converter',
+    index: '09',
+    cmd: 'video-wasm',
+    asciiTag: '[VID]',
     nameKey: 'videoConverter',
     descKey: 'videoConverter',
-    icon: Video,
     category: 'media',
     badge: 'WASM',
-    gradient: 'from-purple-500 to-indigo-600',
+    accent: 'primary',
   },
 
   // System & Files
   {
     id: 'bulk-renamer',
+    index: '10',
+    cmd: 'bulk-rename',
+    asciiTag: '[REN]',
     nameKey: 'bulkRenamer',
     descKey: 'bulkRenamer',
-    icon: FolderSync,
     category: 'system',
-    badge: 'FS Access API',
-    gradient: 'from-amber-600 to-yellow-500',
+    badge: 'FS-API',
+    accent: 'secondary',
   },
   {
     id: 'auto-clicker',
+    index: '11',
+    cmd: 'auto-click',
+    asciiTag: '[CLK]',
     nameKey: 'autoClicker',
     descKey: 'autoClicker',
-    icon: MousePointerClick,
     category: 'system',
-    badge: 'DOM Macro',
-    gradient: 'from-green-500 to-emerald-600',
+    badge: 'MACRO',
+    accent: 'primary',
   },
   {
     id: 'window-pinner',
+    index: '12',
+    cmd: 'pip-float',
+    asciiTag: '[PiP]',
     nameKey: 'windowPinner',
     descKey: 'windowPinner',
-    icon: PictureInPicture2,
     category: 'system',
-    badge: 'Picture-in-Pic',
-    gradient: 'from-blue-600 to-indigo-600',
+    badge: 'PiP-API',
+    accent: 'tertiary',
   },
 ];

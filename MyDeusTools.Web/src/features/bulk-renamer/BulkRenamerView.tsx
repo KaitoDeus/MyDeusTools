@@ -2,15 +2,14 @@ import React, { useState } from 'react';
 import { useI18n } from '../../i18n/LanguageContext';
 import JSZip from 'jszip';
 import {
-  FolderSync,
-  UploadCloud,
-  Download,
-  FolderOpen,
-  Sparkles,
-  Check,
-  AlertTriangle,
-  RotateCcw,
-} from 'lucide-react';
+  TuiPageHeader,
+  TuiButton,
+  TuiCard,
+  TuiInput,
+  TuiSelect,
+  TuiChip,
+  TuiAlert,
+} from '../../components/terminal/TerminalUI';
 
 interface FileToRename {
   id: string;
@@ -26,12 +25,11 @@ export const BulkRenamerView: React.FC = () => {
   const [findText, setFindText] = useState('');
   const [replaceText, setReplaceText] = useState('');
   const [prefix, setPrefix] = useState('');
-  const [suffix, setSuffix] = useState('');
+  const [suffix] = useState('');
   const [caseMode, setCaseMode] = useState<string>('none');
   const [isProcessing, setIsProcessing] = useState(false);
   const [statusMessage, setStatusMessage] = useState<string | null>(null);
 
-  // File Upload
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const uploaded = Array.from(e.target.files || []);
     if (uploaded.length === 0) return;
@@ -46,10 +44,11 @@ export const BulkRenamerView: React.FC = () => {
     computeNewNames(list, findText, replaceText, prefix, suffix, caseMode);
   };
 
-  // Modern File System Access API (Chromium)
   const handleOpenDirectory = async () => {
     if (!('showDirectoryPicker' in window)) {
-      alert('Direct folder renaming is supported in Chrome/Edge via File System Access API. You can still upload files directly!');
+      alert(
+        'Direct folder renaming is supported in Chrome/Edge via File System Access API. You can still upload files directly!'
+      );
       return;
     }
     try {
@@ -90,7 +89,6 @@ export const BulkRenamerView: React.FC = () => {
         base = item.originalName.substring(0, dotIdx);
       }
 
-      // 1. Find & Replace
       if (find) {
         try {
           const regex = new RegExp(find, 'g');
@@ -100,12 +98,10 @@ export const BulkRenamerView: React.FC = () => {
         }
       }
 
-      // 2. Case transformation
       if (mode === 'uppercase') base = base.toUpperCase();
       if (mode === 'lowercase') base = base.toLowerCase();
       if (mode === 'titlecase') base = base.charAt(0).toUpperCase() + base.slice(1);
 
-      // 3. Prefix & Suffix
       base = pre + base + suf;
 
       return {
@@ -120,7 +116,6 @@ export const BulkRenamerView: React.FC = () => {
     setFindText(find);
     setReplaceText(replace);
     setPrefix(pre);
-    setSuffix(suf);
     setCaseMode(mode);
     computeNewNames(files, find, replace, pre, suf, mode);
   };
@@ -141,7 +136,7 @@ export const BulkRenamerView: React.FC = () => {
       a.href = url;
       a.download = `renamed_files_${Date.now()}.zip`;
       a.click();
-      setStatusMessage('Renamed files successfully packaged and downloaded as ZIP!');
+      setStatusMessage('Renamed files packaged and downloaded as ZIP (EXIT_CODE 0).');
     } catch (err: any) {
       alert('Error creating ZIP: ' + err.message);
     } finally {
@@ -150,162 +145,119 @@ export const BulkRenamerView: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div>
-        <h2 className="text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
-          <FolderSync className="w-6 h-6 text-amber-600 dark:text-amber-500" />
-          <span>{t.nav.bulkRenamer}</span>
-        </h2>
-        <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">{t.descriptions.bulkRenamer}</p>
-      </div>
+    <div className="space-y-8">
+      <TuiPageHeader
+        command="bulk-rename"
+        title={t.nav.bulkRenamer}
+        description={t.descriptions.bulkRenamer}
+        badge="[FS_ACCESS_API]"
+        accent="secondary"
+      />
 
       {/* Directory & Upload Row */}
       <div className="flex flex-wrap items-center gap-3">
-        <button
-          onClick={handleOpenDirectory}
-          className="px-4 py-2.5 bg-amber-600 hover:bg-amber-500 text-white rounded-xl text-xs font-semibold shadow-lg shadow-amber-600/20 transition-all flex items-center gap-2 cursor-pointer"
-        >
-          <FolderOpen className="w-4 h-4" />
-          <span>Select Disk Folder (File System Access)</span>
-        </button>
+        <TuiButton variant="amber" prefix=">" onClick={handleOpenDirectory}>
+          MOUNT_DISK_DIRECTORY
+        </TuiButton>
 
-        <label className="px-4 py-2.5 bg-white hover:bg-slate-100 text-slate-800 border border-slate-200 dark:border-transparent dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-200 rounded-xl text-xs font-semibold transition-all flex items-center gap-2 cursor-pointer">
-          <UploadCloud className="w-4 h-4 text-amber-600 dark:text-amber-400" />
-          <span>Select Batch Files</span>
+        <label className="inline-flex h-[36px] px-4 py-2 text-[13px] font-semibold uppercase border border-[var(--tui-primary)] text-[var(--tui-primary)] hover:bg-[var(--tui-primary)] hover:text-[var(--tui-primary-fg)] cursor-pointer items-center">
+          <span>$ SELECT_BATCH_FILES</span>
           <input type="file" multiple onChange={handleFileUpload} className="hidden" />
         </label>
       </div>
 
       {/* Rule Form */}
-      <div className="glass-card p-5 rounded-2xl space-y-4">
-        <h3 className="text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
-          Renaming Rules
-        </h3>
-
+      <TuiCard title="RENAMING_PIPELINE_RULES">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <div className="space-y-1.5">
-            <label className="text-xs font-medium text-slate-600 dark:text-slate-400">
-              Find Text / Regex
-            </label>
-            <input
-              type="text"
-              value={findText}
-              onChange={(e) => applyRule(e.target.value, replaceText, prefix, suffix, caseMode)}
-              placeholder="e.g. IMG_, copy"
-              className="w-full p-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-xs font-mono text-slate-900 dark:text-slate-200 focus:outline-none"
-            />
-          </div>
-
-          <div className="space-y-1.5">
-            <label className="text-xs font-medium text-slate-600 dark:text-slate-400">
-              Replace With
-            </label>
-            <input
-              type="text"
-              value={replaceText}
-              onChange={(e) => applyRule(findText, e.target.value, prefix, suffix, caseMode)}
-              placeholder="e.g. Photo_"
-              className="w-full p-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-xs font-mono text-slate-900 dark:text-slate-200 focus:outline-none"
-            />
-          </div>
-
-          <div className="space-y-1.5">
-            <label className="text-xs font-medium text-slate-600 dark:text-slate-400">
-              Add Prefix
-            </label>
-            <input
-              type="text"
-              value={prefix}
-              onChange={(e) => applyRule(findText, replaceText, e.target.value, suffix, caseMode)}
-              placeholder="e.g. 2026_"
-              className="w-full p-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-xs font-mono text-slate-900 dark:text-slate-200 focus:outline-none"
-            />
-          </div>
-
-          <div className="space-y-1.5">
-            <label className="text-xs font-medium text-slate-600 dark:text-slate-400">
-              Case Transformation
-            </label>
-            <select
-              value={caseMode}
-              onChange={(e) => applyRule(findText, replaceText, prefix, suffix, e.target.value)}
-              className="w-full p-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-xs font-medium text-slate-900 dark:text-slate-200 focus:outline-none"
-            >
-              <option value="none">No case change</option>
-              <option value="uppercase">UPPERCASE</option>
-              <option value="lowercase">lowercase</option>
-              <option value="titlecase">Title Case</option>
-            </select>
-          </div>
+          <TuiInput
+            label="find_regex"
+            value={findText}
+            onChange={(e) => applyRule(e.target.value, replaceText, prefix, suffix, caseMode)}
+            placeholder="e.g. IMG_, copy"
+          />
+          <TuiInput
+            label="replace_with"
+            value={replaceText}
+            onChange={(e) => applyRule(findText, e.target.value, prefix, suffix, caseMode)}
+            placeholder="e.g. Photo_"
+          />
+          <TuiInput
+            label="add_prefix"
+            value={prefix}
+            onChange={(e) => applyRule(findText, replaceText, e.target.value, suffix, caseMode)}
+            placeholder="e.g. 2026_"
+          />
+          <TuiSelect
+            label="case_mode"
+            value={caseMode}
+            onChange={(e) => applyRule(findText, replaceText, prefix, suffix, e.target.value)}
+          >
+            <option value="none">UNCHANGED</option>
+            <option value="uppercase">UPPERCASE</option>
+            <option value="lowercase">lowercase</option>
+            <option value="titlecase">Title Case</option>
+          </TuiSelect>
         </div>
-      </div>
+      </TuiCard>
 
-      {statusMessage && (
-        <div className="p-3 bg-emerald-500/10 border border-emerald-500/30 rounded-xl flex items-center gap-2 text-emerald-600 dark:text-emerald-400 text-xs">
-          <Check className="w-4 h-4 shrink-0" />
-          <span>{statusMessage}</span>
-        </div>
-      )}
+      {statusMessage && <TuiAlert type="ok">{statusMessage}</TuiAlert>}
 
       {/* Live Preview Table */}
       {files.length > 0 && (
-        <div className="space-y-3">
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold text-slate-700 dark:text-slate-300">
-              Live Preview ({files.length} files)
-            </span>
-            <button
+        <TuiCard
+          title={`LIVE_DRY_RUN (${files.length} FILES)`}
+          rightMeta={
+            <TuiButton
+              size="sm"
+              variant="primary"
+              prefix=">"
               onClick={handleDownloadRenamedZip}
               disabled={isProcessing}
-              className="px-4 py-2 bg-amber-600 hover:bg-amber-500 text-white rounded-xl text-xs font-bold uppercase tracking-wider shadow-lg shadow-amber-600/20 transition-all flex items-center gap-1.5 cursor-pointer"
             >
-              <Download className="w-3.5 h-3.5" />
-              <span>{isProcessing ? t.common.processing : 'Download Renamed (ZIP)'}</span>
-            </button>
-          </div>
-
-          <div className="glass-card rounded-2xl overflow-hidden">
-            <table className="w-full text-left text-xs">
-              <thead className="bg-slate-100 dark:bg-slate-900/90 text-slate-600 dark:text-slate-400 border-b border-slate-200 dark:border-slate-800">
-                <tr>
-                  <th className="p-3 font-semibold">Original File Name</th>
-                  <th className="p-3 font-semibold">New Name Preview</th>
-                  <th className="p-3 font-semibold text-right">Status</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-200 dark:divide-slate-800/60 font-mono">
-                {files.map((item) => {
-                  const isChanged = item.originalName !== item.newName;
-                  return (
-                    <tr
-                      key={item.id}
-                      className="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors"
-                    >
-                      <td className="p-3 text-slate-500 dark:text-slate-400 truncate max-w-xs">
-                        {item.originalName}
-                      </td>
-                      <td className="p-3 text-slate-900 dark:text-slate-200 font-semibold truncate max-w-xs">
-                        {item.newName}
-                      </td>
-                      <td className="p-3 text-right">
-                        {isChanged ? (
-                          <span className="inline-block px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
-                            Renamed
-                          </span>
-                        ) : (
-                          <span className="inline-block px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400">
-                            Unchanged
-                          </span>
-                        )}
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
-        </div>
+              {isProcessing ? t.common.processing : 'EXPORT_ZIP'}
+            </TuiButton>
+          }
+          className="overflow-x-auto"
+        >
+          <table className="w-full text-left text-[12px]">
+            <thead>
+              <tr className="border-b border-[var(--tui-border-medium)] text-[var(--tui-text-muted)] uppercase text-[11px]">
+                <th className="py-2 pr-3 w-[4ch]">#</th>
+                <th className="py-2 pr-3">ORIGINAL_NAME</th>
+                <th className="py-2 pr-3">TARGET_PREVIEW</th>
+                <th className="py-2 text-right">STATUS</th>
+              </tr>
+            </thead>
+            <tbody>
+              {files.map((item, idx) => {
+                const isChanged = item.originalName !== item.newName;
+                return (
+                  <tr
+                    key={item.id}
+                    className="h-[32px] border-b border-dashed border-[var(--tui-border-subtle)] hover:bg-[var(--tui-surface-elevated)]"
+                  >
+                    <td className="py-1.5 pr-3 text-[var(--tui-text-dim)]">
+                      {String(idx + 1).padStart(2, '0')}
+                    </td>
+                    <td className="py-1.5 pr-3 text-[var(--tui-text-muted)] truncate max-w-xs">
+                      {item.originalName}
+                    </td>
+                    <td className="py-1.5 pr-3 text-[var(--tui-text)] font-semibold truncate max-w-xs">
+                      {isChanged ? `> ${item.newName}` : item.newName}
+                    </td>
+                    <td className="py-1.5 text-right">
+                      {isChanged ? (
+                        <TuiChip tone="primary">MODIFIED</TuiChip>
+                      ) : (
+                        <TuiChip tone="muted">NOOP</TuiChip>
+                      )}
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </TuiCard>
       )}
     </div>
   );

@@ -1,15 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useI18n } from '../../i18n/LanguageContext';
 import {
-  Timer,
-  Play,
-  Square,
-  RotateCcw,
-  Bell,
-  Lock,
-  Volume2,
-  Sparkles,
-} from 'lucide-react';
+  TuiPageHeader,
+  TuiButton,
+  TuiCard,
+  TuiInput,
+  TuiChip,
+  TuiAlert,
+} from '../../components/terminal/TerminalUI';
 
 export const SmartTimerView: React.FC = () => {
   const { t } = useI18n();
@@ -24,7 +22,6 @@ export const SmartTimerView: React.FC = () => {
 
   const wakeLockRef = useRef<any>(null);
 
-  // Time normalization logic (matches the desktop feature exactly: e.g. 70m -> 1h 10m)
   const normalizeTime = (h: number, m: number, s: number) => {
     let totalSec = h * 3600 + m * 60 + s;
     if (totalSec < 0) totalSec = 0;
@@ -48,15 +45,15 @@ export const SmartTimerView: React.FC = () => {
       const gain = audioCtx.createGain();
       osc.connect(gain);
       gain.connect(audioCtx.destination);
-      osc.type = 'sine';
-      osc.frequency.setValueAtTime(587.33, audioCtx.currentTime); // D5
-      osc.frequency.setValueAtTime(880, audioCtx.currentTime + 0.15); // A5
-      gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+      osc.type = 'square';
+      osc.frequency.setValueAtTime(587.33, audioCtx.currentTime);
+      osc.frequency.setValueAtTime(880, audioCtx.currentTime + 0.15);
+      gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
       gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.8);
       osc.start();
       osc.stop(audioCtx.currentTime + 0.8);
     } catch {
-      // Audio context might be restricted
+      // Ignored
     }
   };
 
@@ -77,7 +74,6 @@ export const SmartTimerView: React.FC = () => {
     setTotalSecondsRemaining(total);
     setIsRunning(true);
 
-    // Request Screen Wake Lock API to prevent system display sleep
     if ('wakeLock' in navigator) {
       try {
         wakeLockRef.current = await (navigator as any).wakeLock.request('screen');
@@ -130,40 +126,42 @@ export const SmartTimerView: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div>
-        <h2 className="text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
-          <Timer className="w-6 h-6 text-rose-600 dark:text-rose-500" />
-          <span>{t.nav.scheduleShutdown}</span>
-        </h2>
-        <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
-          {t.descriptions.scheduleShutdown}
-        </p>
-      </div>
+    <div className="space-y-8">
+      <TuiPageHeader
+        command="smart-timer"
+        title={t.nav.scheduleShutdown}
+        description={t.descriptions.scheduleShutdown}
+        badge="[WAKE_LOCK_API]"
+        accent="secondary"
+      />
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Countdown Display (7 cols) */}
-        <div className="lg:col-span-7 flex flex-col items-center justify-center p-8 glass-card rounded-2xl space-y-6 text-center">
-          <div className="space-y-2">
-            <span className="text-xs font-semibold uppercase tracking-widest text-slate-500 dark:text-slate-400">
-              {isRunning ? 'Timer Running' : 'Timer Ready'}
-            </span>
-            <div className="text-6xl sm:text-7xl font-mono font-black tracking-tight text-slate-900 dark:text-white select-all">
-              {formatCountdown(totalSecondsRemaining)}
-            </div>
+        <TuiCard
+          title="COUNTDOWN_CLOCK"
+          rightMeta={
+            <TuiChip tone={isRunning ? 'primary' : 'muted'}>
+              {isRunning ? 'STATUS:RUNNING' : 'STATUS:IDLE'}
+            </TuiChip>
+          }
+          elevated
+          className="lg:col-span-7 flex flex-col items-center justify-center p-8 space-y-6 text-center"
+        >
+          <div className="text-[48px] sm:text-[64px] font-bold tracking-[0.04em] text-[var(--tui-primary)] select-all leading-none py-2">
+            {formatCountdown(totalSecondsRemaining)}
           </div>
 
-          {/* Quick presets */}
           <div className="flex flex-wrap justify-center gap-2">
             {[
-              { label: '15m Break', h: 0, m: 15, s: 0 },
-              { label: '25m Focus', h: 0, m: 25, s: 0 },
-              { label: '45m Deep Work', h: 0, m: 45, s: 0 },
-              { label: '70m (1h10m)', h: 0, m: 70, s: 0 },
+              { label: '15M_BREAK', h: 0, m: 15, s: 0 },
+              { label: '25M_FOCUS', h: 0, m: 25, s: 0 },
+              { label: '45M_DEEP', h: 0, m: 45, s: 0 },
+              { label: '70M->1H10M', h: 0, m: 70, s: 0 },
             ].map((p) => (
-              <button
+              <TuiButton
                 key={p.label}
+                size="sm"
+                variant="ghost"
                 disabled={isRunning}
                 onClick={() => {
                   setHours(p.h);
@@ -171,123 +169,96 @@ export const SmartTimerView: React.FC = () => {
                   setSeconds(p.s);
                   normalizeTime(p.h, p.m, p.s);
                 }}
-                className="px-3 py-1.5 rounded-lg bg-slate-100 border border-slate-200 hover:border-slate-300 text-slate-700 dark:bg-slate-900 dark:border-slate-800 dark:hover:border-slate-700 text-xs dark:text-slate-300 disabled:opacity-40 transition-all cursor-pointer"
               >
-                {p.label}
-              </button>
+                [{p.label}]
+              </TuiButton>
             ))}
           </div>
 
-          {/* Controls */}
-          <div className="flex items-center gap-3">
+          <div className="flex flex-wrap items-center justify-center gap-3">
             {!isRunning ? (
-              <button
-                onClick={handleStart}
-                className="px-8 py-3 bg-rose-600 hover:bg-rose-500 text-white rounded-xl text-sm font-bold uppercase tracking-wider shadow-lg shadow-rose-600/25 transition-all cursor-pointer flex items-center gap-2"
-              >
-                <Play className="w-4 h-4 fill-white" />
-                <span>{t.common.start}</span>
-              </button>
+              <TuiButton variant="primary" size="lg" prefix=">" onClick={handleStart}>
+                {t.common.start}
+              </TuiButton>
             ) : (
-              <button
-                onClick={handleStop}
-                className="px-8 py-3 bg-amber-600 hover:bg-amber-500 text-white rounded-xl text-sm font-bold uppercase tracking-wider shadow-lg shadow-amber-600/25 transition-all cursor-pointer flex items-center gap-2"
-              >
-                <Square className="w-4 h-4 fill-white" />
-                <span>{t.common.stop}</span>
-              </button>
+              <TuiButton variant="amber" size="lg" prefix="!" onClick={handleStop}>
+                {t.common.stop}
+              </TuiButton>
             )}
 
-            <button
-              onClick={handleReset}
-              className="px-5 py-3 bg-slate-200 hover:bg-slate-300 text-slate-800 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-200 rounded-xl text-sm font-semibold transition-all cursor-pointer flex items-center gap-2"
-            >
-              <RotateCcw className="w-4 h-4" />
-              <span>{t.common.reset}</span>
-            </button>
+            <TuiButton variant="secondary" size="lg" onClick={handleReset}>
+              [{t.common.reset.toUpperCase()}]
+            </TuiButton>
           </div>
-        </div>
+        </TuiCard>
 
         {/* Configuration Panel (5 cols) */}
-        <div className="lg:col-span-5 space-y-5 glass-card p-6 rounded-2xl">
-          <h3 className="text-sm font-semibold text-slate-800 dark:text-slate-200 flex items-center gap-2">
-            <Sparkles className="w-4 h-4 text-rose-500 dark:text-rose-400" />
-            <span>Time Normalization & Setup</span>
-          </h3>
-
+        <TuiCard title="TIME_NORMALIZER_CONFIG" className="lg:col-span-5 space-y-5">
           <div className="grid grid-cols-3 gap-3">
-            <div className="space-y-1">
-              <label className="text-[11px] font-medium text-slate-600 dark:text-slate-400">
-                Hours
-              </label>
-              <input
-                type="number"
-                min={0}
-                value={hours}
-                disabled={isRunning}
-                onChange={(e) => setHours(Math.max(0, parseInt(e.target.value) || 0))}
-                onBlur={() => normalizeTime(hours, minutes, seconds)}
-                className="w-full p-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-center text-sm font-mono text-slate-900 dark:text-slate-200 focus:outline-none"
-              />
-            </div>
-
-            <div className="space-y-1">
-              <label className="text-[11px] font-medium text-slate-600 dark:text-slate-400">
-                Minutes
-              </label>
-              <input
-                type="number"
-                min={0}
-                value={minutes}
-                disabled={isRunning}
-                onChange={(e) => setMinutes(Math.max(0, parseInt(e.target.value) || 0))}
-                onBlur={() => normalizeTime(hours, minutes, seconds)}
-                className="w-full p-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-center text-sm font-mono text-slate-900 dark:text-slate-200 focus:outline-none"
-              />
-            </div>
-
-            <div className="space-y-1">
-              <label className="text-[11px] font-medium text-slate-600 dark:text-slate-400">
-                Seconds
-              </label>
-              <input
-                type="number"
-                min={0}
-                value={seconds}
-                disabled={isRunning}
-                onChange={(e) => setSeconds(Math.max(0, parseInt(e.target.value) || 0))}
-                onBlur={() => normalizeTime(hours, minutes, seconds)}
-                className="w-full p-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-center text-sm font-mono text-slate-900 dark:text-slate-200 focus:outline-none"
-              />
-            </div>
-          </div>
-
-          <p className="text-[11px] text-slate-500">
-            💡 <strong>Auto Time Normalization</strong>: Entering 70 minutes automatically converts
-            to 1h 10m on blur or start.
-          </p>
-
-          <div className="space-y-2 pt-2 border-t border-slate-200 dark:border-slate-800">
-            <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">
-              Optional Remote Webhook (Trigger shutdown on HomeAssistant / Local API)
-            </label>
-            <input
-              type="url"
-              value={webhookUrl}
-              onChange={(e) => setWebhookUrl(e.target.value)}
-              placeholder="http://localhost:5000/api/shutdown"
-              className="w-full p-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-xs font-mono text-slate-900 dark:text-slate-200 focus:outline-none"
+            <TuiInput
+              label="hh"
+              type="number"
+              min={0}
+              value={hours}
+              disabled={isRunning}
+              onChange={(e) => setHours(Math.max(0, parseInt(e.target.value) || 0))}
+              onBlur={() => normalizeTime(hours, minutes, seconds)}
+              className="text-center font-bold"
+            />
+            <TuiInput
+              label="mm"
+              type="number"
+              min={0}
+              value={minutes}
+              disabled={isRunning}
+              onChange={(e) => setMinutes(Math.max(0, parseInt(e.target.value) || 0))}
+              onBlur={() => normalizeTime(hours, minutes, seconds)}
+              className="text-center font-bold"
+            />
+            <TuiInput
+              label="ss"
+              type="number"
+              min={0}
+              value={seconds}
+              disabled={isRunning}
+              onChange={(e) => setSeconds(Math.max(0, parseInt(e.target.value) || 0))}
+              onBlur={() => normalizeTime(hours, minutes, seconds)}
+              className="text-center font-bold"
             />
           </div>
 
-          <div className="p-3 bg-slate-50 dark:bg-slate-900/60 rounded-xl border border-slate-200 dark:border-slate-800 text-[11px] text-slate-600 dark:text-slate-400 space-y-1">
-            <div className="flex items-center gap-1.5 text-slate-800 dark:text-slate-300 font-semibold">
-              <Lock className="w-3.5 h-3.5 text-rose-500 dark:text-rose-400" />
-              <span>Screen Wake Lock: {wakeLockActive ? 'Active' : 'Standby'}</span>
+          <TuiAlert type="info">
+            AUTO_NORMALIZATION: Entering 70 minutes automatically resolves to 01h 10m on blur or
+            start.
+          </TuiAlert>
+
+          <TuiInput
+            label="remote_webhook (optional)"
+            type="url"
+            prompt
+            value={webhookUrl}
+            onChange={(e) => setWebhookUrl(e.target.value)}
+            placeholder="http://localhost:5000/api/shutdown"
+          />
+
+          <div className="p-3 bg-[var(--tui-bg)] border border-[var(--tui-border-subtle)] text-[12px] space-y-1">
+            <div className="flex items-center justify-between">
+              <span className="text-[var(--tui-text-muted)]">SCREEN_WAKE_LOCK:</span>
+              <span
+                className={
+                  wakeLockActive
+                    ? 'text-[var(--tui-primary)] font-bold'
+                    : 'text-[var(--tui-text-dim)]'
+                }
+              >
+                {wakeLockActive ? '[ACTIVE]' : '[STANDBY]'}
+              </span>
             </div>
-            <p>Keeps display active while running to prevent unplanned computer sleep.</p>
+            <div className="text-[11px] text-[var(--tui-text-dim)]">
+              Prevents display sleep while timer is running.
+            </div>
           </div>
-        </div>
+        </TuiCard>
       </div>
     </div>
   );

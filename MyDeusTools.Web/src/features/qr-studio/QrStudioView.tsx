@@ -2,22 +2,19 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useI18n } from '../../i18n/LanguageContext';
 import QRCode from 'qrcode';
 import {
-  QrCode,
-  Download,
-  Copy,
-  Check,
-  Palette,
-  ExternalLink,
-  UploadCloud,
-  ClipboardPaste,
-  Sparkles,
-} from 'lucide-react';
+  TuiPageHeader,
+  TuiButton,
+  TuiCard,
+  TuiTextarea,
+  TuiSelect,
+  TuiAlert,
+} from '../../components/terminal/TerminalUI';
 
 export const QrStudioView: React.FC = () => {
   const { t } = useI18n();
   const [text, setText] = useState('https://mydeustools.com');
-  const [fgColor, setFgColor] = useState('#0f172a');
-  const [bgColor, setBgColor] = useState('#ffffff');
+  const [fgColor, setFgColor] = useState('#00FF41');
+  const [bgColor, setBgColor] = useState('#0D0D0D');
   const [errorLevel, setErrorLevel] = useState<'L' | 'M' | 'Q' | 'H'>('M');
   const [qrDataUrl, setQrDataUrl] = useState('');
   const [copied, setCopied] = useState(false);
@@ -26,7 +23,6 @@ export const QrStudioView: React.FC = () => {
   const [scanResult, setScanResult] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // Generate QR
   useEffect(() => {
     if (!text) {
       setQrDataUrl('');
@@ -99,167 +95,134 @@ export const QrStudioView: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div>
-        <h2 className="text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
-          <QrCode className="w-6 h-6 text-violet-600 dark:text-violet-400" />
-          <span>{t.nav.qrStudio}</span>
-        </h2>
-        <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">{t.descriptions.qrStudio}</p>
-      </div>
+    <div className="space-y-8">
+      <TuiPageHeader
+        command="qr-studio"
+        title={t.nav.qrStudio}
+        description={t.descriptions.qrStudio}
+        badge="[QR]"
+        accent="tertiary"
+      />
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Generator Controls (7 cols) */}
-        <div className="lg:col-span-7 space-y-5 glass-card p-6 rounded-2xl">
-          <div className="space-y-2">
-            <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">
-              Content / URL to Encode
-            </label>
-            <textarea
-              value={text}
-              onChange={(e) => setText(e.target.value)}
-              rows={4}
-              placeholder="Enter URL, text, wifi credentials, or contact info..."
-              className="w-full p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-sm text-slate-900 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-violet-500/50"
-            />
-          </div>
+        <TuiCard title="QR_GENERATOR_CONFIG" className="lg:col-span-7 space-y-5">
+          <TuiTextarea
+            label="content_or_url"
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+            rows={4}
+            placeholder="Enter URL, text, wifi credentials, or contact info..."
+          />
 
-          {/* Color & Correction Row */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <div className="space-y-1.5">
-              <label className="text-xs font-medium text-slate-600 dark:text-slate-400 flex items-center gap-1.5">
-                <Palette className="w-3.5 h-3.5 text-violet-600 dark:text-violet-400" />
-                <span>Foreground</span>
+            <div className="space-y-1">
+              <label className="text-[12px] font-medium text-[var(--tui-text-muted)]">
+                // fg_color
               </label>
-              <div className="flex items-center gap-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-2 rounded-xl">
+              <div className="flex items-center gap-2 bg-[var(--tui-bg)] border border-[var(--tui-border-medium)] p-1.5 h-[36px]">
                 <input
                   type="color"
                   value={fgColor}
                   onChange={(e) => setFgColor(e.target.value)}
-                  className="w-8 h-8 rounded-lg border-0 cursor-pointer bg-transparent"
+                  className="w-6 h-6 border-0 cursor-pointer bg-transparent"
                 />
-                <span className="text-xs font-mono text-slate-700 dark:text-slate-300 uppercase">
-                  {fgColor}
-                </span>
+                <span className="text-[12px] text-[var(--tui-text)] uppercase">{fgColor}</span>
               </div>
             </div>
 
-            <div className="space-y-1.5">
-              <label className="text-xs font-medium text-slate-600 dark:text-slate-400 flex items-center gap-1.5">
-                <Palette className="w-3.5 h-3.5 text-slate-400" />
-                <span>Background</span>
+            <div className="space-y-1">
+              <label className="text-[12px] font-medium text-[var(--tui-text-muted)]">
+                // bg_color
               </label>
-              <div className="flex items-center gap-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-2 rounded-xl">
+              <div className="flex items-center gap-2 bg-[var(--tui-bg)] border border-[var(--tui-border-medium)] p-1.5 h-[36px]">
                 <input
                   type="color"
                   value={bgColor}
                   onChange={(e) => setBgColor(e.target.value)}
-                  className="w-8 h-8 rounded-lg border-0 cursor-pointer bg-transparent"
+                  className="w-6 h-6 border-0 cursor-pointer bg-transparent"
                 />
-                <span className="text-xs font-mono text-slate-700 dark:text-slate-300 uppercase">
-                  {bgColor}
-                </span>
+                <span className="text-[12px] text-[var(--tui-text)] uppercase">{bgColor}</span>
               </div>
             </div>
 
-            <div className="space-y-1.5">
-              <label className="text-xs font-medium text-slate-600 dark:text-slate-400">
-                Error Correction
-              </label>
-              <select
-                value={errorLevel}
-                onChange={(e) => setErrorLevel(e.target.value as any)}
-                className="w-full p-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-xs font-medium text-slate-900 dark:text-slate-200 focus:outline-none"
-              >
-                <option value="L">Low (7%)</option>
-                <option value="M">Medium (15%)</option>
-                <option value="Q">Quartile (25%)</option>
-                <option value="H">High (30%)</option>
-              </select>
-            </div>
+            <TuiSelect
+              label="error_correction"
+              value={errorLevel}
+              onChange={(e) => setErrorLevel(e.target.value as any)}
+            >
+              <option value="L">LOW (7%)</option>
+              <option value="M">MEDIUM (15%)</option>
+              <option value="Q">QUARTILE (25%)</option>
+              <option value="H">HIGH (30%)</option>
+            </TuiSelect>
           </div>
 
-          {/* Quick presets */}
-          <div className="flex flex-wrap items-center gap-2 pt-2">
-            <span className="text-xs text-slate-500 font-medium">Color Presets:</span>
+          <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-dashed border-[var(--tui-border-subtle)]">
+            <span className="text-[11px] text-[var(--tui-text-dim)] uppercase">PRESETS:</span>
             {[
-              { name: 'Classic', fg: '#000000', bg: '#ffffff' },
-              { name: 'Midnight', fg: '#38bdf8', bg: '#0f172a' },
-              { name: 'Emerald', fg: '#10b981', bg: '#064e3b' },
-              { name: 'Purple', fg: '#a855f7', bg: '#2e1065' },
+              { name: 'HACKER', fg: '#00FF41', bg: '#0D0D0D' },
+              { name: 'CLASSIC', fg: '#000000', bg: '#ffffff' },
+              { name: 'CYAN', fg: '#00BFFF', bg: '#0D0D0D' },
+              { name: 'AMBER', fg: '#FF6600', bg: '#0D0D0D' },
             ].map((p) => (
-              <button
+              <TuiButton
                 key={p.name}
+                size="sm"
+                variant="ghost"
                 onClick={() => {
                   setFgColor(p.fg);
                   setBgColor(p.bg);
                 }}
-                className="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 dark:bg-slate-800/80 dark:hover:bg-slate-700 text-[11px] dark:text-slate-300 dark:border-slate-700/60 transition-all cursor-pointer"
               >
-                {p.name}
-              </button>
+                [{p.name}]
+              </TuiButton>
             ))}
           </div>
-        </div>
+        </TuiCard>
 
         {/* Preview & Actions (5 cols) */}
-        <div className="lg:col-span-5 flex flex-col items-center justify-center p-6 glass-card rounded-2xl space-y-5">
-          <div className="p-4 bg-slate-100 dark:bg-white/5 rounded-2xl border border-slate-200 dark:border-white/10 shadow-xl dark:shadow-2xl flex items-center justify-center">
+        <TuiCard
+          title="OUTPUT_MATRIX"
+          elevated
+          className="lg:col-span-5 flex flex-col items-center justify-center space-y-5"
+        >
+          <div className="p-3 bg-[var(--tui-bg)] border border-[var(--tui-border-medium)] flex items-center justify-center">
             {qrDataUrl ? (
-              <img
-                src={qrDataUrl}
-                alt="Generated QR Code"
-                className="w-56 h-56 rounded-xl shadow-lg"
-              />
+              <img src={qrDataUrl} alt="Generated QR Code" className="w-56 h-56" />
             ) : (
-              <div className="w-56 h-56 rounded-xl border border-dashed border-slate-300 dark:border-slate-700 flex flex-col items-center justify-center text-slate-500 text-xs gap-2">
-                <QrCode className="w-10 h-10 opacity-30" />
-                <span>Enter text to preview</span>
+              <div className="w-56 h-56 border border-dashed border-[var(--tui-border-medium)] flex flex-col items-center justify-center text-[var(--tui-text-dim)] text-[12px]">
+                <span>[NO_INPUT]</span>
               </div>
             )}
           </div>
 
           <div className="flex flex-wrap gap-3 w-full justify-center">
-            <button
+            <TuiButton
+              variant="primary"
+              prefix=">"
               onClick={handleDownload}
               disabled={!qrDataUrl}
-              className="flex items-center gap-2 px-5 py-2.5 bg-violet-600 hover:bg-violet-500 disabled:opacity-50 text-white rounded-xl text-xs font-semibold shadow-lg shadow-violet-600/25 transition-all cursor-pointer"
             >
-              <Download className="w-4 h-4" />
-              <span>{t.common.download}</span>
-            </button>
-            <button
-              onClick={handleCopyImage}
-              disabled={!qrDataUrl}
-              className="flex items-center gap-2 px-5 py-2.5 bg-slate-200 hover:bg-slate-300 text-slate-800 dark:bg-slate-800 dark:hover:bg-slate-700 disabled:opacity-50 dark:text-slate-200 rounded-xl text-xs font-semibold transition-all cursor-pointer"
-            >
-              {copied ? (
-                <Check className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-              ) : (
-                <Copy className="w-4 h-4" />
-              )}
-              <span>{copied ? t.common.copied : 'Copy Image'}</span>
-            </button>
+              {t.common.download}
+            </TuiButton>
+            <TuiButton variant="secondary" onClick={handleCopyImage} disabled={!qrDataUrl}>
+              {copied ? `[${t.common.copied.toUpperCase()}]` : '[COPY_IMAGE]'}
+            </TuiButton>
           </div>
-        </div>
+        </TuiCard>
       </div>
 
       {/* QR Scanner Section */}
-      <div className="p-6 glass-card rounded-2xl space-y-4">
-        <h3 className="text-base font-semibold text-slate-800 dark:text-slate-200 flex items-center gap-2">
-          <Sparkles className="w-4 h-4 text-violet-600 dark:text-violet-400" />
-          <span>Multi-Source QR Scanner (Camera, File, Clipboard)</span>
-        </h3>
-
+      <TuiCard title="MULTI_SOURCE_SCANNER (FILE / CLIPBOARD)" className="space-y-4">
         <div className="flex flex-wrap gap-3">
-          <button
+          <TuiButton
+            variant="secondary"
+            prefix="$"
             onClick={() => fileInputRef.current?.click()}
-            className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-200 dark:border-transparent dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-200 rounded-xl text-xs font-semibold transition-colors cursor-pointer flex items-center gap-2"
           >
-            <UploadCloud className="w-4 h-4 text-violet-600 dark:text-violet-400" />
-            <span>Select Image File</span>
-          </button>
+            SELECT_IMAGE_FILE
+          </TuiButton>
           <input
             ref={fileInputRef}
             type="file"
@@ -268,35 +231,29 @@ export const QrStudioView: React.FC = () => {
             className="hidden"
           />
 
-          <button
-            onClick={handlePasteClipboard}
-            className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-200 dark:border-transparent dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-200 rounded-xl text-xs font-semibold transition-colors cursor-pointer flex items-center gap-2"
-          >
-            <ClipboardPaste className="w-4 h-4 text-violet-600 dark:text-violet-400" />
-            <span>Paste from Clipboard (Ctrl + V)</span>
-          </button>
+          <TuiButton variant="amber" prefix="$" onClick={handlePasteClipboard}>
+            PASTE_CLIPBOARD (CTRL+V)
+          </TuiButton>
         </div>
 
         {scanResult && (
-          <div className="p-4 bg-violet-500/10 border border-violet-500/20 rounded-xl text-xs text-violet-700 dark:text-violet-300 flex items-center justify-between">
-            <div>
-              <span className="font-semibold">Detected content: </span>
-              <span className="font-mono">{scanResult}</span>
+          <TuiAlert type="info">
+            <div className="flex items-center justify-between w-full gap-4">
+              <span>DETECTED: {scanResult}</span>
+              {scanResult.startsWith('http') && (
+                <a
+                  href={scanResult}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-[var(--tui-primary)] font-bold hover:underline"
+                >
+                  [OPEN_URL]
+                </a>
+              )}
             </div>
-            {scanResult.startsWith('http') && (
-              <a
-                href={scanResult}
-                target="_blank"
-                rel="noreferrer"
-                className="flex items-center gap-1 text-violet-600 dark:text-violet-400 hover:underline"
-              >
-                <span>Open URL</span>
-                <ExternalLink className="w-3.5 h-3.5" />
-              </a>
-            )}
-          </div>
+          </TuiAlert>
         )}
-      </div>
+      </TuiCard>
     </div>
   );
 };
