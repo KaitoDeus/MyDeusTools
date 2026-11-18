@@ -1,285 +1,107 @@
 # MyDeusTools - API Reference
 
-This document provides a technical reference for all service interfaces, data models, and enums within `MyDeusTools.App.Services.Impl`.
+Covers:
+1. **Local Companion Agent REST API** (`http://127.0.0.1:41950/`)
+2. **Web Client Contracts & Storage** (`agentClient.ts`, `useOsAgent()`, Dexie `db.ts`)
+3. **Agent & Native WPF C# Interfaces** (`MyDeusTools.Agent.Services` & `MyDeusTools.App.Services.Impl`)
 
 ---
 
-## 1. IAutoClickService
+## 1. Local Companion Agent REST API (`http://127.0.0.1:41950/`)
 
-Handles mouse simulation, click timing, waypoint replay, and background loops.
+All endpoints use `application/json; charset=utf-8` (camelCase JSON) and include CORS + `Access-Control-Allow-Private-Network: true` headers for `GET`, `POST`, and `OPTIONS`.
 
-```csharp
-public interface IAutoClickService
-{
-    bool IsRunning { get; }
-    void Start(AutoClickConfig config);
-    void Stop();
-    void ReplayWaypoints(IReadOnlyList<ClickWaypoint> waypoints, TimeSpan interval);
-}
-```
+### Health & Status
+- `GET /api/health`
+  - **Response (`200 OK`)**:
+    ```json
+    {
+      "status": "online",
+      "agent": "MyDeusTools.Agent",
+      "version": "1.0.0",
+      "platform": "win32nt",
+      "capabilities": ["autoclick", "hotkey-f6", "hotkey-f7", "system-power", "window-pinner"]
+    }
+    ```
 
-### Models & Enums
-- `AutoClickConfig`: `MouseButton Button`, `ClickType ClickType`, `TimeSpan Interval`, `int RepeatCount` (0 = infinite).
-- `ClickWaypoint`: `int Index`, `int X`, `int Y`, `TimeSpan Delay`.
-- `MouseButton`: `Left`, `Right`, `Middle`.
-- `ClickType`: `Single`, `Double`.
+### OS Auto-Clicker Endpoints
+- `GET /api/autoclick/status` &rarr; Returns `AutoClickStatusDto`:
+  - `{ isRunning, intervalMs, button, clickType, repeatCount, clicksDone, useRecordedPoints, points: [{ x, y }], cursorX, cursorY, hotkeyToggle: "F6", hotkeyCapture: "F7" }`
+- `POST /api/autoclick/start`
+  - **Body (`StartAutoClickRequest`, fields optional)**: `{ intervalMs?: number, button?: "left" | "right" | "middle", clickType?: "single" | "double", repeatCount?: number, useRecordedPoints?: boolean, points?: [{ x, y }] }`
+  - Configures (`IntervalMs` clamped `>= 10ms`) and starts the `OsAutoClickEngine`; returns `AutoClickStatusDto`.
+- `POST /api/autoclick/stop` &rarr; Stops engine and returns `AutoClickStatusDto`.
+- `POST /api/autoclick/capture`
+  - **Body (`CapturePointRequest`)**: `{ delaySeconds?: number }` (clamped `0..10`).
+  - Waits `delaySeconds`, records current Win32 cursor point, returns `{ captured: { x, y }, status: AutoClickStatusDto }`.
+- `POST /api/autoclick/points/clear` &rarr; Clears recorded waypoints and returns `AutoClickStatusDto`.
 
----
+### OS System Power Endpoints
+- `POST /api/system/schedule`
+  - **Body (`SchedulePowerRequest`)**: `{ mode: "shutdown" | "restart" | "hibernate", seconds: number }`
+  - Cancels any prior schedule and schedules Windows power action. Returns `{ scheduled: true, mode, seconds }`.
+- `POST /api/system/cancel` &rarr; Runs `shutdown /a` and terminates any pending hibernate timeout process. Returns `{ cancelled: true }`.
 
-## 2. ISystemService
-
-Handles Windows power state actions and schedules.
-
-```csharp
-public interface ISystemService
-{
-    void ScheduleAction(ShutdownMode mode, int seconds);
-    void CancelShutdown();
-}
-```
-
-### Enums
-- `ShutdownMode`: `Shutdown`, `Restart`, `Hibernate`.
-
----
-
-## 3. IStickyNoteService
-
-Manages creation, retrieval, updates, and deletion of desktop sticky notes.
-
-```csharp
-public interface IStickyNoteService
-{
-    Task<List<StickyNoteModel>> LoadNotesAsync();
-    Task SaveNotesAsync(IEnumerable<StickyNoteModel> notes);
-    Task<StickyNoteModel> CreateNoteAsync(string content);
-    Task DeleteNoteAsync(Guid noteId);
-}
-```
-
-### Models
-- `StickyNoteModel`: `Guid Id`, `string Content`, `DateTime CreatedAt`, `DateTime UpdatedAt`, `bool IsPinned`, `double WindowLeft`, `double WindowTop`, `double WindowWidth`, `double WindowHeight`.
+### OS Window Pinner Endpoints
+- `GET /api/windows` &rarr; Returns `OsWindowInfoDto[]`:
+  - `[{ handle, title, processName, processId, isTopMost, opacityPercent }]`
+- `POST /api/windows/pin` &rarr; Body: `{ handle: number, topMost: boolean }` &rarr; `{ success: boolean }`
+- `POST /api/windows/opacity` &rarr; Body: `{ handle: number, percent: number }` (clamped `20..100`) &rarr; `{ success: boolean }`
+- `POST /api/windows/focus` &rarr; Body: `{ handle: number }` &rarr; `{ success: boolean }`
 
 ---
 
-## 4. IClipboardService
+## 2. Web Client APIs (`MyDeusTools.Web/src/`)
 
-Listens to OS clipboard updates and maintains persistent history.
+### `agentClient` (`src/services/agentClient.ts`)
+Typed `fetch` wrapper against `AGENT_BASE_URL = 'http://127.0.0.1:41950'` with `AbortController` timeouts:
+- `checkHealth()` (1200ms timeout)
+- `getAutoClickStatus()`, `startOsAutoClick(payload)`, `stopOsAutoClick()`, `captureCursorPoint(delaySeconds = 3)`, `clearCapturedPoints()`
+- `scheduleOsPower(mode, seconds)`, `cancelOsPower()`
+- `getOsWindows()`, `pinOsWindow(handle, topMost)`, `setOsWindowOpacity(handle, percent)`, `focusOsWindow(handle)`
 
-```csharp
-public interface IClipboardService
-{
-    event EventHandler<ClipboardItemModel> ItemAdded;
-    Task<List<ClipboardItemModel>> GetHistoryAsync();
-    Task AddItemAsync(string text);
-    Task TogglePinAsync(Guid id);
-    Task DeleteItemAsync(Guid id);
-    Task ClearUnpinnedAsync();
-}
-```
+### Context Hooks
+- `useOsAgent()` (`src/contexts/AgentContext.tsx`): `{ isOnline: boolean, health: AgentHealth | null, checking: boolean, refreshAgentStatus: () => Promise<boolean> }` (5-second background polling).
+- `useTheme()` (`src/contexts/ThemeContext.tsx`): `{ theme: 'dark' | 'light', toggleTheme, setTheme }`.
+- `useI18n()` (`src/i18n/LanguageContext.tsx`): `{ language: 'vi' | 'en', setLanguage, t: Translations, toggleLanguage }`.
 
-### Models
-- `ClipboardItemModel`: `Guid Id`, `string Text`, `DateTime Timestamp`, `bool IsPinned`, `int CharacterCount`.
-
----
-
-## 5. IQrCodeService
-
-Provides QR code image generation and decoding from multiple sources.
-
-```csharp
-public interface IQrCodeService
-{
-    byte[] GenerateQrCodePng(string content, int pixelsPerModule = 10);
-    string? DecodeFromImageBytes(byte[] imageBytes);
-    string? DecodeFromFile(string filePath);
-    string? DecodeFromScreenRegion(int x, int y, int width, int height);
-}
-```
+### IndexedDB Schema (`src/services/db.ts`)
+`MyDeusToolsWebDB` (Dexie):
+- `notes`: `StickyNote { id?, title, content, color, isPinned, createdAt, updatedAt }`
+- `snippets`: `ClipboardSnippet { id?, title, content, tag, isPinned, usageCount, createdAt }`
+- `colors`: `SavedColor { id?, hex, rgb, hsl, hsv, label, createdAt }`
 
 ---
 
-## 6. IColorPickerService
+## 3. Agent & WPF C# Service Contracts
 
-Samples screen colors, formats values, and maintains palette history.
-
+### Agent Mouse Abstraction (`MyDeusTools.Agent.Services`)
 ```csharp
-public interface IColorPickerService
+public interface IMouseInterop
 {
-    ColorSample SampleScreenPoint(int x, int y);
-    ColorSample[,] SampleMagnifierGrid(int centerX, int centerY, int gridSize = 11);
-    Task<List<ColorSample>> LoadPaletteAsync();
-    Task SavePaletteAsync(IEnumerable<ColorSample> samples);
+    CursorPoint GetCursorPosition();
+    void SetCursorPosition(int x, int y);
+    void Click(OsMouseButton button);
+    bool IsVirtualKeyPressed(int vkCode);
 }
 ```
+- `OsMouseButton`: `Left`, `Right`, `Middle`
+- `OsClickType`: `Single`, `Double`
+- `OsPowerMode`: `Shutdown`, `Restart`, `Hibernate`
 
-### Models
-- `ColorSample`: `byte R`, `byte G`, `byte B`, `string Hex`, `string Rgb`, `string Hsl`, `string Hsv`, `DateTime SampledAt`, `bool IsPinned`.
+### WPF Desktop Services (`MyDeusTools.App.Services.Impl`)
 
----
-
-## 7. ITextUtilityService
-
-Pure managed .NET 8 text and developer utilities.
-
-```csharp
-public interface ITextUtilityService
-{
-    string FormatJson(string json, bool indent = true);
-    bool ValidateJson(string json, out string? errorMessage);
-    string EncodeBase64(string text);
-    string DecodeBase64(string base64);
-    string EncodeBase64File(string filePath);
-    void DecodeBase64ToFile(string base64, string outputPath);
-    string UrlEncode(string input);
-    string UrlDecode(string input);
-    string HtmlEncode(string input);
-    string HtmlDecode(string input);
-    HashResults ComputeHashes(string input);
-    HashResults ComputeFileHashes(string filePath);
-    string ConvertCase(string input, CaseMode mode);
-    TextMetrics AnalyzeText(string input);
-}
-```
-
----
-
-## 8. IWindowPinnerService
-
-Interacts with Win32 window handles for Always-on-Top and opacity.
-
-```csharp
-public interface IWindowPinnerService
-{
-    IReadOnlyList<WindowInfo> GetDesktopWindows();
-    WindowInfo? GetForegroundWindowInfo();
-    void SetAlwaysOnTop(IntPtr hWnd, bool alwaysOnTop);
-    void SetWindowOpacity(IntPtr hWnd, byte opacityPercent);
-    void BringToFront(IntPtr hWnd);
-}
-```
-
----
-
-## 9. IVideoConverterService
-
-Handles media conversion, container transmuxing, audio extraction, and progress reporting.
-
-```csharp
-public interface IVideoConverterService
-{
-    Task ConvertMediaAsync(
-        VideoConversionConfig config, 
-        IProgress<VideoProgressInfo>? progress = null, 
-        CancellationToken cancellationToken = default);
-}
-```
-
----
-
-## 10. IImageStudioService
-
-Provides batch image compression, format conversion, and multi-layer ICO generation.
-
-```csharp
-public interface IImageStudioService
-{
-    Task<ImageBatchResult> ProcessBatchAsync(
-        IEnumerable<ImageItemViewModel> items, 
-        ImageProcessingConfig config, 
-        IProgress<double>? progress = null, 
-        CancellationToken cancellationToken = default);
-}
-```
-
----
-
-## 11. IPdfToolkitService
-
-Provides offline PDF merging, splitting, image album conversion, password protection, and metadata editing.
-
-```csharp
-public interface IPdfToolkitService
-{
-    PdfDocumentInfo GetPdfInfo(string filePath);
-    
-    Task<bool> MergePdfsAsync(
-        IEnumerable<string> sourceFilePaths, 
-        string outputFilePath, 
-        IProgress<double>? progress = null, 
-        CancellationToken cancellationToken = default);
-
-    Task<int> SplitPdfAsync(
-        string sourceFilePath, 
-        string outputDirectory, 
-        PdfSplitMode splitMode, 
-        string? pageRange = null, 
-        int chunkSize = 1, 
-        IProgress<double>? progress = null, 
-        CancellationToken cancellationToken = default);
-
-    Task<bool> ImagesToPdfAsync(
-        IEnumerable<string> imageFilePaths, 
-        string outputFilePath, 
-        ImagesToPdfConfig config, 
-        IProgress<double>? progress = null, 
-        CancellationToken cancellationToken = default);
-
-    Task<bool> ProtectPdfAsync(
-        string sourceFilePath, 
-        string outputFilePath, 
-        PdfSecurityConfig securityConfig, 
-        CancellationToken cancellationToken = default);
-}
-```
-
----
-
-## 12. IBulkRenamerService
-
-Executes batch file and directory renaming with rule combination, conflict validation, and undo history.
-
-```csharp
-public interface IBulkRenamerService
-{
-    string ApplyRenameRule(
-        string originalName,
-        bool isDirectory,
-        RenameConfig config,
-        int itemIndex,
-        DateTime? dateCreated = null,
-        DateTime? dateModified = null);
-
-    void UpdatePreviews(IList<RenameItemViewModel> items, RenameConfig config);
-
-    Task<RenameResult> ExecuteRenameAsync(
-        IList<RenameItemViewModel> items,
-        IProgress<double>? progress = null,
-        CancellationToken cancellationToken = default);
-
-    Task<RenameResult> UndoRenameAsync(
-        IList<RenameHistoryEntry> history,
-        IProgress<double>? progress = null,
-        CancellationToken cancellationToken = default);
-
-    IReadOnlyList<string> ScanPaths(IEnumerable<string> paths, bool recursive, RenameTargetType targetType);
-}
-```
-
----
-
-## 13. ILanguageService
-
-Runtime bilingual language management with event notifications.
-
-```csharp
-public interface ILanguageService
-{
-    AppLanguage CurrentLanguage { get; }
-    string CurrentLanguageCode { get; }
-    event Action<AppLanguage>? LanguageChanged;
-    void SetLanguage(AppLanguage language);
-    void ToggleLanguage();
-    string GetString(string key, string fallback = "");
-}
-```
+1. **`IAutoClickService`**: `bool IsRunning`, `void Start(AutoClickConfig)`, `void Stop()`, `void ReplayWaypoints(IReadOnlyList<ClickWaypoint>, TimeSpan)`
+2. **`ISystemService`**: `void ScheduleAction(ShutdownMode mode, int seconds)`, `void CancelShutdown()` (`ShutdownMode`: `Shutdown`, `Restart`, `Hibernate`)
+3. **`IStickyNoteService`**: `LoadNotesAsync()`, `SaveNotesAsync(...)`, `CreateNoteAsync(string)`, `DeleteNoteAsync(Guid)` (`StickyNoteModel`)
+4. **`IClipboardService`**: `event ItemAdded`, `GetHistoryAsync()`, `AddItemAsync(string)`, `TogglePinAsync(Guid)`, `DeleteItemAsync(Guid)`, `ClearUnpinnedAsync()` (`ClipboardItemModel`)
+5. **`IQrCodeService`**: `GenerateQrCodePng(string, int)`, `DecodeFromImageBytes(byte[])`, `DecodeFromFile(string)`, `DecodeFromScreenRegion(int, int, int, int)`
+6. **`IColorPickerService`**: `SampleScreenPoint(int, int)`, `SampleMagnifierGrid(int, int, int)`, `LoadPaletteAsync()`, `SavePaletteAsync(...)` (`ColorSample`)
+7. **`ITextUtilityService`**: `FormatJson`, `ValidateJson`, `EncodeBase64`, `DecodeBase64`, `EncodeBase64File`, `DecodeBase64ToFile`, `UrlEncode`, `UrlDecode`, `HtmlEncode`, `HtmlDecode`, `ComputeHashes`, `ComputeFileHashes`, `ConvertCase`, `AnalyzeText`
+8. **`IWindowPinnerService`**: `GetDesktopWindows()`, `GetForegroundWindowInfo()`, `SetAlwaysOnTop(IntPtr, bool)`, `SetWindowOpacity(IntPtr, byte)`, `BringToFront(IntPtr)`
+9. **`IVideoConverterService`**: `ConvertMediaAsync(VideoConversionConfig, IProgress<VideoProgressInfo>?, CancellationToken)`
+10. **`IImageStudioService`**: `ProcessBatchAsync(IEnumerable<ImageItemViewModel>, ImageProcessingConfig, IProgress<double>?, CancellationToken)`
+11. **`IPdfToolkitService`**: `GetPdfInfo`, `MergePdfsAsync`, `SplitPdfAsync`, `ImagesToPdfAsync`, `ProtectPdfAsync`
+12. **`IBulkRenamerService`**: `ApplyRenameRule`, `UpdatePreviews`, `ExecuteRenameAsync`, `UndoRenameAsync`, `ScanPaths`
+13. **`ILanguageService`**: `CurrentLanguage`, `CurrentLanguageCode`, `event LanguageChanged`, `SetLanguage(AppLanguage)`, `ToggleLanguage()`, `GetString(string, string)`
+14. **`IAutoStartService`**: Windows CurrentUser Run registry startup state management.

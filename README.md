@@ -5,123 +5,135 @@
 </p>
 
 <p align="center">
-  <strong>Modern All-in-One Desktop Utility Super-App for Windows 10 & 11</strong>
+  <strong>All-in-One Utility Suite &mdash; TerminalUI Web App, Windows Local Companion Agent &amp; Native WPF Desktop App</strong>
 </p>
 
 <p align="center">
+  <img src="https://img.shields.io/badge/Web-React%2019%20%7C%20Vite%208%20%7C%20TS-00FF41?labelColor=0D0D0D" alt="Web Stack" />
   <img src="https://img.shields.io/badge/.NET-8.0--windows-512BD4?logo=dotnet" alt=".NET 8" />
-  <img src="https://img.shields.io/badge/UI-WPF--UI%203.0-0078D4?logo=windows" alt="WPF-UI" />
-  <img src="https://img.shields.io/badge/Architecture-MVVM%20Toolkit-blue" alt="MVVM" />
-  <img src="https://img.shields.io/badge/Tests-274%20Passed%20(100%25)-brightgreen" alt="Tests" />
-  <img src="https://img.shields.io/badge/Platform-Windows%20x64-00A4EF" alt="Platform" />
+  <img src="https://img.shields.io/badge/Agent-Loopback%20127.0.0.1%3A41950-FF6600?labelColor=0D0D0D" alt="Local Agent" />
+  <img src="https://img.shields.io/badge/Tests-282%20Passed%20(100%25)-brightgreen" alt="Tests" />
+  <img src="https://img.shields.io/badge/Platform-Web%20%2B%20Windows%20x64-00BFFF?labelColor=0D0D0D" alt="Platform" />
   <img src="https://img.shields.io/badge/License-MIT-green" alt="License" />
 </p>
 
 <p align="center">
-  <a href="https://kaitodeus.github.io/MyDeusTools/"><strong>Explore Official Website &amp; Interactive Simulator &rarr;</strong></a>
+  <a href="MyDeusTools.Web/README.md"><strong>Web App Quick Start &rarr;</strong></a>
   &nbsp;|&nbsp;
-  <a href="docs/README.md"><strong>Read In-Depth Technical Documentation &rarr;</strong></a>
+  <a href="docs/README.md"><strong>Technical Documentation &rarr;</strong></a>
+  &nbsp;|&nbsp;
+  <a href="https://kaitodeus.github.io/MyDeusTools/"><strong>Project Website &rarr;</strong></a>
 </p>
 
 ---
 
 ## Overview
 
-**MyDeusTools** is a lightweight, modern, and versatile Windows desktop utility suite built with **C# .NET 8 (WPF)** and **WPF-UI 3.0** (Windows 11 Fluent Design & Mica Backdrop). Consolidates **12 essential daily productivity and developer tools** into a single cohesive application that packages into a zero-dependency, self-contained single-file executable.
+**MyDeusTools** consolidates **12 essential productivity, developer, media, and system utilities** into a unified ecosystem built around a privacy-first **Hybrid Web + Local Agent Architecture**:
+
+1. **`MyDeusTools.Web` (TerminalUI Pure Web & PWA)**: Client-side utility suite built with **React 19**, **Vite 8**, **TypeScript**, and **Tailwind CSS v4** styled in a strict high-contrast **TerminalUI** design system (`JetBrains Mono`, `0px` crisp borders, Light/Dark themes, optional CRT scanline toggle, and IndexedDB persistence via Dexie). Zero data ever leaves your machine.
+2. **`MyDeusTools.Agent` (Optional Windows Local Companion Agent)**: Lightweight, zero-dependency **.NET 8** loopback HTTP bridge (`http://127.0.0.1:41950/`) that safely unlocks native Windows APIs from inside the browser &mdash; OS-wide mouse auto-clicking + global `F6`/`F7` hotkeys, Windows Shutdown/Restart/Hibernate scheduling, and desktop window Always-on-Top pinning/opacity.
+3. **`MyDeusTools.App` (Native WPF Desktop Super-App)**: The original Windows 10/11 desktop application built with **C# .NET 8**, **WPF-UI 3.0** (Fluent Design & Mica backdrop), and **CommunityToolkit.Mvvm**, packable as a self-contained single-file executable.
 
 ---
 
-## Key Features
+## Key Utilities (12 Tools)
 
-| Feature | Description |
-|---|---|
-| **Auto Clicker Pro** | Highly configurable automated mouse clicking (Left, Right, Middle buttons; Single or Double click), high-precision interval control (down to 10ms safety clamp), global hotkey assignment (NHotkey), and multi-monitor coordinate recording/replay overlay (RecordingOverlayWindow). |
-| **Schedule Shutdown** | Timed system power management supporting Shutdown, Restart, and Hibernate actions with real-time visual countdown (hh:mm:ss), instant cancellation, and automatic input time normalization (e.g., 70 minutes automatically normalizes to 1h 10m). |
-| **Sticky Notes** | Card-based desktop note manager with automatic JSON persistence (Data/notes.json), and pop-out borderless floating desktop windows (StickyNoteWindow - Topmost, draggable, non-intrusive). |
-| **Clipboard Manager** | Real-time clipboard listener utilizing native Win32 APIs (AddClipboardFormatListener), instant search filtering, pin-to-top support, and one-click copy back to clipboard. |
-| **QR Code Studio** | High-definition QR code generation (QRCoder) with PNG export and clipboard copy; multi-source QR decoding (ZXing.Net) supporting screen region snipping (QrSnippingOverlayWindow), image file decoding, and clipboard image reading with automatic URL detection. |
-| **Color Picker & Eyedropper** | Fullscreen precision screen eyedropper with floating 11x11 pixel magnifier HUD, one-click HEX/RGB/HSL/HSV format copying, pin-to-palette management, and persistent color history (Data/colors.json). |
-| **Text & Dev Tools** | Swiss Army knife for text and code: JSON Formatter and Minifier with syntax validator, Base64 encoder/decoder (Text and Files), URL and HTML entity escaping, instant multi-hash generator (MD5, SHA-1, SHA-256, SHA-512), case converter (camel, Pascal, snake, kebab, UPPER, lower, Title), and text metrics analyzer. |
-| **Window Pinner & Transparency** | Pin any third-party application window to remain Always-on-Top (HWND_TOPMOST), smoothly adjust real-time opacity and transparency (Win32 WS_EX_LAYERED with SetLayeredWindowAttributes), quick opacity presets (100%, 80%, 60%, 40%), 1-click active window pinning, and bring-to-front window activation. |
-| **Video Converter & Transcoder** | Fast and versatile multimedia converter supporting diverse containers (MP4, MKV, WebM, AVI, MOV, WMV, GIF, FLV), audio extraction (MP3, WAV, AAC, M4A, FLAC), resolution scaling (4K to 360p), CRF quality controls (Ultra, High, Medium, Compact), lossless stream copy, GPU hardware acceleration, video trimming, and real-time progress parsing. |
-| **Image Studio & Optimizer** | High-performance batch image compressor and converter supporting WebP, PNG, JPEG, ICO, BMP, and TIFF. Features quality level tuning (1-100%), multi-mode scaling (percentage, fixed width/height, aspect-ratio preserved bounding box), multi-layer Windows .ico generation (16px to 256px), EXIF/GPS privacy stripping, and real-time disk space savings calculation. |
-| **PDF Toolkit** | 100% offline PDF processing powered by PDFsharp 6.1.1: Merge multiple PDFs, Split PDF (page range, single pages, N-page chunks), Convert images to PDF (A4, Letter, Fit-to-image with margin/orientation options), Password encryption & document metadata editor. |
-| **Bulk File & Folder Renamer** | Industrial-grade batch file and directory renaming suite with Regex and capture groups, text insertion/removal/trimming, 8 case conversion modes, sequential numbering with zero padding, date/timestamp insertion, scope filtering, live conflict validation, and 1-click Undo. |
-| **Bilingual Localization (EN & VIE)** | Instant runtime switching between English and Vietnamese across all navigation menus and pages without requiring application restarts, with persistent settings (Data/settings.json). |
-| **System Tray & Windows Startup** | Minimize-to-tray lifecycle management (Hardcodet.NotifyIcon), instant Dark/Light theme switching, and Windows startup toggle via CurrentUser Registry. |
+| # | Utility | Web (`MyDeusTools.Web`) | Windows OS Capabilities (`Agent` / `MyDeusTools.App`) |
+|---|---|---|---|
+| `01` | **Sticky Notes** | Kanban note board, semantic color tags, pin-to-top, IndexedDB auto-save, Document PiP pop-out. | Borderless floating desktop windows (`StickyNoteWindow`) & `Data/notes.json`. |
+| `02` | **Clipboard Manager** | Snippet vault with tags, search, pin-to-top, usage counter, OS paste (`Clipboard API`), IndexedDB. | Real-time Win32 `AddClipboardFormatListener` hook (`WM_CLIPBOARDUPDATE`). |
+| `03` | **Smart Timer & Shutdown** | **2 separate tabs**: `01:POMODORO_TIMER` (always available in browser, Screen Wake Lock, webhook, `70m -> 1h 10m` auto-normalization) & `02:SCHEDULE_SHUTDOWN` (strictly **enabled only when Agent is online**). | `MyDeusTools.Agent` (`POST /api/system/schedule` & `/cancel`) + `MyDeusTools.App` trigger Windows Shutdown (`/s`), Restart (`/r`), Hibernate (`/h`), and Abort (`/a`). |
+| `04` | **Text & Dev Tools** | JSON Studio (format/minify/validate), Base64 (text & files), Web Crypto SHA-1/256/512, 7 case modes, URL Encoder. | Adds MD5 hashing, HTML Entity encoding, and local file hashing (`ITextUtilityService`). |
+| `05` | **QR Code Studio** | Customizable foreground/background colors, presets, L/M/Q/H ECC, PNG export & clipboard copy (`qrcode`), image metadata reader. | HD generation (`QRCoder`) + multi-source decoding (`ZXing.Net`), including fullscreen snipping (`QrSnippingOverlayWindow`). |
+| `06` | **Color Picker & Eyedropper** | Native browser `EyeDropper` API pixel sampler, HEX/RGB/HSL conversion, instant copy, IndexedDB palette history. | Fullscreen GDI `BitBlt`/`GetPixel` 11x11 magnifier HUD overlay & HSL/HSV formats. |
+| `07` | **PDF Toolkit** | 100% client-side Merge & page-range Split (`1-3, 5`) via `pdf-lib`. | Full offline `PDFsharp` 6.1.1 suite: Merge, Split (range/single/N-page chunks), Images-to-PDF, Password encryption & metadata. |
+| `08` | **Image Studio** | Canvas batch compressor/converter (`WebP`, `JPEG`, `PNG`), quality slider, percentage scale, automatic EXIF/GPS strip. | Batch optimizer + multi-resolution Windows `.ico` builder (`16px`&ndash;`256px`) & aspect-fit resizing. |
+| `09` | **Video Converter** | Client configuration workflow for MP4/WebM/MP3/GIF containers, resolutions, and CRF quality levels. | Real FFmpeg CLI wrapper with GPU acceleration hooks, trimming, stream copy, and live progress parsing. |
+| `10` | **Bulk File Renamer** | Direct disk directory access via `File System Access API` (`showDirectoryPicker`) + uploaded batch ZIP export (`JSZip`), Regex & case modes. | Regex capture groups (`$1`, `$2`), sequential zero-padded numbering, date/timestamp tags, live conflict checks, and 1-click Undo. |
+| `11` | **Auto Clicker Pro** | **2 tabs**: `01:WEB_DOM_SANDBOX` (browser DOM interval loop, CPS meter, target sandbox, portable Bookmarklet) & `02:OS_NATIVE_AGENT` (unrestricted Win32 mouse loop). | `MyDeusTools.Agent` (`mouse_event`, `SetCursorPos`, min 10ms clamp, global `F6` Start/Stop & `F7` cursor waypoint capture); `MyDeusTools.App` (`NHotkey.Wpf` + `RecordingOverlayWindow`). |
+| `12` | **Window Pinner & PiP** | **2 tabs**: `01:WEB_DOCUMENT_PiP` (always-on-top Digital Clock & Scratchpad via Document Picture-in-Picture API) & `02:OS_WINDOWS_MANAGER`. | `MyDeusTools.Agent` (`GET/POST /api/windows/*`) & `MyDeusTools.App` enumerate desktop windows, pin `HWND_TOPMOST`, adjust opacity (`20%`&ndash;`100%` via `WS_EX_LAYERED`), and focus windows. |
+
+Cross-cutting capabilities:
+- **Instant Bilingual Switching (`vi` / `en`)** with compile-time TypeScript key symmetry (`translations.ts`) in Web and runtime `DynamicResource` switching (`Strings.*.xaml`) in WPF.
+- **TerminalUI Dark/Light & CRT Modes** in Web; Windows 11 **Mica Dark/Light**, Minimize-to-Tray, and CurrentUser Startup Registry in WPF.
 
 ---
 
 ## Documentation
 
-Full documentation is available in the [`docs/`](docs/) directory:
+Comprehensive guides and API specifications live in [`docs/`](docs/):
 
-- [**docs/FEATURES.md**](docs/FEATURES.md): In-depth guide and manual for all 12 tools.
-- [**docs/ARCHITECTURE.md**](docs/ARCHITECTURE.md): System architecture, layers, DI registrations, Win32 P/Invoke, and storage models.
-- [**docs/DEVELOPER_GUIDE.md**](docs/DEVELOPER_GUIDE.md): Setup, compilation, testing, single-file publishing, and contribution standards.
-- [**docs/API_REFERENCE.md**](docs/API_REFERENCE.md): Technical API reference for all service interfaces and models.
+- [**docs/README.md**](docs/README.md): Master documentation index and repository overview.
+- [**docs/FEATURES.md**](docs/FEATURES.md): Detailed manual for all 12 utilities across Web, Local Agent, and Desktop WPF.
+- [**docs/ARCHITECTURE.md**](docs/ARCHITECTURE.md): Hybrid Web + Agent architecture, TerminalUI tokens, WPF MVVM layers, Win32 interop, and persistence.
+- [**docs/API_REFERENCE.md**](docs/API_REFERENCE.md): Agent REST API (`127.0.0.1:41950`), `agentClient` / Dexie APIs, and C# WPF Service contracts.
+- [**docs/DEVELOPER_GUIDE.md**](docs/DEVELOPER_GUIDE.md): Prerequisites, dev/build commands, 282-test suite, publishing, and contribution rules.
 
 ---
 
 ## Technology Stack
 
-- **Framework & Runtime**: C# 12, .NET 8.0 Windows Desktop (`net8.0-windows`, `win-x64`)
-- **UI Framework**: WPF with [WPF-UI 3.0.5](https://wpfui.lepo.co/) (Fluent Design, Mica Backdrop, NavigationControl)
-- **Architecture**: Model-View-ViewModel (MVVM) powered by [CommunityToolkit.Mvvm](https://learn.microsoft.com/en-us/dotnet/communitytoolkit/mvvm/)
-- **Dependency Injection**: `Microsoft.Extensions.DependencyInjection`
-- **OS & Native Interop**:
-  - Win32 P/Invoke (`user32.dll` for mouse synthesization, clipboard format listener, window enumeration, `HWND_TOPMOST` pinning, and layered opacity attributes)
-  - `NHotkey.Wpf` for global system-wide hotkeys
-  - `Hardcodet.NotifyIcon.Wpf` for taskbar notification tray
-  - `QRCoder` & `ZXing.Net` for QR code generation and decoding
-  - `PDFsharp` 6.1.1 for 100% offline PDF processing
-- **Testing**: xUnit 2.9, Moq 4.20, Xunit.StaFact (274/274 tests passing, 100% success rate)
+- **Web App (`MyDeusTools.Web`)**: React 19, Vite 8, TypeScript 7, Tailwind CSS v4 (`@tailwindcss/vite`), Dexie (IndexedDB), `pdf-lib`, `qrcode`, `jszip`, Web APIs (`EyeDropper`, `File System Access`, `Screen Wake Lock`, `Document Picture-in-Picture`, `Web Crypto`, `Canvas`).
+- **Local Companion Agent (`MyDeusTools.Agent`)**: C# 12, `.NET 8.0` (`net8.0-windows`, `win-x64`), zero external NuGet dependencies, `System.Net.HttpListener` (`127.0.0.1:41950`), Win32 `user32.dll` (`mouse_event`, `SetCursorPos`, `GetAsyncKeyState`, `EnumWindows`, `SetWindowPos`, `SetLayeredWindowAttributes`).
+- **Desktop WPF App (`MyDeusTools.App`)**: C# 12, `.NET 8.0` (`net8.0-windows`), `WPF-UI 3.0.5`, `CommunityToolkit.Mvvm 8.4.2`, `Microsoft.Extensions.DependencyInjection 10.0.7`, `NHotkey.Wpf 4.0.0`, `Hardcodet.NotifyIcon.Wpf 2.0.1`, `QRCoder 1.8.0`, `ZXing.Net 0.16.11`, `PDFsharp 6.1.1`.
+- **Testing (`MyDeusTools.Tests`)**: `xUnit 2.9.2`, `Moq 4.20.72`, `Xunit.StaFact 0.3.18` (**282/282 tests passing, 100% pass rate**).
 
 ---
 
 ## Getting Started
 
 ### Prerequisites
-- Operating System: Windows 10 or Windows 11 (x64)
-- .NET 8.0 SDK (required for building from source)
+- **For Web App**: Node.js `v20+` and `npm`.
+- **For Local Companion Agent & WPF Desktop App**: Windows 10/11 (x64) and [.NET 8.0 SDK](https://dotnet.microsoft.com/download/dotnet/8.0).
 
-### 1. Run in Development Mode
+### 1. Run Web App + Local Companion Agent (Recommended Hybrid Mode)
 ```bash
 # Clone repository
 git clone https://github.com/KaitoDeus/MyDeusTools.git
 cd MyDeusTools
 
-# Run application
+# Install Web dependencies (first time only)
+npm --prefix MyDeusTools.Web install
+
+# Terminal 1: Start Web App dev server (http://localhost:3000)
+npm run web:dev
+
+# Terminal 2: Start Windows Local Companion Agent (http://127.0.0.1:41950)
+npm run agent:dev
+```
+
+### 2. Run Native WPF Desktop App
+```bash
 dotnet run --project MyDeusTools.App/MyDeusTools.App.csproj
 ```
 
-### 2. Run Automated Test Suite
+### 3. Build & Test Verification
 ```bash
+# Type-check + build Web App production bundle (MyDeusTools.Web/dist)
+npm run web:build
+
+# Run full .NET test suite (WPF App + Local Agent: 282 tests)
 dotnet test
 ```
 
-### 3. Build Single-File Self-Contained Executable
+### 4. Package Standalone Executables (Windows x64)
 ```bash
-dotnet publish MyDeusTools.App/MyDeusTools.App.csproj \
-  -c Release \
-  -r win-x64 \
-  --self-contained true \
-  -p:PublishSingleFile=true \
-  -p:PublishReadyToRun=true \
-  -p:IncludeNativeLibrariesForSelfExtract=true \
-  -p:EnableCompressionInSingleFile=true
+# Standalone Local Companion Agent -> publish/agent/MyDeusTools.Agent.exe
+npm run agent:publish
+
+# Standalone Native WPF App -> MyDeusTools.App/bin/Release/net8.0-windows/win-x64/publish/MyDeusTools.App.exe
+dotnet publish MyDeusTools.App/MyDeusTools.App.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:PublishReadyToRun=true -p:IncludeNativeLibrariesForSelfExtract=true -p:EnableCompressionInSingleFile=true
 ```
-The standalone executable will be located at:
-`MyDeusTools.App/bin/Release/net8.0-windows/win-x64/publish/MyDeusTools.App.exe`
 
 ---
 
 ## Contributors
 
-This project is developed and maintained through Human-AI Pair Programming:
+Developed and maintained through Human-AI Pair Programming (see [CONTRIBUTORS.md](CONTRIBUTORS.md)):
 
-- **[KaitoDeus](https://github.com/KaitoDeus)** — Project Creator, Lead Software Architect & Developer
-- **[Claude](https://claude.ai)** — AI Architecture Consultant, Pair Programmer & Automated Testing Partner
+- **[KaitoDeus](https://github.com/KaitoDeus)** &mdash; Project Creator, Lead Software Architect & Developer
+- **[Claude](https://claude.ai)** &mdash; AI Architecture Consultant, Pair Programmer & Automated Testing Partner
 
 ---
 

@@ -1,23 +1,17 @@
 # Active Context - MyDeusTools
 
 ## Current Focus & Status
-- **Current State**: Project builds cleanly with 0 warnings/errors in both Debug and Release configurations, and passes 100% of unit & integration tests (**274/274 passed**).
-- **Recent Milestones**:
-  1. Implemented **Bulk File & Folder Renamer** (Regex, case conversion, sequential numbering, date insertion, live preview, conflict detection, 1-click undo).
-  2. Implemented **PDF Toolkit** (PDFsharp 6.1.1 offline merge, split by page range/chunk, images to PDF, encryption & metadata).
-  3. Implemented **Automatic Time Normalization** in Schedule Shutdown (e.g., 70 minutes automatically normalizes to 1h 10m).
-  4. Standardized comprehensive documentation (`docs/`), AI developer skills (`.agents/skills/`), and the Memory Bank in strict sequence.
-  5. Implemented **Pure Web App Transformation (`MyDeusTools.Web/`)**: Complete client-side rewrite in Vite + React 19 + TypeScript + Tailwind CSS with code-splitting, WebAssembly (FFmpeg.wasm, pdf-lib), native Web APIs (EyeDropper, File System Access, Screen Wake Lock, Document PiP), and bilingual i18n support.
+- **Current State**: Full project documentation, Memory Bank, rules, and AI skills are being synchronized after completing the **Pure Web Transformation (`MyDeusTools.Web`)**, **TerminalUI Redesign**, **Windows Local Companion Agent (`MyDeusTools.Agent`)**, and **2-Tab Agent-Gated SmartTimer (`SmartTimerView`)**.
+- **Latest Verified Baseline**:
+  - `.NET` Solution (`MyDeusTools.sln`): **282/282 tests passing** (`274` WPF app tests + `8` `OsAutoClickEngineTests`).
+  - Web Application (`MyDeusTools.Web`): `npm run web:build` (`tsc && vite build`) passes cleanly (242 modules) with 100% symmetric `vi`/`en` keys enforced by `_viSymmetryCheck`.
+- **Recent Commits & Milestones**:
+  1. `c5f34ee` & `9d74be3`: Transformed MyDeusTools into pure Web/PWA app (`React 19`, `Vite 8`, `TypeScript`, `Tailwind v4`, `Dexie`) and wired Light/Dark theme switching + `VideoConverterView`.
+  2. `51146ae` & `461774c`: Rebuilt entire Web UI using strict **TerminalUI** design tokens (`#0D0D0D`/`#F4F4EE`, `JetBrains Mono`, `0px` corners, CRT scanlines), fixed `TuiCard` header alignment via `bodyClassName`, and completed 100% VI/EN translations.
+  3. `e4f15ea` & `789581e`: Created `.NET 8` `MyDeusTools.Agent` loopback bridge (`http://127.0.0.1:41950/`) for OS-wide Auto-Clicking (`F6`/`F7` hotkeys), System Power (`/s`, `/r`, `/h`, `/a`), and Window Pinner/Opacity; added `agent:dev` & `agent:publish` npm scripts to both root and `MyDeusTools.Web` `package.json`.
+  4. `bc96ba9` & `56dad09`: Split Tool `03` (`SmartTimerView`) into two independent tabs (`01:POMODORO_TIMER` vs `02:SCHEDULE_SHUTDOWN`) where OS Shutdown controls remain strictly `disabled={!isOnline}` when the Companion Agent is offline.
 
-## Active Session Goals
-1. Maintain and extend Super-App features according to user priorities.
-2. Ensure 100% test coverage for newly introduced business services.
-3. Keep Memory Bank, Skills, and Documentation synchronized with all code changes.
-
-## Active Considerations & Technical Notes
-- **Testing Baseline**: 274 tests with 100% pass rate. Every PR/change must maintain this baseline.
-- **Bilingual Symmetry**: When adding keys to `Strings.vi-VN.xaml`, always mirror them with identical keys in `Strings.en-US.xaml`.
-- **WPF Single File Publishing**: Configured in `MyDeusTools.App.csproj` (`PublishSingleFile=true`, `SelfContained=true`, `RuntimeIdentifier=win-x64`).
-- **Resource Bundling**: `avatar.ico` is compiled as `<Resource Include="Resources\avatar.ico" />` and loaded with `pack://application:,,,/Resources/avatar.ico`.
-- **Persistence Storage**: Managed files are saved in `AppDomain.CurrentDomain.BaseDirectory\Data\` (`notes.json`, `clipboard.json`, `colors.json`, `settings.json`).
-- **Multi-Monitor Coordinate Safety**: Overlays use `SystemParameters.VirtualScreen*` to guarantee correct scaling across multi-monitor setups.
+## Active Technical Notes
+- **Agent Port & Protocol**: Loopback only `http://127.0.0.1:41950/` using `System.Net.HttpListener` (`net8.0-windows`, no ASP.NET Core dependency) with `Access-Control-Allow-Private-Network: true`.
+- **Web Persistence**: `MyDeusToolsWebDB` in IndexedDB (`notes`, `snippets`, `colors`) + `localStorage` keys `mydeustools_lang`, `mydeustools_theme`, `mydeustools_crt`.
+- **WPF Persistence**: `AppDomain.CurrentDomain.BaseDirectory\Data\` (`notes.json`, `clipboard.json`, `colors.json`, `settings.json`).

@@ -1,28 +1,29 @@
 # Claude & AI Agent Memory Bank Index
 
-Welcome to the **MyDeusTools Memory Bank**. This system preserves architecture, patterns, decisions, operations, milestones, and status across all AI interactions.
+Welcome to the **MyDeusTools Memory Bank**. This system preserves architecture, patterns, decisions, operations, milestones, and status across **MyDeusTools.Web**, **MyDeusTools.Agent**, **MyDeusTools.App**, and **MyDeusTools.Tests**.
 
 ---
 
 ## Memory Bank Architecture & Reading Order
 
-For any AI assistant or developer working on MyDeusTools, consult the memory modules in the following strict order:
+Consult the memory modules in strict order:
 
 ```
 .claude/
-├── MEMORY.md                   # [Step 1] Master Index & Reading Protocol (This file)
+├── MEMORY.md                    # [Step 1] Master Index & Reading Protocol (This file)
 ├── memory/
-│   ├── projectBrief.md         # [Step 2] Foundation: Vision, Goals, 12 Core Features & Metrics
-│   ├── systemArchitecture.md   # [Step 3] Structure: High/Low Architecture, DI Matrix, Win32 & Storage
-│   ├── technicalPatterns.md    # [Step 4] Standards: MVVM, Dispatcher, Threading, XAML & Testing
-│   ├── progress.md             # [Step 5] State: Feature Completion Matrix & Test Inventory (274 Tests)
-│   ├── activeContext.md        # [Step 6] Current Focus: Active tasks, considerations & recent milestones
-│   └── history.md              # [Step 7] Chronological Log: Milestone evolution from inception to v1.0
+│   ├── projectBrief.md          # [Step 2] Foundation: Hybrid Vision, 12 Tools & Quality Baselines
+│   ├── systemArchitecture.md    # [Step 3] Structure: Web TerminalUI, Agent HTTP Bridge, WPF MVVM & Storage
+│   ├── technicalPatterns.md     # [Step 4] Standards: React/TerminalUI, Agent Loopback, WPF & Testing
+│   ├── progress.md              # [Step 5] State: Web/Agent/WPF Feature Matrix & 282-Test Inventory
+│   ├── activeContext.md         # [Step 6] Current Focus: Latest commits, tasks & verification status
+│   └── history.md               # [Step 7] Chronological Log: Milestones v0.1.0 -> TerminalUI Web + Agent
 ├── rules/
-│   ├── wpf-standards.md        # WPF-UI, XAML, FluentWindow & MVVM Guidelines
-│   ├── windows-api.md          # Win32 P/Invoke, User32, GDI & Registry Guidelines
-│   └── localization-standards.md# Bilingual Dictionary Symmetry (vi-VN & en-US)
-└── skills/                     # Reusable AI Developer Skills (Core, MVVM, Win32, Feature Workflow)
+│   ├── web-terminalui.md        # TerminalUI Design System, TuiCard & Agent Gate Guidelines
+│   ├── wpf-standards.md         # WPF-UI, XAML, FluentWindow & MVVM Guidelines
+│   ├── windows-api.md           # Win32 P/Invoke (Agent & App), Hotkeys, Power & Registry Guidelines
+│   └── localization-standards.md# Bilingual Parity (translations.ts _viSymmetryCheck & Strings.*.xaml)
+└── skills/                      # Reusable AI Developer Skills (mirrored with .agents/skills/)
 ```
 
 ---
@@ -30,34 +31,33 @@ For any AI assistant or developer working on MyDeusTools, consult the memory mod
 ## How AI Agents Must Use This Memory Bank
 
 1. **Read-First Protocol**:
-   - At the beginning of any session or task: Read `CLAUDE.md`, `activeContext.md`, and `progress.md`.
-   - Consult `systemArchitecture.md` before adding, modifying, or refactoring services.
-   - Consult `technicalPatterns.md` and `rules/` before writing code.
-   - Use `.agents/skills/` or `.claude/skills/` for execution runbooks.
+   - At the beginning of a session: Read `CLAUDE.md`, `activeContext.md`, and `progress.md`.
+   - Consult `systemArchitecture.md` before modifying Agent endpoints, Web providers, or WPF DI boundaries.
+   - Consult `technicalPatterns.md` and `.claude/rules/` before writing Web or C# code.
+   - Use `.agents/skills/` (or mirrored `.claude/skills/`) for execution workflows.
 
 2. **Update Protocol**:
-   - When a feature is implemented or modified: Update `progress.md`, `activeContext.md`, and `history.md`.
-   - When architectural changes or new services are added: Update `systemArchitecture.md`, `projectBrief.md`, and `docs/`.
-   - When new conventions or patterns are established: Update `technicalPatterns.md`.
-   - Always ensure 100% bilingual dictionary symmetry (`Strings.vi-VN.xaml` and `Strings.en-US.xaml`).
+   - When implementing or changing features: Update `progress.md`, `activeContext.md`, and `history.md`.
+   - When changing REST endpoints or DI contracts: Update `systemArchitecture.md`, `docs/API_REFERENCE.md`, and `docs/ARCHITECTURE.md`.
+   - Always preserve 100% bilingual symmetry (`translations.ts` AND `Strings.*.xaml`).
 
 ---
 
-## Core System Overview
-- **Project**: MyDeusTools (Windows WPF Utility Super-App)
-- **Target**: .NET 8 (`net8.0-windows`, `win-x64`)
-- **UI Architecture**: WPF-UI 3.0, Mica Backdrop, FluentWindow, MVVM (CommunityToolkit.Mvvm)
-- **Automated Tests**: 274 Tests (100% Pass Rate)
-- **The 12 Core Native Tools**:
-  1. Auto Clicker Pro (`AutoClickService`)
-  2. Schedule Shutdown (`SystemService` with Time Normalization)
-  3. Sticky Notes (`StickyNoteService`)
-  4. Clipboard Manager (`ClipboardService`)
-  5. QR Code Studio (`QrCodeService`)
-  6. Color Picker & Eyedropper (`ColorPickerService`)
-  7. Text & Dev Tools (`TextUtilityService`)
-  8. Window Pinner & Transparency (`WindowPinnerService`)
-  9. Video Converter & Transcoder (`VideoConverterService`)
-  10. Image Studio & Optimizer (`ImageStudioService`)
-  11. PDF Toolkit (`PdfToolkitService`)
-  12. Bulk File & Folder Renamer (`BulkRenamerService`)
+## Ecosystem Overview
+- **Web App (`MyDeusTools.Web`)**: React 19 + Vite 8 + TypeScript 7 + Tailwind CSS v4 (TerminalUI design, Dark/Light/CRT themes, Dexie IndexedDB)
+- **Local Companion Agent (`MyDeusTools.Agent`)**: `.NET 8` (`net8.0-windows`, `win-x64`) loopback HTTP bridge on `http://127.0.0.1:41950/` (zero external NuGet deps)
+- **Desktop App (`MyDeusTools.App`)**: `.NET 8` (`net8.0-windows`, `win-x64`), WPF-UI 3.0, CommunityToolkit.Mvvm
+- **Automated Tests (`MyDeusTools.Tests`)**: **282 Tests (100% Pass Rate)** covering `MyDeusTools.App` (274) and `MyDeusTools.Agent` (8)
+- **The 12 Core Tools**:
+  1. Sticky Notes (`sticky-notes`)
+  2. Clipboard Manager (`clip-vault`)
+  3. Smart Timer & Shutdown (`smart-timer` &mdash; 2-tab Pomodoro + Agent-gated OS Shutdown)
+  4. Text & Dev Tools (`text-devtools`)
+  5. QR Code Studio (`qr-studio`)
+  6. Color Picker & Eyedropper (`color-picker`)
+  7. PDF Toolkit (`pdf-toolkit`)
+  8. Image Studio & Optimizer (`img-studio`)
+  9. Video Converter (`video-wasm`)
+  10. Bulk File & Folder Renamer (`bulk-rename`)
+  11. Auto Clicker Pro (`auto-click` &mdash; Web DOM Sandbox + OS Native Agent & `F6`/`F7`)
+  12. Window Pinner & PiP (`pip-float` &mdash; Document PiP + OS Windows Manager)

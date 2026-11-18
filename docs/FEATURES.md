@@ -1,233 +1,153 @@
 # MyDeusTools - Features & Utilities Manual
 
-This document provides an exhaustive, in-depth guide to all **12 native utilities** included in MyDeusTools.
+This document describes all **12 utilities** in MyDeusTools across **Web (`MyDeusTools.Web`)**, **Local Companion Agent (`MyDeusTools.Agent`)**, and **Native Desktop (`MyDeusTools.App`)**.
 
 ---
 
-## 1. Auto Clicker Pro
+## Cross-Cutting Shell Capabilities
 
-High-performance automated mouse clicker designed for productivity workflows, data entry, repetitive software testing, and gaming automation.
-
-- **Mouse Buttons**: Left, Right, Middle.
-- **Click Types**: Single Click, Double Click.
-- **Interval Control**: Granular hours, minutes, seconds, and milliseconds with a safety clamp of minimum 10ms to prevent system lockup.
-- **Repeat Limits**: Infinite click loop (until stopped) or fixed click count.
-- **Global Hotkey Integration**: Background hotkey listener via `NHotkey.Wpf` (default: `F6`), allowing instant start/stop even when MyDeusTools is minimized or out of focus.
-- **Coordinate Replay & Multi-Monitor Overlay (`RecordingOverlayWindow`)**:
-  - Fullscreen transparent overlay spanning the entire virtual desktop (`SystemParameters.VirtualScreenLeft/Top/Width/Height`).
-  - Interactive click recording: each click places a numbered visual badge at the exact screen coordinates.
-  - Waypoint replay: automatically replays recorded coordinates in sequential order with the configured delay between each point.
-  - Reset & clear waypoints on demand.
+- **Dashboard & Command Filtering (`Ctrl+K`)**: Press `Ctrl+K` (or `Cmd+K`) anywhere in the Web app to jump to `00` Dashboard (`./dashboard`), filter tools via `grep_utilities`, or switch categories (`All (12)`, `Productivity`, `Developer`, `Media`, `System`).
+- **TerminalUI Light/Dark & CRT Scanlines**: Switch between High-Contrast Dark (`#0D0D0D` / `#00FF41`) and TTY Paper Light (`#F4F4EE` / `#007A1F`) modes (`mydeustools_theme` in `localStorage`) and toggle retro CRT scanlines (`CRT:ON` / `CRT:OFF`, persisted in `mydeustools_crt`). On WPF Desktop, WPF-UI handles Fluent Mica Dark/Light theming with minimize-to-tray (`Hardcodet.NotifyIcon.Wpf`) and HKCU Windows startup toggle.
+- **Agent Connection Status Monitor**: The Web top bar continuously polls `http://127.0.0.1:41950/api/health` every 5 seconds, displaying `[AGENT:ONLINE]` or `[AGENT:OFFLINE]`. Clicking it triggers an immediate recheck and navigates to tool `11`.
+- **Zero-Restart Bilingual UI (`vi` / `en`)**: Instant switching between Vietnamese and English in both Web (`LanguageContext` + `translations.ts`) and Desktop WPF (`LanguageService` + `Strings.*.xaml`).
 
 ---
 
-## 2. Schedule Shutdown
+## 01. Sticky Notes (`./sticky-notes`)
 
-Automated power management utility for scheduled system shutdowns, restarts, and hibernations.
-
-- **Action Modes**:
-  - **Shutdown** (`shutdown.exe /s /t ...`): Full system power-off.
-  - **Restart** (`shutdown.exe /r /t ...`): Complete OS reboot.
-  - **Hibernate** (`shutdown.exe /h`): Dumps RAM to disk and powers down.
-- **Automatic Time Normalization**:
-  - Resolves any human entry gracefully: for example, entering **70 minutes** automatically normalizes to **1h 10m 0s** (4,200 seconds).
-  - Triggers on input box focus loss (`LostFocus`), pressing Enter (`KeyDown`), or clicking the **Start** button.
-  - Extended input bounds (Hours up to 999, Minutes up to 9999, Seconds up to 9999).
-- **Real-Time Visual Countdown**:
-  - Displays remaining time in `hh:mm:ss` format.
-  - Updates every second via `DispatcherTimer`.
-- **Instant Cancellation**:
-  - Cancels active pending OS schedules via `shutdown.exe /a` and stops internal timer countdowns.
+- **Web (`StickyNotesView`)**:
+  - Create notes with 4 TerminalUI semantic accents (`GREEN`, `AMBER`, `CYAN`, `RED`).
+  - Live `grep_notes` filtering across note titles and payloads.
+  - `[PIN]` / `[*PIN]` sorting prioritizes pinned notes at the top.
+  - Persistent local IndexedDB storage (`MyDeusToolsWebDB.notes` via Dexie).
+  - `[PiP]` pop-out button spawns any note inside an always-on-top **Document Picture-in-Picture** window styled to match current Light/Dark TerminalUI tokens.
+- **Desktop WPF (`StickyNotePage` & `StickyNoteWindow`)**:
+  - Borderless, draggable, resizable floating desktop windows with `Topmost` toggle, auto-save on keystroke, and JSON persistence (`Data/notes.json`).
 
 ---
 
-## 3. Sticky Notes
+## 02. Clipboard Manager (`./clip-vault`)
 
-Lightweight desktop note manager with persistent storage and floating windows.
-
-- **Note Organization**:
-  - Dynamic note cards with creation timestamps and content preview.
-  - Add, edit, delete individual notes, or clear all notes.
-- **Floating Desktop Windows (`StickyNoteWindow`)**:
-  - Pop out any note into a borderless, movable desktop window.
-  - Drag anywhere on the header to reposition.
-  - Pin-to-top toggle: keeps the note floating above all other application windows.
-  - Real-time auto-saving as the user types.
-- **Data Persistence**:
-  - Serialized asynchronously to `Data/notes.json` with thread-safe file handling.
+- **Web (`ClipboardHubView`)**:
+  - Save reusable code/SQL/auth snippets with uppercase category tags, pin state, and automatic `USES:` click counters in IndexedDB (`MyDeusToolsWebDB.snippets`).
+  - Instant search across title, content, and tag.
+  - `PASTE_OS_CLIPBOARD`: Reads text directly from the OS clipboard via `navigator.clipboard.readText()` (with browser permission) and stores it in the vault.
+- **Desktop WPF (`ClipboardPage`)**:
+  - Subscribes at OS level using Win32 `AddClipboardFormatListener` / `WM_CLIPBOARDUPDATE` (no polling), guarded by `_isInternalCopy` re-entrancy prevention, saving to `Data/clipboard.json`.
 
 ---
 
-## 4. Clipboard Manager
+## 03. Smart Timer & Shutdown (`./smart-timer`)
 
-Real-time Windows clipboard listener with history management and instant search.
+### Web Mode (`SmartTimerView`) &mdash; Two Strict Independent Tabs
 
-- **Native Win32 Hook**:
-  - Registers `AddClipboardFormatListener` to receive OS-level `WM_CLIPBOARDUPDATE` messages without polling.
-  - Re-entrancy protection (`_isInternalCopy`) ensures copying from within MyDeusTools does not trigger redundant entries.
-- **History Management**:
-  - Instant search filter with real-time text matching.
-  - Pin important items to top to prevent accidental deletion.
-  - One-click copy back to clipboard.
-  - Clear all unpinned items in one action.
-- **Data Persistence**:
-  - Stored in `Data/clipboard.json` with automated loading on startup.
+1. **Tab 1: `01:POMODORO_TIMER` (Pure Browser &mdash; Always Enabled)**
+   - Independent countdown timer (default `00:25:00`, presets `[15M_BREAK]`, `[25M_FOCUS]`, `[45M_DEEP]`, `[70M->1H10M]`).
+   - **Automatic Time Normalization**: Entering raw overflow minutes/seconds (e.g., `70` minutes) automatically resolves to `1h 10m 0s` on blur, pressing `Enter`, or clicking `Start`.
+   - **Screen Wake Lock API**: Acquires `navigator.wakeLock.request('screen')` while the timer is running (`[ACTIVE]` / `[STANDBY]`) to prevent monitor sleep.
+   - **Alarm & Webhook**: Generates an 880Hz/1100Hz Web Audio oscillator chime and optionally sends a `POST` payload `{ event: 'timer_finished' }` to a user-provided webhook URL.
 
----
+2. **Tab 2: `02:SCHEDULE_SHUTDOWN` (Windows OS &mdash; Agent-Online Gate)**
+   - Completely independent state and clock (default `00:30:00`, presets `[30_MIN]`, `[1_HOUR]`, `[70M->1H10M]`, `[2_HOURS]`).
+   - **Strict Offline Lock (`disabled={!isOnline}`)**: When `MyDeusTools.Agent` is offline, the tab badge shows `[LOCKED]`, status shows `STATUS:LOCKED`, a `[WARN]` alert displays `npm run agent:dev` + `[RECHECK_AGENT]`, and all action controls (`SHUTDOWN PC`, `RESTART PC`, `HIBERNATE PC`, `hh`/`mm`/`ss` inputs, presets, `SCHEDULE_SHUTDOWN`, `Reset`, `CANCEL_OS_SHUTDOWN`) are strictly disabled.
+   - **When Agent Online**: Dispatches `POST /api/system/schedule` (`shutdown`, `restart`, `hibernate`) or `POST /api/system/cancel` directly to Windows `shutdown.exe`.
 
-## 5. QR Code Studio
-
-Complete QR code generator and multi-source decoder.
-
-- **Generation Engine (`QRCoder`)**:
-  - Pure C# managed QR generation with customizable error correction levels.
-  - Export generated QR codes to PNG image files or copy image directly to Windows clipboard.
-- **Multi-Source Decoding Engine (`ZXing.Net`)**:
-  - **Screen Snipping Scanner (`QrSnippingOverlayWindow`)**: Fullscreen crosshair snipping tool with multi-monitor virtual screen support. Drag to capture a rectangle; the overlay hides momentarily to capture pure screen pixels and decode instantly.
-  - **File Scanner**: Select any local image file (.png, .jpg, .bmp, .webp) to decode.
-  - **Clipboard Image Scanner**: Read and decode images directly from the clipboard.
-  - **Smart URL Detection**: Automatically detects web URLs and displays a clickable link to open directly in the default browser.
+### Desktop WPF (`ShutdownPage`)
+- Native implementation executing `shutdown /s /f /t`, `shutdown /r /f /t`, `timeout ... && shutdown /h`, and `shutdown /a` with `DispatcherTimer` live countdown and `70m -> 1h 10m` normalization.
 
 ---
 
-## 6. Color Picker & Eyedropper
+## 04. Text & Dev Tools (`./text-devtools`)
 
-Pixel-precise screen color sampler with magnifying glass HUD and color palette history.
-
-- **Fullscreen Screen Eyedropper (`ColorPickerOverlayWindow`)**:
-  - Transparent fullscreen window capturing exact screen pixels via GDI `GetPixel` / `CopyFromScreen`.
-  - Floating 11x11 pixel Magnifier HUD following the cursor, displaying individual pixels with a crosshair on the center pixel.
-  - Shows live HEX code and RGB values under the mouse.
-- **Format Support**:
-  - Instant copying for **HEX**, **RGB**, **HSL**, and **HSV** color formats.
-  - Auto-copy on pick: selected color is immediately copied to clipboard.
-- **Palette History**:
-  - Save sampled colors to a persistent color list (`Data/colors.json`).
-  - Pin favorite colors to top; copy or remove individual colors.
+- **Web (`TextDevToolsView`, 5 Tabs)**:
+  - `01:JSON_STUDIO`: 2-space pretty formatting, minification, and `JSON.parse` syntax error inspection.
+  - `02:BASE64`: UTF-8 safe `encode` / `decode` plus `$ FILE_TO_BASE64` binary file DataURL encoding.
+  - `03:CRYPTO_HASH`: Real asynchronous digest generation (`SHA-1`, `SHA-256`, `SHA-512`) using `window.crypto.subtle.digest`.
+  - `04:CASE_CONVERT`: Converts between `UPPERCASE`, `lowercase`, `camelCase`, `PascalCase`, `snake_case`, `kebab-case`, and `Title Case`, updating character/word/line metrics.
+  - `05:URL_ENTITIES`: Safe `encodeURIComponent` / `decodeURIComponent` transformations.
+- **Desktop WPF (`TextUtilityPage`)**:
+  - Adds `MD5`, HTML entity encode/decode (`WebUtility`), binary Base64-to-file decoding, and streaming hashes over local files.
 
 ---
 
-## 7. Text & Dev Tools
+## 05. QR Code Studio (`./qr-studio`)
 
-All-in-one developer utility for text transformations, encoding, hashing, and formatting.
-
-- **JSON Studio**:
-  - Format JSON (indented with 2 spaces).
-  - Minify JSON (strips whitespace and newlines).
-  - Validate JSON syntax with detailed line/column error reporting via `System.Text.Json`.
-- **Base64 Converter**:
-  - Text: Encode text to Base64 (UTF-8) and decode Base64 back to text.
-  - Files: Encode any binary file to Base64 string; save Base64 string back into binary file.
-- **URL & HTML Entities**:
-  - URL Encode (`Uri.EscapeDataString`) and URL Decode (`Uri.UnescapeDataString`).
-  - HTML Entity Encode (`WebUtility.HtmlEncode`) and Decode (`WebUtility.HtmlDecode`).
-- **Instant Hash Generator**:
-  - Computes **MD5**, **SHA-1**, **SHA-256**, and **SHA-512** simultaneously from text input or selected files.
-- **Case Converter & Text Inspector**:
-  - Case Modes: `camelCase`, `PascalCase`, `snake_case`, `kebab-case`, `UPPERCASE`, `lowercase`, `Title Case`.
-  - Text Metrics: Character count, word count, line count, and UTF-8 byte size.
+- **Web (`QrStudioView`)**:
+  - Live canvas/image QR code rendering powered by `qrcode` (`L` 7%, `M` 15%, `Q` 25%, `H` 30% error correction).
+  - Foreground/background custom hex pickers plus 4 TerminalUI presets (`HACKER`, `CLASSIC`, `CYAN`, `AMBER`).
+  - Export as `.png` download or copy PNG directly to clipboard (`ClipboardItem`).
+  - Accepts uploaded image files or pasted clipboard images (`navigator.clipboard.read()`), reading image dimensions cleanly inside the browser sandbox.
+- **Desktop WPF (`QrCodePage` & `QrSnippingOverlayWindow`)**:
+  - High-definition generation via `QRCoder` and full multi-source decoding via `ZXing.Net` from image files, clipboard, and fullscreen multi-monitor region snipping with URL launch detection.
 
 ---
 
-## 8. Window Pinner & Transparency
+## 06. Color Picker & Eyedropper (`./color-picker`)
 
-Desktop window controller for multitasking, side-by-side coding, and video referencing.
-
-- **Always-on-Top Controller**:
-  - Enumerate visible desktop windows (`user32.dll EnumWindows` + `GetWindowText`).
-  - Pin any selected window to remain permanently on top (`SetWindowPos` with `HWND_TOPMOST`).
-  - Quick action to pin the currently active foreground window with a single click.
-- **Smooth Opacity & Transparency**:
-  - Adds `WS_EX_LAYERED` window style and modulates alpha channel via `SetLayeredWindowAttributes`.
-  - Continuous slider from 20% to 100% opacity.
-  - One-click presets: 100% (Solid), 80%, 60%, 40% (Ghost).
-- **Window Activation**:
-  - Bring selected window to front (`SetForegroundWindow`).
+- **Web (`ColorPickerView`)**:
+  - Native **EyeDropper API** (`window.EyeDropper`) in Chromium browsers to sample any pixel across monitors cleanly, plus `<input type="color">` manual tuner.
+  - Automatic conversions to **HEX**, **RGB**, and **HSL** with 1-click clipboard copy.
+  - Saves picked colors automatically to IndexedDB (`MyDeusToolsWebDB.colors`) with history reload and clear actions.
+- **Desktop WPF (`ColorPickerPage` & `ColorPickerOverlayWindow`)**:
+  - Fullscreen GDI screen capture overlay with floating 11x11 pixel magnifier HUD, HSL + HSV formatting, auto-copy on pick, pin-to-palette, and `Data/colors.json`.
 
 ---
 
-## 9. Video Converter & Transcoder
+## 07. PDF Toolkit (`./pdf-toolkit`)
 
-High-speed multimedia conversion engine powered by FFmpeg integration.
-
-- **Container Formats**:
-  - Video: MP4, MKV, WebM, AVI, MOV, WMV, FLV, Animated GIF.
-  - Audio Extraction: MP3, WAV, AAC, M4A, FLAC.
-- **Transcoding Controls**:
-  - Resolution Scaling: Original, 4K (3840x2160), 1080p, 720p, 480p, 360p.
-  - Quality Modes: Ultra Quality (CRF 18), High (CRF 23), Medium (CRF 28), Compact (CRF 32).
-  - Stream Copy: Lossless fast transmuxing when video/audio codecs match.
-  - Hardware Acceleration: NVIDIA NVENC / Intel QuickSync / AMD AMF support when available.
-  - Trimming: Configurable start time and duration.
-  - Real-time progress bar with percentage, speed, and ETA.
+- **Web (`PdfToolkitView`, 100% Client-Side via `pdf-lib`)**:
+  - `01:MERGE_PDFS`: Upload multiple PDFs, inspect file sizes & page counts, reorder items (`[UP]` / `[DN]`), merge pages in memory, and download the combined `.pdf`.
+  - `02:SPLIT_PAGES`: Inspect source page count and extract arbitrary comma/hyphen page ranges (e.g. `1-3, 5`) into a new `.pdf` without uploading bytes to any server.
+- **Desktop WPF (`PdfToolkitPage`, `PDFsharp 6.1.1`)**:
+  - Adds 4 full tabs: Merge PDFs, Split PDF (custom range, single pages, N-page chunks), Images-to-PDF (`A4`, `Letter`, `Fit-to-Image` with margins & orientation), and Password Encryption + Document Metadata Editor.
 
 ---
 
-## 10. Image Studio & Optimizer
+## 08. Image Studio (`./img-studio`)
 
-Batch image compression, format conversion, and icon generation utility.
-
-- **Supported Formats**: WebP, PNG, JPEG, ICO, BMP, TIFF.
-- **Batch Compression**:
-  - Multi-threaded processing of multiple images.
-  - Quality tuning slider (1% to 100%).
-  - Disk space savings reporting: computes exact bytes saved and percentage reduction.
-- **Resolution Resizing Modes**:
-  - Percentage scale (e.g. 50%, 75%).
-  - Fixed dimensions (Width x Height).
-  - Fit-within bounding box (preserves original aspect ratio).
-- **Multi-Layer Windows `.ico` Generator**:
-  - Generates valid multi-resolution Windows icon files packaging 16x16, 32x32, 48x48, 64x64, 128x128, and 256x256 layers.
-- **Privacy Stripping**:
-  - Strips EXIF metadata, camera serials, and GPS coordinates for privacy-safe sharing.
+- **Web (`ImageStudioView`)**:
+  - Multi-file image queue showing dimensions (`WxH`) and original KB size.
+  - Re-encodes images cleanly via HTML5 `<canvas>` (`canvas.toBlob`) into `WebP`, `JPEG`, or `PNG` with configurable quality (`10-100%`) and percentage resolution scale (`25-100%`).
+  - Re-encoding through Canvas naturally strips EXIF camera telemetry and GPS metadata for privacy.
+- **Desktop WPF (`ImageStudioPage`)**:
+  - Multi-threaded batch compression across WebP, PNG, JPEG, ICO, BMP, TIFF; multi-layer Windows `.ico` bundling (`16px`&ndash;`256px`); aspect-ratio fit-within scaling; exact byte savings analytics.
 
 ---
 
-## 11. PDF Toolkit
+## 09. Video Converter (`./video-wasm`)
 
-Comprehensive 100% offline PDF manipulation toolkit powered by `PDFsharp` 6.1.1.
-
-- **Tab 1: Merge PDFs**:
-  - Drag and drop or browse multiple PDF files.
-  - Inspect file size, total page count, and status.
-  - Reorder items via Move Up / Move Down buttons.
-  - Output to a merged document with progress reporting.
-- **Tab 2: Split PDF**:
-  - **Custom Page Range**: Flexible syntax such as `1-3, 5, 7-10`.
-  - **Single Page Extraction**: Splits every page into an individual PDF file.
-  - **N-Page Chunks**: Splits document into uniform chunks of $N$ pages per file.
-- **Tab 3: Images to PDF**:
-  - Convert image collections (.png, .jpg, .bmp, .webp, .tiff) into a single PDF album.
-  - Page Sizes: **Fit to Image**, **A4**, **Letter**.
-  - Page Orientations: **Portrait**, **Landscape**.
-  - Margins: None (0 pt), Narrow (10 pt), Standard (20 pt), Wide (36 pt).
-- **Tab 4: Protect & Metadata**:
-  - Password Encryption: Set User Password (open document) and Owner Password (permissions).
-  - Metadata Editor: Update Document Title, Author, Subject, and Keywords.
+- **Web (`VideoConverterView`)**:
+  - Client workspace for selecting target containers (`MP4 H.264/AAC`, `WEBM VP9/OPUS`, `MP3 Audio-Only`, `GIF Animated`), output resolution (`ORIGINAL`, `1080p`, `720p`, `480p`), and CRF quality preset (`18`, `23`, `28`, `32`), along with local stream preview and export workflow. *(Full native FFmpeg transcoding runs in the Desktop WPF app below.)*
+- **Desktop WPF (`VideoConverterPage`)**:
+  - Full FFmpeg CLI orchestration supporting MP4, MKV, WebM, AVI, MOV, WMV, GIF, FLV; audio extraction (MP3, WAV, AAC, M4A, FLAC); hardware acceleration flags; stream copy; start/duration trimming; and real-time ETA/progress parsing.
 
 ---
 
-## 12. Bulk File & Folder Renamer
+## 10. Bulk File & Folder Renamer (`./bulk-rename`)
 
-Industrial-grade batch file and directory renaming suite with live preview and safety conflict detection.
+- **Web (`BulkRenamerView`)**:
+  - `MOUNT_DISK_DIRECTORY`: Uses the Chromium **File System Access API** (`window.showDirectoryPicker({ mode: 'readwrite' })`) to inspect disk files and write renamed targets in place.
+  - `$ SELECT_BATCH_FILES` + `EXPORT_ZIP`: Cross-browser fallback uploading batches in memory and packaging renamed files into a downloadable `.zip` archive via `JSZip`.
+  - Rules pipeline: Regex find & replace, filename prefix insertion, and case transforms (`UPPERCASE`, `lowercase`, `Title Case`) with live `ORIGINAL_NAME -> TARGET_PREVIEW` dry-run status (`MODIFIED` / `NOOP`).
+- **Desktop WPF (`BulkRenamerPage`)**:
+  - Full NTFS-safe batch engine (temp-file hop for case-only renames, depth-sorted directory renaming), Regex capture groups (`$1`, `$2`), 8 case modes, zero-padded numbering, date tags, file conflict detection, and 1-click transaction Undo.
 
-- **Rule Tabs**:
-  - **Find & Replace**: Plain text or Regular Expressions (Regex) with capture group replacement (`$1`, `$2`), case sensitivity toggle.
-  - **Insert & Remove**: Add prefix at start, suffix at end, insert text at specific character index $N$, remove first $N$ characters, remove last $N$ characters, trim whitespace.
-  - **Case Conversion**: 8 transformation modes (`UPPERCASE`, `lowercase`, `Title Case`, `Sentence case`, `camelCase`, `PascalCase`, `snake_case`, `kebab-case`).
-  - **Numbering & Date**: Sequential numbering (Start, Step, Zero Padding `01, 001`), placement (Prefix, Suffix, Replace), date insertion (Current date, Date Modified, Date Created) with customizable format strings (`yyyy-MM-dd`).
-- **Scope & Options**:
-  - Target: Files and Folders, Files Only, Folders Only.
-  - Extension Toggle: Include or exclude file extension from rule modifications.
-  - Recursive: Scan subdirectories recursively.
-- **Live Preview & Conflict Detection**:
-  - Instant preview of every file's new name before committing changes.
-  - Visual status badges:
-    - **Ready** (Green): Valid new name.
-    - **Unchanged** (Gray): Name remains identical.
-    - **Duplicate in Batch** (Red): Multiple files would receive the same name.
-    - **Target Exists on Disk** (Red): A file with the new name already exists.
-    - **Invalid Characters** (Red): Contains forbidden Windows characters (`\ / : * ? " < > |`).
-- **One-Click Undo**:
-  - Maintains transaction history of the last batch rename.
-  - Restores all files and folders to their exact original names with one click.
+---
+
+## 11. Auto Clicker Pro (`./auto-click`)
+
+- **Web (`AutoClickerView`) &mdash; Two Tabs**:
+  - **Tab 1: `01:WEB_DOM_SANDBOX`**: Safe in-browser click loop (minimum `10ms` clamp, infinite or fixed repeat count, live CPS rate), built-in interactive `TARGET_SANDBOX` hit counter, and a one-click copyable JavaScript **Bookmarklet** (`Escape` aborts) for automating DOM elements on any web tab.
+  - **Tab 2: `02:OS_NATIVE_AGENT`** *(requires `MyDeusTools.Agent`)*: Bypasses browser sandbox restrictions to click anywhere on Windows & inside games (`mouse_event` + `SetCursorPos`). Supports Left/Right/Middle buttons, Single/Double clicks, 3-second delayed cursor capture (`CAPTURE_IN_3S`), global **`F6`** (Start/Stop anywhere) and **`F7`** (capture cursor `(X, Y)` anywhere) hotkeys, multi-point sequential waypoint cycling, and 300ms live cursor/click telemetry. Automatically becomes active tab when Agent is online.
+- **Desktop WPF (`AutoClickPage` & `RecordingOverlayWindow`)**:
+  - `AutoClickService` + `NHotkey.Wpf` global hotkeys + multi-monitor transparent recording overlay placing numbered visual badges at clicked coordinates.
+
+---
+
+## 12. Window Pinner & PiP (`./pip-float`)
+
+- **Web (`WindowPipView`) &mdash; Two Tabs**:
+  - **Tab 1: `01:WEB_DOCUMENT_PiP`**: Uses Chromium's `window.documentPictureInPicture.requestWindow` to launch lightweight Always-on-Top **Digital Clock** (`280x180`) and **Scratchpad** (`320x320`) floating windows above all desktop apps.
+  - **Tab 2: `02:OS_WINDOWS_MANAGER`** *(requires `MyDeusTools.Agent`)*: Enumerates open Windows application windows (`HWND`, title, `.exe` name, PID, current TopMost & opacity state), pins/unpins `HWND_TOPMOST`, focuses/restores minimized windows, and applies instant opacity presets (`100%`, `80%`, `60%`, `40%` via `WS_EX_LAYERED`). Automatically becomes active tab when Agent is online.
+- **Desktop WPF (`WindowPinnerPage`)**:
+  - Continuous 20%&ndash;100% slider, foreground-window 1-click pin, search filter, and Win32 `WindowPinnerService`.

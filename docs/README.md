@@ -1,47 +1,54 @@
 # MyDeusTools Documentation
 
-Welcome to the comprehensive documentation for **MyDeusTools**, a modern all-in-one desktop utility Super-App for Windows 10 and 11 built with **.NET 8 (WPF)**, **WPF-UI 3.0** (Fluent Design & Mica backdrop), **CommunityToolkit.Mvvm**, and Microsoft Extensions Dependency Injection.
+Welcome to the official technical documentation for **MyDeusTools**, an all-in-one **12-utility ecosystem** spanning a **TerminalUI Pure Web App (`MyDeusTools.Web`)**, an optional **Windows Local Companion Agent (`MyDeusTools.Agent`)**, and the original **Native WPF Desktop App (`MyDeusTools.App`)**.
 
 ---
 
 ## Documentation Index
 
-| Document | Description |
+| Document | Scope |
 |---|---|
-| [**FEATURES.md**](FEATURES.md) | Comprehensive catalog and detailed usage manual for all 12 native utilities. |
-| [**ARCHITECTURE.md**](ARCHITECTURE.md) | In-depth technical architecture, system layers, DI container, Win32 interop, and data storage. |
-| [**DEVELOPER_GUIDE.md**](DEVELOPER_GUIDE.md) | Setup, development prerequisites, building, running tests, single-file publishing, and coding standards. |
-| [**API_REFERENCE.md**](API_REFERENCE.md) | Technical reference for all service interfaces, models, enums, and ViewModels. |
+| [**FEATURES.md**](FEATURES.md) | Exhaustive guide to all 12 utilities across Web, Local Companion Agent, and Native WPF modes. |
+| [**ARCHITECTURE.md**](ARCHITECTURE.md) | Hybrid Web + Agent loopback bridge, TerminalUI tokens, WPF MVVM layers, Win32 P/Invoke, and persistence models. |
+| [**API_REFERENCE.md**](API_REFERENCE.md) | Local Agent REST endpoints (`127.0.0.1:41950`), `agentClient` / Dexie APIs, TerminalUI components, and C# Service interfaces. |
+| [**DEVELOPER_GUIDE.md**](DEVELOPER_GUIDE.md) | Prerequisites, npm & dotnet dev/build commands, 282-test verification, single-file packaging, and coding rules. |
 
 ---
 
-## Project Overview
+## Ecosystem Overview
 
-- **Target Framework**: .NET 8.0 Windows Desktop (`net8.0-windows`, `win-x64`)
-- **UI Framework**: Windows Presentation Foundation (WPF) with [WPF-UI 3.0.5](https://wpfui.lepo.co/)
-- **Design Language**: Windows 11 Fluent Design, Rounded Corners, Mica Backdrop, Dynamic Dark/Light Theme
-- **Architecture**: Clean Model-View-ViewModel (MVVM) powered by `CommunityToolkit.Mvvm` (v8.4.2)
-- **Dependency Injection**: `Microsoft.Extensions.DependencyInjection` (v10.0.7)
-- **Localization**: Dynamic runtime bilingual switching (English `en-US` and Vietnamese `vi-VN`) via `{DynamicResource}`
-- **Test Coverage**: 274 automated unit & integration tests (`xUnit`, `Moq`, `Xunit.StaFact`) with 100% pass rate
-- **Packaging**: Self-contained, single-file zero-dependency executable (`publish/MyDeusTools.App.exe`)
+- **Web App (`MyDeusTools.Web`)**:
+  - **Stack**: React `19.3`, Vite `8.3`, TypeScript `7.0`, Tailwind CSS `v4.3`, Dexie `4.4` (IndexedDB), `pdf-lib`, `qrcode`, `jszip`.
+  - **UI System**: Strict **TerminalUI** design language (`JetBrains Mono`, `0px` corners, zero shadows/gradients, `#0D0D0D` Dark & `#F4F4EE` Light themes, toggleable CRT scanlines).
+  - **Localization**: Instant Vietnamese (`vi`) / English (`en`) switching with compile-time key parity (`_viSymmetryCheck`).
+- **Windows Local Companion Agent (`MyDeusTools.Agent`)**:
+  - **Target**: `.NET 8.0` (`net8.0-windows`, `win-x64`), zero NuGet dependencies, self-contained single-file publish support.
+  - **Transport**: Loopback-only `System.Net.HttpListener` on `http://127.0.0.1:41950/` with CORS & Private Network Access headers.
+  - **OS Capabilities**: Unrestricted Win32 auto-clicking + global `F6`/`F7` hotkeys, Windows Shutdown/Restart/Hibernate scheduling, and desktop window Always-on-Top + `WS_EX_LAYERED` opacity controls.
+- **Native Desktop App (`MyDeusTools.App`)**:
+  - **Target**: `.NET 8.0` (`net8.0-windows`, `win-x64`), WPF + `WPF-UI 3.0.5` (Mica backdrop, FluentWindow), `CommunityToolkit.Mvvm 8.4.2`, `Microsoft.Extensions.DependencyInjection 10.0.7`.
+  - **Packaging**: Self-contained single-file executable (`MyDeusTools.App.exe`).
+- **Automated Tests (`MyDeusTools.Tests`)**:
+  - **282 automated tests** (`xUnit 2.9.2`, `Moq 4.20.72`, `Xunit.StaFact 0.3.18`) across 20 test classes with **100% pass rate**.
 
 ---
 
-## The 12 Core Native Utilities
+## The 12 Core Utilities
 
-1. **Auto Clicker Pro**: High-frequency mouse automation (Left, Right, Middle, Single/Double), high-precision intervals (down to 10ms safety clamp), global hotkey toggle (`NHotkey`), and multi-monitor full-screen coordinate recording/playback overlay.
-2. **Schedule Shutdown**: Automated power state scheduler (Shutdown, Restart, Hibernate) with live countdown display, instant cancellation, and automatic input time normalization (e.g., 70 minutes automatically normalizes to 1h 10m).
-3. **Sticky Notes**: Floating desktop notes with borderless draggable windows, always-on-top toggle, and persistent JSON storage.
-4. **Clipboard Manager**: Real-time Windows clipboard listener (`AddClipboardFormatListener`), instant search, pin-to-top, delete, and persistent JSON history.
-5. **QR Code Studio**: HD QR code generation (`QRCoder`) with PNG export and clipboard copy; multi-source decoding (`ZXing.Net`) from screen region snipping, image files, or clipboard.
-6. **Color Picker & Eyedropper**: Fullscreen screen eyedropper with floating 11x11 pixel magnifier HUD, one-click HEX/RGB/HSL/HSV copying, pin-to-palette management, and persistent color history.
-7. **Text & Dev Tools**: JSON Studio (format, minify, syntax validation), Base64 encoder/decoder (text & binary files), URL/HTML entity escaping, instant multi-hash generator (MD5, SHA-1, SHA-256, SHA-512), and case conversions.
-8. **Window Pinner & Transparency**: Pin any third-party desktop window Always-on-Top (`HWND_TOPMOST`), smoothly adjust window opacity/transparency (`WS_EX_LAYERED`), with quick opacity presets (100%, 80%, 60%, 40%).
-9. **Video Converter & Transcoder**: Media transcoder supporting diverse video/audio containers (MP4, MKV, WebM, AVI, MOV, WMV, GIF, MP3, WAV, AAC, FLAC), resolution scaling, CRF quality presets, lossless stream copy, and trimming.
-10. **Image Studio & Optimizer**: Batch image compressor and converter supporting WebP, PNG, JPEG, ICO, BMP, and TIFF. Multi-layer Windows `.ico` generation (16px to 256px), quality tuning, scaling modes, and EXIF/metadata stripping.
-11. **PDF Toolkit**: 100% offline PDF processing powered by PDFsharp 6.1.1: Merge multiple PDFs, Split PDF (page range, single pages, N-page chunks), Convert images to PDF (A4, Letter, Fit-to-image), Password encryption & document metadata editor.
-12. **Bulk File & Folder Renamer**: Batch renaming with Regex and capture groups, text insertion/removal/trimming, 8 case conversion modes, sequential numbering with zero padding, date/timestamp insertion, scope filtering, live conflict validation, and 1-click Undo.
+| # | Utility | Web Command (`$ ./<cmd>`) | Key Capabilities |
+|---|---|---|---|
+| `01` | **Sticky Notes** | `./sticky-notes` | Colored Kanban notes (`GREEN`, `AMBER`, `CYAN`, `RED`), search, pin-to-top, IndexedDB auto-save, PiP / Floating Desktop Window. |
+| `02` | **Clipboard Manager** | `./clip-vault` | Tagged snippet vault & search (`Web`); real-time `WM_CLIPBOARDUPDATE` listener & JSON history (`WPF`). |
+| `03` | **Smart Timer & Shutdown** | `./smart-timer` | Separate **Pomodoro Timer** (`01:POMODORO_TIMER`) & Agent-gated **OS Shutdown/Restart/Hibernate** (`02:SCHEDULE_SHUTDOWN`, `70m -> 1h 10m` normalization). |
+| `04` | **Text & Dev Tools** | `./text-devtools` | JSON Studio, Base64 (text/files), SHA/MD5 hashing, 7 case modes, URL/HTML encoding. |
+| `05` | **QR Code Studio** | `./qr-studio` | High-contrast QR generator + PNG/clipboard copy (`Web` & `WPF`); multi-source decoder & screen snipping (`WPF`). |
+| `06` | **Color Picker & Eyedropper** | `./color-picker` | Native `EyeDropper` API (`Web`) / GDI 11x11 magnifier HUD (`WPF`), HEX/RGB/HSL/HSV formats, persistent history. |
+| `07` | **PDF Toolkit** | `./pdf-toolkit` | 100% offline Merge & range Split via `pdf-lib` (`Web`); adds single-page/chunk split, Images-to-PDF, encryption & metadata via `PDFsharp` (`WPF`). |
+| `08` | **Image Studio** | `./img-studio` | Canvas WebP/JPEG/PNG batch compression, resize, EXIF strip (`Web`); adds multi-layer `.ico` (`16-256px`) & BMP/TIFF (`WPF`). |
+| `09` | **Video Converter** | `./video-wasm` | Web client preset workflow (`MP4`, `WEBM`, `MP3`, `GIF`); full local FFmpeg CLI transcoding with GPU acceleration & trimming (`WPF`). |
+| `10` | **Bulk File Renamer** | `./bulk-rename` | `File System Access API` (`showDirectoryPicker`) & `.zip` export (`Web`); adds `$1/$2` capture groups, numbering, dates, conflict checks & 1-click Undo (`WPF`). |
+| `11` | **Auto Clicker Pro** | `./auto-click` | **Web DOM Sandbox** + portable Bookmarklet (`Tab 1`); **OS Native Agent** Win32 mouse loop + `F6`/`F7` global hotkeys (`Tab 2` / `WPF`). |
+| `12` | **Window Pinner & PiP** | `./pip-float` | **Document Picture-in-Picture** Clock/Scratchpad (`Tab 1`); **OS Windows Manager** `HWND_TOPMOST` + 20-100% layered opacity (`Tab 2` / `WPF`). |
 
 ---
 
@@ -49,29 +56,16 @@ Welcome to the comprehensive documentation for **MyDeusTools**, a modern all-in-
 
 ```
 d:\.MyDeusTools\MyDeusTools\
-├── .agents/                      # Antigravity AI Agent Skills & Workspace Configurations
-│   └── skills/                   # Standardized Agent Skills (Core, MVVM, Win32, Feature Workflow)
-├── .claude/                      # Claude AI Configuration, Memory Bank & Rules
-│   ├── MEMORY.md                 # Memory Bank Master Index
-│   ├── memory/                   # Standardized Memory Modules (activeContext, history, progress, etc.)
-│   └── rules/                    # Architectural Guidelines (wpf-standards, windows-api, localization)
-├── docs/                         # Official Comprehensive Technical Documentation (This directory)
-│   ├── README.md                 # Master Documentation Index
-│   ├── FEATURES.md               # Detailed Guide for all 12 Utilities
-│   ├── ARCHITECTURE.md           # Architecture, Layers, DI & Win32 Interop
-│   ├── DEVELOPER_GUIDE.md        # Setup, Build, Test & Publishing Guide
-│   └── API_REFERENCE.md          # Complete Service & Model Reference
-├── MyDeusTools.App/              # Main WPF Application Project (.NET 8)
-│   ├── Services/                 # Business Logic, OS Interop & Core Services
-│   │   └── Impl/                 # Service Interfaces & Implementations
-│   ├── ViewModels/               # MVVM ViewModels (CommunityToolkit.Mvvm)
-│   ├── Views/                    # WPF Views (Pages & Sub-Windows)
-│   │   ├── Pages/                # 12 Navigation Pages
-│   │   └── Windows/              # Overlays & Floating Tool Windows
-│   └── Resources/                # Static Resources, Icons & Bilingual Dictionaries
-├── MyDeusTools.Tests/            # Automated Unit & Integration Tests (274 Tests)
-├── MyDeusTools.Website/          # Static Official Product Website (GitHub Pages)
-├── MyDeusTools.Web/              # Pure Web Application (Vite + React 19 + TypeScript + Tailwind CSS)
-├── CLAUDE.md                     # Assistant Guidance File
+├── .agents/skills/               # Antigravity AI Skills (mirrored in .claude/skills/)
+├── .claude/                      # Claude Memory Bank, Rules & Mirrored Skills
+├── docs/                         # Technical Documentation (This directory)
+├── MyDeusTools.Web/              # TerminalUI React 19 + TypeScript Web App
+├── MyDeusTools.Agent/            # .NET 8 Local Companion HTTP + Win32 Bridge
+├── MyDeusTools.App/              # .NET 8 Native Windows WPF Super-App
+├── MyDeusTools.Tests/            # 282 xUnit Automated Tests (App + Agent)
+├── MyDeusTools.Website/          # Static Product Website (GitHub Pages)
+├── MyDeusTools.sln               # Visual Studio / dotnet Solution
+├── package.json                  # Unified npm scripts (web:* & agent:*)
+├── CLAUDE.md                     # AI Assistant Developer Guide
 └── README.md                     # Repository Front-Page Readme
 ```

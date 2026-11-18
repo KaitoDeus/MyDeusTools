@@ -1,19 +1,20 @@
 ---
 name: win32-interop
 description: >-
-  Win32 P/Invoke and native desktop interop guidelines for MyDeusTools.
-  Covers User32 mouse simulation, clipboard format listeners, window Z-order, layered opacity, GDI pixel capture, and Registry autostart.
+  Win32 P/Invoke and native desktop interop guidelines for MyDeusTools.Agent and MyDeusTools.App.
+  Covers User32 mouse simulation, global hotkeys, clipboard format listeners, window Z-order,
+  layered opacity, GDI pixel capture, Registry autostart, and loopback PNA bridge rules.
 ---
 
-# Win32 Interop & P/Invoke Guidelines
+# Win32 Interop & P/Invoke Guidelines (`Agent` & `App`)
 
-This skill documents native Windows API conventions, safe P/Invoke patterns, and OS-level hooks used throughout MyDeusTools.
+Documents native Windows API conventions, loopback HTTP bridge safety, and testable P/Invoke patterns across **`MyDeusTools.Agent`** and **`MyDeusTools.App`**.
 
 ---
 
-## 1. Safe P/Invoke Signatures
+## 1. Mockable P/Invoke Signatures
 
-All native signatures must be encapsulated within dedicated internal static classes (e.g., `NativeMethods` or inside the respective Service):
+Encapsulate native signatures inside dedicated services or internal `NativeMethods` classes. In `MyDeusTools.Agent`, abstract mouse synthesis behind `IMouseInterop` (`Win32MouseInterop`) so `OsAutoClickEngine` can be unit tested deterministically with Moq:
 
 ```csharp
 internal static class NativeMethods
@@ -21,13 +22,13 @@ internal static class NativeMethods
     [DllImport("user32.dll", SetLastError = true)]
     [return: MarshalAs(UnmanagedType.Bool)]
     public static extern bool SetWindowPos(
-        IntPtr hWnd, 
-        IntPtr hWndInsertAfter, 
-        int X, int Y, int cx, int cy, 
+        IntPtr hWnd,
+        IntPtr hWndInsertAfter,
+        int X, int Y, int cx, int cy,
         uint uFlags);
 
-    public static readonly IntPtr HWND_TOPMOST = new IntPtr(-1);
-    public static readonly IntPtr HWND_NOTOPMOST = new IntPtr(-2);
+    public static readonly IntPtr HWND_TOPMOST = new(-1);
+    public static readonly IntPtr HWND_NOTOPMOST = new(-2);
     public const uint SWP_NOMOVE = 0x0002;
     public const uint SWP_NOSIZE = 0x0001;
     public const uint SWP_SHOWWINDOW = 0x0040;
@@ -36,47 +37,44 @@ internal static class NativeMethods
 
 ---
 
-## 2. Multi-Monitor Coordinate Translation
+## 2. Mouse Synthesis & Edge-Triggered Hotkeys (`MyDeusTools.Agent`)
 
-Always account for multi-monitor setups where secondary monitors may have negative coordinates:
-- Use `SystemParameters.VirtualScreenLeft` and `SystemParameters.VirtualScreenTop`.
-- Span overlays across `SystemParameters.VirtualScreenWidth` and `SystemParameters.VirtualScreenHeight`.
-- Convert DPI/WPF DIPs (Device Independent Pixels) to physical pixels when invoking GDI `GetPixel` or `CopyFromScreen`.
-
----
-
-## 3. Clipboard Listener Re-Entrancy
-
-When implementing `AddClipboardFormatListener`:
-- Wrap the listener window in `HwndSource`.
-- In the `WndProc` hook, handle `WM_CLIPBOARDUPDATE` (0x031D).
-- Maintain an `_isInternalCopy` boolean flag before copying from inside MyDeusTools to prevent circular triggering.
-- Always unhook with `RemoveClipboardFormatListener` during window disposal or service shutdown.
+- **Mouse Events (`Win32MouseInterop`)**:
+  - `mouse_event` with `MOUSEEVENTF_LEFTDOWN/UP`, `RIGHTDOWN/UP`, `MIDDLEDOWN/UP`.
+  - `GetCursorPos` / `SetCursorPos` for cursor capture and waypoint cycling.
+  - Enforce `OsAutoClickEngine.MinIntervalMs = 10` minimum clamp.
+- **Global Hotkeys (`GlobalHotkeyService`)**:
+  - Poll `GetAsyncKeyState(vKey)` every `40ms` (`VK_F6 = 0x75`, `VK_F7 = 0x76`) using edge detection (`isDown && !wasDown`) so hotkeys function inside fullscreen apps and games.
+- **Loopback HTTP Bridge (`LocalHttpBridgeServer`)**:
+  - Bind strictly to `http://127.0.0.1:41950/` and set `Access-Control-Allow-Private-Network: true` alongside standard CORS headers.
 
 ---
 
-## 4. Layered Windows & Window Opacity
+## 3. Multi-Monitor Coordinate Translation (WPF Overlays)
 
-To adjust third-party window transparency:
-1. Fetch current extended style:
-   ```csharp
-   int exStyle = (int)GetWindowLongPtr(hWnd, GWL_EXSTYLE);
-   ```
-2. Enable `WS_EX_LAYERED` (0x00080000):
-   ```csharp
-   SetWindowLongPtr(hWnd, GWL_EXSTYLE, (IntPtr)(exStyle | WS_EX_LAYERED));
-   ```
-3. Set alpha channel:
-   ```csharp
-   byte alpha = (byte)(opacityPercent * 255 / 100);
-   SetLayeredWindowAttributes(hWnd, 0, alpha, LWA_ALPHA);
-   ```
+Always account for negative virtual screen coordinates on secondary displays:
+- Use `SystemParameters.VirtualScreenLeft`, `VirtualScreenTop`, `VirtualScreenWidth`, and `VirtualScreenHeight`.
+- Scale WPF DIPs to physical pixels before GDI `GetPixel` / `CopyFromScreen`.
 
 ---
 
-## 5. Registry Autostart Safety
+## 4. Clipboard Listener Re-Entrancy (WPF App)
 
-1. Never target `HKEY_LOCAL_MACHINE` which requires elevated Administrator privileges.
-2. Target `HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run`.
-3. Wrap executable paths in quotes to handle directory names containing spaces:
-   `"\"" + Process.GetCurrentProcess().MainModule?.FileName + "\""`.
+- Wrap listener window in `HwndSource` and handle `WM_CLIPBOARDUPDATE` (`0x031D`) via `AddClipboardFormatListener` / `RemoveClipboardFormatListener`.
+- Guard self-originated clipboard writes using `_isInternalCopy` before copying.
+
+---
+
+## 5. Layered Windows & Opacity (`OsWindowPinnerService` & `WindowPinnerService`)
+
+1. Use 32/64-bit safe `GetWindowLongPtr` / `SetWindowLongPtr`.
+2. Add `WS_EX_LAYERED` (`0x00080000`) to `GWL_EXSTYLE`.
+3. Call `SetLayeredWindowAttributes(hwnd, 0, alpha, LWA_ALPHA)` with clamped percent (`20-100%` -> `alpha = Math.Round(percent / 100.0 * 255)`).
+4. Filter out `GetShellWindow()`, invisible windows, `WS_EX_TOOLWINDOW`, empty titles, and current PID when enumerating.
+
+---
+
+## 6. System Power & Registry Autostart Safety
+
+- Power CLI (`OsSystemPowerService` & `SystemService`): Run hidden (`CreateNoWindow = true`, `UseShellExecute = false`) with `shutdown /s /f /t`, `/r /f /t`, `cmd.exe /c timeout /t ... && shutdown /h`, and `shutdown /a`.
+- Registry Autostart (WPF App): Strictly target `HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run` with quoted executable paths (`\"path\to\app.exe\"`) so Administrator elevation is never required.

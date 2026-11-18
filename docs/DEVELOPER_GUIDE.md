@@ -1,124 +1,129 @@
 # MyDeusTools - Developer & Contribution Guide
 
-This guide provides instructions for developers contributing to or building **MyDeusTools** from source.
+This guide covers prerequisites, development workflows, automated testing, packaging, and coding standards for **`MyDeusTools.Web`**, **`MyDeusTools.Agent`**, and **`MyDeusTools.App`**.
 
 ---
 
 ## 1. Prerequisites
 
-- **Operating System**: Windows 10 (version 1809 or higher) or Windows 11 (x64)
-- **SDK**: [.NET 8.0 SDK](https://dotnet.microsoft.com/download/dotnet/8.0) (8.0.300 or later)
-- **IDE / Editor**: Visual Studio 2022 (with *.NET Desktop Development* workload), JetBrains Rider, or VS Code with C# Dev Kit.
-- **Git**: For version control.
+- **Web App (`MyDeusTools.Web`)**:
+  - [Node.js](https://nodejs.org/) `v20+` and `npm`
+- **Local Companion Agent (`MyDeusTools.Agent`) & WPF Desktop (`MyDeusTools.App`)**:
+  - Windows 10 (1809+) or Windows 11 (x64)
+  - [.NET 8.0 SDK](https://dotnet.microsoft.com/download/dotnet/8.0) (`8.0.300+`)
+- **Tooling**: VS Code / Visual Studio 2022 / JetBrains Rider + Git
 
 ---
 
-## 2. Getting Started
+## 2. Getting Started & Development Commands
 
-### Clone the Repository
 ```bash
 git clone https://github.com/KaitoDeus/MyDeusTools.git
 cd MyDeusTools
 ```
 
-### Restore Dependencies
+### Root npm Scripts (`package.json`)
 ```bash
+# Install web dependencies (first time)
+npm --prefix MyDeusTools.Web install
+
+# Run Web App dev server (http://localhost:3000)
+npm run web:dev
+
+# Run TypeScript check + production Vite build (MyDeusTools.Web/dist)
+npm run web:build
+
+# Preview production Web bundle locally (default http://localhost:4173)
+npm run web:preview
+
+# Run Windows Local Companion Agent (http://127.0.0.1:41950/)
+npm run agent:dev
+
+# Publish standalone self-contained Agent binary to publish/agent/
+npm run agent:publish
+```
+
+> Both `agent:dev` and `agent:publish` are also mirrored inside `MyDeusTools.Web/package.json` using relative paths (`../MyDeusTools.Agent`), so running `npm run agent:dev` works from either the root directory or `MyDeusTools.Web/`.
+
+### .NET Solution Commands (`MyDeusTools.sln`)
+```powershell
 dotnet restore
-```
-
-### Build the Solution
-```bash
-# Debug build
 dotnet build
-
-# Release build
 dotnet build -c Release
-```
 
-### Run the Application
-```bash
+# Launch Native WPF Desktop App
 dotnet run --project MyDeusTools.App/MyDeusTools.App.csproj
 ```
 
 ---
 
-## 3. Running Automated Tests
+## 3. Running Automated Tests & Verification
 
-MyDeusTools uses **xUnit**, **Moq**, and **Xunit.StaFact** for automated unit and integration tests.
+MyDeusTools validates both **`.NET` (`MyDeusTools.App` + `MyDeusTools.Agent`)** and **`TypeScript + Vite` (`MyDeusTools.Web`)**.
 
-### Run All Tests
-```bash
+### .NET Test Suite (282 Tests)
+```powershell
+# Run all tests (WPF + Agent: 282 tests)
 dotnet test
-```
 
-### Run Tests with Detailed Output
-```bash
-dotnet test --logger "console;verbosity=detailed"
-```
+# Run Agent OS Engine tests only
+dotnet test --filter "FullyQualifiedName~OsAutoClickEngine"
 
-### Run Specific Test Suite
-```bash
-# Test only PDF toolkit
+# Filter WPF suites
 dotnet test --filter "FullyQualifiedName~PdfToolkit"
-
-# Test only Bulk Renamer
 dotnet test --filter "FullyQualifiedName~BulkRenamer"
-
-# Test only Language Service
 dotnet test --filter "FullyQualifiedName~LanguageService"
 ```
 
+### Web Type-Check & Build Check
+```bash
+npm run web:build
+```
+This runs `tsc` (including `_viSymmetryCheck` proving `vi` mirrors every `en` key in `translations.ts`) followed by `vite build`.
+
 > [!IMPORTANT]
-> All pull requests and commits must maintain a **100% test pass rate** (274/274 tests passing) and compile with **0 warnings and 0 errors** in both Debug and Release configurations.
+> Pull requests and commits must keep **all 282 .NET tests passing (100%)**, pass `dotnet build -c Release` with zero errors, and pass `npm run web:build` cleanly.
 
 ---
 
-## 4. Single-File Production Packaging
+## 4. Packaging & Standalone Publishing
 
-MyDeusTools compiles into a self-contained, single-file Windows x64 executable with embedded native libraries and compression:
-
+### Local Companion Agent (`MyDeusTools.Agent`)
 ```bash
-dotnet publish MyDeusTools.App/MyDeusTools.App.csproj \
-  -c Release \
-  -r win-x64 \
-  --self-contained true \
-  -p:PublishSingleFile=true \
-  -p:PublishReadyToRun=true \
-  -p:IncludeNativeLibrariesForSelfExtract=true \
+npm run agent:publish
+```
+Outputs standalone single-file `publish/agent/MyDeusTools.Agent.exe`.
+
+### Native WPF App (`MyDeusTools.App`)
+```powershell
+dotnet publish MyDeusTools.App/MyDeusTools.App.csproj `
+  -c Release `
+  -r win-x64 `
+  --self-contained true `
+  -p:PublishSingleFile=true `
+  -p:PublishReadyToRun=true `
+  -p:IncludeNativeLibrariesForSelfExtract=true `
   -p:EnableCompressionInSingleFile=true
 ```
-
-The compiled standalone executable will be located at:
-`MyDeusTools.App/bin/Release/net8.0-windows/win-x64/publish/MyDeusTools.App.exe`
+Outputs `MyDeusTools.App/bin/Release/net8.0-windows/win-x64/publish/MyDeusTools.App.exe`.
 
 ---
 
 ## 5. Coding Standards & Conventions
 
-### MVVM Architecture
-1. **ViewModels**: Inherit from `ObservableObject`. Use `[ObservableProperty]` and `[RelayCommand]` from `CommunityToolkit.Mvvm`.
-2. **Views**: Pure XAML with code-behind reserved only for UI-specific events (e.g., Drag & Drop, window position calculations).
-3. **Services**: All business logic and external I/O must reside in Services behind an Interface registered in Microsoft DI (`App.xaml.cs`).
+### Web / TerminalUI (`MyDeusTools.Web`)
+1. **Strict TerminalUI Geometry**: Zero rounded corners (`0px`), zero drop shadows, zero decorative icons or emojis, monospace `JetBrains Mono` everywhere, stepped transitions.
+2. **Semantic Tokens & Primitives**: Always use CSS variables (`--tui-bg`, `--tui-surface`, `--tui-primary`, etc.) and shared primitives from `src/components/terminal/TerminalUI.tsx` (`TuiCard`, `TuiButton`, `TuiInput`, `TuiAlert`, `TuiChip`). When adding wrapper classes on `TuiCard`, put inner layout classes (`space-y-*`, `flex`) in `bodyClassName` instead of `className`.
+3. **Agent Safety Gates**: OS-only actions such as Windows Scheduled Shutdown must remain strictly `disabled={!isOnline}` when `useOsAgent().isOnline` is `false`.
+4. **Symmetric Translations**: Add every new Web UI key identically under both `vi` and `en` in `src/i18n/translations.ts`.
 
-### Threading & Dispatcher Rules
-1. Background workers and long operations must run asynchronously using `Task.Run` with `CancellationToken` support.
-2. UI property updates or window instantiations from background threads must be dispatched via `Application.Current.Dispatcher.Invoke` or `Dispatcher.InvokeAsync`.
-3. WPF UI tests must use `[WpfFact]` or `[WpfTheory]` (from `Xunit.StaFact`) to ensure execution on an STA thread.
-
-### Bilingual Localization
-1. Every new string or label must be added symmetrically to both:
-   - `MyDeusTools.App/Resources/Languages/Strings.vi-VN.xaml`
-   - `MyDeusTools.App/Resources/Languages/Strings.en-US.xaml`
-2. Never hardcode user-facing strings in XAML; always use `{DynamicResource KeyName}`.
-3. In ViewModels, resolve localized strings via `ILanguageService.GetString("Key", "Fallback")`.
+### C# / WPF (`MyDeusTools.App` & `MyDeusTools.Agent`)
+1. **MVVM & DI**: Inherit ViewModels from `ObservableObject`; encapsulate OS/Win32 logic behind mockable interfaces (`I*Service`, `IMouseInterop`).
+2. **Threading**: Offload heavy I/O with `Task.Run` / `CancellationToken`; marshal UI updates via `Dispatcher`; annotate WPF unit tests with `[WpfFact]` / `[WpfTheory]`.
+3. **Symmetric WPF Dictionaries**: Keep `Strings.vi-VN.xaml` and `Strings.en-US.xaml` in 100% key parity using `{DynamicResource ...}`.
 
 ### Git Commit Guidelines
-- Use the **Conventional Commits** format:
-  - `feat(<scope>): description`
-  - `fix(<scope>): description`
-  - `refactor(<scope>): description`
-  - `test(<scope>): description`
-  - `docs(<scope>): description`
-- Never include AI emojis in commit messages or code comments.
-- Include co-author attribution where applicable:
+- Follow **Conventional Commits**: `feat(<scope>): ...`, `fix(<scope>): ...`, `refactor(<scope>): ...`, `test(<scope>): ...`, `docs(<scope>): ...`.
+- Avoid emojis in commits or code comments.
+- Include co-author attribution where appropriate:
   `Co-authored-by: Claude <81847+claude@users.noreply.github.com>`

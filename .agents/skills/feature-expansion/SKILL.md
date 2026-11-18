@@ -1,62 +1,55 @@
 ---
 name: feature-expansion
 description: >-
-  Standardized end-to-end workflow for adding a new native utility tool to MyDeusTools.
-  Covers Service interface, Service implementation, ViewModel, View XAML, Navigation, DI registration, bilingual strings, unit tests, and release verification.
+  Standardized end-to-end workflow for adding or extending utilities in MyDeusTools
+  across the TerminalUI Web App (React/TS + translations + Optional Agent APIs) and
+  the Native WPF App (Service, ViewModel, XAML, DI, strings, unit tests).
 ---
 
 # Feature Expansion Workflow for MyDeusTools
 
-Follow this standardized 8-step sequence whenever designing, developing, and integrating a new native utility into MyDeusTools.
+Choose the workflow matching your target layer (**Web + Agent** or **Native WPF Desktop**).
 
 ---
 
-## Step 1: Define Service Interface & Models
-- **Location**: `MyDeusTools.App/Services/Impl/I<FeatureName>Service.cs`
-- Define clear method contracts with asynchronous execution, cancellation tokens (`CancellationToken`), and progress reporting (`IProgress<T>`).
-- Define all necessary enums, configurations, and result models.
+## Track A: Extending `MyDeusTools.Web` & `MyDeusTools.Agent`
 
-## Step 2: Implement Service Logic
-- **Location**: `MyDeusTools.App/Services/Impl/<FeatureName>Service.cs`
-- Implement the interface using pure managed .NET 8 code or lightweight, well-vetted libraries (e.g. `PDFsharp`, `QRCoder`, `ZXing.Net`).
-- Ensure all file operations are thread-safe and handle IO exceptions gracefully.
+### Step 1: Extend Agent Endpoints (if Windows OS privileges are needed)
+- Add a clean service in `MyDeusTools.Agent/Services/` (e.g., `Os*Service.cs`), abstracting P/Invoke behind an interface (`IMouseInterop`) for unit testing.
+- Register new loopback HTTP routes inside `LocalHttpBridgeServer.cs` (`http://127.0.0.1:41950/api/...`) using camelCase JSON records.
+- Add matching TypeScript methods and interfaces to `MyDeusTools.Web/src/services/agentClient.ts`.
 
-## Step 3: Author ViewModel
-- **Location**: `MyDeusTools.App/ViewModels/<FeatureName>ViewModel.cs`
-- Inherit from `ObservableObject`.
-- Inject `I<FeatureName>Service` and optional `ILanguageService`.
-- Declare observable properties with `[ObservableProperty]` and commands with `[RelayCommand]`.
-- Provide helper item ViewModels if dealing with collections or queues.
+### Step 2: Author TerminalUI Feature View
+- Create `MyDeusTools.Web/src/features/<feature-slug>/<Feature>View.tsx`.
+- Compose strictly with TerminalUI primitives (`TuiPageHeader`, `TuiCard`, `TuiButton`, `TuiInput`, `TuiTextarea`, `TuiSelect`, `TuiChip`, `TuiAlert`, `TuiCheckbox`) from `src/components/terminal/TerminalUI.tsx`.
+- Put card body layout classes inside `TuiCard`'s `bodyClassName` prop (never on outer `className`) so dashed card headers stay aligned.
+- Isolate any host OS actions (like Windows Shutdown) in a separate tab with `disabled={!isOnline}` using `useOsAgent()` and clear `[LOCKED]` / `[WARN]` indicators.
+- Keep `border-radius: 0px`, zero emojis/decorative icons, and `--tui-*` theme CSS variables.
 
-## Step 4: Create View (Page & Sub-Windows)
-- **Location**: `MyDeusTools.App/Views/Pages/<FeatureName>Page.xaml` and `.xaml.cs`
-- Root element: `<Page x:Class="..." ... Title="{DynamicResource ...}">`.
-- Use Lepo `Wpf.Ui` controls (`ui:Button`, `ui:Card`, `ui:TextBox`, `ui:SymbolIcon`).
-- Bind all user-facing strings to `{DynamicResource ...}` keys.
-- If drag-and-drop is required, implement `AllowDrop="True"` with `Drop` and `DragOver` handlers in code-behind calling ViewModel methods.
+### Step 3: Wire Tool Navigation & Lazy Loading
+- Register metadata (`id`, `index`, `cmd`, `asciiTag`, `nameKey`, `descKey`, `category`, `accent`) in `MyDeusTools.Web/src/data/toolsData.ts`.
+- Add `React.lazy(...)` import and `switch (activeToolId)` route in `MyDeusTools.Web/src/App.tsx`.
+- Persist client data (if needed) via IndexedDB in `MyDeusTools.Web/src/services/db.ts` (Dexie).
 
-## Step 5: Register in Shell Navigation & Dependency Injection
-1. **DI Container (`App.xaml.cs`)**:
-   - Register Service: `services.AddSingleton<I<FeatureName>Service, <FeatureName>Service>();`
-   - Register ViewModel: `services.AddTransient<<FeatureName>ViewModel>();`
-   - Register Page: `services.AddTransient<<FeatureName>Page>();`
-2. **Navigation Menu (`MainWindow.xaml`)**:
-   - Add `<ui:NavigationViewItem>` with `TargetPageType="{x:Type pages:<FeatureName>Page}"` and a relevant `ui:SymbolIcon`.
+### Step 4: Symmetrical Bilingual Translations (`vi` & `en`)
+- Add identical key structures under both `translations.vi` and `translations.en` in `MyDeusTools.Web/src/i18n/translations.ts`.
+- Run `npm run web:build` (`tsc && vite build`) to verify `_viSymmetryCheck` passes with zero missing keys.
 
-## Step 6: Add Symmetrical Bilingual Localization
-1. Add all keys to `MyDeusTools.App/Resources/Languages/Strings.vi-VN.xaml` (Vietnamese).
-2. Add the exact same keys to `MyDeusTools.App/Resources/Languages/Strings.en-US.xaml` (English).
-3. Ensure 100% key name symmetry between both files.
+---
 
-## Step 7: Author Unit & Integration Tests
-- **Location**: `MyDeusTools.Tests/<FeatureName>ServiceTests.cs` and `<FeatureName>ViewModelTests.cs`
-- Cover normal execution, boundary edge cases, null handling, cancellation, and validation errors.
-- Add new navigation/title keys to `LanguageServiceTests.cs` theory tests.
-- Run `dotnet test` and confirm all tests pass (100% pass rate).
+## Track B: Extending `MyDeusTools.App` (Native WPF Desktop)
 
-## Step 8: Build Verification & Git Commit
-1. Verify Release build: `dotnet build -c Release` (0 warnings, 0 errors).
-2. Stage and commit changes using Conventional Commits:
-   `feat(<scope>): add <feature name> with ...`
-   `Co-authored-by: Claude <81847+claude@users.noreply.github.com>`
-3. Push to `origin main`.
+### Step 1: Define Service Interface & Implementation
+- Create `MyDeusTools.App/Services/Impl/I<FeatureName>Service.cs` and `<FeatureName>Service.cs` with `CancellationToken` and `IProgress<T>`.
+
+### Step 2: Author ViewModel & XAML Page
+- Create `MyDeusTools.App/ViewModels/<FeatureName>ViewModel.cs` inheriting `ObservableObject` (`[ObservableProperty]`, `[RelayCommand]`).
+- Create `MyDeusTools.App/Views/Pages/<FeatureName>Page.xaml` using `Wpf.Ui` controls and `{DynamicResource ...}` localization keys.
+
+### Step 3: Register DI, Navigation & Symmetrical Dictionaries
+- Register Singleton Service + Transient ViewModel/Page in `App.xaml.cs` and `<ui:NavigationViewItem>` in `MainWindow.xaml`.
+- Add identical keys to both `Strings.vi-VN.xaml` and `Strings.en-US.xaml`.
+
+### Step 4: Automated Tests & Verification
+- Add xUnit/Moq (`Os*Tests.cs` or `<FeatureName>Tests.cs`) in `MyDeusTools.Tests/`.
+- Confirm `dotnet test` passes 100% (`282+` tests), `dotnet build -c Release` passes cleanly, and `npm run web:build` exits `0`.

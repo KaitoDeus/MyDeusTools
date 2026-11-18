@@ -1,90 +1,64 @@
 # System Architecture - MyDeusTools
 
-This document outlines the architectural layers, Dependency Injection registrations, navigation hierarchy, native interop subsystems, and storage models of **MyDeusTools**.
+This document outlines the three subsystems across MyDeusTools: **Web TerminalUI (`MyDeusTools.Web`)**, **Windows Local Companion Agent (`MyDeusTools.Agent`)**, and **Native Desktop WPF (`MyDeusTools.App`)**.
 
 ---
 
-## 1. System Layer Diagram
+## 1. Hybrid Web + Companion Agent Architecture
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                        PRESENTATION                         │
-│  - FluentWindow (Mica Backdrop, Rounded Corners, TitleBar)  │
-│  - NavigationView (12 Tool Items + Language + Settings)    │
-│  - 12 Views/Pages & 4 Overlays (Record, Snip, Color, Sticky)│
-│  - DynamicResource Bilingual Strings (vi-VN / en-US)        │
+│                MYDEUSTOOLS.WEB (React 19 + Vite 8)          │
+│  - Providers: ThemeProvider, LanguageProvider, AgentProvider│
+│  - Shell: App.tsx (Sidebar, Top TTY Bar, Lazy Suspense)     │
+│  - TerminalUI.tsx: TuiButton, TuiCard, TuiInput, TuiAlert   │
+│  - IndexedDB: MyDeusToolsWebDB (notes, snippets, colors)    │
 └──────────────────────────────▲──────────────────────────────┘
-                               │ DataBindings & RelayCommands
+                               │ Loopback HTTP JSON (Cors + PNA)
+                               │ http://127.0.0.1:41950/
 ┌──────────────────────────────▼──────────────────────────────┐
-│                         VIEWMODELS                          │
-│  - CommunityToolkit.Mvvm (ObservableObject, [ObservableProp])│
-│  - 13 ViewModels managing asynchronous tasks & validations  │
-│  - ILanguageService integration & Progress<double> reporting│
-└──────────────────────────────▲──────────────────────────────┘
-                               │ Service Method Calls
-┌──────────────────────────────▼──────────────────────────────┐
-│                           SERVICES                          │
-│  - 15 Managed Domain Services (Singletons in DI)            │
-│  - Win32 P/Invoke Subsystems (user32, gdi32, registry)      │
-│  - External Engines (PDFsharp, QRCoder, ZXing.Net, FFmpeg)  │
-│  - Asynchronous File & JSON Repository Operations           │
+│            MYDEUSTOOLS.AGENT (.NET 8 Win32 Bridge)          │
+│  - LocalHttpBridgeServer (12 GET/POST REST endpoints)       │
+│  - GlobalHotkeyService (VK_F6 toggle, VK_F7 capture)        │
+│  - OsAutoClickEngine (IMouseInterop -> mouse_event/Cursor)  │
+│  - OsSystemPowerService (shutdown.exe /s /r /h /a)          │
+│  - OsWindowPinnerService (EnumWindows/TOPMOST/WS_EX_LAYERED)│
 └─────────────────────────────────────────────────────────────┘
 ```
 
 ---
 
-## 2. Dependency Injection Registration Matrix (`App.xaml.cs`)
+## 2. Web Frontend Subsystems (`MyDeusTools.Web/src/`)
 
-### 15 Domain Services (Singletons)
-1. `IPageService` -> `PageService` (WPF-UI Navigation page resolution)
-2. `INavigationService` -> `NavigationService` (WPF-UI Navigation framework)
-3. `IAutoClickService` -> `AutoClickService` (Mouse simulation & waypoint replay)
-4. `ISystemService` -> `SystemService` (Windows shutdown/restart/hibernate scheduler)
-5. `IStickyNoteService` -> `StickyNoteService` (Notes JSON repository)
-6. `IAutoStartService` -> `AutoStartService` (Windows HKCU Run registry manager)
-7. `IClipboardService` -> `ClipboardService` (OS clipboard listener & JSON history)
-8. `IQrCodeService` -> `QrCodeService` (QR encode & decode)
-9. `IColorPickerService` -> `ColorPickerService` (Screen color sampling & palette)
-10. `ITextUtilityService` -> `TextUtilityService` (Text transformations, JSON, Base64, Hashes)
-11. `ILanguageService` -> `LanguageService` (Dynamic runtime bilingual switching)
-12. `IWindowPinnerService` -> `WindowPinnerService` (Always-on-Top & layered opacity)
-13. `IVideoConverterService` -> `VideoConverterService` (Media transcode engine)
-14. `IImageStudioService` -> `ImageStudioService` (Image compressor & ICO generator)
-15. `IPdfToolkitService` -> `PdfToolkitService` (Offline PDF merge, split, image conversion, encryption)
-16. `IBulkRenamerService` -> `BulkRenamerService` (Batch file/folder renaming, preview, conflict detection, undo)
-
-### 13 ViewModels (Transient)
-- `MainWindowViewModel`, `AutoClickViewModel`, `ShutdownViewModel`, `StickyNoteViewModel`, `ClipboardViewModel`, `QrCodeViewModel`, `ColorPickerViewModel`, `TextUtilityViewModel`, `WindowPinnerViewModel`, `VideoConverterViewModel`, `ImageStudioViewModel`, `PdfToolkitViewModel`, `BulkRenamerViewModel`.
-
-### 12 Pages & Windows (Transient)
-- `MainWindow`
-- `AutoClickPage`, `ShutdownPage`, `StickyNotePage`, `ClipboardPage`, `QrCodePage`, `ColorPickerPage`, `TextUtilityPage`, `WindowPinnerPage`, `VideoConverterPage`, `ImageStudioPage`, `PdfToolkitPage`, `BulkRenamerPage`.
+- **Contexts**:
+  - `ThemeContext.tsx`: Toggles `.dark` class on `<html>` and `colorScheme`; persisted in `localStorage['mydeustools_theme']`.
+  - `LanguageContext.tsx`: Manages `'vi' | 'en'`; persisted in `localStorage['mydeustools_lang']`.
+  - `AgentContext.tsx`: Polls `GET /api/health` every `5000ms` and exports `{ isOnline, health, checking, refreshAgentStatus }`.
+- **Views (`features/*/`)**:
+  - 13 `React.lazy` views loaded cleanly via `Suspense`.
+  - Dual-mode OS-aware views: `SmartTimerView` (strictly separates `pomodoro` and Agent-gated `shutdown` tabs), `AutoClickerView` (`web` DOM sandbox vs `os` Agent tab), and `WindowPipView` (`web` Document PiP vs `os` Windows Manager tab).
+- **Styling (`index.css`)**:
+  - Semantic CSS variables (`--tui-bg`, `--tui-surface`, `--tui-surface-elevated`, `--tui-primary`, `--tui-secondary`, `--tui-tertiary`, `--tui-error`, `--tui-border-*`).
+  - Global TerminalUI enforcement: `JetBrains Mono`, `0px` border radius, zero box shadows, `steps(1, end)` transitions, optional fixed `.tui-scanlines` CRT overlay (`localStorage['mydeustools_crt']`).
 
 ---
 
-## 3. Subsystem Architecture
+## 3. Local Companion Agent (`MyDeusTools.Agent/`)
 
-### A. Navigation & Shell
-- `MainWindow.xaml`: Uses `<ui:NavigationView>` with `PaneDisplayMode="Left"` and `OpenPaneLength="216"`.
-- Each menu item specifies `TargetPageType="{x:Type pages:...Page}"`.
-- Resolved automatically by `IPageService` via DI.
+Zero external NuGet packages (`net8.0-windows`, `win-x64`, `PublishSingleFile=true`, `SelfContained=true`):
+- **HTTP Bridge (`LocalHttpBridgeServer.cs`)**: `HttpListener` on `http://127.0.0.1:41950/`, handling `OPTIONS` preflight, CORS (`*`), and `Access-Control-Allow-Private-Network: true`.
+- **REST Endpoints**:
+  - `GET /api/health`
+  - `GET /api/autoclick/status`, `POST /api/autoclick/start`, `POST /api/autoclick/stop`, `POST /api/autoclick/capture`, `POST /api/autoclick/points/clear`
+  - `POST /api/system/schedule`, `POST /api/system/cancel`
+  - `GET /api/windows`, `POST /api/windows/pin`, `POST /api/windows/opacity`, `POST /api/windows/focus`
 
-### B. Overlays & Specialized Windows
-1. `RecordingOverlayWindow`: Fullscreen transparent overlay across virtual multi-monitor desktop. Captures clicks and places numbered waypoint markers.
-2. `StickyNoteWindow`: Borderless, draggable, resizable floating note window with Topmost toggle.
-3. `QrSnippingOverlayWindow`: Interactive screen rectangle selector for QR decoding.
-4. `ColorPickerOverlayWindow`: Fullscreen crosshair with floating 11x11 pixel magnifier HUD.
+---
 
-### C. Win32 Native Interop Layer
-- **Mouse**: `mouse_event` (down/up events for left, right, middle) and `SetCursorPos`.
-- **Clipboard**: `AddClipboardFormatListener` / `RemoveClipboardFormatListener` with `WM_CLIPBOARDUPDATE`.
-- **Window Pinning**: `SetWindowPos` with `HWND_TOPMOST` and `HWND_NOTOPMOST`.
-- **Transparency**: `SetWindowLongPtr` with `WS_EX_LAYERED` and `SetLayeredWindowAttributes` with `LWA_ALPHA`.
-- **GDI Capture**: `GetDC`, `ReleaseDC`, `GetPixel`, `BitBlt` / `CopyFromScreen`.
+## 4. Native WPF MVVM Architecture (`MyDeusTools.App/`)
 
-### D. File Storage Architecture
-Stored in `AppDomain.CurrentDomain.BaseDirectory\Data\`:
-- `Data/notes.json`
-- `Data/clipboard.json`
-- `Data/colors.json`
-- `Data/settings.json`
+Retains standard 3-layer separation configured in `App.xaml.cs` via `Microsoft.Extensions.DependencyInjection`:
+- **16 Singleton Services**: `IPageService`, `INavigationService`, `IAutoClickService`, `ISystemService`, `IStickyNoteService`, `IAutoStartService`, `IClipboardService`, `IQrCodeService`, `IColorPickerService`, `ITextUtilityService`, `ILanguageService`, `IWindowPinnerService`, `IVideoConverterService`, `IImageStudioService`, `IPdfToolkitService`, `IBulkRenamerService`.
+- **13 Transient ViewModels**: `MainWindowViewModel` + 12 utility ViewModels.
+- **13 Transient Views + 4 Overlay Windows**: `MainWindow`, 12 `Views/Pages/*Page.xaml`, and `RecordingOverlayWindow`, `StickyNoteWindow`, `QrSnippingOverlayWindow`, `ColorPickerOverlayWindow`.
+- **File Persistence (`BaseDirectory\Data\`)**: `notes.json`, `clipboard.json`, `colors.json`, `settings.json`.
