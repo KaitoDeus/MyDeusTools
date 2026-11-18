@@ -185,15 +185,15 @@ export const PdfToolkitView: React.FC = () => {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h2 className="text-2xl font-bold text-white flex items-center gap-2">
-          <FileText className="w-6 h-6 text-rose-500" />
+        <h2 className="text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
+          <FileText className="w-6 h-6 text-rose-600 dark:text-rose-500" />
           <span>{t.nav.pdfToolkit}</span>
         </h2>
-        <p className="text-sm text-slate-400 mt-1">{t.descriptions.pdfToolkit}</p>
+        <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">{t.descriptions.pdfToolkit}</p>
       </div>
 
       {/* Tabs */}
-      <div className="flex flex-wrap gap-2 border-b border-slate-800 pb-3">
+      <div className="flex flex-wrap gap-2 border-b border-slate-200 dark:border-slate-800 pb-3">
         {[
           { id: 'merge', label: 'Merge PDFs', icon: Layers },
           { id: 'split', label: 'Split Pages', icon: Scissors },
@@ -206,7 +206,7 @@ export const PdfToolkitView: React.FC = () => {
               className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
                 activeTab === tab.id
                   ? 'bg-rose-600 text-white shadow-lg shadow-rose-600/20'
-                  : 'bg-slate-900 text-slate-400 hover:text-slate-200 hover:bg-slate-800'
+                  : 'bg-white text-slate-600 hover:text-slate-900 hover:bg-slate-100 border border-slate-200 dark:border-transparent dark:bg-slate-900 dark:text-slate-400 dark:hover:text-slate-200 dark:hover:bg-slate-800'
               }`}
             >
               <Icon className="w-4 h-4" />
@@ -217,7 +217,7 @@ export const PdfToolkitView: React.FC = () => {
       </div>
 
       {statusMessage && (
-        <div className="p-3 bg-emerald-500/10 border border-emerald-500/30 rounded-xl flex items-center gap-2 text-emerald-400 text-xs">
+        <div className="p-3 bg-emerald-500/10 border border-emerald-500/30 rounded-xl flex items-center gap-2 text-emerald-600 dark:text-emerald-400 text-xs">
           <Check className="w-4 h-4 shrink-0" />
           <span>{statusMessage}</span>
         </div>
@@ -226,10 +226,10 @@ export const PdfToolkitView: React.FC = () => {
       {/* Tab 1: Merge */}
       {activeTab === 'merge' && (
         <div className="space-y-5">
-          <div className="p-6 border-2 border-dashed border-slate-800 hover:border-rose-500/50 rounded-2xl flex flex-col items-center justify-center text-center space-y-3 glass-card transition-all">
-            <UploadCloud className="w-10 h-10 text-rose-400 opacity-80" />
+          <div className="p-6 border-2 border-dashed border-slate-300 dark:border-slate-800 hover:border-rose-500/50 rounded-2xl flex flex-col items-center justify-center text-center space-y-3 glass-card transition-all">
+            <UploadCloud className="w-10 h-10 text-rose-500 dark:text-rose-400 opacity-80" />
             <div className="space-y-1">
-              <p className="text-sm font-semibold text-slate-200">
+              <p className="text-sm font-semibold text-slate-800 dark:text-slate-200">
                 Drag and drop PDF files here, or browse
               </p>
               <p className="text-xs text-slate-500">
@@ -251,12 +251,12 @@ export const PdfToolkitView: React.FC = () => {
           {mergeFiles.length > 0 && (
             <div className="space-y-3">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-semibold text-slate-400">
+                <span className="text-xs font-semibold text-slate-600 dark:text-slate-400">
                   Files to Merge ({mergeFiles.length})
                 </span>
                 <button
                   onClick={() => setMergeFiles([])}
-                  className="text-xs text-slate-500 hover:text-rose-400 cursor-pointer"
+                  className="text-xs text-slate-500 hover:text-rose-500 dark:hover:text-rose-400 cursor-pointer"
                 >
                   {t.common.clear}
                 </button>
@@ -266,14 +266,14 @@ export const PdfToolkitView: React.FC = () => {
                 {mergeFiles.map((item, idx) => (
                   <div
                     key={item.id}
-                    className="flex items-center justify-between p-3 rounded-xl bg-slate-900 border border-slate-800 text-xs"
+                    className="flex items-center justify-between p-3 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-xs"
                   >
                     <div className="flex items-center gap-3">
-                      <span className="w-6 h-6 rounded-lg bg-slate-800 text-slate-400 font-bold flex items-center justify-center text-[10px]">
+                      <span className="w-6 h-6 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 font-bold flex items-center justify-center text-[10px]">
                         {idx + 1}
                       </span>
                       <div>
-                        <div className="font-medium text-slate-200">{item.name}</div>
+                        <div className="font-medium text-slate-900 dark:text-slate-200">{item.name}</div>
                         <div className="text-[11px] text-slate-500">
                           {(item.size / 1024).toFixed(1)} KB • {item.pageCount || '?'} pages
                         </div>
@@ -284,20 +284,20 @@ export const PdfToolkitView: React.FC = () => {
                       <button
                         onClick={() => moveMergeItem(idx, 'up')}
                         disabled={idx === 0}
-                        className="p-1.5 text-slate-400 hover:text-white disabled:opacity-30 cursor-pointer"
+                        className="p-1.5 text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white disabled:opacity-30 cursor-pointer"
                       >
                         <MoveUp className="w-3.5 h-3.5" />
                       </button>
                       <button
                         onClick={() => moveMergeItem(idx, 'down')}
                         disabled={idx === mergeFiles.length - 1}
-                        className="p-1.5 text-slate-400 hover:text-white disabled:opacity-30 cursor-pointer"
+                        className="p-1.5 text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white disabled:opacity-30 cursor-pointer"
                       >
                         <MoveDown className="w-3.5 h-3.5" />
                       </button>
                       <button
                         onClick={() => removeMergeItem(item.id)}
-                        className="p-1.5 text-slate-500 hover:text-rose-400 cursor-pointer"
+                        className="p-1.5 text-slate-500 hover:text-rose-500 dark:hover:text-rose-400 cursor-pointer"
                       >
                         <Trash2 className="w-3.5 h-3.5" />
                       </button>
@@ -323,31 +323,39 @@ export const PdfToolkitView: React.FC = () => {
 
       {/* Tab 2: Split */}
       {activeTab === 'split' && (
-        <div className="space-y-5 glass-card p-6 rounded-2xl border border-slate-800">
+        <div className="space-y-5 glass-card p-6 rounded-2xl">
           <div className="space-y-2">
-            <label className="text-xs font-semibold text-slate-300">Select PDF File</label>
+            <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">
+              Select PDF File
+            </label>
             <input
               type="file"
               accept="application/pdf"
               onChange={handleSplitFileUpload}
-              className="w-full text-xs text-slate-400 file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-rose-600 file:text-white hover:file:bg-rose-500 cursor-pointer"
+              className="w-full text-xs text-slate-600 dark:text-slate-400 file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-rose-600 file:text-white hover:file:bg-rose-500 cursor-pointer"
             />
           </div>
 
           {splitFile && (
-            <div className="p-4 bg-slate-900 rounded-xl space-y-4 border border-slate-800">
-              <div className="flex items-center justify-between text-xs text-slate-400">
-                <span>Selected: <strong className="text-slate-200">{splitFile.name}</strong></span>
-                <span>Total Pages: <strong className="text-rose-400">{splitPageCount}</strong></span>
+            <div className="p-4 bg-slate-50 dark:bg-slate-900 rounded-xl space-y-4 border border-slate-200 dark:border-slate-800">
+              <div className="flex items-center justify-between text-xs text-slate-600 dark:text-slate-400">
+                <span>
+                  Selected: <strong className="text-slate-900 dark:text-slate-200">{splitFile.name}</strong>
+                </span>
+                <span>
+                  Total Pages: <strong className="text-rose-600 dark:text-rose-400">{splitPageCount}</strong>
+                </span>
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-xs font-medium text-slate-300">Page Range (e.g. 1-3, 5)</label>
+                <label className="text-xs font-medium text-slate-700 dark:text-slate-300">
+                  Page Range (e.g. 1-3, 5)
+                </label>
                 <input
                   type="text"
                   value={pageRange}
                   onChange={(e) => setPageRange(e.target.value)}
-                  className="w-full p-2.5 bg-slate-950 border border-slate-800 rounded-xl text-xs font-mono text-slate-200 focus:outline-none focus:ring-2 focus:ring-rose-500/50"
+                  className="w-full p-2.5 bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-xs font-mono text-slate-900 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-rose-500/50"
                 />
               </div>
 

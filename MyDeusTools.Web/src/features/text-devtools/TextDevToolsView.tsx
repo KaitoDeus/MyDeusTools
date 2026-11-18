@@ -28,7 +28,9 @@ export const TextDevToolsView: React.FC = () => {
   };
 
   // --- JSON State ---
-  const [jsonInput, setJsonInput] = useState('{\n  "app": "MyDeusTools Web",\n  "version": "1.0.0",\n  "features": ["json", "base64", "hash"]\n}');
+  const [jsonInput, setJsonInput] = useState(
+    '{\n  "app": "MyDeusTools Web",\n  "version": "1.0.0",\n  "features": ["json", "base64", "hash"]\n}'
+  );
   const [jsonOutput, setJsonOutput] = useState('');
   const [jsonError, setJsonError] = useState<string | null>(null);
 
@@ -55,7 +57,6 @@ export const TextDevToolsView: React.FC = () => {
   // --- Base64 State ---
   const [base64Input, setBase64Input] = useState('Hello, MyDeusTools Web!');
   const [base64Output, setBase64Output] = useState('');
-  const [base64FileMode, setBase64FileMode] = useState(false);
 
   const handleBase64Encode = () => {
     try {
@@ -70,7 +71,7 @@ export const TextDevToolsView: React.FC = () => {
     try {
       const decoded = decodeURIComponent(escape(atob(base64Input)));
       setBase64Output(decoded);
-    } catch (e: any) {
+    } catch {
       setBase64Output('Invalid Base64 string');
     }
   };
@@ -99,19 +100,16 @@ export const TextDevToolsView: React.FC = () => {
     const results: Record<string, string> = {};
 
     try {
-      // SHA-1
       const buf1 = await crypto.subtle.digest('SHA-1', data);
       results['SHA-1'] = Array.from(new Uint8Array(buf1))
         .map((b) => b.toString(16).padStart(2, '0'))
         .join('');
 
-      // SHA-256
       const buf256 = await crypto.subtle.digest('SHA-256', data);
       results['SHA-256'] = Array.from(new Uint8Array(buf256))
         .map((b) => b.toString(16).padStart(2, '0'))
         .join('');
 
-      // SHA-512
       const buf512 = await crypto.subtle.digest('SHA-512', data);
       results['SHA-512'] = Array.from(new Uint8Array(buf512))
         .map((b) => b.toString(16).padStart(2, '0'))
@@ -138,33 +136,37 @@ export const TextDevToolsView: React.FC = () => {
 
     const lowerWords = words.map((w) => w.toLowerCase());
     return {
-      'camelCase': lowerWords.map((w, i) => (i === 0 ? w : w.charAt(0).toUpperCase() + w.slice(1))).join(''),
-      'PascalCase': lowerWords.map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(''),
-      'snake_case': lowerWords.join('_'),
+      camelCase: lowerWords
+        .map((w, i) => (i === 0 ? w : w.charAt(0).toUpperCase() + w.slice(1)))
+        .join(''),
+      PascalCase: lowerWords.map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(''),
+      snake_case: lowerWords.join('_'),
       'kebab-case': lowerWords.join('-'),
-      'UPPERCASE': text.toUpperCase(),
-      'lowercase': text.toLowerCase(),
+      UPPERCASE: text.toUpperCase(),
+      lowercase: text.toLowerCase(),
       'Title Case': lowerWords.map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(' '),
     };
   };
 
   // --- URL & HTML State ---
-  const [urlInput, setUrlInput] = useState('https://example.com/search?q=MyDeusTools Web&filter=active');
+  const [urlInput, setUrlInput] = useState(
+    'https://example.com/search?q=MyDeusTools Web&filter=active'
+  );
   const [urlOutput, setUrlOutput] = useState('');
 
   return (
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h2 className="text-2xl font-bold text-white flex items-center gap-2">
-          <Code className="w-6 h-6 text-emerald-400" />
+        <h2 className="text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
+          <Code className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
           <span>{t.nav.textDevTools}</span>
         </h2>
-        <p className="text-sm text-slate-400 mt-1">{t.descriptions.textDevTools}</p>
+        <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">{t.descriptions.textDevTools}</p>
       </div>
 
       {/* Tabs */}
-      <div className="flex flex-wrap gap-2 border-b border-slate-800 pb-3">
+      <div className="flex flex-wrap gap-2 border-b border-slate-200 dark:border-slate-800 pb-3">
         {[
           { id: 'json', label: 'JSON Studio', icon: FileCode },
           { id: 'base64', label: 'Base64', icon: Sparkles },
@@ -180,7 +182,7 @@ export const TextDevToolsView: React.FC = () => {
               className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
                 activeTab === tab.id
                   ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-600/20'
-                  : 'bg-slate-900 text-slate-400 hover:text-slate-200 hover:bg-slate-800'
+                  : 'bg-white text-slate-600 hover:text-slate-900 hover:bg-slate-100 border border-slate-200 dark:border-transparent dark:bg-slate-900 dark:text-slate-400 dark:hover:text-slate-200 dark:hover:bg-slate-800'
               }`}
             >
               <Icon className="w-4 h-4" />
@@ -203,7 +205,7 @@ export const TextDevToolsView: React.FC = () => {
             </button>
             <button
               onClick={handleJsonMinify}
-              className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-xl text-xs font-semibold transition-colors cursor-pointer"
+              className="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-800 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-200 rounded-xl text-xs font-semibold transition-colors cursor-pointer"
             >
               Minify JSON
             </button>
@@ -213,7 +215,7 @@ export const TextDevToolsView: React.FC = () => {
                 setJsonOutput('');
                 setJsonError(null);
               }}
-              className="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-slate-400 rounded-xl text-xs font-semibold transition-colors cursor-pointer flex items-center gap-1.5"
+              className="px-4 py-2 bg-white hover:bg-slate-100 text-slate-600 border border-slate-200 dark:border-transparent dark:bg-slate-900 dark:hover:bg-slate-800 dark:text-slate-400 rounded-xl text-xs font-semibold transition-colors cursor-pointer flex items-center gap-1.5"
             >
               <RotateCcw className="w-3.5 h-3.5" />
               {t.common.clear}
@@ -221,7 +223,7 @@ export const TextDevToolsView: React.FC = () => {
           </div>
 
           {jsonError && (
-            <div className="p-3 bg-rose-500/10 border border-rose-500/30 rounded-xl flex items-center gap-2 text-rose-400 text-xs">
+            <div className="p-3 bg-rose-500/10 border border-rose-500/30 rounded-xl flex items-center gap-2 text-rose-600 dark:text-rose-400 text-xs">
               <AlertCircle className="w-4 h-4 shrink-0" />
               <span>Syntax Error: {jsonError}</span>
             </div>
@@ -229,21 +231,25 @@ export const TextDevToolsView: React.FC = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <label className="text-xs font-medium text-slate-400">Input JSON</label>
+              <label className="text-xs font-medium text-slate-600 dark:text-slate-400">
+                Input JSON
+              </label>
               <textarea
                 value={jsonInput}
                 onChange={(e) => setJsonInput(e.target.value)}
                 rows={14}
-                className="w-full p-4 bg-slate-900/90 border border-slate-800 rounded-xl text-xs font-mono text-emerald-300 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 resize-y"
+                className="w-full p-4 bg-white dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 rounded-xl text-xs font-mono text-emerald-700 dark:text-emerald-300 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 resize-y"
               />
             </div>
             <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <label className="text-xs font-medium text-slate-400">Formatted Output</label>
+                <label className="text-xs font-medium text-slate-600 dark:text-slate-400">
+                  Formatted Output
+                </label>
                 {jsonOutput && (
                   <button
                     onClick={() => copyToClipboard(jsonOutput, 'json')}
-                    className="text-xs text-emerald-400 hover:underline flex items-center gap-1 cursor-pointer"
+                    className="text-xs text-emerald-600 dark:text-emerald-400 hover:underline flex items-center gap-1 cursor-pointer"
                   >
                     {copiedKey === 'json' ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
                     <span>{copiedKey === 'json' ? t.common.copied : t.common.copy}</span>
@@ -255,7 +261,7 @@ export const TextDevToolsView: React.FC = () => {
                 value={jsonOutput}
                 placeholder="Result will appear here..."
                 rows={14}
-                className="w-full p-4 bg-slate-950 border border-slate-800/80 rounded-xl text-xs font-mono text-slate-200 focus:outline-none resize-y"
+                className="w-full p-4 bg-slate-100 dark:bg-slate-950 border border-slate-200 dark:border-slate-800/80 rounded-xl text-xs font-mono text-slate-800 dark:text-slate-200 focus:outline-none resize-y"
               />
             </div>
           </div>
@@ -275,14 +281,14 @@ export const TextDevToolsView: React.FC = () => {
               </button>
               <button
                 onClick={handleBase64Decode}
-                className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-xl text-xs font-semibold transition-colors cursor-pointer"
+                className="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-800 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-200 rounded-xl text-xs font-semibold transition-colors cursor-pointer"
               >
                 Decode Base64
               </button>
             </div>
 
-            <label className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-xl text-xs font-semibold transition-colors cursor-pointer flex items-center gap-2">
-              <FileUp className="w-4 h-4 text-emerald-400" />
+            <label className="px-4 py-2 bg-white hover:bg-slate-100 text-slate-700 border border-slate-200 dark:border-transparent dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-200 rounded-xl text-xs font-semibold transition-colors cursor-pointer flex items-center gap-2">
+              <FileUp className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
               <span>File to Base64</span>
               <input type="file" onChange={handleBase64FileUpload} className="hidden" />
             </label>
@@ -290,21 +296,25 @@ export const TextDevToolsView: React.FC = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <label className="text-xs font-medium text-slate-400">Input String / Data</label>
+              <label className="text-xs font-medium text-slate-600 dark:text-slate-400">
+                Input String / Data
+              </label>
               <textarea
                 value={base64Input}
                 onChange={(e) => setBase64Input(e.target.value)}
                 rows={10}
-                className="w-full p-4 bg-slate-900 border border-slate-800 rounded-xl text-xs font-mono text-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 resize-y"
+                className="w-full p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-xs font-mono text-slate-900 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 resize-y"
               />
             </div>
             <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <label className="text-xs font-medium text-slate-400">Base64 Result</label>
+                <label className="text-xs font-medium text-slate-600 dark:text-slate-400">
+                  Base64 Result
+                </label>
                 {base64Output && (
                   <button
                     onClick={() => copyToClipboard(base64Output, 'b64')}
-                    className="text-xs text-emerald-400 hover:underline flex items-center gap-1 cursor-pointer"
+                    className="text-xs text-emerald-600 dark:text-emerald-400 hover:underline flex items-center gap-1 cursor-pointer"
                   >
                     {copiedKey === 'b64' ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
                     <span>{copiedKey === 'b64' ? t.common.copied : t.common.copy}</span>
@@ -316,7 +326,7 @@ export const TextDevToolsView: React.FC = () => {
                 value={base64Output}
                 placeholder="Encoded/Decoded result..."
                 rows={10}
-                className="w-full p-4 bg-slate-950 border border-slate-800/80 rounded-xl text-xs font-mono text-slate-300 focus:outline-none resize-y"
+                className="w-full p-4 bg-slate-100 dark:bg-slate-950 border border-slate-200 dark:border-slate-800/80 rounded-xl text-xs font-mono text-slate-800 dark:text-slate-300 focus:outline-none resize-y"
               />
             </div>
           </div>
@@ -327,13 +337,15 @@ export const TextDevToolsView: React.FC = () => {
       {activeTab === 'hash' && (
         <div className="space-y-4">
           <div className="space-y-2">
-            <label className="text-xs font-medium text-slate-400">Text to Hash</label>
+            <label className="text-xs font-medium text-slate-600 dark:text-slate-400">
+              Text to Hash
+            </label>
             <div className="flex gap-3">
               <input
                 type="text"
                 value={hashInput}
                 onChange={(e) => setHashInput(e.target.value)}
-                className="flex-1 px-4 py-2.5 bg-slate-900 border border-slate-800 rounded-xl text-xs font-mono text-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
+                className="flex-1 px-4 py-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-xs font-mono text-slate-900 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
               />
               <button
                 onClick={computeHashes}
@@ -349,20 +361,31 @@ export const TextDevToolsView: React.FC = () => {
             {['SHA-256', 'SHA-512', 'SHA-1'].map((algo) => {
               const val = hashes[algo] || 'Click "Generate Hashes" to compute';
               return (
-                <div key={algo} className="p-4 bg-slate-900/60 border border-slate-800/80 rounded-xl space-y-1.5">
+                <div
+                  key={algo}
+                  className="p-4 glass-card rounded-xl space-y-1.5"
+                >
                   <div className="flex items-center justify-between">
-                    <span className="text-xs font-bold text-emerald-400">{algo}</span>
+                    <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400">
+                      {algo}
+                    </span>
                     {hashes[algo] && (
                       <button
                         onClick={() => copyToClipboard(val, algo)}
-                        className="text-xs text-slate-400 hover:text-white flex items-center gap-1 cursor-pointer"
+                        className="text-xs text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white flex items-center gap-1 cursor-pointer"
                       >
-                        {copiedKey === algo ? <Check className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3" />}
+                        {copiedKey === algo ? (
+                          <Check className="w-3 h-3 text-emerald-600 dark:text-emerald-400" />
+                        ) : (
+                          <Copy className="w-3 h-3" />
+                        )}
                         <span>{copiedKey === algo ? t.common.copied : t.common.copy}</span>
                       </button>
                     )}
                   </div>
-                  <div className="text-xs font-mono text-slate-300 break-all select-all">{val}</div>
+                  <div className="text-xs font-mono text-slate-700 dark:text-slate-300 break-all select-all">
+                    {val}
+                  </div>
                 </div>
               );
             })}
@@ -374,12 +397,14 @@ export const TextDevToolsView: React.FC = () => {
       {activeTab === 'case' && (
         <div className="space-y-4">
           <div className="space-y-2">
-            <label className="text-xs font-medium text-slate-400">Original Text</label>
+            <label className="text-xs font-medium text-slate-600 dark:text-slate-400">
+              Original Text
+            </label>
             <textarea
               value={caseInput}
               onChange={(e) => setCaseInput(e.target.value)}
               rows={3}
-              className="w-full p-4 bg-slate-900 border border-slate-800 rounded-xl text-xs font-mono text-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
+              className="w-full p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-xs font-mono text-slate-900 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
             />
           </div>
 
@@ -388,15 +413,19 @@ export const TextDevToolsView: React.FC = () => {
               <div
                 key={variantName}
                 onClick={() => copyToClipboard(transformed, variantName)}
-                className="p-3.5 bg-slate-900/60 border border-slate-800 hover:border-emerald-500/40 rounded-xl cursor-pointer group transition-all"
+                className="p-3.5 glass-card hover:border-emerald-500/40 rounded-xl cursor-pointer group transition-all"
               >
-                <div className="flex items-center justify-between text-[11px] text-slate-400 mb-1">
-                  <span className="font-semibold text-slate-300">{variantName}</span>
-                  <span className="text-emerald-400 opacity-0 group-hover:opacity-100 transition-opacity">
+                <div className="flex items-center justify-between text-[11px] text-slate-500 dark:text-slate-400 mb-1">
+                  <span className="font-semibold text-slate-700 dark:text-slate-300">
+                    {variantName}
+                  </span>
+                  <span className="text-emerald-600 dark:text-emerald-400 opacity-0 group-hover:opacity-100 transition-opacity">
                     {copiedKey === variantName ? t.common.copied : t.common.copy}
                   </span>
                 </div>
-                <div className="text-xs font-mono text-slate-200 truncate">{transformed}</div>
+                <div className="text-xs font-mono text-slate-900 dark:text-slate-200 truncate">
+                  {transformed}
+                </div>
               </div>
             ))}
           </div>
@@ -421,7 +450,7 @@ export const TextDevToolsView: React.FC = () => {
                   setUrlOutput('Invalid encoded URL');
                 }
               }}
-              className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-xl text-xs font-semibold transition-colors cursor-pointer"
+              className="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-800 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-200 rounded-xl text-xs font-semibold transition-colors cursor-pointer"
             >
               URL Decode
             </button>
@@ -429,21 +458,25 @@ export const TextDevToolsView: React.FC = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <label className="text-xs font-medium text-slate-400">Input String</label>
+              <label className="text-xs font-medium text-slate-600 dark:text-slate-400">
+                Input String
+              </label>
               <textarea
                 value={urlInput}
                 onChange={(e) => setUrlInput(e.target.value)}
                 rows={8}
-                className="w-full p-4 bg-slate-900 border border-slate-800 rounded-xl text-xs font-mono text-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 resize-y"
+                className="w-full p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-xs font-mono text-slate-900 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 resize-y"
               />
             </div>
             <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <label className="text-xs font-medium text-slate-400">Result</label>
+                <label className="text-xs font-medium text-slate-600 dark:text-slate-400">
+                  Result
+                </label>
                 {urlOutput && (
                   <button
                     onClick={() => copyToClipboard(urlOutput, 'url')}
-                    className="text-xs text-emerald-400 hover:underline flex items-center gap-1 cursor-pointer"
+                    className="text-xs text-emerald-600 dark:text-emerald-400 hover:underline flex items-center gap-1 cursor-pointer"
                   >
                     {copiedKey === 'url' ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
                     <span>{copiedKey === 'url' ? t.common.copied : t.common.copy}</span>
@@ -455,7 +488,7 @@ export const TextDevToolsView: React.FC = () => {
                 value={urlOutput}
                 placeholder="Encoded/Decoded result..."
                 rows={8}
-                className="w-full p-4 bg-slate-950 border border-slate-800/80 rounded-xl text-xs font-mono text-slate-300 focus:outline-none resize-y"
+                className="w-full p-4 bg-slate-100 dark:bg-slate-950 border border-slate-200 dark:border-slate-800/80 rounded-xl text-xs font-mono text-slate-800 dark:text-slate-300 focus:outline-none resize-y"
               />
             </div>
           </div>

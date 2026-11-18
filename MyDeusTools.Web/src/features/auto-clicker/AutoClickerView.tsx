@@ -80,24 +80,24 @@ export const AutoClickerView: React.FC = () => {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h2 className="text-2xl font-bold text-white flex items-center gap-2">
-          <MousePointerClick className="w-6 h-6 text-emerald-400" />
+        <h2 className="text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
+          <MousePointerClick className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
           <span>{t.nav.autoClicker}</span>
         </h2>
-        <p className="text-sm text-slate-400 mt-1">{t.descriptions.autoClicker}</p>
+        <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">{t.descriptions.autoClicker}</p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Settings (7 cols) */}
-        <div className="lg:col-span-7 space-y-5 glass-card p-6 rounded-2xl border border-slate-800">
-          <h3 className="text-sm font-semibold text-slate-200 flex items-center gap-2">
-            <Sliders className="w-4 h-4 text-emerald-400" />
+        <div className="lg:col-span-7 space-y-5 glass-card p-6 rounded-2xl">
+          <h3 className="text-sm font-semibold text-slate-800 dark:text-slate-200 flex items-center gap-2">
+            <Sliders className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
             <span>Click Interval & Options</span>
           </h3>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-1.5">
-              <label className="text-xs font-medium text-slate-400">
+              <label className="text-xs font-medium text-slate-600 dark:text-slate-400">
                 Click Interval (Milliseconds)
               </label>
               <input
@@ -106,7 +106,7 @@ export const AutoClickerView: React.FC = () => {
                 value={intervalMs}
                 disabled={isRunning}
                 onChange={(e) => setIntervalMs(Math.max(10, parseInt(e.target.value) || 10))}
-                className="w-full p-2.5 bg-slate-900 border border-slate-800 rounded-xl text-xs font-mono text-slate-200 focus:outline-none"
+                className="w-full p-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-xs font-mono text-slate-900 dark:text-slate-200 focus:outline-none"
               />
               <span className="text-[11px] text-slate-500">
                 ~{Math.round(1000 / Math.max(10, intervalMs))} Clicks Per Second (CPS)
@@ -114,12 +114,14 @@ export const AutoClickerView: React.FC = () => {
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-xs font-medium text-slate-400">Repeat Mode</label>
+              <label className="text-xs font-medium text-slate-600 dark:text-slate-400">
+                Repeat Mode
+              </label>
               <select
                 value={repeatMode}
                 disabled={isRunning}
                 onChange={(e) => setRepeatMode(e.target.value as any)}
-                className="w-full p-2.5 bg-slate-900 border border-slate-800 rounded-xl text-xs font-medium text-slate-200 focus:outline-none"
+                className="w-full p-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-xs font-medium text-slate-900 dark:text-slate-200 focus:outline-none"
               >
                 <option value="infinite">Repeat until stopped</option>
                 <option value="fixed">Fixed count (Limit)</option>
@@ -129,14 +131,16 @@ export const AutoClickerView: React.FC = () => {
 
           {repeatMode === 'fixed' && (
             <div className="space-y-1.5">
-              <label className="text-xs font-medium text-slate-400">Total Click Limit</label>
+              <label className="text-xs font-medium text-slate-600 dark:text-slate-400">
+                Total Click Limit
+              </label>
               <input
                 type="number"
                 min={1}
                 value={fixedCount}
                 disabled={isRunning}
                 onChange={(e) => setFixedCount(Math.max(1, parseInt(e.target.value) || 1))}
-                className="w-full p-2.5 bg-slate-900 border border-slate-800 rounded-xl text-xs font-mono text-slate-200 focus:outline-none"
+                className="w-full p-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-xs font-mono text-slate-900 dark:text-slate-200 focus:outline-none"
               />
             </div>
           )}
@@ -166,7 +170,7 @@ export const AutoClickerView: React.FC = () => {
                 setClicksDone(0);
                 setTargetHits(0);
               }}
-              className="px-4 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-xl text-xs font-semibold transition-all cursor-pointer flex items-center gap-2"
+              className="px-4 py-2.5 bg-slate-200 hover:bg-slate-300 text-slate-800 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-200 rounded-xl text-xs font-semibold transition-all cursor-pointer flex items-center gap-2"
             >
               <RotateCcw className="w-3.5 h-3.5" />
               <span>Reset</span>
@@ -174,33 +178,36 @@ export const AutoClickerView: React.FC = () => {
           </div>
 
           {/* Bookmarklet Section for Any Website */}
-          <div className="p-4 bg-slate-900/60 rounded-xl border border-slate-800 space-y-2 mt-4">
+          <div className="p-4 bg-slate-50 dark:bg-slate-900/60 rounded-xl border border-slate-200 dark:border-slate-800 space-y-2 mt-4">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold text-slate-300 flex items-center gap-1.5">
-                <Code2 className="w-3.5 h-3.5 text-emerald-400" />
+              <span className="text-xs font-semibold text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
+                <Code2 className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
                 <span>Auto-Click Any Website (Bookmarklet)</span>
               </span>
               <button
                 onClick={copyBookmarklet}
-                className="text-xs text-emerald-400 hover:underline flex items-center gap-1 cursor-pointer"
+                className="text-xs text-emerald-600 dark:text-emerald-400 hover:underline flex items-center gap-1 cursor-pointer"
               >
                 {copiedBookmarklet ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
                 <span>{copiedBookmarklet ? t.common.copied : 'Copy Bookmarklet'}</span>
               </button>
             </div>
             <p className="text-[11px] text-slate-500 leading-relaxed">
-              Drag or copy this code into your browser bookmarks bar. Click it on any webpage, then click the element you want to auto-click. Press <code className="text-emerald-400">Esc</code> to stop!
+              Drag or copy this code into your browser bookmarks bar. Click it on any webpage, then
+              click the element you want to auto-click. Press{' '}
+              <code className="text-emerald-600 dark:text-emerald-400 font-semibold">Esc</code> to
+              stop!
             </p>
           </div>
         </div>
 
         {/* Live Simulator Target Sandbox (5 cols) */}
-        <div className="lg:col-span-5 flex flex-col items-center justify-center p-6 glass-card rounded-2xl border border-slate-800 space-y-6 text-center">
+        <div className="lg:col-span-5 flex flex-col items-center justify-center p-6 glass-card rounded-2xl space-y-6 text-center">
           <div className="space-y-1">
-            <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">
+            <span className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
               Live Click Target Sandbox
             </span>
-            <div className="text-5xl font-mono font-black text-emerald-400">
+            <div className="text-5xl font-mono font-black text-emerald-600 dark:text-emerald-400">
               {targetHits}
             </div>
             <div className="text-xs text-slate-500">
@@ -218,7 +225,8 @@ export const AutoClickerView: React.FC = () => {
           </button>
 
           <p className="text-xs text-slate-500 max-w-xs">
-            Start the auto-clicker above to observe high-frequency automated clicks on this target element in real time.
+            Start the auto-clicker above to observe high-frequency automated clicks on this target
+            element in real time.
           </p>
         </div>
       </div>

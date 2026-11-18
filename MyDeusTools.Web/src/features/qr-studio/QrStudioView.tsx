@@ -58,9 +58,7 @@ export const QrStudioView: React.FC = () => {
     try {
       const res = await fetch(qrDataUrl);
       const blob = await res.blob();
-      await navigator.clipboard.write([
-        new ClipboardItem({ 'image/png': blob }),
-      ]);
+      await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch (e) {
@@ -86,7 +84,6 @@ export const QrStudioView: React.FC = () => {
   };
 
   const decodeImageBlob = (blob: Blob) => {
-    // For web decode, we create an image
     const img = new Image();
     img.onload = () => {
       setScanResult('Image received (' + img.width + 'x' + img.height + 'px).');
@@ -105,67 +102,75 @@ export const QrStudioView: React.FC = () => {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h2 className="text-2xl font-bold text-white flex items-center gap-2">
-          <QrCode className="w-6 h-6 text-violet-400" />
+        <h2 className="text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
+          <QrCode className="w-6 h-6 text-violet-600 dark:text-violet-400" />
           <span>{t.nav.qrStudio}</span>
         </h2>
-        <p className="text-sm text-slate-400 mt-1">{t.descriptions.qrStudio}</p>
+        <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">{t.descriptions.qrStudio}</p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Generator Controls (7 cols) */}
-        <div className="lg:col-span-7 space-y-5 glass-card p-6 rounded-2xl border border-slate-800">
+        <div className="lg:col-span-7 space-y-5 glass-card p-6 rounded-2xl">
           <div className="space-y-2">
-            <label className="text-xs font-semibold text-slate-300">Content / URL to Encode</label>
+            <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">
+              Content / URL to Encode
+            </label>
             <textarea
               value={text}
               onChange={(e) => setText(e.target.value)}
               rows={4}
               placeholder="Enter URL, text, wifi credentials, or contact info..."
-              className="w-full p-4 bg-slate-900 border border-slate-800 rounded-xl text-sm text-slate-200 focus:outline-none focus:ring-2 focus:ring-violet-500/50"
+              className="w-full p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-sm text-slate-900 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-violet-500/50"
             />
           </div>
 
           {/* Color & Correction Row */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div className="space-y-1.5">
-              <label className="text-xs font-medium text-slate-400 flex items-center gap-1.5">
-                <Palette className="w-3.5 h-3.5 text-violet-400" />
+              <label className="text-xs font-medium text-slate-600 dark:text-slate-400 flex items-center gap-1.5">
+                <Palette className="w-3.5 h-3.5 text-violet-600 dark:text-violet-400" />
                 <span>Foreground</span>
               </label>
-              <div className="flex items-center gap-2 bg-slate-900 border border-slate-800 p-2 rounded-xl">
+              <div className="flex items-center gap-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-2 rounded-xl">
                 <input
                   type="color"
                   value={fgColor}
                   onChange={(e) => setFgColor(e.target.value)}
                   className="w-8 h-8 rounded-lg border-0 cursor-pointer bg-transparent"
                 />
-                <span className="text-xs font-mono text-slate-300 uppercase">{fgColor}</span>
+                <span className="text-xs font-mono text-slate-700 dark:text-slate-300 uppercase">
+                  {fgColor}
+                </span>
               </div>
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-xs font-medium text-slate-400 flex items-center gap-1.5">
+              <label className="text-xs font-medium text-slate-600 dark:text-slate-400 flex items-center gap-1.5">
                 <Palette className="w-3.5 h-3.5 text-slate-400" />
                 <span>Background</span>
               </label>
-              <div className="flex items-center gap-2 bg-slate-900 border border-slate-800 p-2 rounded-xl">
+              <div className="flex items-center gap-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-2 rounded-xl">
                 <input
                   type="color"
                   value={bgColor}
                   onChange={(e) => setBgColor(e.target.value)}
                   className="w-8 h-8 rounded-lg border-0 cursor-pointer bg-transparent"
                 />
-                <span className="text-xs font-mono text-slate-300 uppercase">{bgColor}</span>
+                <span className="text-xs font-mono text-slate-700 dark:text-slate-300 uppercase">
+                  {bgColor}
+                </span>
               </div>
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-xs font-medium text-slate-400">Error Correction</label>
+              <label className="text-xs font-medium text-slate-600 dark:text-slate-400">
+                Error Correction
+              </label>
               <select
                 value={errorLevel}
                 onChange={(e) => setErrorLevel(e.target.value as any)}
-                className="w-full p-2.5 bg-slate-900 border border-slate-800 rounded-xl text-xs font-medium text-slate-200 focus:outline-none"
+                className="w-full p-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-xs font-medium text-slate-900 dark:text-slate-200 focus:outline-none"
               >
                 <option value="L">Low (7%)</option>
                 <option value="M">Medium (15%)</option>
@@ -190,7 +195,7 @@ export const QrStudioView: React.FC = () => {
                   setFgColor(p.fg);
                   setBgColor(p.bg);
                 }}
-                className="px-2.5 py-1 rounded-lg bg-slate-800/80 hover:bg-slate-700 text-[11px] text-slate-300 border border-slate-700/60 transition-all cursor-pointer"
+                className="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 dark:bg-slate-800/80 dark:hover:bg-slate-700 text-[11px] dark:text-slate-300 dark:border-slate-700/60 transition-all cursor-pointer"
               >
                 {p.name}
               </button>
@@ -199,8 +204,8 @@ export const QrStudioView: React.FC = () => {
         </div>
 
         {/* Preview & Actions (5 cols) */}
-        <div className="lg:col-span-5 flex flex-col items-center justify-center p-6 glass-card rounded-2xl border border-slate-800 space-y-5">
-          <div className="p-4 bg-white/5 rounded-2xl border border-white/10 shadow-2xl flex items-center justify-center">
+        <div className="lg:col-span-5 flex flex-col items-center justify-center p-6 glass-card rounded-2xl space-y-5">
+          <div className="p-4 bg-slate-100 dark:bg-white/5 rounded-2xl border border-slate-200 dark:border-white/10 shadow-xl dark:shadow-2xl flex items-center justify-center">
             {qrDataUrl ? (
               <img
                 src={qrDataUrl}
@@ -208,7 +213,7 @@ export const QrStudioView: React.FC = () => {
                 className="w-56 h-56 rounded-xl shadow-lg"
               />
             ) : (
-              <div className="w-56 h-56 rounded-xl border border-dashed border-slate-700 flex flex-col items-center justify-center text-slate-500 text-xs gap-2">
+              <div className="w-56 h-56 rounded-xl border border-dashed border-slate-300 dark:border-slate-700 flex flex-col items-center justify-center text-slate-500 text-xs gap-2">
                 <QrCode className="w-10 h-10 opacity-30" />
                 <span>Enter text to preview</span>
               </div>
@@ -227,9 +232,13 @@ export const QrStudioView: React.FC = () => {
             <button
               onClick={handleCopyImage}
               disabled={!qrDataUrl}
-              className="flex items-center gap-2 px-5 py-2.5 bg-slate-800 hover:bg-slate-700 disabled:opacity-50 text-slate-200 rounded-xl text-xs font-semibold transition-all cursor-pointer"
+              className="flex items-center gap-2 px-5 py-2.5 bg-slate-200 hover:bg-slate-300 text-slate-800 dark:bg-slate-800 dark:hover:bg-slate-700 disabled:opacity-50 dark:text-slate-200 rounded-xl text-xs font-semibold transition-all cursor-pointer"
             >
-              {copied ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
+              {copied ? (
+                <Check className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+              ) : (
+                <Copy className="w-4 h-4" />
+              )}
               <span>{copied ? t.common.copied : 'Copy Image'}</span>
             </button>
           </div>
@@ -237,18 +246,18 @@ export const QrStudioView: React.FC = () => {
       </div>
 
       {/* QR Scanner Section */}
-      <div className="p-6 glass-card rounded-2xl border border-slate-800 space-y-4">
-        <h3 className="text-base font-semibold text-slate-200 flex items-center gap-2">
-          <Sparkles className="w-4 h-4 text-violet-400" />
+      <div className="p-6 glass-card rounded-2xl space-y-4">
+        <h3 className="text-base font-semibold text-slate-800 dark:text-slate-200 flex items-center gap-2">
+          <Sparkles className="w-4 h-4 text-violet-600 dark:text-violet-400" />
           <span>Multi-Source QR Scanner (Camera, File, Clipboard)</span>
         </h3>
 
         <div className="flex flex-wrap gap-3">
           <button
             onClick={() => fileInputRef.current?.click()}
-            className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-xl text-xs font-semibold transition-colors cursor-pointer flex items-center gap-2"
+            className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-200 dark:border-transparent dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-200 rounded-xl text-xs font-semibold transition-colors cursor-pointer flex items-center gap-2"
           >
-            <UploadCloud className="w-4 h-4 text-violet-400" />
+            <UploadCloud className="w-4 h-4 text-violet-600 dark:text-violet-400" />
             <span>Select Image File</span>
           </button>
           <input
@@ -261,15 +270,15 @@ export const QrStudioView: React.FC = () => {
 
           <button
             onClick={handlePasteClipboard}
-            className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-xl text-xs font-semibold transition-colors cursor-pointer flex items-center gap-2"
+            className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-200 dark:border-transparent dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-200 rounded-xl text-xs font-semibold transition-colors cursor-pointer flex items-center gap-2"
           >
-            <ClipboardPaste className="w-4 h-4 text-violet-400" />
+            <ClipboardPaste className="w-4 h-4 text-violet-600 dark:text-violet-400" />
             <span>Paste from Clipboard (Ctrl + V)</span>
           </button>
         </div>
 
         {scanResult && (
-          <div className="p-4 bg-violet-500/10 border border-violet-500/20 rounded-xl text-xs text-violet-300 flex items-center justify-between">
+          <div className="p-4 bg-violet-500/10 border border-violet-500/20 rounded-xl text-xs text-violet-700 dark:text-violet-300 flex items-center justify-between">
             <div>
               <span className="font-semibold">Detected content: </span>
               <span className="font-mono">{scanResult}</span>
@@ -279,7 +288,7 @@ export const QrStudioView: React.FC = () => {
                 href={scanResult}
                 target="_blank"
                 rel="noreferrer"
-                className="flex items-center gap-1 text-violet-400 hover:underline"
+                className="flex items-center gap-1 text-violet-600 dark:text-violet-400 hover:underline"
               >
                 <span>Open URL</span>
                 <ExternalLink className="w-3.5 h-3.5" />

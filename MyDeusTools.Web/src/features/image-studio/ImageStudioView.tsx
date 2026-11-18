@@ -104,29 +104,31 @@ export const ImageStudioView: React.FC = () => {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h2 className="text-2xl font-bold text-white flex items-center gap-2">
-          <ImageIcon className="w-6 h-6 text-sky-400" />
+        <h2 className="text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
+          <ImageIcon className="w-6 h-6 text-sky-600 dark:text-sky-400" />
           <span>{t.nav.imageStudio}</span>
         </h2>
-        <p className="text-sm text-slate-400 mt-1">{t.descriptions.imageStudio}</p>
+        <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">{t.descriptions.imageStudio}</p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Settings Panel (4 cols) */}
-        <div className="lg:col-span-4 space-y-5 glass-card p-6 rounded-2xl border border-slate-800">
-          <h3 className="text-sm font-semibold text-slate-200 flex items-center gap-2">
-            <Sliders className="w-4 h-4 text-sky-400" />
+        <div className="lg:col-span-4 space-y-5 glass-card p-6 rounded-2xl">
+          <h3 className="text-sm font-semibold text-slate-800 dark:text-slate-200 flex items-center gap-2">
+            <Sliders className="w-4 h-4 text-sky-600 dark:text-sky-400" />
             <span>Compression & Format</span>
           </h3>
 
           <div className="space-y-4">
             {/* Format */}
             <div className="space-y-1.5">
-              <label className="text-xs font-medium text-slate-400">Target Format</label>
+              <label className="text-xs font-medium text-slate-600 dark:text-slate-400">
+                Target Format
+              </label>
               <select
                 value={format}
                 onChange={(e) => setFormat(e.target.value as any)}
-                className="w-full p-2.5 bg-slate-900 border border-slate-800 rounded-xl text-xs font-medium text-slate-200 focus:outline-none"
+                className="w-full p-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-xs font-medium text-slate-900 dark:text-slate-200 focus:outline-none"
               >
                 <option value="image/webp">WebP (Modern, Smallest size)</option>
                 <option value="image/jpeg">JPEG (Universal photo)</option>
@@ -138,8 +140,10 @@ export const ImageStudioView: React.FC = () => {
             {format !== 'image/png' && (
               <div className="space-y-1.5">
                 <div className="flex justify-between text-xs">
-                  <span className="text-slate-400">Quality</span>
-                  <span className="text-sky-400 font-mono font-semibold">{quality}%</span>
+                  <span className="text-slate-600 dark:text-slate-400">Quality</span>
+                  <span className="text-sky-600 dark:text-sky-400 font-mono font-semibold">
+                    {quality}%
+                  </span>
                 </div>
                 <input
                   type="range"
@@ -155,8 +159,10 @@ export const ImageStudioView: React.FC = () => {
             {/* Scale Slider */}
             <div className="space-y-1.5">
               <div className="flex justify-between text-xs">
-                <span className="text-slate-400">Scale Resolution</span>
-                <span className="text-sky-400 font-mono font-semibold">{scale}%</span>
+                <span className="text-slate-600 dark:text-slate-400">Scale Resolution</span>
+                <span className="text-sky-600 dark:text-sky-400 font-mono font-semibold">
+                  {scale}%
+                </span>
               </div>
               <input
                 type="range"
@@ -169,8 +175,8 @@ export const ImageStudioView: React.FC = () => {
               />
             </div>
 
-            <div className="p-3 bg-slate-900/60 rounded-xl border border-slate-800 text-[11px] text-slate-400 flex items-center gap-2">
-              <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0" />
+            <div className="p-3 bg-slate-50 dark:bg-slate-900/60 rounded-xl border border-slate-200 dark:border-slate-800 text-[11px] text-slate-600 dark:text-slate-400 flex items-center gap-2">
+              <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
               <span>Canvas re-encoding automatically strips 100% EXIF and GPS metadata.</span>
             </div>
 
@@ -187,12 +193,12 @@ export const ImageStudioView: React.FC = () => {
 
         {/* Upload & Image List (8 cols) */}
         <div className="lg:col-span-8 space-y-4">
-          <div className="p-6 border-2 border-dashed border-slate-800 hover:border-sky-500/50 rounded-2xl flex flex-col items-center justify-center text-center space-y-2 glass-card transition-all">
-            <UploadCloud className="w-8 h-8 text-sky-400 opacity-80" />
-            <p className="text-xs font-semibold text-slate-300">
+          <div className="p-6 border-2 border-dashed border-slate-300 dark:border-slate-800 hover:border-sky-500/50 rounded-2xl flex flex-col items-center justify-center text-center space-y-2 glass-card transition-all">
+            <UploadCloud className="w-8 h-8 text-sky-600 dark:text-sky-400 opacity-80" />
+            <p className="text-xs font-semibold text-slate-700 dark:text-slate-300">
               Drag & drop images here, or browse from computer
             </p>
-            <label className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-xl text-xs font-semibold transition-all cursor-pointer">
+            <label className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-200 dark:border-transparent dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-200 rounded-xl text-xs font-semibold transition-all cursor-pointer">
               <span>{t.common.browse}</span>
               <input
                 type="file"
@@ -205,7 +211,7 @@ export const ImageStudioView: React.FC = () => {
           </div>
 
           {statusMessage && (
-            <div className="p-3 bg-emerald-500/10 border border-emerald-500/30 rounded-xl flex items-center gap-2 text-emerald-400 text-xs">
+            <div className="p-3 bg-emerald-500/10 border border-emerald-500/30 rounded-xl flex items-center gap-2 text-emerald-600 dark:text-emerald-400 text-xs">
               <Check className="w-4 h-4 shrink-0" />
               <span>{statusMessage}</span>
             </div>
@@ -216,16 +222,16 @@ export const ImageStudioView: React.FC = () => {
               {images.map((img) => (
                 <div
                   key={img.id}
-                  className="flex items-center justify-between p-3 rounded-xl bg-slate-900 border border-slate-800 text-xs"
+                  className="flex items-center justify-between p-3 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-xs"
                 >
                   <div className="flex items-center gap-3">
                     <img
                       src={img.previewUrl}
                       alt={img.name}
-                      className="w-10 h-10 object-cover rounded-lg border border-slate-700"
+                      className="w-10 h-10 object-cover rounded-lg border border-slate-200 dark:border-slate-700"
                     />
                     <div>
-                      <div className="font-medium text-slate-200 truncate max-w-[200px] sm:max-w-xs">
+                      <div className="font-medium text-slate-900 dark:text-slate-200 truncate max-w-[200px] sm:max-w-xs">
                         {img.name}
                       </div>
                       <div className="text-[11px] text-slate-500">
@@ -237,13 +243,13 @@ export const ImageStudioView: React.FC = () => {
                   <div className="flex items-center gap-2">
                     <button
                       onClick={() => processAndDownload(img)}
-                      className="px-2.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-sky-400 rounded-lg text-xs font-medium cursor-pointer"
+                      className="px-2.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-sky-600 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-sky-400 rounded-lg text-xs font-medium cursor-pointer"
                     >
                       Download
                     </button>
                     <button
                       onClick={() => removeImage(img.id)}
-                      className="p-1.5 text-slate-500 hover:text-rose-400 cursor-pointer"
+                      className="p-1.5 text-slate-500 hover:text-rose-500 dark:hover:text-rose-400 cursor-pointer"
                     >
                       <Trash2 className="w-4 h-4" />
                     </button>

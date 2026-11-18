@@ -74,15 +74,15 @@ export const WindowPipView: React.FC = () => {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h2 className="text-2xl font-bold text-white flex items-center gap-2">
-          <PictureInPicture2 className="w-6 h-6 text-indigo-400" />
+        <h2 className="text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
+          <PictureInPicture2 className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />
           <span>{t.nav.windowPinner}</span>
         </h2>
-        <p className="text-sm text-slate-400 mt-1">{t.descriptions.windowPinner}</p>
+        <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">{t.descriptions.windowPinner}</p>
       </div>
 
-      <div className="p-4 bg-indigo-500/10 border border-indigo-500/20 rounded-2xl flex items-center gap-3 text-xs text-indigo-300">
-        <Sparkles className="w-5 h-5 text-indigo-400 shrink-0" />
+      <div className="p-4 bg-indigo-500/10 border border-indigo-500/20 rounded-2xl flex items-center gap-3 text-xs text-indigo-700 dark:text-indigo-300">
+        <Sparkles className="w-5 h-5 text-indigo-600 dark:text-indigo-400 shrink-0" />
         <span>
           <strong>Document Picture-in-Picture API:</strong> Ghim bất kỳ tiện ích web nào thành một cửa sổ nổi độc lập luôn nằm trên cùng (Always-on-Top) trên màn hình làm việc của Windows/macOS.
         </span>
@@ -90,13 +90,15 @@ export const WindowPipView: React.FC = () => {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
         {/* Widget 1: Floating Clock */}
-        <div className="glass-card p-6 rounded-2xl border border-slate-800 space-y-4 flex flex-col justify-between">
+        <div className="glass-card p-6 rounded-2xl space-y-4 flex flex-col justify-between">
           <div className="space-y-2">
-            <div className="w-10 h-10 rounded-xl bg-sky-500/10 text-sky-400 flex items-center justify-center">
+            <div className="w-10 h-10 rounded-xl bg-sky-500/10 text-sky-600 dark:text-sky-400 flex items-center justify-center">
               <Clock className="w-5 h-5" />
             </div>
-            <h3 className="font-semibold text-slate-100">Always-on-Top Desktop Clock</h3>
-            <p className="text-xs text-slate-400 leading-relaxed">
+            <h3 className="font-semibold text-slate-900 dark:text-slate-100">
+              Always-on-Top Desktop Clock
+            </h3>
+            <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
               Mở đồng hồ kỹ thuật số nổi nhỏ gọn luôn hiển thị trên các ứng dụng khác khi làm việc.
             </p>
           </div>
@@ -110,13 +112,13 @@ export const WindowPipView: React.FC = () => {
         </div>
 
         {/* Widget 2: Floating Scratchpad */}
-        <div className="glass-card p-6 rounded-2xl border border-slate-800 space-y-4 flex flex-col justify-between">
+        <div className="glass-card p-6 rounded-2xl space-y-4 flex flex-col justify-between">
           <div className="space-y-2">
-            <div className="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center">
+            <div className="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center">
               <StickyNote className="w-5 h-5" />
             </div>
-            <h3 className="font-semibold text-slate-100">Floating Scratchpad</h3>
-            <p className="text-xs text-slate-400 leading-relaxed">
+            <h3 className="font-semibold text-slate-900 dark:text-slate-100">Floating Scratchpad</h3>
+            <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
               Cửa sổ ghi chú nổi độc lập, tiện lợi để lưu nháp văn bản khi đối chiếu code hoặc dữ liệu.
             </p>
           </div>

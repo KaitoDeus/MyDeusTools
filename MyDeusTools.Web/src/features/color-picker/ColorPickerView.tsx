@@ -138,24 +138,24 @@ export const ColorPickerView: React.FC = () => {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h2 className="text-2xl font-bold text-white flex items-center gap-2">
-          <Pipette className="w-6 h-6 text-fuchsia-400" />
+        <h2 className="text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
+          <Pipette className="w-6 h-6 text-fuchsia-600 dark:text-fuchsia-400" />
           <span>{t.nav.colorPicker}</span>
         </h2>
-        <p className="text-sm text-slate-400 mt-1">{t.descriptions.colorPicker}</p>
+        <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">{t.descriptions.colorPicker}</p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Main Picker & Formats (7 cols) */}
-        <div className="lg:col-span-7 space-y-6 glass-card p-6 rounded-2xl border border-slate-800">
+        <div className="lg:col-span-7 space-y-6 glass-card p-6 rounded-2xl">
           {/* Eyedropper Button Banner */}
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 rounded-xl bg-gradient-to-r from-fuchsia-950/40 via-purple-950/40 to-indigo-950/40 border border-fuchsia-500/20">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 rounded-xl bg-gradient-to-r from-fuchsia-50 via-purple-50 to-indigo-50 dark:from-fuchsia-950/40 dark:via-purple-950/40 dark:to-indigo-950/40 border border-fuchsia-200 dark:border-fuchsia-500/20">
             <div className="space-y-1">
-              <h3 className="text-sm font-semibold text-white flex items-center gap-1.5">
-                <Sparkles className="w-4 h-4 text-fuchsia-400" />
+              <h3 className="text-sm font-semibold text-slate-900 dark:text-white flex items-center gap-1.5">
+                <Sparkles className="w-4 h-4 text-fuchsia-600 dark:text-fuchsia-400" />
                 <span>Screen Eyedropper Tool</span>
               </h3>
-              <p className="text-xs text-slate-400">
+              <p className="text-xs text-slate-600 dark:text-slate-400">
                 Pick any pixel on your screen directly from the browser window.
               </p>
             </div>
@@ -171,7 +171,7 @@ export const ColorPickerView: React.FC = () => {
           {/* Color Display & Native HTML Picker */}
           <div className="flex items-center gap-4">
             <div
-              className="w-24 h-24 rounded-2xl shadow-xl border border-white/20 shrink-0 relative overflow-hidden"
+              className="w-24 h-24 rounded-2xl shadow-xl border border-slate-200 dark:border-white/20 shrink-0 relative overflow-hidden"
               style={{ backgroundColor: currentColor }}
             >
               <input
@@ -185,16 +185,16 @@ export const ColorPickerView: React.FC = () => {
 
             <div className="space-y-2 flex-1">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-medium text-slate-400">Selected Color</span>
+                <span className="text-xs font-medium text-slate-600 dark:text-slate-400">Selected Color</span>
                 <button
                   onClick={() => saveColorToHistory(currentColor)}
-                  className="text-xs text-fuchsia-400 hover:underline flex items-center gap-1 cursor-pointer"
+                  className="text-xs text-fuchsia-600 dark:text-fuchsia-400 hover:underline flex items-center gap-1 cursor-pointer"
                 >
                   <Bookmark className="w-3.5 h-3.5" />
                   <span>Save to Palette</span>
                 </button>
               </div>
-              <div className="text-2xl font-extrabold text-white font-mono tracking-wider uppercase">
+              <div className="text-2xl font-extrabold text-slate-900 dark:text-white font-mono tracking-wider uppercase">
                 {currentColor}
               </div>
               <p className="text-xs text-slate-500">
@@ -212,16 +212,16 @@ export const ColorPickerView: React.FC = () => {
             ].map((f) => (
               <div
                 key={f.label}
-                className="flex items-center justify-between p-3 rounded-xl bg-slate-900 border border-slate-800 text-xs"
+                className="flex items-center justify-between p-3 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-xs"
               >
-                <span className="font-semibold text-slate-400 w-12">{f.label}</span>
-                <span className="font-mono text-slate-200 select-all">{f.value}</span>
+                <span className="font-semibold text-slate-500 dark:text-slate-400 w-12">{f.label}</span>
+                <span className="font-mono text-slate-900 dark:text-slate-200 select-all">{f.value}</span>
                 <button
                   onClick={() => copyToClipboard(f.value, f.label)}
-                  className="text-slate-400 hover:text-fuchsia-400 flex items-center gap-1 cursor-pointer"
+                  className="text-slate-500 hover:text-fuchsia-600 dark:text-slate-400 dark:hover:text-fuchsia-400 flex items-center gap-1 cursor-pointer"
                 >
                   {copiedKey === f.label ? (
-                    <Check className="w-3.5 h-3.5 text-emerald-400" />
+                    <Check className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
                   ) : (
                     <Copy className="w-3.5 h-3.5" />
                   )}
@@ -233,10 +233,10 @@ export const ColorPickerView: React.FC = () => {
         </div>
 
         {/* Palette History (5 cols) */}
-        <div className="lg:col-span-5 space-y-4 glass-card p-6 rounded-2xl border border-slate-800">
+        <div className="lg:col-span-5 space-y-4 glass-card p-6 rounded-2xl">
           <div className="flex items-center justify-between">
-            <h3 className="text-sm font-semibold text-slate-200 flex items-center gap-2">
-              <Layers className="w-4 h-4 text-fuchsia-400" />
+            <h3 className="text-sm font-semibold text-slate-800 dark:text-slate-200 flex items-center gap-2">
+              <Layers className="w-4 h-4 text-fuchsia-600 dark:text-fuchsia-400" />
               <span>Palette History ({savedColors.length})</span>
             </h3>
             {savedColors.length > 0 && (
@@ -245,7 +245,7 @@ export const ColorPickerView: React.FC = () => {
                   await db.colors.clear();
                   loadColors();
                 }}
-                className="text-xs text-slate-500 hover:text-rose-400 transition-colors cursor-pointer"
+                className="text-xs text-slate-500 hover:text-rose-500 dark:hover:text-rose-400 transition-colors cursor-pointer"
               >
                 {t.common.clear}
               </button>
@@ -256,17 +256,17 @@ export const ColorPickerView: React.FC = () => {
             {savedColors.map((sc) => (
               <div
                 key={sc.id}
-                className="flex items-center justify-between p-2.5 rounded-xl bg-slate-900/60 border border-slate-800 hover:border-slate-700 transition-all text-xs group"
+                className="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 transition-all text-xs group"
               >
                 <div
                   className="flex items-center gap-3 cursor-pointer"
                   onClick={() => setCurrentColor(sc.hex)}
                 >
                   <div
-                    className="w-7 h-7 rounded-lg border border-white/10 shrink-0"
+                    className="w-7 h-7 rounded-lg border border-slate-200 dark:border-white/10 shrink-0"
                     style={{ backgroundColor: sc.hex }}
                   />
-                  <div className="font-mono font-medium text-slate-300 uppercase">
+                  <div className="font-mono font-medium text-slate-800 dark:text-slate-300 uppercase">
                     {sc.hex}
                   </div>
                 </div>
@@ -274,17 +274,17 @@ export const ColorPickerView: React.FC = () => {
                 <div className="flex items-center gap-2">
                   <button
                     onClick={() => copyToClipboard(sc.hex, `hist-${sc.id}`)}
-                    className="p-1 text-slate-400 hover:text-white cursor-pointer"
+                    className="p-1 text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white cursor-pointer"
                   >
                     {copiedKey === `hist-${sc.id}` ? (
-                      <Check className="w-3.5 h-3.5 text-emerald-400" />
+                      <Check className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
                     ) : (
                       <Copy className="w-3.5 h-3.5" />
                     )}
                   </button>
                   <button
                     onClick={() => handleDeleteColor(sc.id)}
-                    className="p-1 text-slate-500 hover:text-rose-400 cursor-pointer"
+                    className="p-1 text-slate-500 hover:text-rose-500 dark:hover:text-rose-400 cursor-pointer"
                   >
                     <Trash2 className="w-3.5 h-3.5" />
                   </button>
@@ -295,7 +295,7 @@ export const ColorPickerView: React.FC = () => {
             {savedColors.length === 0 && (
               <div className="text-center py-12 text-slate-500 text-xs space-y-1">
                 <p>No colors saved yet.</p>
-                <p className="text-[11px] text-slate-600">Sample or pick a color to build your palette.</p>
+                <p className="text-[11px] text-slate-400 dark:text-slate-600">Sample or pick a color to build your palette.</p>
               </div>
             )}
           </div>

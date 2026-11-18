@@ -153,11 +153,11 @@ export const BulkRenamerView: React.FC = () => {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h2 className="text-2xl font-bold text-white flex items-center gap-2">
-          <FolderSync className="w-6 h-6 text-amber-500" />
+        <h2 className="text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
+          <FolderSync className="w-6 h-6 text-amber-600 dark:text-amber-500" />
           <span>{t.nav.bulkRenamer}</span>
         </h2>
-        <p className="text-sm text-slate-400 mt-1">{t.descriptions.bulkRenamer}</p>
+        <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">{t.descriptions.bulkRenamer}</p>
       </div>
 
       {/* Directory & Upload Row */}
@@ -170,59 +170,67 @@ export const BulkRenamerView: React.FC = () => {
           <span>Select Disk Folder (File System Access)</span>
         </button>
 
-        <label className="px-4 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-xl text-xs font-semibold transition-all flex items-center gap-2 cursor-pointer">
-          <UploadCloud className="w-4 h-4 text-amber-400" />
+        <label className="px-4 py-2.5 bg-white hover:bg-slate-100 text-slate-800 border border-slate-200 dark:border-transparent dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-200 rounded-xl text-xs font-semibold transition-all flex items-center gap-2 cursor-pointer">
+          <UploadCloud className="w-4 h-4 text-amber-600 dark:text-amber-400" />
           <span>Select Batch Files</span>
           <input type="file" multiple onChange={handleFileUpload} className="hidden" />
         </label>
       </div>
 
       {/* Rule Form */}
-      <div className="glass-card p-5 rounded-2xl border border-slate-800 space-y-4">
-        <h3 className="text-xs font-semibold text-slate-300 uppercase tracking-wider">
+      <div className="glass-card p-5 rounded-2xl space-y-4">
+        <h3 className="text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
           Renaming Rules
         </h3>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <div className="space-y-1.5">
-            <label className="text-xs font-medium text-slate-400">Find Text / Regex</label>
+            <label className="text-xs font-medium text-slate-600 dark:text-slate-400">
+              Find Text / Regex
+            </label>
             <input
               type="text"
               value={findText}
               onChange={(e) => applyRule(e.target.value, replaceText, prefix, suffix, caseMode)}
               placeholder="e.g. IMG_, copy"
-              className="w-full p-2.5 bg-slate-900 border border-slate-800 rounded-xl text-xs font-mono text-slate-200 focus:outline-none"
+              className="w-full p-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-xs font-mono text-slate-900 dark:text-slate-200 focus:outline-none"
             />
           </div>
 
           <div className="space-y-1.5">
-            <label className="text-xs font-medium text-slate-400">Replace With</label>
+            <label className="text-xs font-medium text-slate-600 dark:text-slate-400">
+              Replace With
+            </label>
             <input
               type="text"
               value={replaceText}
               onChange={(e) => applyRule(findText, e.target.value, prefix, suffix, caseMode)}
               placeholder="e.g. Photo_"
-              className="w-full p-2.5 bg-slate-900 border border-slate-800 rounded-xl text-xs font-mono text-slate-200 focus:outline-none"
+              className="w-full p-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-xs font-mono text-slate-900 dark:text-slate-200 focus:outline-none"
             />
           </div>
 
           <div className="space-y-1.5">
-            <label className="text-xs font-medium text-slate-400">Add Prefix</label>
+            <label className="text-xs font-medium text-slate-600 dark:text-slate-400">
+              Add Prefix
+            </label>
             <input
               type="text"
               value={prefix}
               onChange={(e) => applyRule(findText, replaceText, e.target.value, suffix, caseMode)}
               placeholder="e.g. 2026_"
-              className="w-full p-2.5 bg-slate-900 border border-slate-800 rounded-xl text-xs font-mono text-slate-200 focus:outline-none"
+              className="w-full p-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-xs font-mono text-slate-900 dark:text-slate-200 focus:outline-none"
             />
           </div>
 
           <div className="space-y-1.5">
-            <label className="text-xs font-medium text-slate-400">Case Transformation</label>
+            <label className="text-xs font-medium text-slate-600 dark:text-slate-400">
+              Case Transformation
+            </label>
             <select
               value={caseMode}
               onChange={(e) => applyRule(findText, replaceText, prefix, suffix, e.target.value)}
-              className="w-full p-2.5 bg-slate-900 border border-slate-800 rounded-xl text-xs font-medium text-slate-200 focus:outline-none"
+              className="w-full p-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-xs font-medium text-slate-900 dark:text-slate-200 focus:outline-none"
             >
               <option value="none">No case change</option>
               <option value="uppercase">UPPERCASE</option>
@@ -234,7 +242,7 @@ export const BulkRenamerView: React.FC = () => {
       </div>
 
       {statusMessage && (
-        <div className="p-3 bg-emerald-500/10 border border-emerald-500/30 rounded-xl flex items-center gap-2 text-emerald-400 text-xs">
+        <div className="p-3 bg-emerald-500/10 border border-emerald-500/30 rounded-xl flex items-center gap-2 text-emerald-600 dark:text-emerald-400 text-xs">
           <Check className="w-4 h-4 shrink-0" />
           <span>{statusMessage}</span>
         </div>
@@ -244,7 +252,7 @@ export const BulkRenamerView: React.FC = () => {
       {files.length > 0 && (
         <div className="space-y-3">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold text-slate-300">
+            <span className="text-xs font-semibold text-slate-700 dark:text-slate-300">
               Live Preview ({files.length} files)
             </span>
             <button
@@ -257,31 +265,36 @@ export const BulkRenamerView: React.FC = () => {
             </button>
           </div>
 
-          <div className="glass-card rounded-2xl border border-slate-800 overflow-hidden">
+          <div className="glass-card rounded-2xl overflow-hidden">
             <table className="w-full text-left text-xs">
-              <thead className="bg-slate-900/90 text-slate-400 border-b border-slate-800">
+              <thead className="bg-slate-100 dark:bg-slate-900/90 text-slate-600 dark:text-slate-400 border-b border-slate-200 dark:border-slate-800">
                 <tr>
                   <th className="p-3 font-semibold">Original File Name</th>
                   <th className="p-3 font-semibold">New Name Preview</th>
                   <th className="p-3 font-semibold text-right">Status</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-800/60 font-mono">
+              <tbody className="divide-y divide-slate-200 dark:divide-slate-800/60 font-mono">
                 {files.map((item) => {
                   const isChanged = item.originalName !== item.newName;
                   return (
-                    <tr key={item.id} className="hover:bg-slate-800/30 transition-colors">
-                      <td className="p-3 text-slate-400 truncate max-w-xs">{item.originalName}</td>
-                      <td className="p-3 text-slate-200 font-semibold truncate max-w-xs">
+                    <tr
+                      key={item.id}
+                      className="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors"
+                    >
+                      <td className="p-3 text-slate-500 dark:text-slate-400 truncate max-w-xs">
+                        {item.originalName}
+                      </td>
+                      <td className="p-3 text-slate-900 dark:text-slate-200 font-semibold truncate max-w-xs">
                         {item.newName}
                       </td>
                       <td className="p-3 text-right">
                         {isChanged ? (
-                          <span className="inline-block px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                          <span className="inline-block px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
                             Renamed
                           </span>
                         ) : (
-                          <span className="inline-block px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-800 text-slate-400">
+                          <span className="inline-block px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400">
                             Unchanged
                           </span>
                         )}
